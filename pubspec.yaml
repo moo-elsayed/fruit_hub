@@ -43,6 +43,7 @@ dependencies:
   animate_do: ^4.2.0
   gap: ^3.0.1
   easy_localization: ^3.0.8
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:

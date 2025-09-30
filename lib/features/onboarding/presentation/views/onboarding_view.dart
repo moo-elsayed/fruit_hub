@@ -2,7 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fruit_hub/core/theming/styles.dart';
+import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:fruit_hub/features/onboarding/data/models/onboarding_model.dart';
 import 'package:gap/gap.dart';
@@ -33,8 +33,10 @@ class _OnboardingViewState extends State<OnboardingView> {
             length: slides.length,
             currentIndex: currentIndex,
           ),
-          if (currentIndex == slides.length - 1)
-            Padding(
+          Visibility(
+            visible: currentIndex == slides.length - 1,
+            replacement: Gap(121.h),
+            child: Padding(
               padding: EdgeInsetsGeometry.only(
                 top: 29.h,
                 bottom: 43.h,
@@ -48,11 +50,11 @@ class _OnboardingViewState extends State<OnboardingView> {
                   onPressed: () {},
                   maxWidth: true,
                   text: "start_now".tr(),
-                  textStyle: AppStyles.font16WhiteBold,
+                  textStyle: AppTextStyles.font16WhiteBold,
                 ),
               ),
             ),
-          if (currentIndex != slides.length - 1) Gap(121.h),
+          ),
         ],
       ),
     );
