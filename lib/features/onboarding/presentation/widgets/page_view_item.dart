@@ -37,7 +37,7 @@ class PageViewItem extends StatelessWidget {
           padding: EdgeInsetsGeometry.only(right: 37.w, left: 37.w, top: 64.h),
           child: Column(
             children: [
-              _getText(),
+              _getTitle(),
               Gap(24.h),
               Text(
                 slide.description,
@@ -51,7 +51,7 @@ class PageViewItem extends StatelessWidget {
     );
   }
 
-  Widget _getText() => slide.title.split(' ').last == 'FruitHUB'
+  Widget _getTitle() => slide.title.split(' ').last == 'FruitHUB'
       ? RichText(
           text: TextSpan(
             children: [
