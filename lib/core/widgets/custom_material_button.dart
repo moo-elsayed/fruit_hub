@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/theming/app_colors.dart';
 
 class CustomMaterialButton extends StatelessWidget {
   const CustomMaterialButton({
@@ -29,13 +30,13 @@ class CustomMaterialButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      color: color,
+      color: color ?? AppColors.color1B5E37,
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       minWidth: maxWidth ? double.infinity : null,
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: borderRadius ?? BorderRadiusGeometry.circular(10.r),
+        borderRadius: borderRadius ?? BorderRadiusGeometry.circular(16.r),
         side: side ?? BorderSide.none,
       ),
       padding:
