@@ -2,7 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fruit_hub/core/helpers/extentions.dart';
+import 'package:fruit_hub/core/helpers/shared_preferences_manager.dart';
 import 'package:gap/gap.dart';
+import '../../../../core/routing/routes.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../data/models/onboarding_model.dart';
 
@@ -26,9 +29,15 @@ class PageViewItem extends StatelessWidget {
                 top: 60.h,
                 right: context.locale.languageCode == 'ar' ? 20.w : null,
                 left: context.locale.languageCode == 'en' ? 20.w : null,
-                child: Text(
-                  "skip".tr(),
-                  style: AppTextStyles.font13color949D9ERegular,
+                child: GestureDetector(
+                  onTap: () {
+                    SharedPreferencesManager.setFirstTime(false);
+                    context.pushReplacementNamed(Routes.loginView);
+                  },
+                  child: Text(
+                    "skip".tr(),
+                    style: AppTextStyles.font13color949D9ERegular,
+                  ),
                 ),
               ),
           ],
@@ -59,7 +68,10 @@ class PageViewItem extends StatelessWidget {
                 text: slide.title.substring(0, slide.title.length - 8),
                 style: AppTextStyles.font22color0C0D0DBold,
               ),
-              TextSpan(text: 'Fruit', style: AppTextStyles.font22color1B5E37Bold),
+              TextSpan(
+                text: 'Fruit',
+                style: AppTextStyles.font22color1B5E37Bold,
+              ),
               TextSpan(text: 'HUB', style: AppTextStyles.font22colorF4A91FBold),
             ],
           ),

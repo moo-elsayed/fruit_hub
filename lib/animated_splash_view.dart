@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:fruit_hub/generated/assets.dart';
+import 'core/helpers/shared_preferences_manager.dart';
+import 'features/auth/presentation/views/login_view.dart';
 
 class AnimatedSplashView extends StatefulWidget {
   const AnimatedSplashView({super.key});
@@ -20,10 +22,11 @@ class _AnimatedSplashViewState extends State<AnimatedSplashView> {
   }
 
   void navigate() async {
+    bool firstTime = await getFirstTime();
     Future.delayed(const Duration(seconds: 2, milliseconds: 300), () {
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
-          pageBuilder: (_, __, ___) => const OnboardingView(),
+          pageBuilder: (_, __, ___) => _getView(firstTime),
           transitionsBuilder: (_, animation, __, child) {
             return FadeTransition(
               opacity: CurvedAnimation(
@@ -36,6 +39,16 @@ class _AnimatedSplashViewState extends State<AnimatedSplashView> {
         ),
       );
     });
+  }
+
+  Future<bool> getFirstTime() async =>
+      await SharedPreferencesManager.getFirstTime();
+
+  Widget _getView(bool firstTime) {
+    if (firstTime) {
+      return const OnboardingView();
+    }
+    return const LoginView();
   }
 
   @override
