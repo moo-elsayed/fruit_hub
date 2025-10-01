@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fruit_hub/core/helpers/extentions.dart';
 import 'package:fruit_hub/core/helpers/shared_preferences_manager.dart';
 import 'package:gap/gap.dart';
+import '../../../../core/helpers/functions.dart';
 import '../../../../core/routing/routes.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../data/models/onboarding_model.dart';
@@ -27,8 +28,8 @@ class PageViewItem extends StatelessWidget {
             if (showSkip)
               Positioned(
                 top: 60.h,
-                right: context.locale.languageCode == 'ar' ? 20.w : null,
-                left: context.locale.languageCode == 'en' ? 20.w : null,
+                right: isArabic(context) ? 20.w : null,
+                left: !isArabic(context) ? 20.w : null,
                 child: GestureDetector(
                   onTap: () {
                     SharedPreferencesManager.setFirstTime(false);
