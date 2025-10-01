@@ -22,7 +22,13 @@ class FruitHub extends StatelessWidget {
         locale: context.locale,
         debugShowCheckedModeBanner: false,
         onGenerateRoute: appRouter.generateRoute,
-        theme: ThemeData(scaffoldBackgroundColor: AppColors.white),
+        theme: ThemeData(
+          scaffoldBackgroundColor: AppColors.white,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: AppColors.white,
+            surfaceTintColor: AppColors.white,
+          ),
+        ),
         initialRoute: Routes.splashView,
       ),
     );
