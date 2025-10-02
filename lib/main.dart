@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fruit_hub/core/routing/app_router.dart';
 import 'package:fruit_hub/fruit_hub.dart';
 import 'core/helpers/shared_preferences_manager.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,6 +12,7 @@ void main() async {
   await Future.wait([
     SharedPreferencesManager.init(),
     EasyLocalization.ensureInitialized(),
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
   ]);
 
   runApp(

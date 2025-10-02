@@ -18,24 +18,6 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
       mainAxisAlignment: MainAxisAlignment.center,
       spacing: 16.w,
       children: [
-        // Transform.scale(
-        //   scale: 1.2,
-        //   child: Checkbox(
-        //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        //     visualDensity: VisualDensity.compact,
-        //     value: _agreeToTerms,
-        //     side: const BorderSide(color: AppColors.colorDDDFDF),
-        //     shape: RoundedRectangleBorder(
-        //       borderRadius: BorderRadiusGeometry.circular(4.r),
-        //     ),
-        //     activeColor: AppColors.color1B5E37,
-        //     onChanged: (value) {
-        //       setState(() {
-        //         _agreeToTerms = value!;
-        //       });
-        //     },
-        //   ),
-        // ),
         CustomCheckBox(onChanged: (value) {}),
         Expanded(
           child: RichText(
