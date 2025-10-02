@@ -8,6 +8,7 @@ class Assets {
   static const String fontsCairoSemiBold = 'assets/fonts/Cairo-SemiBold.ttf';
   static const String iconsAppleIcon = 'assets/svgs/icons/apple_icon.svg';
   static const String iconsArrowBack = 'assets/svgs/icons/arrow_back.svg';
+  static const String iconsCheck = 'assets/svgs/icons/Check.svg';
   static const String iconsFacebookIcon = 'assets/svgs/icons/facebook_icon.svg';
   static const String iconsGoogleIcon = 'assets/svgs/icons/google_icon.svg';
   static const String imagesAppLogo = 'assets/images/app-logo.png';

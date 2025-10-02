@@ -10,9 +10,9 @@ class AuthRedirectText extends StatelessWidget {
     required this.action,
   });
 
-  final void Function()? onTap;
   final String question;
   final String action;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +23,7 @@ class AuthRedirectText extends StatelessWidget {
             text: question,
             style: AppTextStyles.font16color949D9ESemiBold,
           ),
+          const TextSpan(text: ' '),
           TextSpan(
             text: action,
             style: AppTextStyles.font16color1B5E37ESemiBold,

@@ -9,10 +9,16 @@
   "email": "البريد الإلكتروني",
   "password": "كلمة المرور",
   "forgot_password": "نسيت كلمة المرور؟",
-  "don't_have_account": "لا تمتلك حساب؟ ",
+  "don't_have_account": "لا تمتلك حساب؟",
   "create_an_account": "قم بإنشاء حساب",
   "or": "أو",
   "sign_in_with_google": "تسجيل بواسطة جوجل",
   "sign_in_with_apple": "تسجيل بواسطة أبل",
-  "sign_in_with_facebook": "تسجيل بواسطة فيسبوك"
+  "sign_in_with_facebook": "تسجيل بواسطة فيسبوك",
+  "new_account": "حساب جديد",
+  "full_name": "الاسم كامل",
+  "terms_and_conditions_p1": "من خلال إنشاء حساب ، فإنك توافق على",
+  "terms_and_conditions_p2": "الشروط والأحكام الخاصة بنا",
+  "create_new_account": "إنشاء حساب جديد",
+  "already_have_an_account": "تمتلك حساب بالفعل؟"
 }

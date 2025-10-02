@@ -12,10 +12,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     this.showArrowBack = false,
+    this.onTap,
   });
 
   final String title;
   final bool showArrowBack;
+  final void Function()? onTap;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -25,18 +27,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: Visibility(
         visible: showArrowBack,
-        child: Container(
-          margin: EdgeInsetsDirectional.only(start: 16.w),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-            border: Border.all(color: AppColors.colorF1F1F5),
-          ),
-          child: Transform.rotate(
-            angle: isArabic(context) ? 0 : pi,
-            child: SvgPicture.asset(
-              Assets.iconsArrowBack,
-              fit: BoxFit.scaleDown,
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            margin: EdgeInsetsDirectional.only(start: 16.w),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              border: Border.all(color: AppColors.colorF1F1F5),
+            ),
+            child: Transform.rotate(
+              angle: isArabic(context) ? 0 : pi,
+              child: SvgPicture.asset(
+                Assets.iconsArrowBack,
+                fit: BoxFit.scaleDown,
+              ),
             ),
           ),
         ),

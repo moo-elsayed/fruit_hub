@@ -9,10 +9,16 @@
   "email": "Email",
   "password": "Password",
   "forgot_password": "Forgot Password?",
-  "don't_have_account": "Don't have an account? ",
+  "don't_have_account": "Don't have an account?",
   "create_an_account": "Create an account",
   "or": "or",
   "sign_in_with_google": "Sign in with Google",
   "sign_in_with_apple": "Sign in with Apple",
-  "sign_in_with_facebook": "Sign in with Facebook"
+  "sign_in_with_facebook": "Sign in with Facebook",
+  "new_account": "New Account",
+  "full_name": "Full Name",
+  "terms_and_conditions_p1": "By creating an account, you agree to",
+  "terms_and_conditions_p2": "Our Terms and Conditions",
+  "create_new_account": "Create New Account",
+  "already_have_an_account": "Already have an account?"
 }

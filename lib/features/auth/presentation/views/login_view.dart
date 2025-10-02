@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fruit_hub/core/helpers/extentions.dart';
-import 'package:fruit_hub/core/theming/app_colors.dart';
+import 'package:fruit_hub/core/helpers/validator.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/text_form_field_helper.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/auth_redirect_text.dart';
@@ -14,6 +14,7 @@ import 'package:fruit_hub/generated/assets.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/routing/routes.dart';
 import '../../../../core/widgets/custom_material_button.dart';
+import '../widgets/social_login_button.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -34,14 +35,17 @@ class LoginView extends StatelessWidget {
                 TextFormFieldHelper(
                   hint: "email".tr(),
                   keyboardType: TextInputType.emailAddress,
+                  onValidate: Validator.validateEmail,
                   action: TextInputAction.next,
                 ),
                 Gap(16.h),
                 TextFormFieldHelper(
                   hint: "password".tr(),
                   isPassword: true,
-                  action: TextInputAction.done,
                   obscuringCharacter: '●',
+                  keyboardType: TextInputType.visiblePassword,
+                  onValidate: Validator.validatePassword,
+                  action: TextInputAction.done,
                 ),
                 Gap(16.h),
                 ForgetPassword(onTap: () {}),
@@ -61,39 +65,22 @@ class LoginView extends StatelessWidget {
                 Gap(33.h),
                 const OrDivider(),
                 Gap(16.h),
-                CustomMaterialButton(
+                SocialLoginButton(
                   onPressed: () {},
-                  maxWidth: true,
-                  color: AppColors.white,
-                  side: const BorderSide(color: AppColors.colorDDDFDF),
-                  socialLogin: true,
-                  socialIcon: SvgPicture.asset(Assets.iconsGoogleIcon),
                   text: "sign_in_with_google".tr(),
-                  textStyle: AppTextStyles.font16color0C0D0DSemiBold,
+                  socialIcon: SvgPicture.asset(Assets.iconsGoogleIcon),
                 ),
                 Gap(16.h),
-                CustomMaterialButton(
+                SocialLoginButton(
                   onPressed: () {},
-                  maxWidth: true,
-                  color: AppColors.white,
-                  side: const BorderSide(color: AppColors.colorDDDFDF),
-                  socialLogin: true,
-                  socialIcon: SvgPicture.asset(Assets.iconsAppleIcon),
                   text: "sign_in_with_apple".tr(),
-                  textStyle: AppTextStyles.font16color0C0D0DSemiBold,
+                  socialIcon: SvgPicture.asset(Assets.iconsAppleIcon),
                 ),
                 Gap(16.h),
-                CustomMaterialButton(
+                SocialLoginButton(
                   onPressed: () {},
-                  maxWidth: true,
-                  color: AppColors.white,
-                  side: const BorderSide(color: AppColors.colorDDDFDF),
-                  socialLogin: true,
-                  socialIcon: SvgPicture.asset(Assets.iconsFacebookIcon),
                   text: "sign_in_with_facebook".tr(),
-                  textStyle: AppTextStyles.font16color0C0D0DSemiBold,
-                  // isLoading: true,
-                  // loadingIndicatorColor: Colors.blue,
+                  socialIcon: SvgPicture.asset(Assets.iconsFacebookIcon),
                 ),
               ],
             ),
