@@ -18,4 +18,6 @@ abstract class AuthRemoteDataSource {
   Future<NetworkResponse> googleSignIn();
 
   Future<NetworkResponse> forgetPassword(String email);
+
+  Future<void> signOut();
 }

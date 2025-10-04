@@ -29,7 +29,11 @@ class AuthRepoImp implements AuthRepo {
   );
 
   @override
-  Future<void> sendEmailVerification() async => _authRemoteDataSource.sendEmailVerification();
+  Future<void> signOut() async => _authRemoteDataSource.signOut();
+
+  @override
+  Future<void> sendEmailVerification() async =>
+      _authRemoteDataSource.sendEmailVerification();
 
   @override
   Future<NetworkResponse> forgetPassword(String email) {

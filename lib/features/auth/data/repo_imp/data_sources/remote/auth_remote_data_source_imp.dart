@@ -47,6 +47,9 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   }
 
   @override
+  Future<void> signOut() async => await _authFirebase.signOut();
+
+  @override
   Future<void> sendEmailVerification() async =>
       await _authFirebase.sendEmailVerification();
 

@@ -20,5 +20,21 @@
   "terms_and_conditions_p1": "من خلال إنشاء حساب ، فإنك توافق على",
   "terms_and_conditions_p2": "الشروط والأحكام الخاصة بنا",
   "create_new_account": "إنشاء حساب جديد",
-  "already_have_an_account": "تمتلك حساب بالفعل؟"
+  "already_have_an_account": "تمتلك حساب بالفعل؟",
+  "email_cannot_be_empty": "لا يمكن أن يكون البريد الإلكتروني فارغًا",
+  "enter_a_valid_email_address": "أدخل عنوان بريد إلكتروني صالح",
+  "password_cannot_be_empty": "لا يمكن أن تكون كلمة المرور فارغة",
+  "password_must_contain_only_letters_and_numbers": "يجب أن تحتوي كلمة المرور على أحرف وأرقام فقط",
+  "password_must_be_at_least_6_characters_long": "يجب أن تكون كلمة المرور مكونة من 6 أحرف على الأقل",
+  "password_must_contain_at_least_one_number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
+  "name_cannot_be_empty": "لا يمكن أن يكون الاسم فارغًا",
+  "no_user_found_for_that_email": "لم يتم العثور على مستخدم لهذا البريد الإلكتروني",
+  "wrong_password_provided_for_that_user": "تم إدخال كلمة مرور خاطئة لهذا المستخدم",
+  "the_password_provided_is_too_weak": "كلمة المرور المقدمة ضعيفة للغاية",
+  "the_account_already_exists_for_that_email": "الحساب موجود بالفعل لهذا البريد الإلكتروني",
+  "email_created": "تم إنشاء الحساب بنجاح",
+  "you_should_accept_terms_and_conditions": "يجب عليك قبول الشروط والأحكام",
+  "error_occurred_please_try_again": "حدث خطأ يرجى المحاولة مرة أخرى",
+  "network_error_message": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى",
+  "invalid_email_or_password": "البريد إلكتروني أو كلمة مرور غير صالحة"
 }

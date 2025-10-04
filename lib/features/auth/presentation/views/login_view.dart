@@ -15,13 +15,49 @@ import 'package:fruit_hub/features/auth/presentation/widgets/forget_password.dar
 import 'package:fruit_hub/features/auth/presentation/widgets/or_divider.dart';
 import 'package:fruit_hub/generated/assets.dart';
 import 'package:gap/gap.dart';
+import 'package:toastification/toastification.dart';
 import '../../../../core/routing/routes.dart';
+import '../../../../core/widgets/app_toasts.dart';
 import '../../../../core/widgets/custom_material_button.dart';
+import '../args/login_args.dart';
 import '../managers/signin_cubit/sign_in_cubit.dart';
 import '../widgets/social_login_button.dart';
 
-class LoginView extends StatelessWidget {
-  const LoginView({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key, this.loginArgs});
+
+  final LoginArgs? loginArgs;
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  late GlobalKey<FormState> _formKey;
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
+
+  void _clearForm() {
+    _emailController.clear();
+    _passwordController.clear();
+    _formKey = GlobalKey<FormState>();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _formKey = GlobalKey<FormState>();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,60 +72,98 @@ class LoginView extends StatelessWidget {
           child: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
-              child: Column(
-                children: [
-                  Gap(24.h),
-                  TextFormFieldHelper(
-                    hint: "email".tr(),
-                    keyboardType: TextInputType.emailAddress,
-                    onValidate: Validator.validateEmail,
-                    action: TextInputAction.next,
-                  ),
-                  Gap(16.h),
-                  TextFormFieldHelper(
-                    hint: "password".tr(),
-                    isPassword: true,
-                    obscuringCharacter: '●',
-                    keyboardType: TextInputType.visiblePassword,
-                    onValidate: Validator.validatePassword,
-                    action: TextInputAction.done,
-                  ),
-                  Gap(16.h),
-                  ForgetPassword(onTap: () {}),
-                  Gap(33.h),
-                  CustomMaterialButton(
-                    onPressed: () {},
-                    maxWidth: true,
-                    text: "login".tr(),
-                    textStyle: AppTextStyles.font16WhiteBold,
-                  ),
-                  Gap(33.h),
-                  AuthRedirectText(
-                    question: "don't_have_account".tr(),
-                    action: "create_an_account".tr(),
-                    onTap: () => context.pushNamed(Routes.registerView),
-                  ),
-                  Gap(33.h),
-                  const OrDivider(),
-                  Gap(16.h),
-                  SocialLoginButton(
-                    onPressed: () {},
-                    text: "sign_in_with_google".tr(),
-                    socialIcon: SvgPicture.asset(Assets.iconsGoogleIcon),
-                  ),
-                  Gap(16.h),
-                  SocialLoginButton(
-                    onPressed: () {},
-                    text: "sign_in_with_apple".tr(),
-                    socialIcon: SvgPicture.asset(Assets.iconsAppleIcon),
-                  ),
-                  Gap(16.h),
-                  SocialLoginButton(
-                    onPressed: () {},
-                    text: "sign_in_with_facebook".tr(),
-                    socialIcon: SvgPicture.asset(Assets.iconsFacebookIcon),
-                  ),
-                ],
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Gap(24.h),
+                    TextFormFieldHelper(
+                      controller: _emailController,
+                      hint: "email".tr(),
+                      keyboardType: TextInputType.emailAddress,
+                      onValidate: Validator.validateEmail,
+                      action: TextInputAction.next,
+                    ),
+                    Gap(16.h),
+                    TextFormFieldHelper(
+                      controller: _passwordController,
+                      hint: "password".tr(),
+                      isPassword: true,
+                      obscuringCharacter: '●',
+                      keyboardType: TextInputType.visiblePassword,
+                      onValidate: Validator.validatePassword,
+                      action: TextInputAction.done,
+                    ),
+                    Gap(16.h),
+                    ForgetPassword(onTap: () {}),
+                    Gap(33.h),
+                    BlocConsumer<SignInCubit, SignInState>(
+                      listener: (context, state) {
+                        if (state is SignInFailure) {
+                          AppToast.showToast(
+                            context: context,
+                            title: state.message,
+                            type: ToastificationType.error,
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        return CustomMaterialButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              context
+                                  .read<SignInCubit>()
+                                  .signInWithEmailAndPassword(
+                                    email: _emailController.text,
+                                    password: _passwordController.text,
+                                  );
+                            }
+                          },
+                          maxWidth: true,
+                          text: "login".tr(),
+                          textStyle: AppTextStyles.font16WhiteBold,
+                          isLoading: state is SignInLoading,
+                        );
+                      },
+                    ),
+                    Gap(33.h),
+                    AuthRedirectText(
+                      question: "don't_have_account".tr(),
+                      action: "create_an_account".tr(),
+                      onTap: () async {
+                        final result = await context.pushNamed(
+                          Routes.registerView,
+                        );
+                        if (result != null && result is LoginArgs) {
+                          _emailController.text = result.email;
+                          _passwordController.text = result.password;
+                        } else {
+                          _clearForm();
+                        }
+                      },
+                    ),
+                    Gap(33.h),
+                    const OrDivider(),
+                    Gap(16.h),
+                    SocialLoginButton(
+                      onPressed: () {},
+                      text: "sign_in_with_google".tr(),
+                      socialIcon: SvgPicture.asset(Assets.iconsGoogleIcon),
+                    ),
+                    Gap(16.h),
+                    SocialLoginButton(
+                      onPressed: () {},
+                      text: "sign_in_with_apple".tr(),
+                      socialIcon: SvgPicture.asset(Assets.iconsAppleIcon),
+                    ),
+                    Gap(16.h),
+                    SocialLoginButton(
+                      onPressed: () {},
+                      text: "sign_in_with_facebook".tr(),
+                      socialIcon: SvgPicture.asset(Assets.iconsFacebookIcon),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -27,7 +27,8 @@ class SignupCubit extends Cubit<SignupState> {
       case NetworkSuccess<UserEntity>():
         emit(SignUpSuccess(result.data!));
       case NetworkFailure<UserEntity>():
-        emit(SignUpFailure(result.exception.toString()));
+        final errorMessage = (result.exception as dynamic).message ?? result.exception.toString();
+        emit(SignUpFailure(errorMessage));
     }
   }
 }

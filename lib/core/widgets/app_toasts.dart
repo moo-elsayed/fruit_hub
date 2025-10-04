@@ -15,6 +15,7 @@ abstract class AppToast {
         title,
         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
+      closeButton: const ToastCloseButton(showType: CloseButtonShowType.none),
       alignment: Alignment.topCenter,
       description: description != null
           ? Text(

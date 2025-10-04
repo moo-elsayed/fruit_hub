@@ -20,5 +20,21 @@
   "terms_and_conditions_p1": "By creating an account, you agree to",
   "terms_and_conditions_p2": "Our Terms and Conditions",
   "create_new_account": "Create New Account",
-  "already_have_an_account": "Already have an account?"
+  "already_have_an_account": "Already have an account?",
+  "email_cannot_be_empty": "Email cannot be empty",
+  "enter_a_valid_email_address": "Enter a valid email address",
+  "password_cannot_be_empty": "Password cannot be empty",
+  "password_must_contain_only_letters_and_numbers": "Password must contain only letters and numbers",
+  "password_must_be_at_least_6_characters_long": "Password must be at least 6 characters long",
+  "password_must_contain_at_least_one_number": "Password must contain at least one number",
+  "name_cannot_be_empty": "Name cannot be empty",
+  "no_user_found_for_that_email": "No user found for that email",
+  "wrong_password_provided_for_that_user": "Wrong password provided for that user",
+  "the_password_provided_is_too_weak": "The password provided is too weak",
+  "the_account_already_exists_for_that_email": "The account already exists for that email",
+  "email_created": "Email Created",
+  "you_should_accept_terms_and_conditions": "You should accept terms and conditions",
+  "error_occurred_please_try_again": "Error occurred, please try again",
+  "network_error_message": "Please check your internet connection and try again",
+  "invalid_email_or_password": "Invalid email or password"
 }
