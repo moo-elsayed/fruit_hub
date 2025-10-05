@@ -3,13 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import '../../../../../core/helpers/network_response.dart';
 import '../../../domain/entities/user_entity.dart';
+import '../../../domain/use_cases/facebook_sign_in_use_case.dart';
 import '../../../domain/use_cases/google_sign_in_use_case.dart';
-part 'google_sign_in_state.dart';
 
-class GoogleSignInCubit extends Cubit<GoogleSignInState> {
-  GoogleSignInCubit(this._googleSignInUseCase) : super(GoogleSignInInitial());
+part 'social_sign_in_state.dart';
+
+class SocialSignInCubit extends Cubit<SocialSignInState> {
+  SocialSignInCubit(this._googleSignInUseCase, this._facebookSignInUseCase)
+    : super(SocialSignInInitial());
 
   final GoogleSignInUseCase _googleSignInUseCase;
+  final FacebookSignInUseCase _facebookSignInUseCase;
 
   Future<void> googleSignIn() async {
     emit(GoogleLoading());
@@ -19,6 +23,18 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
         emit(GoogleSuccess());
       case NetworkFailure<UserEntity>():
         emit(GoogleFailure(getErrorMessage(result)));
+    }
+  }
+
+  Future<void> facebookSignIn() async {
+    emit(FacebookLoading());
+    var result = await _facebookSignInUseCase.facebookSignIn();
+
+    switch (result) {
+      case NetworkSuccess<UserEntity>():
+        emit(FacebookSuccess());
+      case NetworkFailure<UserEntity>():
+        emit(FacebookFailure(getErrorMessage(result)));
     }
   }
 }

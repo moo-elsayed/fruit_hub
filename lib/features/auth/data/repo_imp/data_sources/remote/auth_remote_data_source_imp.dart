@@ -77,4 +77,16 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
     // TODO: implement forgetPassword
     throw UnimplementedError();
   }
+
+  @override
+  Future<NetworkResponse<UserEntity>> facebookSignIn() async {
+    var result = await _authFirebase.facebookSignIn();
+
+    switch (result) {
+      case NetworkSuccess<User>():
+        return NetworkSuccess(UserModel.fromFirebaseUser(result.data!));
+      case NetworkFailure<User>():
+        return NetworkFailure(result.exception);
+    }
+  }
 }

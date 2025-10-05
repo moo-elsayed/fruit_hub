@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../core/helpers/firebase_keys.dart';
@@ -164,6 +165,37 @@ class AuthFirebase {
         error: e.toString(),
       );
       return NetworkFailure(Exception(e.toString()));
+    }
+  }
+
+  Future<NetworkResponse<User>> facebookSignIn() async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      // Create a credential from the access token
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(
+            loginResult.accessToken?.tokenString ?? '',
+          );
+
+      // Once signed in, return the UserCredential
+      var signInWithCredential = await FirebaseAuth.instance
+          .signInWithCredential(facebookAuthCredential);
+
+      return NetworkSuccess(signInWithCredential.user);
+    } on FirebaseAuthException catch (e) {
+      errorLogger(
+        functionName: 'AuthFirebase.facebookSignIn',
+        error: e.toString(),
+      );
+      switch (e.code) {
+        case 'user-disabled':
+          return NetworkFailure(Exception("user_disabled"));
+        default:
+          return NetworkFailure(
+            Exception("error_occurred_please_try_again".tr()),
+          );
+      }
     }
   }
 }

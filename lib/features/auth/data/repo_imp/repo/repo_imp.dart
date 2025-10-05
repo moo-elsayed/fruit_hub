@@ -44,4 +44,8 @@ class AuthRepoImp implements AuthRepo {
     // TODO: implement forgetPassword
     throw UnimplementedError();
   }
+
+  @override
+  Future<NetworkResponse<UserEntity>> facebookSignIn() async =>
+      await _authRemoteDataSource.facebookSignIn();
 }

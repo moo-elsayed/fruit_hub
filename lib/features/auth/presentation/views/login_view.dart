@@ -9,6 +9,7 @@ import 'package:fruit_hub/core/helpers/validator.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/text_form_field_helper.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
+import 'package:fruit_hub/features/auth/presentation/managers/social_sign_in_cubit/social_sign_in_cubit.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/auth_redirect_text.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/custom_app_bar.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/forget_password.dart';
@@ -19,9 +20,9 @@ import 'package:toastification/toastification.dart';
 import '../../../../core/routing/routes.dart';
 import '../../../../core/widgets/app_toasts.dart';
 import '../../../../core/widgets/custom_material_button.dart';
+import '../../domain/use_cases/facebook_sign_in_use_case.dart';
 import '../../domain/use_cases/google_sign_in_use_case.dart';
 import '../args/login_args.dart';
-import '../managers/google_sign_in_cubit/google_sign_in_cubit.dart';
 import '../managers/signin_cubit/sign_in_cubit.dart';
 import '../widgets/social_login_button.dart';
 
@@ -70,8 +71,10 @@ class _LoginViewState extends State<LoginView> {
               SignInCubit(getIt.get<SignInWithEmailAndPasswordUseCase>()),
         ),
         BlocProvider(
-          create: (context) =>
-              GoogleSignInCubit(getIt.get<GoogleSignInUseCase>()),
+          create: (context) => SocialSignInCubit(
+            getIt.get<GoogleSignInUseCase>(),
+            getIt.get<FacebookSignInUseCase>(),
+          ),
         ),
       ],
       child: Scaffold(
@@ -162,7 +165,7 @@ class _LoginViewState extends State<LoginView> {
                     Gap(33.h),
                     const OrDivider(),
                     Gap(16.h),
-                    BlocConsumer<GoogleSignInCubit, GoogleSignInState>(
+                    BlocConsumer<SocialSignInCubit, SocialSignInState>(
                       listener: (context, state) {
                         if (state is GoogleSuccess) {
                           AppToast.showToast(
@@ -179,10 +182,14 @@ class _LoginViewState extends State<LoginView> {
                           );
                         }
                       },
+                      buildWhen: (previous, current) =>
+                          current is GoogleSuccess ||
+                          current is GoogleFailure ||
+                          current is GoogleLoading,
                       builder: (context, state) {
                         return SocialLoginButton(
                           onPressed: () =>
-                              context.read<GoogleSignInCubit>().googleSignIn(),
+                              context.read<SocialSignInCubit>().googleSignIn(),
                           isLoading: state is GoogleLoading,
                           text: "sign_in_with_google".tr(),
                           socialIcon: SvgPicture.asset(Assets.iconsGoogleIcon),
@@ -196,10 +203,39 @@ class _LoginViewState extends State<LoginView> {
                       socialIcon: SvgPicture.asset(Assets.iconsAppleIcon),
                     ),
                     Gap(16.h),
-                    SocialLoginButton(
-                      onPressed: () {},
-                      text: "sign_in_with_facebook".tr(),
-                      socialIcon: SvgPicture.asset(Assets.iconsFacebookIcon),
+                    BlocConsumer<SocialSignInCubit, SocialSignInState>(
+                      listener: (context, state) {
+                        if (state is FacebookSuccess) {
+                          AppToast.showToast(
+                            context: context,
+                            title: "welcome",
+                            type: ToastificationType.success,
+                          );
+                        }
+                        if (state is FacebookFailure) {
+                          AppToast.showToast(
+                            context: context,
+                            title: state.message,
+                            type: ToastificationType.error,
+                          );
+                        }
+                      },
+                      buildWhen: (previous, current) =>
+                          current is FacebookSuccess ||
+                          current is FacebookFailure ||
+                          current is FacebookLoading,
+                      builder: (context, state) {
+                        return SocialLoginButton(
+                          onPressed: () => context
+                              .read<SocialSignInCubit>()
+                              .facebookSignIn(),
+                          isLoading: state is FacebookLoading,
+                          text: "sign_in_with_facebook".tr(),
+                          socialIcon: SvgPicture.asset(
+                            Assets.iconsFacebookIcon,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
