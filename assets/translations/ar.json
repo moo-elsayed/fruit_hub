@@ -36,5 +36,10 @@
   "you_should_accept_terms_and_conditions": "يجب عليك قبول الشروط والأحكام",
   "error_occurred_please_try_again": "حدث خطأ يرجى المحاولة مرة أخرى",
   "network_error_message": "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى",
-  "invalid_email_or_password": "البريد إلكتروني أو كلمة مرور غير صالحة"
+  "invalid_email_or_password": "البريد إلكتروني أو كلمة مرور غير صالحة",
+  "email_sent_to_verify": "تم إرسال رسالة إلى بريدك الإلكتروني. من فضلك تحقق من بريدك لتفعيل حسابك قبل تسجيل الدخول",
+  "ok": "تم",
+  "welcome": "مرحبا",
+  "please_verify_your_email": "يرجى تأكيد بريدك الإلكتروني",
+  "user_canceled_sign_in": "قام المستخدم بإلغاء تسجيل الدخول"
 }

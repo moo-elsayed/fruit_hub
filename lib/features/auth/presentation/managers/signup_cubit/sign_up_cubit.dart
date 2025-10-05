@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
+
+import '../../../../../core/helpers/functions.dart';
+
 part 'sign_up_state.dart';
 
 class SignupCubit extends Cubit<SignupState> {
@@ -27,8 +30,9 @@ class SignupCubit extends Cubit<SignupState> {
       case NetworkSuccess<UserEntity>():
         emit(SignUpSuccess(result.data!));
       case NetworkFailure<UserEntity>():
-        final errorMessage = (result.exception as dynamic).message ?? result.exception.toString();
-        emit(SignUpFailure(errorMessage));
+        emit(SignUpFailure(getErrorMessage(result)));
     }
   }
+
+
 }

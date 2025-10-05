@@ -32,9 +32,14 @@
   "wrong_password_provided_for_that_user": "Wrong password provided for that user",
   "the_password_provided_is_too_weak": "The password provided is too weak",
   "the_account_already_exists_for_that_email": "The account already exists for that email",
-  "email_created": "Email Created",
+  "email_created": "Account created successfully",
   "you_should_accept_terms_and_conditions": "You should accept terms and conditions",
   "error_occurred_please_try_again": "Error occurred, please try again",
   "network_error_message": "Please check your internet connection and try again",
-  "invalid_email_or_password": "Invalid email or password"
+  "invalid_email_or_password": "Invalid email or password",
+  "email_sent_to_verify": "A verification email has been sent to your inbox. Please check your email and verify your account to continue",
+  "ok": "OK",
+  "welcome": "Welcome",
+  "please_verify_your_email": "Please verify your email",
+  "user_canceled_sign_in": "User canceled sign in"
 }

@@ -20,6 +20,7 @@ class Assets {
   static const String svgsPageViewItem2Image = 'assets/svgs/page_view_item2_image.svg';
   static const String svgsPlant = 'assets/svgs/plant.svg';
   static const String svgsSplashBottom = 'assets/svgs/splash-bottom.svg';
+  static const String svgsSuccess = 'assets/svgs/success.svg';
   static const String translationsAr = 'assets/translations/ar.json';
   static const String translationsEn = 'assets/translations/en.json';
 

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
 import '../../../../../core/helpers/network_response.dart';
 import '../../../domain/entities/user_entity.dart';
@@ -24,10 +25,7 @@ class SignInCubit extends Cubit<SignInState> {
       case NetworkSuccess<UserEntity>():
         emit(SignInSuccess(result.data!));
       case NetworkFailure<UserEntity>():
-        final errorMessage =
-            (result.exception as dynamic).message ??
-            result.exception.toString();
-        emit(SignInFailure(errorMessage));
+        emit(SignInFailure(getErrorMessage(result)));
     }
   }
 }

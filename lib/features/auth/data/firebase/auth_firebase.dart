@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import '../../../../core/helpers/firebase_keys.dart';
 import '../../../../core/helpers/network_response.dart';
 
 class AuthFirebase {
@@ -96,4 +99,71 @@ class AuthFirebase {
       await _auth.currentUser!.sendEmailVerification();
 
   Future<void> signOut() async => await _auth.signOut();
+
+  Future<NetworkResponse<User>> googleSignIn() async {
+    try {
+      final GoogleSignIn signIn = GoogleSignIn.instance;
+
+      await signIn.signOut();
+
+      await signIn.initialize(
+        clientId: FirebaseKeys.clientId,
+        serverClientId: FirebaseKeys.serverClientId,
+      );
+      final GoogleSignInAccount? googleUser = await signIn
+          .attemptLightweightAuthentication();
+
+      if (googleUser == null) {
+        errorLogger(
+          functionName: 'AuthFirebase.googleSignIn',
+          error: 'User canceled sign in',
+        );
+        return NetworkFailure(Exception("user_canceled_sign_in".tr()));
+      }
+
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+
+      if (googleAuth.idToken == null) {
+        errorLogger(
+          functionName: 'AuthFirebase.googleSignIn',
+          error: 'No idToken received from Google',
+        );
+        return NetworkFailure(
+          Exception("error_occurred_please_try_again".tr()),
+        );
+      }
+
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+      );
+
+      var userCredential = await _auth.signInWithCredential(credential);
+      return NetworkSuccess(userCredential.user);
+    } on FirebaseAuthException catch (e) {
+      errorLogger(
+        functionName: 'AuthFirebase.googleSignIn',
+        error: e.toString(),
+      );
+      switch (e.code) {
+        case 'user-disabled':
+          return NetworkFailure(Exception("user_disabled"));
+        default:
+          return NetworkFailure(
+            Exception("error_occurred_please_try_again".tr()),
+          );
+      }
+    } on PlatformException catch (e) {
+      errorLogger(
+        functionName: 'AuthFirebase.googleSignIn',
+        error: e.toString(),
+      );
+      return NetworkFailure(Exception(e.message));
+    } catch (e) {
+      errorLogger(
+        functionName: 'AuthFirebase.googleSignIn',
+        error: e.toString(),
+      );
+      return NetworkFailure(Exception(e.toString()));
+    }
+  }
 }

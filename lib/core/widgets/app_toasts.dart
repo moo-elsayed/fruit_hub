@@ -11,6 +11,7 @@ abstract class AppToast {
     toastification.show(
       context: context,
       type: type,
+      borderSide: BorderSide.none,
       title: Text(
         title,
         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

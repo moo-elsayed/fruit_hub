@@ -13,7 +13,7 @@ class AuthRepoImp implements AuthRepo {
     required String email,
     required String password,
     required String username,
-  }) async => _authRemoteDataSource.createUserWithEmailAndPassword(
+  }) async => await _authRemoteDataSource.createUserWithEmailAndPassword(
     email: email,
     password: password,
     username: username,
@@ -23,28 +23,25 @@ class AuthRepoImp implements AuthRepo {
   Future<NetworkResponse<UserEntity>> signInWithEmailAndPassword({
     required String email,
     required String password,
-  }) async => _authRemoteDataSource.signInWithEmailAndPassword(
+  }) async => await _authRemoteDataSource.signInWithEmailAndPassword(
     email: email,
     password: password,
   );
 
   @override
-  Future<void> signOut() async => _authRemoteDataSource.signOut();
+  Future<void> signOut() async => await _authRemoteDataSource.signOut();
 
   @override
   Future<void> sendEmailVerification() async =>
       _authRemoteDataSource.sendEmailVerification();
 
   @override
+  Future<NetworkResponse<UserEntity>> googleSignIn() async =>
+      await _authRemoteDataSource.googleSignIn();
+
+  @override
   Future<NetworkResponse> forgetPassword(String email) {
     // TODO: implement forgetPassword
     throw UnimplementedError();
   }
-
-  @override
-  Future<NetworkResponse> googleSignIn() {
-    // TODO: implement googleSignIn
-    throw UnimplementedError();
-  }
-
 }

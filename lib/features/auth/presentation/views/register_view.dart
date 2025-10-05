@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,7 @@ import 'package:fruit_hub/core/helpers/extentions.dart';
 import 'package:fruit_hub/core/helpers/validator.dart';
 import 'package:fruit_hub/core/widgets/app_toasts.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
+import 'package:fruit_hub/features/auth/presentation/widgets/custom_dialog.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/terms_and_conditions.dart';
 import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
@@ -109,11 +111,20 @@ class _RegisterViewState extends State<RegisterView> {
                             title: "email_created".tr(),
                             type: ToastificationType.success,
                           );
-                          var loginArgs = LoginArgs(
-                            email: _emailController.text.trim(),
-                            password: _passwordController.text.trim(),
+                          showCupertinoDialog(
+                            context: context,
+                            builder: (context) => CustomDialog(
+                              text: "email_sent_to_verify".tr(),
+                              onPressed: () {
+                                context.pop();
+                                var loginArgs = LoginArgs(
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim(),
+                                );
+                                context.pop(loginArgs);
+                              },
+                            ),
                           );
-                          context.pop(loginArgs);
                         }
                         if (state is SignUpFailure) {
                           AppToast.showToast(
@@ -126,23 +137,24 @@ class _RegisterViewState extends State<RegisterView> {
                       builder: (context, state) {
                         return CustomMaterialButton(
                           onPressed: () {
-                            if (_formKey.currentState!.validate() &&
-                                _agreeToTerms) {
-                              context
-                                  .read<SignupCubit>()
-                                  .createUserWithEmailAndPassword(
-                                    username: _nameController.text,
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
-                                  );
-                            }
-                            if (!_agreeToTerms) {
-                              AppToast.showToast(
-                                context: context,
-                                title: "you_should_accept_terms_and_conditions"
-                                    .tr(),
-                                type: ToastificationType.error,
-                              );
+                            if (_formKey.currentState!.validate()) {
+                              if (!_agreeToTerms) {
+                                AppToast.showToast(
+                                  context: context,
+                                  title:
+                                      "you_should_accept_terms_and_conditions"
+                                          .tr(),
+                                  type: ToastificationType.error,
+                                );
+                              } else {
+                                context
+                                    .read<SignupCubit>()
+                                    .createUserWithEmailAndPassword(
+                                      username: _nameController.text,
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                    );
+                              }
                             }
                           },
                           maxWidth: true,

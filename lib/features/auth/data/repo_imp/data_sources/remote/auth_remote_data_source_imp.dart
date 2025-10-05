@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/features/auth/data/firebase/auth_firebase.dart';
@@ -21,7 +22,12 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
     );
     switch (result) {
       case NetworkSuccess<User>():
-        return NetworkSuccess(UserModel.fromFirebaseUser(result.data!));
+        if (!result.data!.emailVerified) {
+          await sendEmailVerification();
+          return NetworkFailure(Exception("please_verify_your_email".tr()));
+        } else {
+          return NetworkSuccess(UserModel.fromFirebaseUser(result.data!));
+        }
       case NetworkFailure<User>():
         return NetworkFailure(result.exception);
     }
@@ -40,6 +46,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
 
     switch (result) {
       case NetworkSuccess<User>():
+        await sendEmailVerification();
         return NetworkSuccess(UserModel.fromFirebaseUser(result.data!));
       case NetworkFailure<User>():
         return NetworkFailure(result.exception);
@@ -54,14 +61,20 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
       await _authFirebase.sendEmailVerification();
 
   @override
-  Future<NetworkResponse> forgetPassword(String email) {
-    // TODO: implement forgetPassword
-    throw UnimplementedError();
+  Future<NetworkResponse<UserEntity>> googleSignIn() async {
+    var result = await _authFirebase.googleSignIn();
+
+    switch (result) {
+      case NetworkSuccess<User>():
+        return NetworkSuccess(UserModel.fromFirebaseUser(result.data!));
+      case NetworkFailure<User>():
+        return NetworkFailure(result.exception);
+    }
   }
 
   @override
-  Future<NetworkResponse> googleSignIn() {
-    // TODO: implement googleSignIn
+  Future<NetworkResponse> forgetPassword(String email) {
+    // TODO: implement forgetPassword
     throw UnimplementedError();
   }
 }

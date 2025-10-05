@@ -11,19 +11,9 @@ class CreateUserWithEmailAndPasswordUseCase {
     required String email,
     required String password,
     required String username,
-  }) async {
-    var result = await _authRepo.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-      username: username,
-    );
-
-    switch (result) {
-      case NetworkSuccess<UserEntity>():
-        await _authRepo.sendEmailVerification();
-        return NetworkSuccess(result.data!);
-      case NetworkFailure<UserEntity>():
-        return NetworkFailure(result.exception);
-    }
-  }
+  }) async => await _authRepo.createUserWithEmailAndPassword(
+    email: email,
+    password: password,
+    username: username,
+  );
 }

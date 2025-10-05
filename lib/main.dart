@@ -24,7 +24,7 @@ void main() async {
       supportedLocales: [const Locale('ar'), const Locale('en')],
       path: 'assets/translations',
       fallbackLocale: const Locale('ar'),
-      startLocale: const Locale('ar'),
+      // startLocale: const Locale('ar'),
       saveLocale: true,
       child: FruitHub(appRouter: AppRouter()),
     ),

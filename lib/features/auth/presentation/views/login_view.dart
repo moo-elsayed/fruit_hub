@@ -19,7 +19,9 @@ import 'package:toastification/toastification.dart';
 import '../../../../core/routing/routes.dart';
 import '../../../../core/widgets/app_toasts.dart';
 import '../../../../core/widgets/custom_material_button.dart';
+import '../../domain/use_cases/google_sign_in_use_case.dart';
 import '../args/login_args.dart';
+import '../managers/google_sign_in_cubit/google_sign_in_cubit.dart';
 import '../managers/signin_cubit/sign_in_cubit.dart';
 import '../widgets/social_login_button.dart';
 
@@ -61,9 +63,17 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          SignInCubit(getIt.get<SignInWithEmailAndPasswordUseCase>()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              SignInCubit(getIt.get<SignInWithEmailAndPasswordUseCase>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              GoogleSignInCubit(getIt.get<GoogleSignInUseCase>()),
+        ),
+      ],
       child: Scaffold(
         appBar: CustomAppBar(title: "login".tr()),
         body: GestureDetector(
@@ -99,6 +109,13 @@ class _LoginViewState extends State<LoginView> {
                     Gap(33.h),
                     BlocConsumer<SignInCubit, SignInState>(
                       listener: (context, state) {
+                        if (state is SignInSuccess) {
+                          AppToast.showToast(
+                            context: context,
+                            title: "welcome".tr(),
+                            type: ToastificationType.success,
+                          );
+                        }
                         if (state is SignInFailure) {
                           AppToast.showToast(
                             context: context,
@@ -145,10 +162,32 @@ class _LoginViewState extends State<LoginView> {
                     Gap(33.h),
                     const OrDivider(),
                     Gap(16.h),
-                    SocialLoginButton(
-                      onPressed: () {},
-                      text: "sign_in_with_google".tr(),
-                      socialIcon: SvgPicture.asset(Assets.iconsGoogleIcon),
+                    BlocConsumer<GoogleSignInCubit, GoogleSignInState>(
+                      listener: (context, state) {
+                        if (state is GoogleSuccess) {
+                          AppToast.showToast(
+                            context: context,
+                            title: "welcome".tr(),
+                            type: ToastificationType.success,
+                          );
+                        }
+                        if (state is GoogleFailure) {
+                          AppToast.showToast(
+                            context: context,
+                            title: state.message,
+                            type: ToastificationType.error,
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        return SocialLoginButton(
+                          onPressed: () =>
+                              context.read<GoogleSignInCubit>().googleSignIn(),
+                          isLoading: state is GoogleLoading,
+                          text: "sign_in_with_google".tr(),
+                          socialIcon: SvgPicture.asset(Assets.iconsGoogleIcon),
+                        );
+                      },
                     ),
                     Gap(16.h),
                     SocialLoginButton(

@@ -15,7 +15,7 @@ abstract class AuthRemoteDataSource {
 
   Future<void> sendEmailVerification();
 
-  Future<NetworkResponse> googleSignIn();
+  Future<NetworkResponse<UserEntity>> googleSignIn();
 
   Future<NetworkResponse> forgetPassword(String email);
 

@@ -11,5 +11,5 @@ class SignInWithEmailAndPasswordUseCase {
     required String email,
     required String password,
   }) async =>
-      _authRepo.signInWithEmailAndPassword(email: email, password: password);
+     await _authRepo.signInWithEmailAndPassword(email: email, password: password);
 }
