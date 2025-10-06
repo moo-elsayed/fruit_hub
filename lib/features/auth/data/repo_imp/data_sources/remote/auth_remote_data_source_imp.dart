@@ -73,10 +73,8 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   }
 
   @override
-  Future<NetworkResponse> forgetPassword(String email) {
-    // TODO: implement forgetPassword
-    throw UnimplementedError();
-  }
+  Future<void> forgetPassword(String email) async =>
+      await _authFirebase.forgetPassword(email);
 
   @override
   Future<NetworkResponse<UserEntity>> facebookSignIn() async {

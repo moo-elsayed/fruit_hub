@@ -145,14 +145,7 @@ class AuthFirebase {
         functionName: 'AuthFirebase.googleSignIn',
         error: e.toString(),
       );
-      switch (e.code) {
-        case 'user-disabled':
-          return NetworkFailure(Exception("user_disabled"));
-        default:
-          return NetworkFailure(
-            Exception("error_occurred_please_try_again".tr()),
-          );
-      }
+      return NetworkFailure(Exception("error_occurred_please_try_again".tr()));
     } on PlatformException catch (e) {
       errorLogger(
         functionName: 'AuthFirebase.googleSignIn',
@@ -204,8 +197,6 @@ class AuthFirebase {
             case NetworkFailure<UserCredential>():
               return NetworkFailure(googleCred.exception);
           }
-        case 'user-disabled':
-          return NetworkFailure(Exception("user_disabled"));
         default:
           return NetworkFailure(
             Exception("error_occurred_please_try_again".tr()),
@@ -213,4 +204,7 @@ class AuthFirebase {
       }
     }
   }
+
+  Future<void> forgetPassword(String email) async =>
+      await _auth.sendPasswordResetEmail(email: email);
 }

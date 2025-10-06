@@ -40,10 +40,8 @@ class AuthRepoImp implements AuthRepo {
       await _authRemoteDataSource.googleSignIn();
 
   @override
-  Future<NetworkResponse> forgetPassword(String email) {
-    // TODO: implement forgetPassword
-    throw UnimplementedError();
-  }
+  Future<void> forgetPassword(String email) async =>
+      await _authRemoteDataSource.forgetPassword(email);
 
   @override
   Future<NetworkResponse<UserEntity>> facebookSignIn() async =>

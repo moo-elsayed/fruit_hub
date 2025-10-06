@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,6 +48,19 @@ class _LoginViewState extends State<LoginView> {
     setState(() {});
   }
 
+  Future<void> _navigate({
+    required BuildContext context,
+    required String routeName,
+  }) async {
+    final result = await context.pushNamed(routeName);
+    if (result != null && result is LoginArgs) {
+      _emailController.text = result.email;
+      _passwordController.text = result.password;
+    } else {
+      _clearForm();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -83,162 +97,160 @@ class _LoginViewState extends State<LoginView> {
           onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
           behavior: HitTestBehavior.opaque,
           child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Gap(24.h),
-                    TextFormFieldHelper(
-                      controller: _emailController,
-                      hint: "email".tr(),
-                      keyboardType: TextInputType.emailAddress,
-                      onValidate: Validator.validateEmail,
-                      action: TextInputAction.next,
+            padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Gap(24.h),
+                  TextFormFieldHelper(
+                    controller: _emailController,
+                    hint: "email".tr(),
+                    keyboardType: TextInputType.emailAddress,
+                    onValidate: Validator.validateEmail,
+                    action: TextInputAction.next,
+                  ),
+                  Gap(16.h),
+                  TextFormFieldHelper(
+                    controller: _passwordController,
+                    hint: "password".tr(),
+                    isPassword: true,
+                    obscuringCharacter: '●',
+                    keyboardType: TextInputType.visiblePassword,
+                    onValidate: Validator.validatePassword,
+                    action: TextInputAction.done,
+                  ),
+                  Gap(16.h),
+                  ForgetPassword(
+                    onTap: () async => await _navigate(
+                      context: context,
+                      routeName: Routes.forgetPasswordView,
                     ),
-                    Gap(16.h),
-                    TextFormFieldHelper(
-                      controller: _passwordController,
-                      hint: "password".tr(),
-                      isPassword: true,
-                      obscuringCharacter: '●',
-                      keyboardType: TextInputType.visiblePassword,
-                      onValidate: Validator.validatePassword,
-                      action: TextInputAction.done,
-                    ),
-                    Gap(16.h),
-                    ForgetPassword(onTap: () {}),
-                    Gap(33.h),
-                    BlocConsumer<SignInCubit, SignInState>(
-                      listener: (context, state) {
-                        if (state is SignInSuccess) {
-                          AppToast.showToast(
-                            context: context,
-                            title: "welcome".tr(),
-                            type: ToastificationType.success,
-                          );
-                        }
-                        if (state is SignInFailure) {
-                          AppToast.showToast(
-                            context: context,
-                            title: state.message,
-                            type: ToastificationType.error,
-                          );
-                        }
-                      },
-                      builder: (context, state) {
-                        return CustomMaterialButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              context
-                                  .read<SignInCubit>()
-                                  .signInWithEmailAndPassword(
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
-                                  );
-                            }
-                          },
-                          maxWidth: true,
-                          text: "login".tr(),
-                          textStyle: AppTextStyles.font16WhiteBold,
-                          isLoading: state is SignInLoading,
+                  ),
+                  Gap(33.h),
+                  BlocConsumer<SignInCubit, SignInState>(
+                    listener: (context, state) {
+                      if (state is SignInSuccess) {
+                        AppToast.showToast(
+                          context: context,
+                          title: "welcome".tr(),
+                          type: ToastificationType.success,
                         );
-                      },
-                    ),
-                    Gap(33.h),
-                    AuthRedirectText(
-                      question: "don't_have_account".tr(),
-                      action: "create_an_account".tr(),
-                      onTap: () async {
-                        final result = await context.pushNamed(
-                          Routes.registerView,
+                      }
+                      if (state is SignInFailure) {
+                        AppToast.showToast(
+                          context: context,
+                          title: state.message,
+                          type: ToastificationType.error,
                         );
-                        if (result != null && result is LoginArgs) {
-                          _emailController.text = result.email;
-                          _passwordController.text = result.password;
-                        } else {
-                          _clearForm();
-                        }
-                      },
+                      }
+                    },
+                    builder: (context, state) {
+                      return CustomMaterialButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            context
+                                .read<SignInCubit>()
+                                .signInWithEmailAndPassword(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                );
+                          }
+                        },
+                        maxWidth: true,
+                        text: "login".tr(),
+                        textStyle: AppTextStyles.font16WhiteBold,
+                        isLoading: state is SignInLoading,
+                      );
+                    },
+                  ),
+                  Gap(33.h),
+                  AuthRedirectText(
+                    question: "don't_have_account".tr(),
+                    action: "create_an_account".tr(),
+                    onTap: () async => await _navigate(
+                      context: context,
+                      routeName: Routes.registerView,
                     ),
-                    Gap(33.h),
-                    const OrDivider(),
-                    Gap(16.h),
-                    BlocConsumer<SocialSignInCubit, SocialSignInState>(
-                      listener: (context, state) {
-                        if (state is GoogleSuccess) {
-                          AppToast.showToast(
-                            context: context,
-                            title: "welcome".tr(),
-                            type: ToastificationType.success,
-                          );
-                        }
-                        if (state is GoogleFailure) {
-                          AppToast.showToast(
-                            context: context,
-                            title: state.message,
-                            type: ToastificationType.error,
-                          );
-                        }
-                      },
-                      buildWhen: (previous, current) =>
-                          current is GoogleSuccess ||
-                          current is GoogleFailure ||
-                          current is GoogleLoading,
-                      builder: (context, state) {
-                        return SocialLoginButton(
-                          onPressed: () =>
-                              context.read<SocialSignInCubit>().googleSignIn(),
-                          isLoading: state is GoogleLoading,
-                          text: "sign_in_with_google".tr(),
-                          socialIcon: SvgPicture.asset(Assets.iconsGoogleIcon),
+                  ),
+                  Gap(33.h),
+                  const OrDivider(),
+                  Gap(16.h),
+                  BlocConsumer<SocialSignInCubit, SocialSignInState>(
+                    listener: (context, state) {
+                      if (state is GoogleSuccess) {
+                        AppToast.showToast(
+                          context: context,
+                          title: "welcome".tr(),
+                          type: ToastificationType.success,
                         );
-                      },
-                    ),
-                    Gap(16.h),
-                    SocialLoginButton(
-                      onPressed: () {},
-                      text: "sign_in_with_apple".tr(),
-                      socialIcon: SvgPicture.asset(Assets.iconsAppleIcon),
-                    ),
-                    Gap(16.h),
-                    BlocConsumer<SocialSignInCubit, SocialSignInState>(
-                      listener: (context, state) {
-                        if (state is FacebookSuccess) {
-                          AppToast.showToast(
-                            context: context,
-                            title: "welcome",
-                            type: ToastificationType.success,
-                          );
-                        }
-                        if (state is FacebookFailure) {
-                          AppToast.showToast(
-                            context: context,
-                            title: state.message,
-                            type: ToastificationType.error,
-                          );
-                        }
-                      },
-                      buildWhen: (previous, current) =>
-                          current is FacebookSuccess ||
-                          current is FacebookFailure ||
-                          current is FacebookLoading,
-                      builder: (context, state) {
-                        return SocialLoginButton(
-                          onPressed: () => context
-                              .read<SocialSignInCubit>()
-                              .facebookSignIn(),
-                          isLoading: state is FacebookLoading,
-                          text: "sign_in_with_facebook".tr(),
-                          socialIcon: SvgPicture.asset(
-                            Assets.iconsFacebookIcon,
-                          ),
+                      }
+                      if (state is GoogleFailure) {
+                        AppToast.showToast(
+                          context: context,
+                          title: state.message,
+                          type: ToastificationType.error,
                         );
-                      },
+                      }
+                    },
+                    buildWhen: (previous, current) =>
+                        current is GoogleSuccess ||
+                        current is GoogleFailure ||
+                        current is GoogleLoading,
+                    builder: (context, state) {
+                      return SocialLoginButton(
+                        onPressed: () =>
+                            context.read<SocialSignInCubit>().googleSignIn(),
+                        isLoading: state is GoogleLoading,
+                        text: "sign_in_with_google".tr(),
+                        socialIcon: SvgPicture.asset(Assets.iconsGoogleIcon),
+                      );
+                    },
+                  ),
+                  Gap(16.h),
+                  if (Platform.isIOS)
+                    Column(
+                      children: [
+                        SocialLoginButton(
+                          onPressed: () {},
+                          text: "sign_in_with_apple".tr(),
+                          socialIcon: SvgPicture.asset(Assets.iconsAppleIcon),
+                        ),
+                        Gap(16.h),
+                      ],
                     ),
-                  ],
-                ),
+                  BlocConsumer<SocialSignInCubit, SocialSignInState>(
+                    listener: (context, state) {
+                      if (state is FacebookSuccess) {
+                        AppToast.showToast(
+                          context: context,
+                          title: "welcome",
+                          type: ToastificationType.success,
+                        );
+                      }
+                      if (state is FacebookFailure) {
+                        AppToast.showToast(
+                          context: context,
+                          title: state.message,
+                          type: ToastificationType.error,
+                        );
+                      }
+                    },
+                    buildWhen: (previous, current) =>
+                        current is FacebookSuccess ||
+                        current is FacebookFailure ||
+                        current is FacebookLoading,
+                    builder: (context, state) {
+                      return SocialLoginButton(
+                        onPressed: () =>
+                            context.read<SocialSignInCubit>().facebookSignIn(),
+                        isLoading: state is FacebookLoading,
+                        text: "sign_in_with_facebook".tr(),
+                        socialIcon: SvgPicture.asset(Assets.iconsFacebookIcon),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),

@@ -41,5 +41,12 @@
   "ok": "OK",
   "welcome": "Welcome",
   "please_verify_your_email": "Please verify your email",
-  "user_canceled_sign_in": "User canceled sign in"
+  "user_canceled_sign_in": "User canceled sign in",
+  "invalid_email": "Invalid email",
+  "send_email_reset_link": "Enter your email and we will send you a link to reset your password",
+  "password_reset": "Password Reset",
+  "send_password_reset_link": "Send Reset Link",
+  "try_again_later": "Try again later",
+  "email_sent": "Email sent successfully",
+  "email_sent_to_reset": "Email sent to reset password"
 }
