@@ -101,7 +101,7 @@ class AuthFirebase {
 
   Future<void> signOut() async => await _auth.signOut();
 
-  Future<NetworkResponse<User>> googleSignIn() async {
+  Future<NetworkResponse<UserCredential>> googleSignIn() async {
     try {
       final GoogleSignIn signIn = GoogleSignIn.instance;
 
@@ -139,7 +139,7 @@ class AuthFirebase {
       );
 
       var userCredential = await _auth.signInWithCredential(credential);
-      return NetworkSuccess(userCredential.user);
+      return NetworkSuccess(userCredential);
     } on FirebaseAuthException catch (e) {
       errorLogger(
         functionName: 'AuthFirebase.googleSignIn',
@@ -170,13 +170,13 @@ class AuthFirebase {
 
   Future<NetworkResponse<User>> facebookSignIn() async {
     try {
-      final LoginResult loginResult = await FacebookAuth.instance.login();
+      final LoginResult loginResult = await FacebookAuth.instance.login(
+        permissions: ['public_profile', 'email'],
+      );
 
       // Create a credential from the access token
       final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(
-            loginResult.accessToken?.tokenString ?? '',
-          );
+          FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
 
       // Once signed in, return the UserCredential
       var signInWithCredential = await FirebaseAuth.instance
@@ -189,6 +189,21 @@ class AuthFirebase {
         error: e.toString(),
       );
       switch (e.code) {
+        case 'account-exists-with-different-credential':
+          final pendingCred = e.credential;
+
+          var googleCred = await googleSignIn();
+
+          switch (googleCred) {
+            case NetworkSuccess<UserCredential>():
+              final userCred = await FirebaseAuth.instance.signInWithCredential(
+                googleCred.data!.credential!,
+              );
+              await userCred.user?.linkWithCredential(pendingCred!);
+              return NetworkSuccess(userCred.user);
+            case NetworkFailure<UserCredential>():
+              return NetworkFailure(googleCred.exception);
+          }
         case 'user-disabled':
           return NetworkFailure(Exception("user_disabled"));
         default:

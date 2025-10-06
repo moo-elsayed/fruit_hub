@@ -65,9 +65,9 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
     var result = await _authFirebase.googleSignIn();
 
     switch (result) {
-      case NetworkSuccess<User>():
-        return NetworkSuccess(UserModel.fromFirebaseUser(result.data!));
-      case NetworkFailure<User>():
+      case NetworkSuccess<UserCredential>():
+        return NetworkSuccess(UserModel.fromFirebaseUser(result.data!.user!));
+      case NetworkFailure<UserCredential>():
         return NetworkFailure(result.exception);
     }
   }
