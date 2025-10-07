@@ -5,11 +5,10 @@ class FirestoreService implements DatabaseService {
   final _firestore = FirebaseFirestore.instance;
 
   @override
-  Future<void> addDataToFirestore({
+  Future<void> addData({
     required String path,
     required Map<String, dynamic> data,
-  }) {
-    // TODO: implement addDataToFirestore
-    throw UnimplementedError();
+  }) async {
+    await _firestore.collection(path).add(data);
   }
 }
