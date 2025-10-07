@@ -5,7 +5,9 @@ import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'custom_check_box.dart';
 
 class TermsAndConditions extends StatefulWidget {
-  const TermsAndConditions({super.key});
+  const TermsAndConditions({super.key, required this.onChanged});
+
+  final ValueChanged<bool> onChanged;
 
   @override
   State<TermsAndConditions> createState() => _TermsAndConditionsState();
@@ -18,25 +20,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
       mainAxisAlignment: MainAxisAlignment.center,
       spacing: 16.w,
       children: [
-        // Transform.scale(
-        //   scale: 1.2,
-        //   child: Checkbox(
-        //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        //     visualDensity: VisualDensity.compact,
-        //     value: _agreeToTerms,
-        //     side: const BorderSide(color: AppColors.colorDDDFDF),
-        //     shape: RoundedRectangleBorder(
-        //       borderRadius: BorderRadiusGeometry.circular(4.r),
-        //     ),
-        //     activeColor: AppColors.color1B5E37,
-        //     onChanged: (value) {
-        //       setState(() {
-        //         _agreeToTerms = value!;
-        //       });
-        //     },
-        //   ),
-        // ),
-        CustomCheckBox(onChanged: (value) {}),
+        CustomCheckBox(onChanged: widget.onChanged),
         Expanded(
           child: RichText(
             text: TextSpan(

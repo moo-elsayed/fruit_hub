@@ -1,12 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'app_keys.dart';
 
 abstract class Validator {
   static String? validateEmail(String? val) {
     final RegExp emailRegex = RegExp(AppKeys.emailRegex);
     if (val == null || val.trim().isEmpty) {
-      return 'Email cannot be empty';
+      return "email_cannot_be_empty".tr();
     } else if (!emailRegex.hasMatch(val)) {
-      return 'Enter a valid email address';
+      return "enter_a_valid_email_address".tr();
     } else {
       return null;
     }
@@ -14,19 +15,19 @@ abstract class Validator {
 
   static String? validatePassword(String? val) {
     if (val == null || val.isEmpty) {
-      return 'Password cannot be empty';
+      return "password_cannot_be_empty".tr();
     }
 
     if (!RegExp(r'^[A-Za-z\d]+$').hasMatch(val)) {
-      return 'Password must contain only letters and numbers';
+      return "password_must_contain_only_letters_and_numbers".tr();
     }
 
     if (val.length < 6) {
-      return 'Password must be at least 6 characters long';
+      return "password_must_be_at_least_6_characters_long".tr();
     }
 
     if (!RegExp(r'\d').hasMatch(val)) {
-      return 'Password must contain at least one number';
+      return "password_must_contain_at_least_one_number".tr();
     }
 
     return null;
@@ -44,7 +45,7 @@ abstract class Validator {
 
   static String? validateName(String? val) {
     if (val == null || val.isEmpty) {
-      return 'Name cannot be empty';
+      return "name_cannot_be_empty".tr();
     } else {
       return null;
     }
