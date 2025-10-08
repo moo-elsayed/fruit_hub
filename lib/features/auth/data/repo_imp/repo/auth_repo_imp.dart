@@ -40,7 +40,7 @@ class AuthRepoImp implements AuthRepo {
       await _authRemoteDataSource.googleSignIn();
 
   @override
-  Future<void> forgetPassword(String email) async =>
+  Future<NetworkResponse> forgetPassword(String email) async =>
       await _authRemoteDataSource.forgetPassword(email);
 
   @override

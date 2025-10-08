@@ -20,7 +20,7 @@ abstract class AuthRepo {
 
   Future<NetworkResponse<UserEntity>> facebookSignIn();
 
-  Future<void> forgetPassword(String email);
+  Future<NetworkResponse> forgetPassword(String email);
 
   Future<void> signOut();
 }

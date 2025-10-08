@@ -100,6 +100,13 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                           ),
                         );
                       }
+                      if (state is ForgetPasswordFailure) {
+                        AppToast.showToast(
+                          context: context,
+                          title: state.errorMessage,
+                          type: ToastificationType.error,
+                        );
+                      }
                     },
                     builder: (context, state) {
                       return CustomMaterialButton(
