@@ -1,15 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
+import 'package:fruit_hub/core/services/database_service.dart';
 import 'package:fruit_hub/features/auth/data/firebase/auth_firebase.dart';
 import 'package:fruit_hub/features/auth/data/models/user_model.dart';
 import 'package:fruit_hub/features/auth/domain/repo_contract/data_sources/remote/auth_remote_data_source.dart';
+import '../../../../../../core/helpers/backend_endpoints.dart';
 import '../../../../domain/entities/user_entity.dart';
 
 class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
-  AuthRemoteDataSourceImp(this._authFirebase);
+  AuthRemoteDataSourceImp(this._authFirebase, this._databaseService);
 
   final AuthFirebase _authFirebase;
+  final DatabaseService _databaseService;
 
   @override
   Future<NetworkResponse<UserEntity>> signInWithEmailAndPassword({
@@ -46,8 +49,11 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
 
     switch (result) {
       case NetworkSuccess<User>():
+        UserModel user = UserModel.fromFirebaseUser(result.data!);
+        user.name = username;
         await sendEmailVerification();
-        return NetworkSuccess(UserModel.fromFirebaseUser(result.data!));
+        await _addUserData(user);
+        return NetworkSuccess(user);
       case NetworkFailure<User>():
         return NetworkFailure(result.exception);
     }
@@ -87,4 +93,10 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
         return NetworkFailure(result.exception);
     }
   }
+
+  Future _addUserData(UserModel user) async => await _databaseService.addData(
+    docId: user.uid,
+    path: BackendEndpoints.addUserData,
+    data: user.toJson(),
+  );
 }

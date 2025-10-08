@@ -1,3 +1,5 @@
+import 'package:fruit_hub/core/services/database_service.dart';
+import 'package:fruit_hub/core/services/firestore_service.dart';
 import 'package:fruit_hub/features/auth/data/firebase/auth_firebase.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/data_sources/remote/auth_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/repo/auth_repo_imp.dart';
@@ -12,8 +14,15 @@ final getIt = GetIt.instance;
 
 void setupServiceLocator() {
   /// auth
+  getIt.registerSingleton<DatabaseService>(FirestoreService());
+
   getIt.registerSingleton<AuthRepoImp>(
-    AuthRepoImp(AuthRemoteDataSourceImp(AuthFirebase.instance)),
+    AuthRepoImp(
+      AuthRemoteDataSourceImp(
+        AuthFirebase.instance,
+        getIt.get<DatabaseService>(),
+      ),
+    ),
   );
 
   getIt.registerSingleton<SignInWithEmailAndPasswordUseCase>(
