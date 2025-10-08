@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
   }
 
   static final FirebaseOptions android = FirebaseOptions(
-    apiKey: Env.apikeyAndroid,
+    apiKey: Env.apiKeyAndroid,
     appId: '1:915498031769:android:3cbab3046736a3cc77b608',
     messagingSenderId: '915498031769',
     projectId: 'fruit-hub-2a6b2',
@@ -60,7 +60,7 @@ class DefaultFirebaseOptions {
   );
 
   static final FirebaseOptions ios = FirebaseOptions(
-    apiKey: Env.apikeyIos,
+    apiKey: Env.apiKeyIos,
     appId: '1:915498031769:ios:c22191bfea006fec77b608',
     messagingSenderId: '915498031769',
     projectId: 'fruit-hub-2a6b2',

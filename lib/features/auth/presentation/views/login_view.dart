@@ -224,7 +224,7 @@ class _LoginViewState extends State<LoginView> {
                       if (state is FacebookSuccess) {
                         AppToast.showToast(
                           context: context,
-                          title: "welcome",
+                          title: "welcome".tr(),
                           type: ToastificationType.success,
                         );
                       }
