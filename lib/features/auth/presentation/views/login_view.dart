@@ -136,6 +136,7 @@ class _LoginViewState extends State<LoginView> {
                           title: "welcome".tr(),
                           type: ToastificationType.success,
                         );
+                        context.pushReplacementNamed(Routes.homeView);
                       }
                       if (state is SignInFailure) {
                         AppToast.showToast(
@@ -152,8 +153,8 @@ class _LoginViewState extends State<LoginView> {
                             context
                                 .read<SignInCubit>()
                                 .signInWithEmailAndPassword(
-                                  email: _emailController.text,
-                                  password: _passwordController.text,
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim(),
                                 );
                           }
                         },
@@ -184,6 +185,7 @@ class _LoginViewState extends State<LoginView> {
                           title: "welcome".tr(),
                           type: ToastificationType.success,
                         );
+                        context.pushReplacementNamed(Routes.homeView);
                       }
                       if (state is GoogleFailure) {
                         AppToast.showToast(
@@ -227,6 +229,7 @@ class _LoginViewState extends State<LoginView> {
                           title: "welcome".tr(),
                           type: ToastificationType.success,
                         );
+                        context.pushReplacementNamed(Routes.homeView);
                       }
                       if (state is FacebookFailure) {
                         AppToast.showToast(

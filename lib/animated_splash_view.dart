@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,6 +7,7 @@ import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view
 import 'package:fruit_hub/generated/assets.dart';
 import 'core/helpers/shared_preferences_manager.dart';
 import 'features/auth/presentation/views/login_view.dart';
+import 'features/home/presentation/views/home_view.dart';
 
 class AnimatedSplashView extends StatefulWidget {
   const AnimatedSplashView({super.key});
@@ -48,7 +50,12 @@ class _AnimatedSplashViewState extends State<AnimatedSplashView> {
     if (firstTime) {
       return const OnboardingView();
     }
-    return const LoginView();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null && user.emailVerified) {
+      return const HomeView();
+    } else {
+      return const LoginView();
+    }
   }
 
   @override

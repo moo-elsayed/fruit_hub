@@ -10,10 +10,16 @@ class Assets {
   static const String iconsArrowBack = 'assets/svgs/icons/arrow_back.svg';
   static const String iconsCheck = 'assets/svgs/icons/Check.svg';
   static const String iconsFacebookIcon = 'assets/svgs/icons/facebook_icon.svg';
+  static const String iconsFilter = 'assets/svgs/icons/filter.svg';
   static const String iconsGoogleIcon = 'assets/svgs/icons/google_icon.svg';
+  static const String iconsNotification = 'assets/svgs/icons/notification.svg';
+  static const String iconsSearchIcon = 'assets/svgs/icons/search_icon.svg';
   static const String imagesAppLogo = 'assets/images/app-logo.png';
+  static const String imagesProfileImage = 'assets/images/profile_image.png';
   static const String imagesSplashAndroid12 = 'assets/images/splash_android_12.png';
   static const String imagesSplashIosAndroid11 = 'assets/images/splash_ios_android_11.png';
+  static const String imagesWatermelonTest = 'assets/images/watermelon_test.png';
+  static const String svgsFeaturedItemBackground = 'assets/svgs/featured_item_background.svg';
   static const String svgsPageViewItem1BackgroundImage = 'assets/svgs/page_view_item1_background_image.svg';
   static const String svgsPageViewItem1Image = 'assets/svgs/page_view_item1_image.svg';
   static const String svgsPageViewItem2BackgroundImage = 'assets/svgs/page_view_item2_background_image.svg';

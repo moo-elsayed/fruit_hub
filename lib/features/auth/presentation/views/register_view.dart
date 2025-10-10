@@ -148,9 +148,9 @@ class _RegisterViewState extends State<RegisterView> {
                               context
                                   .read<SignupCubit>()
                                   .createUserWithEmailAndPassword(
-                                    username: _nameController.text,
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
+                                    username: _nameController.text.trim(),
+                                    email: _emailController.text.trim(),
+                                    password: _passwordController.text.trim(),
                                   );
                             }
                           }
