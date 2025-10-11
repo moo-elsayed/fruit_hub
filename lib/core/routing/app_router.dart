@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/animated_splash_view.dart';
-import 'package:fruit_hub/features/home/presentation/views/home_view.dart';
+import 'package:fruit_hub/features/home/presentation/views/home.dart';
 import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view.dart';
 import '../../features/auth/presentation/args/login_args.dart';
 import '../../features/auth/presentation/views/forget_password_view.dart';
@@ -31,8 +31,8 @@ class AppRouter {
         return CupertinoPageRoute(
           builder: (context) => const ForgetPasswordView(),
         );
-      case Routes.homeView:
-        return CupertinoPageRoute(builder: (context) => const HomeView());
+      case Routes.appSection:
+        return CupertinoPageRoute(builder: (context) => const Home());
       default:
         return null;
     }

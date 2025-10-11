@@ -17,9 +17,6 @@ class CustomSliderItem extends StatelessWidget {
     return Container(
       margin: EdgeInsetsGeometry.symmetric(horizontal: 4.w),
       width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadiusGeometry.circular(4.r),
-      ),
       child: Stack(
         alignment: AlignmentDirectional.centerStart,
         children: [
@@ -33,7 +30,7 @@ class CustomSliderItem extends StatelessWidget {
           Transform.rotate(
             angle: isArabic(context) ? 0 : pi,
             child: ClipRRect(
-              borderRadius: BorderRadiusGeometry.all(Radius.circular(4.r)),
+              borderRadius: _buildBorderRadiusGeometry(context),
               child: SvgPicture.asset(Assets.svgsFeaturedItemBackground),
             ),
           ),
@@ -70,6 +67,16 @@ class CustomSliderItem extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  BorderRadiusGeometry _buildBorderRadiusGeometry(BuildContext context) {
+    var arabic = isArabic(context);
+    return BorderRadiusGeometry.directional(
+      topStart: Radius.circular(arabic ? 4.r : 0),
+      topEnd: Radius.circular(arabic ? 0.r : 4.r),
+      bottomStart: Radius.circular(arabic ? 4.r : 0),
+      bottomEnd: Radius.circular(arabic ? 0 : 4.r),
     );
   }
 }

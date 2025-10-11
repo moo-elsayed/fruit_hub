@@ -12,8 +12,17 @@ class Assets {
   static const String iconsFacebookIcon = 'assets/svgs/icons/facebook_icon.svg';
   static const String iconsFilter = 'assets/svgs/icons/filter.svg';
   static const String iconsGoogleIcon = 'assets/svgs/icons/google_icon.svg';
+  static const String iconsHomeFilled = 'assets/svgs/icons/home-filled.svg';
+  static const String iconsHomeOutline = 'assets/svgs/icons/home-outline.svg';
   static const String iconsNotification = 'assets/svgs/icons/notification.svg';
+  static const String iconsPlus = 'assets/svgs/icons/plus.svg';
+  static const String iconsProductsFilled = 'assets/svgs/icons/products-filled.svg';
+  static const String iconsProductsOutline = 'assets/svgs/icons/products-outline.svg';
+  static const String iconsProfileFilled = 'assets/svgs/icons/profile-filled.svg';
+  static const String iconsProfileOutline = 'assets/svgs/icons/profile-outline.svg';
   static const String iconsSearchIcon = 'assets/svgs/icons/search_icon.svg';
+  static const String iconsShoppingCartFilled = 'assets/svgs/icons/shopping-cart-filled.svg';
+  static const String iconsShoppingCartOutline = 'assets/svgs/icons/shopping-cart-outline.svg';
   static const String imagesAppLogo = 'assets/images/app-logo.png';
   static const String imagesProfileImage = 'assets/images/profile_image.png';
   static const String imagesSplashAndroid12 = 'assets/images/splash_android_12.png';
