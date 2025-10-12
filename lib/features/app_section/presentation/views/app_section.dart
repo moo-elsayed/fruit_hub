@@ -17,13 +17,10 @@ class AppSection extends StatefulWidget {
 
 class _AppSectionState extends State<AppSection> {
   late PersistentTabController _controller;
-  late ScrollController _homeScrollController;
-  late ScrollController _bestSellerScrollController;
+  late List<ScrollController> _scrollControllers;
   final items = bottomNavigationBarItems;
   late final List<Widget> _pages = [
-    Home(
-      scrollControllers: [_homeScrollController, _bestSellerScrollController],
-    ),
+    Home(scrollControllers: [_scrollControllers[0], _scrollControllers[1]]),
     const Products(),
     const Cart(),
     const Profile(),
@@ -32,8 +29,7 @@ class _AppSectionState extends State<AppSection> {
   @override
   void initState() {
     super.initState();
-    _homeScrollController = ScrollController();
-    _bestSellerScrollController = ScrollController();
+    _scrollControllers = List.generate(2, (index) => ScrollController());
     _controller = PersistentTabController(initialIndex: 0);
     _controller.addListener(() {
       setState(() {});
@@ -43,8 +39,9 @@ class _AppSectionState extends State<AppSection> {
   @override
   void dispose() {
     _controller.dispose();
-    _homeScrollController.dispose();
-    _bestSellerScrollController.dispose();
+    for (var controller in _scrollControllers) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -63,13 +60,10 @@ class _AppSectionState extends State<AppSection> {
       navBarHeight: 70.h,
       hideOnScrollSettings: HideOnScrollSettings(
         hideNavBarOnScroll: true,
-        scrollControllers: [_homeScrollController, _bestSellerScrollController],
+        scrollControllers: _scrollControllers,
       ),
       animationSettings: const NavBarAnimationSettings(
-        onNavBarHideAnimation: OnHideAnimationSettings(
-          curve: Curves.easeInOut,
-          duration: Duration(milliseconds: 300),
-        ),
+        onNavBarHideAnimation: OnHideAnimationSettings(curve: Curves.easeInOut),
       ),
     );
   }
