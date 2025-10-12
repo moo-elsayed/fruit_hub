@@ -26,15 +26,13 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsetsGeometry.symmetric(horizontal: 27.w, vertical: 20.h),
-      decoration: const ShapeDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
         ),
-        shadows: [
+        boxShadow: [
           BoxShadow(
             color: AppColors.bottomNavigationBarShadowColor,
             blurRadius: 7,

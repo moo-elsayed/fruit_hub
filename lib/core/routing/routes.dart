@@ -5,4 +5,5 @@ class Routes {
   static const registerView = '/registerView';
   static const forgetPasswordView = '/forgetPasswordView';
   static const appSection = '/appSection';
+  static const bestSellerView = '/bestSellerView';
 }

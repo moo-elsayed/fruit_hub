@@ -16,7 +16,7 @@ class CustomSliderView extends StatelessWidget {
         initialPage: 0,
         enableInfiniteScroll: true,
         reverse: false,
-        // autoPlay: true,
+        autoPlay: true,
         autoPlayInterval: const Duration(seconds: 3),
         autoPlayAnimationDuration: const Duration(milliseconds: 800),
         autoPlayCurve: Curves.fastOutSlowIn,

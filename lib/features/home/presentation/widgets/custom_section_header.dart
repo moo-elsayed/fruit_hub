@@ -4,9 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/theming/app_text_styles.dart';
 
 class CustomSectionHeader extends StatelessWidget {
-  const CustomSectionHeader({super.key, required this.sectionName});
+  const CustomSectionHeader({
+    super.key,
+    required this.sectionName,
+    required this.onTap,
+  });
 
   final String sectionName;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,13 @@ class CustomSectionHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(sectionName, style: AppTextStyles.font16color0C0D0DBold),
-          Text("more".tr(), style: AppTextStyles.font13color949D9ERegular),
+          GestureDetector(
+            onTap: onTap,
+            child: Text(
+              "more".tr(),
+              style: AppTextStyles.font13color949D9ERegular,
+            ),
+          ),
         ],
       ),
     );

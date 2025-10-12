@@ -12,7 +12,7 @@ import 'package:fruit_hub/core/widgets/text_form_field_helper.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/social_sign_in_cubit/social_sign_in_cubit.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/auth_redirect_text.dart';
-import 'package:fruit_hub/features/auth/presentation/widgets/custom_app_bar.dart';
+import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/forget_password.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/or_divider.dart';
 import 'package:fruit_hub/generated/assets.dart';

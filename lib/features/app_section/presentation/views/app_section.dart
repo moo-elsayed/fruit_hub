@@ -17,12 +17,23 @@ class AppSection extends StatefulWidget {
 
 class _AppSectionState extends State<AppSection> {
   late PersistentTabController _controller;
+  late ScrollController _homeScrollController;
+  late ScrollController _bestSellerScrollController;
   final items = bottomNavigationBarItems;
-  final List<Widget> _pages = const [Home(), Products(), Cart(), Profile()];
+  late final List<Widget> _pages = [
+    Home(
+      scrollControllers: [_homeScrollController, _bestSellerScrollController],
+    ),
+    const Products(),
+    const Cart(),
+    const Profile(),
+  ];
 
   @override
   void initState() {
     super.initState();
+    _homeScrollController = ScrollController();
+    _bestSellerScrollController = ScrollController();
     _controller = PersistentTabController(initialIndex: 0);
     _controller.addListener(() {
       setState(() {});
@@ -32,6 +43,8 @@ class _AppSectionState extends State<AppSection> {
   @override
   void dispose() {
     _controller.dispose();
+    _homeScrollController.dispose();
+    _bestSellerScrollController.dispose();
     super.dispose();
   }
 
@@ -44,27 +57,38 @@ class _AppSectionState extends State<AppSection> {
       itemCount: _pages.length,
       customWidget: _buildCustomNavBar(),
       confineToSafeArea: true,
-      backgroundColor: Colors.white,
       handleAndroidBackButtonPress: true,
       stateManagement: true,
       hideNavigationBarWhenKeyboardAppears: true,
       navBarHeight: 70.h,
+      hideOnScrollSettings: HideOnScrollSettings(
+        hideNavBarOnScroll: true,
+        scrollControllers: [_homeScrollController, _bestSellerScrollController],
+      ),
+      animationSettings: const NavBarAnimationSettings(
+        onNavBarHideAnimation: OnHideAnimationSettings(
+          curve: Curves.easeInOut,
+          duration: Duration(milliseconds: 300),
+        ),
+      ),
     );
   }
 
   List<CustomNavBarScreen> _buildScreens() => List.generate(
     _pages.length,
-    (index) => CustomNavBarScreen(screen: _pages[index]),
+    (index) => CustomNavBarScreen(
+      screen: SafeArea(
+        child: ColoredBox(color: Colors.white, child: _pages[index]),
+      ),
+    ),
   );
 
   Widget _buildCustomNavBar() => Material(
-    child: SafeArea(
-      top: false,
-      child: CustomBottomNavigationBar(
-        onItemTapped: (index) {
-          _controller.jumpToTab(index);
-        },
-      ),
+    color: Colors.transparent,
+    child: CustomBottomNavigationBar(
+      onItemTapped: (index) {
+        _controller.jumpToTab(index);
+      },
     ),
   );
 }
