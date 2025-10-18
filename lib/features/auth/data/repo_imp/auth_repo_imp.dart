@@ -1,7 +1,7 @@
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
-import '../../../domain/repo_contract/data_sources/remote/auth_remote_data_source.dart';
-import '../../../domain/repo_contract/repo/auth_repo.dart';
+import '../../domain/repo/auth_repo.dart';
+import '../data_sources/remote/auth_remote_data_source.dart';
 
 class AuthRepoImp implements AuthRepo {
   AuthRepoImp(this._authRemoteDataSource);

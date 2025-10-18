@@ -1,5 +1,5 @@
-import 'package:fruit_hub/features/auth/domain/repo_contract/repo/auth_repo.dart';
 import '../../../../core/helpers/network_response.dart';
+import '../repo/auth_repo.dart';
 
 class ForgetPasswordUseCase {
   ForgetPasswordUseCase(this._authRepo);

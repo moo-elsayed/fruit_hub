@@ -5,9 +5,9 @@ import '../../../../../../core/helpers/functions.dart';
 import '../../../../../../core/helpers/network_response.dart';
 import '../../../../../../core/services/authentication/auth_service.dart';
 import '../../../../../../core/services/database/database_service.dart';
-import '../../../../domain/entities/user_entity.dart';
-import '../../../../domain/repo_contract/data_sources/remote/auth_remote_data_source.dart';
-import '../../../models/user_model.dart';
+import '../../../domain/entities/user_entity.dart';
+import 'auth_remote_data_source.dart';
+import '../../models/user_model.dart';
 
 class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   final AuthService _authService;
@@ -32,7 +32,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
 
       await _authService.sendEmailVerification();
 
-      return NetworkSuccess(userModel);
+      return NetworkSuccess(userModel.toUserEntity());
     } on FirebaseAuthException catch (e) {
       if (e.code != "email-already-in-use") {
         await _authService.deleteCurrentUser();
@@ -143,7 +143,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
     } else {
       await _addUserData(userModel);
     }
-    return userModel;
+    return userModel.toUserEntity();
   }
 
   Future<void> _addUserData(UserModel user) async =>

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/features/app_section/domain/entities/bottom_navigation_bar_entity.dart';
 import 'package:fruit_hub/features/app_section/presentation/widgets/custom_bottom_navigation_bar.dart';
 import 'package:fruit_hub/features/products/presentation/views/products.dart';
@@ -57,7 +56,7 @@ class _AppSectionState extends State<AppSection> {
       handleAndroidBackButtonPress: true,
       stateManagement: true,
       hideNavigationBarWhenKeyboardAppears: true,
-      navBarHeight: 56.h,
+      // navBarHeight: 56.h,
       hideOnScrollSettings: HideOnScrollSettings(
         hideNavBarOnScroll: true,
         scrollControllers: _scrollControllers,

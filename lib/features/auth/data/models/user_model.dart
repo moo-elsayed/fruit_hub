@@ -1,13 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
 
-class UserModel extends UserEntity {
-  UserModel({super.name, super.email, super.isVerified, super.uid});
+class UserModel {
+  UserModel({
+    required this.uid,
+    required this.name,
+    required this.email,
+    required this.isVerified,
+  });
+
+  final String uid;
+  String name;
+  final String email;
+  final bool isVerified;
 
   factory UserModel.fromFirebaseUser(User user) => UserModel(
     uid: user.uid,
-    name: user.displayName,
-    email: user.email,
+    name: user.displayName ?? '',
+    email: user.email ?? '',
     isVerified: user.emailVerified,
   );
 
@@ -20,15 +30,18 @@ class UserModel extends UserEntity {
 
   factory UserModel.fromUserEntity(UserEntity user) => UserModel(
     uid: user.uid,
-    name: user.name,
-    email: user.email,
+    name: user.name ?? '',
+    email: user.email ?? '',
     isVerified: user.isVerified,
   );
 
   Map<String, dynamic> toJson() => {
     'uid': uid,
-    'name': ?name,
-    'email': ?email,
+    'name': name,
+    'email': email,
     'isVerified': isVerified,
   };
+
+  UserEntity toUserEntity() =>
+      UserEntity(uid: uid, name: name, email: email, isVerified: isVerified);
 }
