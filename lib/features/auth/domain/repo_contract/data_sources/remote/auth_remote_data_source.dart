@@ -13,8 +13,6 @@ abstract class AuthRemoteDataSource {
     required String username,
   });
 
-  Future<void> sendEmailVerification();
-
   Future<NetworkResponse<UserEntity>> googleSignIn();
 
   Future<NetworkResponse<UserEntity>> facebookSignIn();

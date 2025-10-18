@@ -27,7 +27,7 @@ class _AnimatedSplashViewState extends State<AnimatedSplashView> {
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
           pageBuilder: (_, __, ___) =>
-              _getView(firstTime: getFirstTime(), loggedIn: isLoggedIn()),
+              _getView(firstTime: getFirstTime(), loggedIn: false),
           transitionsBuilder: (_, animation, __, child) {
             return FadeTransition(
               opacity: CurvedAnimation(

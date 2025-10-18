@@ -1,25 +1,35 @@
-import 'package:fruit_hub/core/services/database_service.dart';
-import 'package:fruit_hub/core/services/firestore_service.dart';
-import 'package:fruit_hub/features/auth/data/firebase/auth_firebase.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/data_sources/remote/auth_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/repo/auth_repo_imp.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../features/auth/domain/use_cases/facebook_sign_in_use_case.dart';
 import '../../features/auth/domain/use_cases/forget_password_use_case.dart';
 import '../../features/auth/domain/use_cases/google_sign_in_use_case.dart';
+import '../services/authentication/auth_service.dart';
+import '../services/authentication/firebase_auth_service.dart';
+import '../services/database/database_service.dart';
+import '../services/database/firestore_service.dart';
 
 final getIt = GetIt.instance;
 
 void setupServiceLocator() {
   /// auth
-  getIt.registerSingleton<DatabaseService>(FirestoreService());
+  getIt.registerSingleton<AuthService>(
+    FirebaseAuthService(FirebaseAuth.instance, GoogleSignIn.instance),
+  );
+
+  getIt.registerSingleton<DatabaseService>(
+    FirestoreService(FirebaseFirestore.instance),
+  );
 
   getIt.registerSingleton<AuthRepoImp>(
     AuthRepoImp(
       AuthRemoteDataSourceImp(
-        AuthFirebase.instance,
+        getIt.get<AuthService>(),
         getIt.get<DatabaseService>(),
       ),
     ),

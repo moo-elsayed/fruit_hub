@@ -57,7 +57,7 @@ class _AppSectionState extends State<AppSection> {
       handleAndroidBackButtonPress: true,
       stateManagement: true,
       hideNavigationBarWhenKeyboardAppears: true,
-      navBarHeight: 70.h,
+      navBarHeight: 56.h,
       hideOnScrollSettings: HideOnScrollSettings(
         hideNavBarOnScroll: true,
         scrollControllers: _scrollControllers,
