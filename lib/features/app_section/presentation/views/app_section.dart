@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fruit_hub/core/helpers/dependency_injection.dart';
 import 'package:fruit_hub/features/app_section/domain/entities/bottom_navigation_bar_entity.dart';
 import 'package:fruit_hub/features/app_section/presentation/widgets/custom_bottom_navigation_bar.dart';
+import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
+import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/views/products.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import '../../../cart/presentation/views/cart.dart';
@@ -19,7 +23,12 @@ class _AppSectionState extends State<AppSection> {
   late List<ScrollController> _scrollControllers;
   final items = bottomNavigationBarItems;
   late final List<Widget> _pages = [
-    Home(scrollControllers: [_scrollControllers[0], _scrollControllers[1]]),
+    BlocProvider(
+      create: (context) => HomeCubit(getIt.get<GetBestSellerProductsUseCase>()),
+      child: Home(
+        scrollControllers: [_scrollControllers[0], _scrollControllers[1]],
+      ),
+    ),
     const Products(),
     const Cart(),
     const Profile(),
@@ -56,7 +65,6 @@ class _AppSectionState extends State<AppSection> {
       handleAndroidBackButtonPress: true,
       stateManagement: true,
       hideNavigationBarWhenKeyboardAppears: true,
-      // navBarHeight: 56.h,
       hideOnScrollSettings: HideOnScrollSettings(
         hideNavBarOnScroll: true,
         scrollControllers: _scrollControllers,

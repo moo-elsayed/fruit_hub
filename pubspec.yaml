@@ -54,6 +54,8 @@ dependencies:
   cloud_firestore: ^6.0.2
   carousel_slider: ^5.1.1
   persistent_bottom_nav_bar: ^6.2.1
+  skeletonizer: ^2.1.0+1
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
