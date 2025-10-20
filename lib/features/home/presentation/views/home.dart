@@ -1,10 +1,10 @@
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/theming/app_colors.dart';
 import 'package:fruit_hub/core/widgets/fruits_grid_view.dart';
 import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cubit.dart';
 import 'package:fruit_hub/features/home/presentation/views/best_seller_view.dart';
@@ -38,50 +38,75 @@ class _HomeState extends State<Home> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       behavior: HitTestBehavior.opaque,
-      child: Column(
-        children: [
-          const CustomHomeAppBar(),
-          Padding(
-            padding: EdgeInsets.only(right: 16.w, left: 16.w, bottom: 12.h),
-            child: const SearchTextFiled(),
-          ),
-          const CustomSliderView(),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
-            child: CustomSectionHeader(
-              sectionName: "best_seller".tr(),
-              onTap: () =>
-                  PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-                    context,
-                    settings: const RouteSettings(name: Routes.bestSellerView),
-                    screen: BestSellerView(
-                      scrollController: widget.scrollControllers[1],
-                      fruits: fruits,
+      child: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverAppBar(
+            pinned: true,
+            floating: false,
+            snap: false,
+            automaticallyImplyLeading: false,
+            backgroundColor: AppColors.white,
+            surfaceTintColor: AppColors.white,
+            expandedHeight: 120.h + 217.h,
+            flexibleSpace: const FlexibleSpaceBar(
+              background: CustomHomeAppBar(),
+            ),
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(217.h),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: 16.w,
+                      left: 16.w,
+                      bottom: 12.h,
                     ),
-                    withNavBar: true,
-                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                    child: const SearchTextFiled(),
                   ),
+                  const CustomSliderView(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 12.h,
+                      horizontal: 16.w,
+                    ),
+                    child: CustomSectionHeader(
+                      sectionName: "best_seller".tr(),
+                      onTap: () =>
+                          PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                            context,
+                            settings: const RouteSettings(
+                              name: Routes.bestSellerView,
+                            ),
+                            screen: BestSellerView(
+                              scrollController: widget.scrollControllers[1],
+                              fruits: fruits,
+                            ),
+                            withNavBar: true,
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.cupertino,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          BlocBuilder<HomeCubit, HomeState>(
-            builder: (context, state) {
-              if (state is GetBestSellerProductsSuccess) {
-                fruits = state.fruits;
-                log(fruits.length.toString());
-                return Expanded(child: FruitsGridView(fruits: fruits));
-              } else if (state is GetBestSellerProductsLoading) {
-                return const Expanded(
-                  child: Skeletonizer(
-                    enabled: true,
-                    child: FruitsGridView(itemCount: 6),
-                  ),
-                );
-              } else {
-                return const Text("error");
-              }
-            },
-          ),
         ],
+        body: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            if (state is GetBestSellerProductsSuccess) {
+              fruits = state.fruits;
+              return FruitsGridView(fruits: fruits);
+            } else if (state is GetBestSellerProductsLoading) {
+              return const Skeletonizer(
+                enabled: true,
+                child: FruitsGridView(itemCount: 6),
+              );
+            } else {
+              return const Text("error");
+            }
+          },
+        ),
       ),
     );
   }

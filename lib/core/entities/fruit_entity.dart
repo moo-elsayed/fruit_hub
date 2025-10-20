@@ -9,7 +9,7 @@ class FruitEntity {
     this.price = 0,
     this.isFeatured = false,
     this.isOrganic = false,
-    this.monthsUntilExpiration = 0,
+    this.daysUntilExpiration = 0,
     this.numberOfCalories = 0,
     this.unitAmount = 0,
     this.ratingCount = 0,
@@ -24,7 +24,7 @@ class FruitEntity {
   final double price;
   final bool isFeatured;
   final bool isOrganic;
-  final int monthsUntilExpiration;
+  final int daysUntilExpiration;
   final int numberOfCalories;
   final int unitAmount;
   final int ratingCount;

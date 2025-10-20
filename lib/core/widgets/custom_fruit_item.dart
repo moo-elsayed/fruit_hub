@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +7,8 @@ import 'package:fruit_hub/core/theming/app_colors.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_favourite_icon.dart';
 import 'package:fruit_hub/generated/assets.dart';
+import '../helpers/functions.dart';
+import 'custom_network_image.dart';
 
 class CustomFruitItem extends StatelessWidget {
   const CustomFruitItem({super.key, required this.fruitEntity});
@@ -29,10 +30,9 @@ class CustomFruitItem extends StatelessWidget {
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            spacing: 8.h,
             children: [
-              fruitEntity.imagePath == ''
-                  ? Image.asset(Assets.imagesWatermelonTest)
-                  : CachedNetworkImage(imageUrl: fruitEntity.imagePath),
+              CustomNetworkImage(image: fruitEntity.imagePath),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -49,7 +49,8 @@ class CustomFruitItem extends StatelessWidget {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: "${fruitEntity.price}${"pounds".tr()}",
+                              text:
+                                  "${getPrice(fruitEntity.price)} ${"pounds".tr()}",
                               style: AppTextStyles.font13colorF4A91FSemiBold,
                             ),
                             TextSpan(

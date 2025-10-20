@@ -8,7 +8,7 @@ class FruitModel {
     required this.avgRating,
     required this.ratingCount,
     required this.isOrganic,
-    required this.monthsUntilExpiration,
+    required this.daysUntilExpiration,
     required this.unitAmount,
     required this.numberOfCalories,
     required this.imagePath,
@@ -26,7 +26,7 @@ class FruitModel {
   final double price;
   final bool isFeatured;
   final bool isOrganic;
-  final int monthsUntilExpiration;
+  final int daysUntilExpiration;
   final int numberOfCalories;
   final int unitAmount;
   final int ratingCount;
@@ -44,7 +44,7 @@ class FruitModel {
     avgRating: json['avgRating'],
     ratingCount: json['ratingCount'],
     isOrganic: json['isOrganic'],
-    monthsUntilExpiration: json['monthsUntilExpiration'],
+    daysUntilExpiration: json['daysUntilExpiration'],
     unitAmount: json['unitAmount'],
     numberOfCalories: json['numberOfCalories'],
     reviews: json['reviews']
@@ -63,7 +63,7 @@ class FruitModel {
     avgRating: avgRating,
     ratingCount: ratingCount,
     isOrganic: isOrganic,
-    monthsUntilExpiration: monthsUntilExpiration,
+    daysUntilExpiration: daysUntilExpiration,
     unitAmount: unitAmount,
     numberOfCalories: numberOfCalories,
     reviews: reviews.map((review) => review.toEntity()).toList(),

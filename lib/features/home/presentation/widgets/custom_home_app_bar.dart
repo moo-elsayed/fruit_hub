@@ -12,31 +12,30 @@ class CustomHomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w, vertical: 16.h),
-        child: Row(
-          children: [
-            Image.asset(Assets.imagesProfileImage, height: 44.h, width: 44.w),
-            Gap(11.w),
-            Column(
-              spacing: 2.h,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "good_morning".tr(),
-                  style: AppTextStyles.font16color949D9ERegular,
-                ),
-                Text(
-                  SharedPreferencesManager.getUsername(),
-                  style: AppTextStyles.font16color0C0D0DSemiBold,
-                ),
-              ],
-            ),
-            const Spacer(),
-            const NotificationWidget(),
-          ],
-        ),
+    return Padding(
+      padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w, vertical: 16.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(Assets.imagesProfileImage, height: 44.h, width: 44.w),
+          Gap(11.w),
+          Column(
+            spacing: 2.h,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "good_morning".tr(),
+                style: AppTextStyles.font16color949D9ERegular,
+              ),
+              Text(
+                SharedPreferencesManager.getUsername(),
+                style: AppTextStyles.font16color0C0D0DSemiBold,
+              ),
+            ],
+          ),
+          const Spacer(),
+          const NotificationWidget(),
+        ],
       ),
     );
   }

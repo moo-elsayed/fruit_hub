@@ -22,9 +22,8 @@ class FirebaseAuthService implements AuthService {
       email: email,
       password: password,
     );
-    final user = UserModel.fromFirebaseUser(credential.user!);
 
-    return user.toUserEntity();
+    return UserModel.fromFirebaseUser(credential.user!).toUserEntity();
   }
 
   @override
@@ -36,22 +35,19 @@ class FirebaseAuthService implements AuthService {
       email: email,
       password: password,
     );
-    final user = UserModel.fromFirebaseUser(credential.user!);
-    return user.toUserEntity();
+    return UserModel.fromFirebaseUser(credential.user!).toUserEntity();
   }
 
   @override
   Future<UserEntity> googleSignIn() async {
     final User user = await _googleSignInInternal();
-    final userModel = UserModel.fromFirebaseUser(user);
-    return userModel.toUserEntity();
+    return UserModel.fromFirebaseUser(user).toUserEntity();
   }
 
   @override
   Future<UserEntity> facebookSignIn() async {
     final User user = await _facebookSignInInternal();
-    final userModel = UserModel.fromFirebaseUser(user);
-    return userModel.toUserEntity();
+    return UserModel.fromFirebaseUser(user).toUserEntity();
   }
 
   @override

@@ -6,6 +6,7 @@ abstract class AppColors {
   static const shadowColor = Color(0x0A000000);
   static const bottomNavigationBarShadowColor = Color(0x19000000);
   static const color292D32 = Color(0xff292D32);
+  static const grey = Color(0xff808080);
   static const color616A6B = Color(0xff616A6B);
   static const color4E5556 = Color(0xff4E5556);
   static const color949D9E = Color(0xff949D9E);

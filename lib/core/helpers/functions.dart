@@ -17,3 +17,5 @@ Future<void> saveUserDataToSharedPreferences(UserEntity entity) async =>
       SharedPreferencesManager.setUsername(entity.name!),
       SharedPreferencesManager.setLoggedIn(true),
     ]);
+
+num getPrice(double price) => price.toInt() == price ? price.toInt() : price;
