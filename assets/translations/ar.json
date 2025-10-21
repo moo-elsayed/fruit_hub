@@ -74,5 +74,8 @@
   "my_account": "حسابي",
   "search": "البحث",
   "no_results": "عفوًا، لم نتمكن من العثور على ما تبحث عنه.",
-  "search_results": "نتائج البحث"
+  "search_results": "نتائج البحث",
+  "language": "اللغة",
+  "app_language": "العربية",
+  "sign_out": "تسجيل الخروج"
 }
