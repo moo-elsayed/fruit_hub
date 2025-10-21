@@ -71,5 +71,8 @@
   "home": "الرئيسية",
   "products": "المنتجات",
   "shopping_cart": "سلة التسوق",
-  "my_account": "حسابي"
+  "my_account": "حسابي",
+  "search": "البحث",
+  "no_results": "عفوًا، لم نتمكن من العثور على ما تبحث عنه.",
+  "search_results": "نتائج البحث"
 }

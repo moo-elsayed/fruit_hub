@@ -10,20 +10,24 @@ class Products extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Gap(5.h),
-        CustomAppBar(title: "products".tr(), showNotification: true),
-        Padding(
-          padding: EdgeInsets.only(
-            right: 16.w,
-            left: 16.w,
-            bottom: 12.h,
-            top: 12.h
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        children: [
+          Gap(5.h),
+          CustomAppBar(title: "products".tr(), showNotification: true),
+          Padding(
+            padding: EdgeInsets.only(
+              right: 16.w,
+              left: 16.w,
+              bottom: 12.h,
+              top: 13.h,
+            ),
+            child: const SearchTextFiled(),
           ),
-          child: const SearchTextFiled(),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

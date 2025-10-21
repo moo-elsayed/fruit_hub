@@ -26,6 +26,7 @@ class Assets {
   static const String imagesAppLogo = 'assets/images/app-logo.png';
   static const String imagesFruitsImage = 'assets/images/fruits-image.png';
   static const String imagesProfileImage = 'assets/images/profile_image.png';
+  static const String imagesSearchImage = 'assets/images/search-image.png';
   static const String imagesSplashAndroid12 = 'assets/images/splash_android_12.png';
   static const String imagesSplashIosAndroid11 = 'assets/images/splash_ios_android_11.png';
   static const String imagesWatermelonTest = 'assets/images/watermelon_test.png';

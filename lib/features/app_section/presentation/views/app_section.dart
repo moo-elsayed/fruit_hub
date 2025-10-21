@@ -56,6 +56,7 @@ class _AppSectionState extends State<AppSection> {
   @override
   Widget build(BuildContext context) {
     return PersistentTabView.custom(
+      resizeToAvoidBottomInset: true,
       context,
       controller: _controller,
       screens: _buildScreens(),

@@ -9,6 +9,9 @@ import 'package:fruit_hub/features/products/data/data_sources/products_remote_da
 import 'package:fruit_hub/features/products/data/repo_imp/home_repo_imp.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
+import 'package:fruit_hub/features/search/data/data_sources/search_remote_data_source_imp.dart';
+import 'package:fruit_hub/features/search/data/repo_imp/search_repo_imp.dart';
+import 'package:fruit_hub/features/search/domain/use_cases/search_fruits_use_case.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../features/auth/data/data_sources/remote/auth_remote_data_source_imp.dart';
@@ -67,15 +70,26 @@ void setupServiceLocator() {
     HomeRepoImp(HomeRemoteDataSourceImp(getIt.get<DatabaseService>())),
   );
 
-  getIt.registerSingleton<ProductsRepoImp>(
-    ProductsRepoImp(ProductsRemoteDataSourceImp(getIt.get<DatabaseService>())),
-  );
-
   getIt.registerSingleton<GetBestSellerProductsUseCase>(
     GetBestSellerProductsUseCase(getIt<HomeRepoImp>()),
   );
 
+  ////////////////////////////
+
+  getIt.registerSingleton<ProductsRepoImp>(
+    ProductsRepoImp(ProductsRemoteDataSourceImp(getIt.get<DatabaseService>())),
+  );
   getIt.registerSingleton<GetAllProductsUseCase>(
     GetAllProductsUseCase(getIt<ProductsRepoImp>()),
+  );
+
+  ////////////////////////////
+
+  getIt.registerSingleton<SearchRepoImp>(
+    SearchRepoImp(SearchRemoteDataSourceImp(getIt.get<DatabaseService>())),
+  );
+
+  getIt.registerSingleton<SearchFruitsUseCase>(
+    SearchFruitsUseCase(getIt<SearchRepoImp>()),
   );
 }

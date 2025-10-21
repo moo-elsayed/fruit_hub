@@ -3,6 +3,7 @@ import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/animated_splash_view.dart';
 import 'package:fruit_hub/features/app_section/presentation/views/app_section.dart';
 import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view.dart';
+import 'package:fruit_hub/features/search/presentation/views/search_view.dart';
 import '../../features/auth/presentation/args/login_args.dart';
 import '../../features/auth/presentation/views/forget_password_view.dart';
 import '../../features/auth/presentation/views/login_view.dart';
@@ -33,6 +34,8 @@ class AppRouter {
         );
       case Routes.appSection:
         return CupertinoPageRoute(builder: (context) => const AppSection());
+      case Routes.searchView:
+        return CupertinoPageRoute(builder: (context) => const SearchView());
       // case Routes.bestSellerView:
       //   return CupertinoPageRoute(
       //     builder: (context) => const BestSellerView(),
