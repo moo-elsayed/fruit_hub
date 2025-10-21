@@ -13,7 +13,7 @@ import 'package:fruit_hub/features/home/presentation/widgets/custom_slider_view.
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import '../widgets/custom_section_header.dart';
-import '../widgets/search_text_field.dart';
+import '../../../../core/widgets/search_text_field.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, required this.scrollControllers});
@@ -41,53 +41,72 @@ class _HomeState extends State<Home> {
       child: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
+            floating: true,
+            snap: true,
+            pinned: false,
+            automaticallyImplyLeading: false,
+            backgroundColor: AppColors.white,
+            surfaceTintColor: AppColors.white,
+            expandedHeight: 75.h,
+            flexibleSpace: const FlexibleSpaceBar(
+              background: CustomHomeAppBar(),
+            ),
+          ),
+          SliverAppBar(
             pinned: true,
             floating: false,
             snap: false,
             automaticallyImplyLeading: false,
             backgroundColor: AppColors.white,
             surfaceTintColor: AppColors.white,
-            expandedHeight: 120.h + 217.h,
-            flexibleSpace: const FlexibleSpaceBar(
-              background: CustomHomeAppBar(),
-            ),
+            toolbarHeight: 0,
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(217.h),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: 16.w,
-                      left: 16.w,
-                      bottom: 12.h,
-                    ),
-                    child: const SearchTextFiled(),
-                  ),
-                  const CustomSliderView(),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 12.h,
-                      horizontal: 16.w,
-                    ),
-                    child: CustomSectionHeader(
-                      sectionName: "best_seller".tr(),
-                      onTap: () =>
-                          PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-                            context,
-                            settings: const RouteSettings(
-                              name: Routes.bestSellerView,
-                            ),
-                            screen: BestSellerView(
-                              scrollController: widget.scrollControllers[1],
-                              fruits: fruits,
-                            ),
-                            withNavBar: true,
-                            pageTransitionAnimation:
-                                PageTransitionAnimation.cupertino,
-                          ),
-                    ),
-                  ),
-                ],
+              preferredSize: const Size.fromHeight(60),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  right: 16.w,
+                  left: 16.w,
+                  bottom: 12.h,
+                ),
+                child: const SearchTextFiled(),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 12.h),
+              child: const CustomSliderView(),
+            ),
+          ),
+          SliverAppBar(
+            pinned: true,
+            floating: false,
+            snap: false,
+            automaticallyImplyLeading: false,
+            backgroundColor: AppColors.white,
+            surfaceTintColor: AppColors.white,
+            toolbarHeight: 0,
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(30),
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 8.h),
+                child: CustomSectionHeader(
+                  sectionName: "best_seller".tr(),
+                  onTap: () =>
+                      PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                        context,
+                        settings: const RouteSettings(
+                          name: Routes.bestSellerView,
+                        ),
+                        screen: BestSellerView(
+                          scrollController: widget.scrollControllers[1],
+                          fruits: fruits,
+                        ),
+                        withNavBar: true,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      ),
+                ),
               ),
             ),
           ),

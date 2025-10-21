@@ -21,11 +21,11 @@ class CustomSliderItem extends StatelessWidget {
         alignment: AlignmentDirectional.centerStart,
         children: [
           PositionedDirectional(
-            bottom: 0,
-            end: 0,
+            bottom: 5.h,
+            end: 5.w,
             top: 0,
             start: MediaQuery.sizeOf(context).width * 0.35,
-            child: Image.asset(Assets.imagesWatermelonTest, fit: BoxFit.fill),
+            child: Image.asset(Assets.imagesFruitsImage, fit: BoxFit.fill),
           ),
           Transform.rotate(
             angle: isArabic(context) ? 0 : pi,

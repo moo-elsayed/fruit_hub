@@ -8,9 +8,6 @@ class HomeRepoImp implements HomeRepo {
 
   final HomeRemoteDataSource _homeRemoteDataSource;
 
-  @override
-  Future<NetworkResponse<List<FruitEntity>>> getAllProducts() async =>
-      await _homeRemoteDataSource.getAllProducts();
 
   @override
   Future<NetworkResponse<List<FruitEntity>>> getBestSellerProducts() async =>

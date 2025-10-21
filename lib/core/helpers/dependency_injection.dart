@@ -5,7 +5,9 @@ import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
 import 'package:fruit_hub/features/home/data/data_sources/remote/home_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/home/data/repo_imp/home_repo_imp.dart';
-import 'package:fruit_hub/features/home/domain/use_cases/get_all_products_use_case.dart';
+import 'package:fruit_hub/features/products/data/data_sources/products_remote_data_source_imp.dart';
+import 'package:fruit_hub/features/products/data/repo_imp/home_repo_imp.dart';
+import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -65,11 +67,15 @@ void setupServiceLocator() {
     HomeRepoImp(HomeRemoteDataSourceImp(getIt.get<DatabaseService>())),
   );
 
+  getIt.registerSingleton<ProductsRepoImp>(
+    ProductsRepoImp(ProductsRemoteDataSourceImp(getIt.get<DatabaseService>())),
+  );
+
   getIt.registerSingleton<GetBestSellerProductsUseCase>(
     GetBestSellerProductsUseCase(getIt<HomeRepoImp>()),
   );
 
   getIt.registerSingleton<GetAllProductsUseCase>(
-    GetAllProductsUseCase(getIt<HomeRepoImp>()),
+    GetAllProductsUseCase(getIt<ProductsRepoImp>()),
   );
 }

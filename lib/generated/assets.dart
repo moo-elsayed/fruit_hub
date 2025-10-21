@@ -24,6 +24,7 @@ class Assets {
   static const String iconsShoppingCartFilled = 'assets/svgs/icons/shopping-cart-filled.svg';
   static const String iconsShoppingCartOutline = 'assets/svgs/icons/shopping-cart-outline.svg';
   static const String imagesAppLogo = 'assets/images/app-logo.png';
+  static const String imagesFruitsImage = 'assets/images/fruits-image.png';
   static const String imagesProfileImage = 'assets/images/profile_image.png';
   static const String imagesSplashAndroid12 = 'assets/images/splash_android_12.png';
   static const String imagesSplashIosAndroid11 = 'assets/images/splash_ios_android_11.png';
