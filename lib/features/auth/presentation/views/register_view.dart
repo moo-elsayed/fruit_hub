@@ -18,7 +18,7 @@ import '../../../../core/widgets/text_form_field_helper.dart';
 import '../args/login_args.dart';
 import '../managers/signup_cubit/sign_up_cubit.dart';
 import '../widgets/auth_redirect_text.dart';
-import '../widgets/custom_app_bar.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -148,9 +148,9 @@ class _RegisterViewState extends State<RegisterView> {
                               context
                                   .read<SignupCubit>()
                                   .createUserWithEmailAndPassword(
-                                    username: _nameController.text,
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
+                                    username: _nameController.text.trim(),
+                                    email: _emailController.text.trim(),
+                                    password: _passwordController.text.trim(),
                                   );
                             }
                           }

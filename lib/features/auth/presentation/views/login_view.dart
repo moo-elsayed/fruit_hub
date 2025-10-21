@@ -12,7 +12,7 @@ import 'package:fruit_hub/core/widgets/text_form_field_helper.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/social_sign_in_cubit/social_sign_in_cubit.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/auth_redirect_text.dart';
-import 'package:fruit_hub/features/auth/presentation/widgets/custom_app_bar.dart';
+import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/forget_password.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/or_divider.dart';
 import 'package:fruit_hub/generated/assets.dart';
@@ -136,6 +136,7 @@ class _LoginViewState extends State<LoginView> {
                           title: "welcome".tr(),
                           type: ToastificationType.success,
                         );
+                        context.pushReplacementNamed(Routes.appSection);
                       }
                       if (state is SignInFailure) {
                         AppToast.showToast(
@@ -152,8 +153,8 @@ class _LoginViewState extends State<LoginView> {
                             context
                                 .read<SignInCubit>()
                                 .signInWithEmailAndPassword(
-                                  email: _emailController.text,
-                                  password: _passwordController.text,
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim(),
                                 );
                           }
                         },
@@ -184,6 +185,7 @@ class _LoginViewState extends State<LoginView> {
                           title: "welcome".tr(),
                           type: ToastificationType.success,
                         );
+                        context.pushReplacementNamed(Routes.appSection);
                       }
                       if (state is GoogleFailure) {
                         AppToast.showToast(
@@ -227,6 +229,7 @@ class _LoginViewState extends State<LoginView> {
                           title: "welcome".tr(),
                           type: ToastificationType.success,
                         );
+                        context.pushReplacementNamed(Routes.appSection);
                       }
                       if (state is FacebookFailure) {
                         AppToast.showToast(

@@ -6,7 +6,7 @@ import 'package:fruit_hub/core/helpers/extentions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
-import 'package:fruit_hub/features/onboarding/data/models/onboarding_model.dart';
+import 'package:fruit_hub/features/onboarding/domain/entities/onboarding_model.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/helpers/shared_preferences_manager.dart';
 import '../widgets/onboarding_indicator.dart';
@@ -20,7 +20,7 @@ class OnboardingView extends StatefulWidget {
 }
 
 class _OnboardingViewState extends State<OnboardingView> {
-  List<OnboardingModel> slides = OnboardingModel.slides;
+  List<OnboardingEntity> slides = onboardingSlides;
   int currentIndex = 0;
 
   @override

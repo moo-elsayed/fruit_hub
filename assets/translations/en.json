@@ -58,5 +58,18 @@
   "user_mismatch": "Credentials do not match the current user.",
   "quota_exceeded": "Too many attempts. Try again later.",
   "error_occurred_please_try_again": "An error occurred. Please try again.",
-  "permission-denied": "Permission denied to perform this operation."
+  "permission-denied": "Permission denied to perform this operation.",
+  "good_morning": "Good Morning !..",
+  "search_for": "Search for....",
+  "eid_offers": "Eid Offers",
+  "discount": "Discount",
+  "shop_now": "Shop Now",
+  "best_seller": "Best Seller",
+  "more": "More",
+  "pounds": "Pounds",
+  "kilo": "Kilo",
+  "home": "Home",
+  "products": "Products",
+  "shopping_cart": "Shopping Cart",
+  "my_account": "My Account"
 }

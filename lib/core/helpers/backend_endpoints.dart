@@ -4,4 +4,6 @@ class BackendEndpoints {
   static const checkIfEmailExists = 'users';
   static const getUserData = 'users';
   static const updateUserData = 'users';
+  static const getAllProducts = 'products';
+  static const getBestSellerProducts = 'products';
 }
