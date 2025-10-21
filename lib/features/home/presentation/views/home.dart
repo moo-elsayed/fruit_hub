@@ -10,6 +10,7 @@ import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cu
 import 'package:fruit_hub/features/home/presentation/views/best_seller_view.dart';
 import 'package:fruit_hub/features/home/presentation/widgets/custom_home_app_bar.dart';
 import 'package:fruit_hub/features/home/presentation/widgets/custom_slider_view.dart';
+import 'package:fruit_hub/features/search/presentation/views/search_view.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import '../widgets/custom_section_header.dart';
@@ -35,97 +36,98 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      behavior: HitTestBehavior.opaque,
-      child: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-            floating: true,
-            snap: true,
-            pinned: false,
-            automaticallyImplyLeading: false,
-            backgroundColor: AppColors.white,
-            surfaceTintColor: AppColors.white,
-            expandedHeight: 75.h,
-            flexibleSpace: const FlexibleSpaceBar(
-              background: CustomHomeAppBar(),
-            ),
-          ),
-          SliverAppBar(
-            pinned: true,
-            floating: false,
-            snap: false,
-            automaticallyImplyLeading: false,
-            backgroundColor: AppColors.white,
-            surfaceTintColor: AppColors.white,
-            toolbarHeight: 0,
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(60),
-              child: Padding(
-                padding: EdgeInsets.only(
-                  right: 16.w,
-                  left: 16.w,
-                  bottom: 12.h,
-                ),
-                child: const SearchTextFiled(),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 12.h),
-              child: const CustomSliderView(),
-            ),
-          ),
-          SliverAppBar(
-            pinned: true,
-            floating: false,
-            snap: false,
-            automaticallyImplyLeading: false,
-            backgroundColor: AppColors.white,
-            surfaceTintColor: AppColors.white,
-            toolbarHeight: 0,
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(30),
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 8.h),
-                child: CustomSectionHeader(
-                  sectionName: "best_seller".tr(),
-                  onTap: () =>
-                      PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-                        context,
-                        settings: const RouteSettings(
-                          name: Routes.bestSellerView,
-                        ),
-                        screen: BestSellerView(
-                          scrollController: widget.scrollControllers[1],
-                          fruits: fruits,
-                        ),
-                        withNavBar: true,
-                        pageTransitionAnimation:
-                            PageTransitionAnimation.cupertino,
-                      ),
-                ),
-              ),
-            ),
-          ),
-        ],
-        body: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            if (state is GetBestSellerProductsSuccess) {
-              fruits = state.fruits;
-              return FruitsGridView(fruits: fruits);
-            } else if (state is GetBestSellerProductsLoading) {
-              return const Skeletonizer(
-                enabled: true,
-                child: FruitsGridView(itemCount: 6),
-              );
-            } else {
-              return const Text("error");
-            }
-          },
+    return NestedScrollView(
+      headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        SliverAppBar(
+          floating: true,
+          snap: true,
+          pinned: false,
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.white,
+          surfaceTintColor: AppColors.white,
+          expandedHeight: 75.h,
+          flexibleSpace: const FlexibleSpaceBar(background: CustomHomeAppBar()),
         ),
+        SliverAppBar(
+          pinned: true,
+          floating: false,
+          snap: false,
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.white,
+          surfaceTintColor: AppColors.white,
+          toolbarHeight: 0,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(60),
+            child: Padding(
+              padding: EdgeInsets.only(right: 16.w, left: 16.w, bottom: 12.h),
+              child: SearchTextFiled(
+                enabled: false,
+                onTap: () =>
+                    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                      context,
+                      settings: const RouteSettings(name: Routes.searchView),
+                      screen: const SearchView(),
+                      withNavBar: true,
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino,
+                    ),
+              ),
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 12.h),
+            child: const CustomSliderView(),
+          ),
+        ),
+        SliverAppBar(
+          pinned: true,
+          floating: false,
+          snap: false,
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.white,
+          surfaceTintColor: AppColors.white,
+          toolbarHeight: 0,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(30),
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 8.h),
+              child: CustomSectionHeader(
+                sectionName: "best_seller".tr(),
+                onTap: () =>
+                    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                      context,
+                      settings: const RouteSettings(
+                        name: Routes.bestSellerView,
+                      ),
+                      screen: BestSellerView(
+                        scrollController: widget.scrollControllers[1],
+                        fruits: fruits,
+                      ),
+                      withNavBar: true,
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino,
+                    ),
+              ),
+            ),
+          ),
+        ),
+      ],
+      body: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          if (state is GetBestSellerProductsSuccess) {
+            fruits = state.fruits;
+            return FruitsGridView(fruits: fruits);
+          } else if (state is GetBestSellerProductsLoading) {
+            return const Skeletonizer(
+              enabled: true,
+              child: FruitsGridView(itemCount: 6),
+            );
+          } else {
+            return const Text("error");
+          }
+        },
       ),
     );
   }

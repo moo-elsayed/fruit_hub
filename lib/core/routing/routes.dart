@@ -6,4 +6,5 @@ class Routes {
   static const forgetPasswordView = '/forgetPasswordView';
   static const appSection = '/appSection';
   static const bestSellerView = '/bestSellerView';
+  static const searchView = '/searchView';
 }

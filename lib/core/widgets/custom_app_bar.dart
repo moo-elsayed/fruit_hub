@@ -52,7 +52,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: Text(title, style: AppTextStyles.font19color0C0D0DBold),
       centerTitle: true,
-      actions: showNotification ? const [NotificationWidget(), Gap(16)] : null,
+      actions: showNotification
+          ? [const NotificationWidget(), Gap(16.w)]
+          : null,
     );
   }
 }

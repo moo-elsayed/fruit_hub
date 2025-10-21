@@ -85,6 +85,12 @@ class FirestoreService implements DatabaseService {
       collection = collection.limit(query.limit!);
     }
 
+    if (query.searchQuery != null) {
+      collection = collection
+          .where("name", isGreaterThanOrEqualTo: query.searchQuery)
+          .where("name", isLessThanOrEqualTo: '${query.searchQuery}\uf8ff');
+    }
+
     final querySnapshot = await collection.get();
     return querySnapshot.docs.map((doc) => doc.data()).toList();
   }

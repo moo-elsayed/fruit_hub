@@ -71,5 +71,8 @@
   "home": "Home",
   "products": "Products",
   "shopping_cart": "Shopping Cart",
-  "my_account": "My Account"
+  "my_account": "My Account",
+  "search": "Search",
+  "no_results": "Sorry, we couldn't find what you were looking for.",
+  "search_results": "Search Results"
 }

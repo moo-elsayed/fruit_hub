@@ -131,6 +131,13 @@ abstract class AppTextStyles {
     fontWeight: FontWeightHelper.bold,
   );
 
+  static TextStyle font16color616A6BBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color616A6B,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
   static TextStyle font19color0C0D0DBold = TextStyle(
     fontSize: 19.sp,
     color: AppColors.color0C0D0D,
