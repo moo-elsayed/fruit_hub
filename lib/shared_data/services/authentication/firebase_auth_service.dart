@@ -23,7 +23,7 @@ class FirebaseAuthService implements AuthService {
       email: email,
       password: password,
     );
-    return _returnUser(credential);
+    return _returnUserEntity(credential);
   }
 
   @override
@@ -35,7 +35,7 @@ class FirebaseAuthService implements AuthService {
       email: email,
       password: password,
     );
-    return _returnUser(credential);
+    return _returnUserEntity(credential);
   }
 
   @override
@@ -70,13 +70,17 @@ class FirebaseAuthService implements AuthService {
         permissions: ['public_profile', 'email'],
       );
 
+      final accessToken = loginResult.accessToken;
+      if (accessToken == null) {
+        throw Exception('Facebook access token is null.');
+      }
       final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
+          FacebookAuthProvider.credential(accessToken.tokenString);
 
-      final UserCredential signInWithCredential = await FirebaseAuth.instance
+      final UserCredential signInWithCredential = await _auth
           .signInWithCredential(facebookAuthCredential);
 
-      return signInWithCredential.user!;
+      return _returnUser(signInWithCredential);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'account-exists-with-different-credential':
@@ -134,10 +138,18 @@ class FirebaseAuthService implements AuthService {
     );
 
     var userCredential = await _auth.signInWithCredential(credential);
-    return userCredential.user!;
+    return _returnUser(userCredential);
   }
 
-  UserEntity _returnUser(UserCredential credential) {
+  User _returnUser(UserCredential userCredential) {
+    final user = userCredential.user;
+    if (user == null) {
+      throw Exception('Firebase user object is null after sign in.');
+    }
+    return user;
+  }
+
+  UserEntity _returnUserEntity(UserCredential credential) {
     final user = credential.user;
     if (user == null) {
       throw Exception('Firebase user object is null after sign in.');

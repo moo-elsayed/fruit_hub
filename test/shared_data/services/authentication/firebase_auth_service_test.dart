@@ -16,6 +16,24 @@ class MockUserCredential extends Mock implements UserCredential {}
 
 class MockUser extends Mock implements User {}
 
+class MockGoogleSignInAccount extends Mock implements GoogleSignInAccount {}
+
+class MockGoogleSignInAuthentication extends Mock
+    implements GoogleSignInAuthentication {}
+
+class MockAuthCredential extends Mock implements AuthCredential {}
+
+class MockLoginResult extends Mock implements LoginResult {}
+
+class MockAccessToken extends Mock implements AccessToken {}
+
+class MockFirebaseAuthException extends Mock implements FirebaseAuthException {}
+
+void registerFallbacks() {
+  registerFallbackValue(MockAuthCredential());
+  registerFallbackValue(MockFirebaseAuthException());
+}
+
 void main() {
   late MockFirebaseAuth mockFirebaseAuth;
   late MockGoogleSignIn mockGoogleSignIn;
@@ -23,6 +41,10 @@ void main() {
   late MockUserCredential mockUserCredential;
   late MockUser mockUser;
   late FirebaseAuthService firebaseAuthService;
+  late MockGoogleSignInAccount mockGoogleSignInAccount;
+  late MockGoogleSignInAuthentication mockGoogleSignInAuthentication;
+  late MockLoginResult mockLoginResult;
+  late MockAccessToken mockAccessToken;
 
   const tEmail = 'test@test.com';
   const tPassword = 'password123';
@@ -32,6 +54,11 @@ void main() {
     name: 'Test User',
     isVerified: false,
   );
+  const tMockIdToken = 'mock-id-token';
+  const tMockFbToken = 'mock-fb-token';
+  setUpAll(() {
+    registerFallbacks();
+  });
 
   setUp(() {
     mockFirebaseAuth = MockFirebaseAuth();
@@ -39,12 +66,16 @@ void main() {
     mockFacebookAuth = MockFacebookAuth();
     mockUserCredential = MockUserCredential();
     mockUser = MockUser();
+    mockGoogleSignInAccount = MockGoogleSignInAccount();
+    mockGoogleSignInAuthentication = MockGoogleSignInAuthentication();
+    mockLoginResult = MockLoginResult();
+    mockAccessToken = MockAccessToken();
+
     firebaseAuthService = FirebaseAuthService(
       mockFirebaseAuth,
       mockGoogleSignIn,
       mockFacebookAuth,
     );
-
     when(() => mockUserCredential.user).thenReturn(mockUser);
     when(() => mockUser.uid).thenReturn(tUserEntity.uid);
     when(() => mockUser.email).thenReturn(tUserEntity.email);
@@ -62,6 +93,28 @@ void main() {
     when(
       () => mockFirebaseAuth.signOut(),
     ).thenAnswer((_) async => Future.value());
+    when(() => mockGoogleSignIn.signOut()).thenAnswer((_) async {});
+    when(
+      () => mockGoogleSignIn.initialize(
+        clientId: any(named: 'clientId'),
+        serverClientId: any(named: 'serverClientId'),
+      ),
+    ).thenAnswer((_) async {});
+    when(
+      () => mockGoogleSignIn.attemptLightweightAuthentication(),
+    ).thenAnswer((_) async => mockGoogleSignInAccount);
+    when(
+      () => mockGoogleSignInAccount.authentication,
+    ).thenReturn(mockGoogleSignInAuthentication);
+    when(() => mockGoogleSignInAuthentication.idToken).thenReturn(tMockIdToken);
+    when(
+      () => mockFirebaseAuth.signInWithCredential(any()),
+    ).thenAnswer((_) async => mockUserCredential);
+    when(
+      () => mockFacebookAuth.login(permissions: any(named: 'permissions')),
+    ).thenAnswer((_) async => mockLoginResult);
+    when(() => mockLoginResult.accessToken).thenReturn(mockAccessToken);
+    when(() => mockAccessToken.tokenString).thenReturn(tMockFbToken);
   });
 
   group('create user & login with email', () {
@@ -293,5 +346,266 @@ void main() {
       // Assert
       expect(call, throwsException);
     });
+  });
+
+  group('sign in with google', () {
+    test('should return UserEntity on success', () async {
+      // Arrange
+      // Act
+      var call = await firebaseAuthService.googleSignIn();
+      // Assert
+      expect(call, equals(tUserEntity));
+      verify(() => mockGoogleSignIn.signOut()).called(1);
+      verify(
+        () => mockGoogleSignIn.attemptLightweightAuthentication(),
+      ).called(1);
+      verify(() => mockFirebaseAuth.signInWithCredential(any())).called(1);
+    });
+
+    test('should throw "canceled" Exception when user cancels', () async {
+      // Arrange
+      when(
+        () => mockGoogleSignIn.attemptLightweightAuthentication(),
+      ).thenAnswer((_) async => null);
+      // Act
+      var call = firebaseAuthService.googleSignIn();
+      // Assert
+      expect(
+        call,
+        throwsA(
+          isA<Exception>().having(
+            (e) => e.toString(),
+            'message',
+            contains('canceled'),
+          ),
+        ),
+      );
+    });
+
+    test(
+      'should throw "Could not retrieve" Exception when idToken is null',
+      () {
+        // Arrange
+        when(() => mockGoogleSignInAuthentication.idToken).thenReturn(null);
+        // Act
+        var call = firebaseAuthService.googleSignIn();
+        // Assert
+        expect(
+          call,
+          throwsA(
+            isA<Exception>().having(
+              (e) => e.toString(),
+              'message',
+              contains('Could not retrieve'),
+            ),
+          ),
+        );
+      },
+    );
+
+    test('should re-throw exception if signInWithCredential fails', () {
+      // Arrange
+      when(
+        () => mockFirebaseAuth.signInWithCredential(any()),
+      ).thenThrow(Exception('Failed to sign in with credential'));
+      // Act
+      var call = firebaseAuthService.googleSignIn();
+      // Assert
+      expect(call, throwsException);
+    });
+
+    test('should throw Exception if credential.user is null after sign in', () {
+      // Arrange
+      when(() => mockUserCredential.user).thenReturn(null);
+      // Act
+      var call = firebaseAuthService.googleSignIn();
+      // Assert
+      expect(
+        call,
+        throwsA(
+          isA<Exception>().having(
+            (e) => e.toString(),
+            'message',
+            contains('null after sign in'),
+          ),
+        ),
+      );
+    });
+  });
+
+  group('sign in with facebook', () {
+    test('should return UserEntity on success', () async {
+      // Arrange
+      // Act
+      var call = await firebaseAuthService.facebookSignIn();
+      // Assert
+      expect(call, equals(tUserEntity));
+      verify(
+        () => mockFacebookAuth.login(permissions: any(named: 'permissions')),
+      ).called(1);
+      verify(() => mockFirebaseAuth.signInWithCredential(any())).called(1);
+    });
+
+    test('should re-throw exception if facebookAuth.login fails', () {
+      // Arrange
+      when(
+        () => mockFacebookAuth.login(permissions: any(named: 'permissions')),
+      ).thenThrow(Exception('Failed to login with Facebook'));
+      // Act
+      var call = firebaseAuthService.facebookSignIn();
+      // Assert
+      expect(call, throwsException);
+    });
+
+    test('should throw "access token is null" Exception', () {
+      // Arrange
+      when(() => mockLoginResult.accessToken).thenReturn(null);
+      // Act
+      var call = firebaseAuthService.facebookSignIn();
+      // Assert
+      expect(
+        call,
+        throwsA(
+          isA<Exception>().having(
+            (e) => e.toString(),
+            'message',
+            contains('access token is null'),
+          ),
+        ),
+      );
+    });
+
+    test('should re-throw exception if signInWithCredential fails', () {
+      // Arrange
+      when(
+        () => mockFirebaseAuth.signInWithCredential(any()),
+      ).thenThrow(Exception('Failed to sign in with credential'));
+      // Act
+      var call = firebaseAuthService.facebookSignIn();
+      // Assert
+      expect(call, throwsException);
+    });
+
+    test('should throw "user is null" Exception', () {
+      // Arrange
+      when(() => mockUserCredential.user).thenReturn(null);
+      // Act
+      var call = firebaseAuthService.facebookSignIn();
+      // Assert
+      expect(
+        call,
+        throwsA(
+          isA<Exception>().having(
+            (e) => e.toString(),
+            'message',
+            contains('null after sign in'),
+          ),
+        ),
+      );
+    });
+
+    test(
+      'should attempt to link with Google when account-exists-with-different-credential',
+      () async {
+        // Arrange
+        final mockException = MockFirebaseAuthException();
+        final mockCredential = MockAuthCredential();
+        when(
+          () => mockException.code,
+        ).thenReturn('account-exists-with-different-credential');
+        when(() => mockException.credential).thenReturn(mockCredential);
+        var callCount = 0;
+        when(() => mockFirebaseAuth.signInWithCredential(any())).thenAnswer((
+          _,
+        ) async {
+          if (++callCount == 1) {
+            throw mockException;
+          } else {
+            return mockUserCredential;
+          }
+        });
+        when(
+          () => mockUser.linkWithCredential(any()),
+        ).thenAnswer((_) async => mockUserCredential);
+        // Act
+        final result = await firebaseAuthService.facebookSignIn();
+        // Assert
+        expect(result, equals(tUserEntity));
+        verify(
+          () => mockGoogleSignIn.attemptLightweightAuthentication(),
+        ).called(1);
+        verify(() => mockUser.linkWithCredential(mockCredential)).called(1);
+      },
+    );
+
+    test('should re-throw original exception if pendingCred is null', () {
+      // Arrange
+      final mockException = MockFirebaseAuthException();
+      when(
+        () => mockException.code,
+      ).thenReturn('account-exists-with-different-credential');
+      when(() => mockException.credential).thenReturn(null);
+      when(
+        () => mockFirebaseAuth.signInWithCredential(any()),
+      ).thenThrow(mockException);
+      // Act
+      var call = firebaseAuthService.facebookSignIn();
+      // Assert
+      expect(call, throwsException);
+    });
+
+    test(
+      'should re-throw original exception if googleSignInInternal fails during linking',
+      () {
+        // Arrange
+        final mockException = MockFirebaseAuthException();
+        final mockCredential = MockAuthCredential();
+        when(
+          () => mockException.code).thenReturn('account-exists-with-different-credential');
+        when(() => mockException.credential).thenReturn(mockCredential);
+        final googleError = Exception('Google sign in failed');
+        var callCount = 0;
+        when(() => mockFirebaseAuth.signInWithCredential(any()))
+            .thenAnswer((_) async {
+          if (++callCount == 1) {
+            throw mockException;
+          } else {
+            return mockUserCredential;
+          }
+        });
+        when(() => mockGoogleSignIn.attemptLightweightAuthentication())
+            .thenThrow(googleError);
+        // Act
+        var call = firebaseAuthService.facebookSignIn();
+        // Assert
+        expect(call, throwsA(mockException));
+      },
+    );
+
+    test(
+      'should re-throw original exception if linkWithCredential fails during linking',
+          () {
+        // Arrange
+        final mockException = MockFirebaseAuthException();
+        final mockCredential = MockAuthCredential();
+        when(() => mockException.code).thenReturn('account-exists-with-different-credential');
+        when(() => mockException.credential).thenReturn(mockCredential);
+        final googleError = Exception('Google sign in failed');
+        var callCount = 0;
+        when(() => mockFirebaseAuth.signInWithCredential(any()))
+            .thenAnswer((_) async {
+          if (++callCount == 1) {
+            throw mockException;
+          } else {
+            return mockUserCredential;
+          }
+        });
+        when(() => mockUser.linkWithCredential(any())).thenThrow(googleError);
+        // Act
+        var call = firebaseAuthService.facebookSignIn();
+        // Assert
+        expect(call, throwsA(mockException));
+      },
+    );
   });
 }
