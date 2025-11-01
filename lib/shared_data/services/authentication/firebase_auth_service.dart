@@ -10,8 +10,9 @@ import '../../../core/services/authentication/auth_service.dart';
 class FirebaseAuthService implements AuthService {
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
+  final FacebookAuth _facebookAuth;
 
-  FirebaseAuthService(this._auth, this._googleSignIn);
+  FirebaseAuthService(this._auth, this._googleSignIn, this._facebookAuth);
 
   @override
   Future<UserEntity> createUserWithEmailAndPassword({
@@ -22,8 +23,7 @@ class FirebaseAuthService implements AuthService {
       email: email,
       password: password,
     );
-
-    return UserModel.fromFirebaseUser(credential.user!).toUserEntity();
+    return _returnUser(credential);
   }
 
   @override
@@ -35,7 +35,7 @@ class FirebaseAuthService implements AuthService {
       email: email,
       password: password,
     );
-    return UserModel.fromFirebaseUser(credential.user!).toUserEntity();
+    return _returnUser(credential);
   }
 
   @override
@@ -59,14 +59,14 @@ class FirebaseAuthService implements AuthService {
 
   @override
   Future<void> sendEmailVerification() async =>
-      await _auth.currentUser!.sendEmailVerification();
+      await _auth.currentUser?.sendEmailVerification();
 
   @override
   Future<void> signOut() async => await _auth.signOut();
 
   Future<User> _facebookSignInInternal() async {
     try {
-      final LoginResult loginResult = await FacebookAuth.instance.login(
+      final LoginResult loginResult = await _facebookAuth.login(
         permissions: ['public_profile', 'email'],
       );
 
@@ -135,5 +135,13 @@ class FirebaseAuthService implements AuthService {
 
     var userCredential = await _auth.signInWithCredential(credential);
     return userCredential.user!;
+  }
+
+  UserEntity _returnUser(UserCredential credential) {
+    final user = credential.user;
+    if (user == null) {
+      throw Exception('Firebase user object is null after sign in.');
+    }
+    return UserModel.fromFirebaseUser(user).toUserEntity();
   }
 }

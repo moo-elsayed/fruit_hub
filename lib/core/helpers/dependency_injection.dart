@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/auth_repo_imp.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
@@ -28,7 +29,11 @@ final getIt = GetIt.instance;
 void setupServiceLocator() {
   /// auth
   getIt.registerSingleton<AuthService>(
-    FirebaseAuthService(FirebaseAuth.instance, GoogleSignIn.instance),
+    FirebaseAuthService(
+      FirebaseAuth.instance,
+      GoogleSignIn.instance,
+      FacebookAuth.instance,
+    ),
   );
 
   getIt.registerSingleton<DatabaseService>(

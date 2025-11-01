@@ -30,8 +30,8 @@ class UserModel {
 
   factory UserModel.fromUserEntity(UserEntity user) => UserModel(
     uid: user.uid,
-    name: user.name ?? '',
-    email: user.email ?? '',
+    name: user.name,
+    email: user.email,
     isVerified: user.isVerified,
   );
 

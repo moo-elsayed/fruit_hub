@@ -14,7 +14,7 @@ String getErrorMessage(result) =>
 
 Future<void> saveUserDataToSharedPreferences(UserEntity entity) async =>
     await Future.wait([
-      SharedPreferencesManager.setUsername(entity.name!),
+      SharedPreferencesManager.setUsername(entity.name),
       SharedPreferencesManager.setLoggedIn(true),
     ]);
 
