@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fruit_hub/features/onboarding/data/models/onboarding_model.dart';
+import 'package:fruit_hub/features/onboarding/domain/entities/onboarding_model.dart';
 import 'package:fruit_hub/features/onboarding/presentation/widgets/page_view_item.dart';
 
 class OnboardingPageView extends StatelessWidget {
@@ -9,7 +9,7 @@ class OnboardingPageView extends StatelessWidget {
     this.onPageChanged,
   });
 
-  final List<OnboardingModel> slides;
+  final List<OnboardingEntity> slides;
   final void Function(int)? onPageChanged;
 
   @override

@@ -4,6 +4,14 @@ import 'app_colors.dart';
 import 'font_weight_helper.dart';
 
 abstract class AppTextStyles {
+
+  static TextStyle font11color1B5E37semiBold = TextStyle(
+    fontSize: 11.sp,
+    color: AppColors.color1B5E37,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
   static TextStyle font13color949D9ERegular = TextStyle(
     fontSize: 13.sp,
     color: AppColors.color949D9E,
@@ -11,9 +19,37 @@ abstract class AppTextStyles {
     fontWeight: FontWeightHelper.regular,
   );
 
+  static TextStyle font13WhiteRegular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.white,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
   static TextStyle font13color949D9ESemiBold = TextStyle(
     fontSize: 13.sp,
     color: AppColors.color949D9E,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13color0C0D0DSemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color0C0D0D,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13colorF4A91FSemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.colorF4A91F,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13colorF8C76DSemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.colorF8C76D,
     fontFamily: "Cairo",
     fontWeight: FontWeightHelper.semiBold,
   );
@@ -39,11 +75,18 @@ abstract class AppTextStyles {
     fontWeight: FontWeightHelper.bold,
   );
 
-  static TextStyle font16WhiteBold = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.white,
+  static TextStyle font13color1B5E37Bold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color1B5E37,
     fontFamily: "Cairo",
     fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font16color949D9ERegular = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color949D9E,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
   );
 
   static TextStyle font16color0C0D0DSemiBold = TextStyle(
@@ -74,9 +117,37 @@ abstract class AppTextStyles {
     fontWeight: FontWeightHelper.semiBold,
   );
 
+  static TextStyle font16WhiteBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.white,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font16color0C0D0DBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color0C0D0D,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font16color616A6BBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color616A6B,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
   static TextStyle font19color0C0D0DBold = TextStyle(
     fontSize: 19.sp,
     color: AppColors.color0C0D0D,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font19WhiteDBold = TextStyle(
+    fontSize: 19.sp,
+    color: AppColors.white,
     fontFamily: "Cairo",
     fontWeight: FontWeightHelper.bold,
   );

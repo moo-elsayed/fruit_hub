@@ -7,7 +7,7 @@ import 'package:fruit_hub/core/helpers/dependency_injection.dart';
 import 'package:fruit_hub/core/helpers/extentions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/forget_password_cubit/forget_password_cubit.dart';
-import 'package:fruit_hub/features/auth/presentation/widgets/custom_app_bar.dart';
+import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
 import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
 
@@ -98,6 +98,13 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                               context.pop(loginArgs);
                             },
                           ),
+                        );
+                      }
+                      if (state is ForgetPasswordFailure) {
+                        AppToast.showToast(
+                          context: context,
+                          title: state.errorMessage,
+                          type: ToastificationType.error,
                         );
                       }
                     },

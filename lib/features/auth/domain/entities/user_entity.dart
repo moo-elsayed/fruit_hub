@@ -1,7 +1,8 @@
 class UserEntity {
-  UserEntity({this.name = '', this.email = '', this.uid = ''});
+  UserEntity({this.uid = '', this.name, this.email, this.isVerified = false});
 
-  final String name;
-  final String email;
   final String uid;
+  String? name;
+  String? email;
+  final bool isVerified;
 }

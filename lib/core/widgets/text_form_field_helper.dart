@@ -32,6 +32,8 @@ class TextFormFieldHelper extends StatefulWidget {
     this.borderRadius,
     this.contentPadding,
     this.borderColor,
+    this.fillColor,
+    this.hintStyle,
   });
 
   final TextEditingController? controller;
@@ -51,6 +53,8 @@ class TextFormFieldHelper extends StatefulWidget {
   final EdgeInsetsGeometry? contentPadding;
   final BorderRadius? borderRadius;
   final Color? borderColor;
+  final Color? fillColor;
+  final TextStyle? hintStyle;
 
   @override
   State<TextFormFieldHelper> createState() => _TextFormFieldHelperState();
@@ -110,10 +114,10 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
       textDirection: _textDirection,
       textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
-        fillColor: AppColors.colorF9FAFA,
+        fillColor: widget.fillColor ?? AppColors.colorF9FAFA,
         filled: true,
         hintText: widget.hint,
-        hintStyle: AppTextStyles.font13color949D9EBold,
+        hintStyle: widget.hintStyle ?? AppTextStyles.font13color949D9EBold,
         errorMaxLines: 4,
         errorStyle: AppTextStyles.font16color0C0D0DSemiBold.copyWith(
           color: Colors.red,
@@ -137,6 +141,10 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
             EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
         border: outlineInputBorder(color: AppColors.colorE6E9EA, width: 1),
         enabledBorder: outlineInputBorder(
+          color: widget.borderColor ?? AppColors.colorE6E9EA,
+          width: 1,
+        ),
+        disabledBorder: outlineInputBorder(
           color: widget.borderColor ?? AppColors.colorE6E9EA,
           width: 1,
         ),
