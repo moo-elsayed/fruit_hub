@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
@@ -30,7 +31,7 @@ class SignupCubit extends Cubit<SignupState> {
       case NetworkSuccess<UserEntity>():
         emit(SignUpSuccess(result.data!));
       case NetworkFailure<UserEntity>():
-        emit(SignUpFailure(getErrorMessage(result)));
+        emit(SignUpFailure(getErrorMessage(result).tr()));
     }
   }
 

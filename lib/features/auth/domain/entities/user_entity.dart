@@ -15,4 +15,16 @@ class UserEntity extends Equatable {
 
   @override
   List<Object?> get props => [uid, name, email, isVerified];
+
+  UserEntity copyWith({
+    String? uid,
+    String? name,
+    String? email,
+    bool? isVerified,
+  }) => UserEntity(
+    uid: uid ?? this.uid,
+    name: name ?? this.name,
+    email: email ?? this.email,
+    isVerified: isVerified ?? this.isVerified,
+  );
 }
