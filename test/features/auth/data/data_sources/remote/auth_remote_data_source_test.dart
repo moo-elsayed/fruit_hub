@@ -33,7 +33,7 @@ void arrangeGetOrUpdateDBSuccess(MockDatabaseService mockDatabaseService) {
 }
 
 void main() {
-  late AuthRemoteDataSourceImp authRemoteDataSourceImp;
+  late AuthRemoteDataSourceImp sut;
   late MockAuthService mockAuthService;
   late MockDatabaseService mockDatabaseService;
   late MockFirebaseAuthException mockFirebaseAuthException;
@@ -46,7 +46,7 @@ void main() {
     mockAuthService = MockAuthService();
     mockDatabaseService = MockDatabaseService();
     mockFirebaseAuthException = MockFirebaseAuthException();
-    authRemoteDataSourceImp = AuthRemoteDataSourceImp(
+    sut = AuthRemoteDataSourceImp(
       mockAuthService,
       mockDatabaseService,
     );
@@ -78,7 +78,7 @@ void main() {
     test('should return NetworkSuccess with UserEntity', () async {
       // Arrange
       // Act
-      final result = await authRemoteDataSourceImp
+      final result = await sut
           .createUserWithEmailAndPassword(
             email: tEmail,
             password: tPassword,
@@ -118,7 +118,7 @@ void main() {
           ),
         ).thenThrow(mockFirebaseAuthException);
         // Act
-        final result = await authRemoteDataSourceImp
+        final result = await sut
             .createUserWithEmailAndPassword(
               email: tEmail,
               password: tPassword,
@@ -158,7 +158,7 @@ void main() {
         ).thenThrow(mockFirebaseAuthException);
 
         // Act
-        final result = await authRemoteDataSourceImp
+        final result = await sut
             .createUserWithEmailAndPassword(
               email: tEmail,
               password: tPassword,
@@ -186,7 +186,7 @@ void main() {
           ),
         ).thenThrow(Exception('Database failed'));
         // Act
-        final result = await authRemoteDataSourceImp
+        final result = await sut
             .createUserWithEmailAndPassword(
               email: tEmail,
               password: tPassword,
@@ -222,7 +222,7 @@ void main() {
       arrangeGetOrUpdateDBSuccess(mockDatabaseService);
 
       // Act
-      final result = await authRemoteDataSourceImp.signInWithEmailAndPassword(
+      final result = await sut.signInWithEmailAndPassword(
         email: tEmail,
         password: tPassword,
       );
@@ -257,7 +257,7 @@ void main() {
           ),
         ).thenAnswer((_) async => tUnverifiedUserEntity);
         // Act
-        final result = await authRemoteDataSourceImp.signInWithEmailAndPassword(
+        final result = await sut.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
         );
@@ -287,7 +287,7 @@ void main() {
         ),
       ).thenThrow(mockFirebaseAuthException);
       // Act
-      final result = await authRemoteDataSourceImp.signInWithEmailAndPassword(
+      final result = await sut.signInWithEmailAndPassword(
         email: tEmail,
         password: tPassword,
       );
@@ -326,7 +326,7 @@ void main() {
         ).thenThrow(tException);
 
         // Act
-        final result = await authRemoteDataSourceImp.signInWithEmailAndPassword(
+        final result = await sut.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
         );
@@ -353,7 +353,7 @@ void main() {
       ).thenAnswer((_) async => tGoogledUserEntity);
       arrangeGetOrUpdateDBSuccess(mockDatabaseService);
       // Act
-      final result = await authRemoteDataSourceImp.googleSignIn();
+      final result = await sut.googleSignIn();
       // Assert
       expect(result, isA<NetworkSuccess<UserEntity>>());
       expect((result as NetworkSuccess).data.uid, tGoogledUserEntity.uid);
@@ -376,7 +376,7 @@ void main() {
         () => mockAuthService.googleSignIn(),
       ).thenThrow(mockFirebaseAuthException);
       // Act
-      final result = await authRemoteDataSourceImp.googleSignIn();
+      final result = await sut.googleSignIn();
       // Assert
       expect(result, isA<NetworkFailure>());
       expect(getErrorMessage(result), contains("network_error_message"));
@@ -405,7 +405,7 @@ void main() {
         ).thenThrow(tException);
 
         // Act
-        final result = await authRemoteDataSourceImp.googleSignIn();
+        final result = await sut.googleSignIn();
         // Assert
         expect(result, isA<NetworkFailure>());
         expect(
@@ -432,7 +432,7 @@ void main() {
           () => mockAuthService.forgetPassword(tEmail),
         ).thenAnswer((_) async => Future.value());
         // Act
-        final result = await authRemoteDataSourceImp.forgetPassword(tEmail);
+        final result = await sut.forgetPassword(tEmail);
         // Assert
         expect(result, isA<NetworkSuccess<void>>());
         verify(
@@ -457,7 +457,7 @@ void main() {
       ).thenAnswer((_) async => false);
 
       // Act
-      final result = await authRemoteDataSourceImp.forgetPassword(tEmail);
+      final result = await sut.forgetPassword(tEmail);
 
       // Assert
       expect(result, isA<NetworkFailure>());
@@ -478,7 +478,7 @@ void main() {
           ),
         ).thenThrow(tException);
         // Act
-        final result = await authRemoteDataSourceImp.forgetPassword(tEmail);
+        final result = await sut.forgetPassword(tEmail);
         // Assert
         expect(result, isA<NetworkFailure>());
         expect(
@@ -500,7 +500,7 @@ void main() {
           ),
         ).thenAnswer((_) async => true);
         // Act
-        final result = await authRemoteDataSourceImp.forgetPassword(tEmail);
+        final result = await sut.forgetPassword(tEmail);
         // Assert
         expect(result, isA<NetworkFailure>());
         expect(
@@ -518,7 +518,7 @@ void main() {
         () => mockAuthService.signOut(),
       ).thenAnswer((_) async => Future.value());
       // Act
-      final result = await authRemoteDataSourceImp.signOut();
+      final result = await sut.signOut();
       // Assert
       expect(result, isA<NetworkSuccess<void>>());
       verify(() => mockAuthService.signOut()).called(1);
@@ -529,7 +529,7 @@ void main() {
         () => mockAuthService.signOut(),
       ).thenThrow(Exception('Sign out failed'));
       // Act
-      final result = await authRemoteDataSourceImp.signOut();
+      final result = await sut.signOut();
       // Assert
       expect(result, isA<NetworkFailure>());
       expect(
@@ -552,7 +552,7 @@ void main() {
       ).thenAnswer((_) async => tFacebookUserEntity);
       arrangeGetOrUpdateDBSuccess(mockDatabaseService);
       // Act
-      final result = await authRemoteDataSourceImp.facebookSignIn();
+      final result = await sut.facebookSignIn();
       // Assert
       expect(result, isA<NetworkSuccess<UserEntity>>());
       expect((result as NetworkSuccess).data.uid, tFacebookUserEntity.uid);
@@ -577,7 +577,7 @@ void main() {
         () => mockAuthService.facebookSignIn(),
       ).thenThrow(mockFirebaseAuthException);
       // Act
-      final result = await authRemoteDataSourceImp.facebookSignIn();
+      final result = await sut.facebookSignIn();
       // Assert
       expect(result, isA<NetworkFailure>());
       expect(getErrorMessage(result), contains('network_error_message'));
@@ -606,7 +606,7 @@ void main() {
         ).thenThrow(tException);
 
         // Act
-        final result = await authRemoteDataSourceImp.facebookSignIn();
+        final result = await sut.facebookSignIn();
         // Assert
         expect(result, isA<NetworkFailure>());
         expect(

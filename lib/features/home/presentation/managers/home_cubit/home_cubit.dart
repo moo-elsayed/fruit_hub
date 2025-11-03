@@ -3,14 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
+import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
 
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit(this._getBestSellerProductsUseCase) : super(HomeInitial());
+  HomeCubit(this._getBestSellerProductsUseCase, this._localStorageService)
+    : super(HomeInitial());
 
   final GetBestSellerProductsUseCase _getBestSellerProductsUseCase;
+  final LocalStorageService _localStorageService;
 
   Future<void> getBestSellerProducts() async {
     emit(GetBestSellerProductsLoading());
@@ -22,4 +25,6 @@ class HomeCubit extends Cubit<HomeState> {
         emit(GetBestSellerProductsFailure(getErrorMessage(networkResponse)));
     }
   }
+
+  String getUserName() => _localStorageService.getUsername();
 }

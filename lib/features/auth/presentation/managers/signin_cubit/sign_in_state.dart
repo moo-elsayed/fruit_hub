@@ -7,11 +7,7 @@ final class SignInInitial extends SignInState {}
 
 class SignInLoading extends SignInState {}
 
-class SignInSuccess extends SignInState {
-  SignInSuccess(this.user);
-
-  final UserEntity user;
-}
+class SignInSuccess extends SignInState {}
 
 class SignInFailure extends SignInState {
   SignInFailure(this.message);

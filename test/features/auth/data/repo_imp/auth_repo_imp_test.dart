@@ -8,7 +8,7 @@ import 'package:mocktail/mocktail.dart';
 class MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}
 
 void main() {
-  late AuthRepoImp authRepoImp;
+  late AuthRepoImp sut;
   late MockAuthRemoteDataSource mockAuthRemoteDataSource;
 
   const tEmail = 'test@test.com';
@@ -17,18 +17,18 @@ void main() {
   const tUserEntity = UserEntity(uid: '123');
 
   final tException = Exception('DataSource error');
-  final tSuccessResponseOfTypeUserEntity = NetworkSuccess<UserEntity>(
+  final tSuccessResponseOfTypeUserEntity = const NetworkSuccess<UserEntity>(
     tUserEntity,
   );
   final tFailureResponseOfTypeUserEntity = NetworkFailure<UserEntity>(
     tException,
   );
-  final tSuccessResponseOfTypeVoid = NetworkSuccess<void>(null);
+  final tSuccessResponseOfTypeVoid = const NetworkSuccess<void>(null);
   final tFailureResponseOfTypeVoid = NetworkFailure<void>(tException);
 
   setUp(() {
     mockAuthRemoteDataSource = MockAuthRemoteDataSource();
-    authRepoImp = AuthRepoImp(mockAuthRemoteDataSource);
+    sut = AuthRepoImp(mockAuthRemoteDataSource);
   });
 
   group('createUserWithEmailAndPassword', () {
@@ -42,7 +42,7 @@ void main() {
         ),
       ).thenAnswer((_) async => tSuccessResponseOfTypeUserEntity);
       // Act
-      final result = await authRepoImp.createUserWithEmailAndPassword(
+      final result = await sut.createUserWithEmailAndPassword(
         email: tEmail,
         password: tPassword,
         username: tUsername,
@@ -68,7 +68,7 @@ void main() {
         ),
       ).thenAnswer((_) async => tFailureResponseOfTypeUserEntity);
       // Act
-      final result = await authRepoImp.createUserWithEmailAndPassword(
+      final result = await sut.createUserWithEmailAndPassword(
         email: tEmail,
         password: tPassword,
         username: tUsername,
@@ -95,7 +95,7 @@ void main() {
         ),
       ).thenAnswer((_) async => tSuccessResponseOfTypeUserEntity);
       // Act
-      final result = await authRepoImp.signInWithEmailAndPassword(
+      final result = await sut.signInWithEmailAndPassword(
         email: tEmail,
         password: tPassword,
       );
@@ -118,7 +118,7 @@ void main() {
         ),
       ).thenAnswer((_) async => tFailureResponseOfTypeUserEntity);
       // Act
-      final result = await authRepoImp.signInWithEmailAndPassword(
+      final result = await sut.signInWithEmailAndPassword(
         email: tEmail,
         password: tPassword,
       );
@@ -140,7 +140,7 @@ void main() {
         () => mockAuthRemoteDataSource.signOut(),
       ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
       // Act
-      final result = await authRepoImp.signOut();
+      final result = await sut.signOut();
       // Assert
       expect(result, tSuccessResponseOfTypeVoid);
       verify(() => mockAuthRemoteDataSource.signOut()).called(1);
@@ -152,7 +152,7 @@ void main() {
         () => mockAuthRemoteDataSource.signOut(),
       ).thenAnswer((_) async => tFailureResponseOfTypeVoid);
       // Act
-      final result = await authRepoImp.signOut();
+      final result = await sut.signOut();
       // Assert
       expect(result, equals(tFailureResponseOfTypeVoid));
       verify(() => mockAuthRemoteDataSource.signOut()).called(1);
@@ -166,7 +166,7 @@ void main() {
         () => mockAuthRemoteDataSource.forgetPassword(tEmail),
       ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
       // Act
-      final result = await authRepoImp.forgetPassword(tEmail);
+      final result = await sut.forgetPassword(tEmail);
       // Assert
       expect(result, tSuccessResponseOfTypeVoid);
       verify(() => mockAuthRemoteDataSource.forgetPassword(tEmail)).called(1);
@@ -178,7 +178,7 @@ void main() {
         () => mockAuthRemoteDataSource.forgetPassword(tEmail),
       ).thenAnswer((_) async => tFailureResponseOfTypeVoid);
       // Act
-      final result = await authRepoImp.forgetPassword(tEmail);
+      final result = await sut.forgetPassword(tEmail);
       // Assert
       expect(result, equals(tFailureResponseOfTypeVoid));
       verify(() => mockAuthRemoteDataSource.forgetPassword(tEmail)).called(1);
@@ -192,7 +192,7 @@ void main() {
         () => mockAuthRemoteDataSource.googleSignIn(),
       ).thenAnswer((_) async => tSuccessResponseOfTypeUserEntity);
       // Act
-      final result = await authRepoImp.googleSignIn();
+      final result = await sut.googleSignIn();
       // Assert
       expect(result, tSuccessResponseOfTypeUserEntity);
       verify(() => mockAuthRemoteDataSource.googleSignIn()).called(1);
@@ -204,7 +204,7 @@ void main() {
         () => mockAuthRemoteDataSource.googleSignIn(),
       ).thenAnswer((_) async => tFailureResponseOfTypeUserEntity);
       // Act
-      final result = await authRepoImp.googleSignIn();
+      final result = await sut.googleSignIn();
       // Assert
       expect(result, equals(tFailureResponseOfTypeUserEntity));
       verify(() => mockAuthRemoteDataSource.googleSignIn()).called(1);
@@ -218,7 +218,7 @@ void main() {
             () => mockAuthRemoteDataSource.facebookSignIn(),
       ).thenAnswer((_) async => tSuccessResponseOfTypeUserEntity);
       // Act
-      final result = await authRepoImp.facebookSignIn();
+      final result = await sut.facebookSignIn();
       // Assert
       expect(result, tSuccessResponseOfTypeUserEntity);
       verify(() => mockAuthRemoteDataSource.facebookSignIn()).called(1);
@@ -230,7 +230,7 @@ void main() {
             () => mockAuthRemoteDataSource.facebookSignIn(),
       ).thenAnswer((_) async => tFailureResponseOfTypeUserEntity);
       // Act
-      final result = await authRepoImp.facebookSignIn();
+      final result = await sut.facebookSignIn();
       // Assert
       expect(result, equals(tFailureResponseOfTypeUserEntity));
       verify(() => mockAuthRemoteDataSource.facebookSignIn()).called(1);

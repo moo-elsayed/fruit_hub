@@ -20,5 +20,5 @@ abstract class AuthRepo {
 
   Future<NetworkResponse<void>> forgetPassword(String email);
 
-  Future<void> signOut();
+  Future<NetworkResponse<void>> signOut();
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/helpers/dependency_injection.dart';
+import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
 import 'package:fruit_hub/features/app_section/domain/entities/bottom_navigation_bar_entity.dart';
 import 'package:fruit_hub/features/app_section/presentation/widgets/custom_bottom_navigation_bar.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
@@ -24,7 +25,10 @@ class _AppSectionState extends State<AppSection> {
   final items = bottomNavigationBarItems;
   late final List<Widget> _pages = [
     BlocProvider(
-      create: (context) => HomeCubit(getIt.get<GetBestSellerProductsUseCase>()),
+      create: (context) => HomeCubit(
+        getIt.get<GetBestSellerProductsUseCase>(),
+        getIt.get<LocalStorageService>(),
+      ),
       child: Home(
         scrollControllers: [_scrollControllers[0], _scrollControllers[1]],
       ),

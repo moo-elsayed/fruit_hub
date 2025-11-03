@@ -1,9 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fruit_hub/core/helpers/extentions.dart';
-import 'package:fruit_hub/core/helpers/shared_preferences_manager.dart';
+import 'package:fruit_hub/features/onboarding/presentation/managers/onboarding_cubit/onboarding_cubit.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/helpers/functions.dart';
 import '../../../../core/routing/routes.dart';
@@ -30,14 +31,19 @@ class PageViewItem extends StatelessWidget {
                 top: 60.h,
                 right: isArabic(context) ? 20.w : null,
                 left: !isArabic(context) ? 20.w : null,
-                child: GestureDetector(
-                  onTap: () {
-                    SharedPreferencesManager.setFirstTime(false);
-                    context.pushReplacementNamed(Routes.loginView);
+                child: BlocListener<OnboardingCubit, OnboardingState>(
+                  listener: (context, state) {
+                    if (state is OnboardingNavigateToHome) {
+                      context.pushReplacementNamed(Routes.loginView);
+                    }
                   },
-                  child: Text(
-                    "skip".tr(),
-                    style: AppTextStyles.font13color949D9ERegular,
+                  child: GestureDetector(
+                    onTap: () =>
+                        context.read<OnboardingCubit>().setFirstTime(false),
+                    child: Text(
+                      "skip".tr(),
+                      style: AppTextStyles.font13color949D9ERegular,
+                    ),
                   ),
                 ),
               ),

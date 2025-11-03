@@ -84,7 +84,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
       var bool = await _checkIfEmailExists(email);
       if (bool) {
         await _authService.forgetPassword(email);
-        return NetworkSuccess();
+        return const NetworkSuccess();
       } else {
         return NetworkFailure(Exception("no_user_found_for_that_email"));
       }
@@ -97,7 +97,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   Future<NetworkResponse<void>> signOut() async {
     try {
       await _authService.signOut();
-      return NetworkSuccess();
+      return const NetworkSuccess();
     } catch (e) {
       return _handleAuthError(e, "signOut");
     }

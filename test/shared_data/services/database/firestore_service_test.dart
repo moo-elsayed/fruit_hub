@@ -4,7 +4,7 @@ import 'package:fruit_hub/core/services/database/query_parameters.dart';
 import 'package:fruit_hub/shared_data/services/database/firestore_service.dart';
 
 void main() {
-  late FirestoreService firestoreService;
+  late FirestoreService sut;
   late FakeFirebaseFirestore fakeFirestore;
 
   const tPath = 'users';
@@ -12,14 +12,14 @@ void main() {
   const tData = {'name': 'Test User'};
   setUp(() {
     fakeFirestore = FakeFirebaseFirestore();
-    firestoreService = FirestoreService(fakeFirestore);
+    sut = FirestoreService(fakeFirestore);
   });
 
   group('add data', () {
     test('should add data to firestore when docId is provided', () async {
       // Arrange
       // Act
-      await firestoreService.addData(docId: tDocId, path: tPath, data: tData);
+      await sut.addData(docId: tDocId, path: tPath, data: tData);
       // Assert
       final snapshot = await fakeFirestore.collection(tPath).doc(tDocId).get();
       expect(snapshot.exists, isTrue);
@@ -29,7 +29,7 @@ void main() {
     test('should generate docId when docId is null', () async {
       // Arrange
       // Act
-      firestoreService.addData(path: tPath, data: tData);
+      sut.addData(path: tPath, data: tData);
       // Assert
       var snapshot = await fakeFirestore.collection(tPath).get();
       expect(snapshot.docs.length, equals(1));
@@ -42,7 +42,7 @@ void main() {
       await fakeFirestore.collection(tPath).doc(tDocId).set(oldData);
       const newData = {'name': 'New Name', 'age': 40};
       // Act
-      await firestoreService.addData(docId: tDocId, path: tPath, data: newData);
+      await sut.addData(docId: tDocId, path: tPath, data: newData);
       // Assert
       final snapshot = await fakeFirestore.collection(tPath).doc(tDocId).get();
       expect(snapshot.data(), equals({'name': 'New Name', 'age': 40}));
@@ -54,20 +54,14 @@ void main() {
       // Arrange
       await fakeFirestore.collection(tPath).doc(tDocId).set(tData);
       // Act
-      final result = await firestoreService.getData(
-        path: tPath,
-        documentId: tDocId,
-      );
+      final result = await sut.getData(path: tPath, documentId: tDocId);
       // Assert
       expect(result, equals(tData));
     });
 
     test('should return empty map when document does not exist', () async {
       // Act
-      final result = await firestoreService.getData(
-        path: tPath,
-        documentId: tDocId,
-      );
+      final result = await sut.getData(path: tPath, documentId: tDocId);
       // Assert
       expect(result, equals({}));
     });
@@ -78,7 +72,7 @@ void main() {
       // Arrange
       await fakeFirestore.collection(tPath).doc(tDocId).set(tData);
       // Act
-      final result = await firestoreService.checkIfDataExists(
+      final result = await sut.checkIfDataExists(
         path: tPath,
         documentId: tDocId,
       );
@@ -89,7 +83,7 @@ void main() {
     test('should return false when document does not exist', () async {
       // Arrange
       // Act
-      final result = await firestoreService.checkIfDataExists(
+      final result = await sut.checkIfDataExists(
         path: tPath,
         documentId: tDocId,
       );
@@ -106,11 +100,7 @@ void main() {
       // Arrange
       await fakeFirestore.collection(tPath).doc(tDocId).set(tOriginalData);
       // Act
-      await firestoreService.updateData(
-        path: tPath,
-        documentId: tDocId,
-        data: tUpdatedData,
-      );
+      await sut.updateData(path: tPath, documentId: tDocId, data: tUpdatedData);
       // Assert
       final snapshot = await fakeFirestore.collection(tPath).doc(tDocId).get();
       expect(snapshot.exists, isTrue);
@@ -119,7 +109,7 @@ void main() {
     test('should throw exception when document does not exist', () {
       // Arrange
       // Act
-      var updateData = firestoreService.updateData(
+      var updateData = sut.updateData(
         path: tPath,
         documentId: tDocId,
         data: tUpdatedData,
@@ -134,7 +124,7 @@ void main() {
       // Arrange
       await fakeFirestore.collection(tPath).doc(tDocId).set(tData);
       // Act
-      final result = await firestoreService.checkIfFieldExists(
+      final result = await sut.checkIfFieldExists(
         path: tPath,
         fieldName: 'name',
         fieldValue: 'Test User',
@@ -146,7 +136,7 @@ void main() {
       // Arrange
       await fakeFirestore.collection(tPath).doc(tDocId).set(tData);
       // Act
-      var result = await firestoreService.checkIfFieldExists(
+      var result = await sut.checkIfFieldExists(
         path: tPath,
         fieldName: 'name',
         fieldValue: 'New User',
@@ -158,7 +148,7 @@ void main() {
       // Arrange
       await fakeFirestore.collection(tPath).doc(tDocId).set(tData);
       // Act
-      var result = await firestoreService.checkIfFieldExists(
+      var result = await sut.checkIfFieldExists(
         path: tPath,
         fieldName: 'age',
         fieldValue: 30,
@@ -174,7 +164,7 @@ void main() {
       await fakeFirestore.collection(tPath).doc(tDocId).set(tData);
       await fakeFirestore.collection(tPath).doc('456').set(tData2);
       // Act
-      final result = await firestoreService.getAllData(tPath);
+      final result = await sut.getAllData(tPath);
       // Assert
       expect(result, isNotEmpty);
       expect(result.length, 2);
@@ -190,7 +180,7 @@ void main() {
     test('should return an empty list when collection is empty', () async {
       // Arrange
       // Act
-      final result = await firestoreService.getAllData(tPath);
+      final result = await sut.getAllData(tPath);
       // Assert
       expect(result, isEmpty);
     });
@@ -208,10 +198,7 @@ void main() {
       // Arrange
       final query = const QueryParameters();
       // Act
-      final result = await firestoreService.queryData(
-        path: tPath,
-        query: query,
-      );
+      final result = await sut.queryData(path: tPath, query: query);
       // Assert
       expect(result.length, 3);
       expect(
@@ -231,10 +218,7 @@ void main() {
       // Arrange
       final query = const QueryParameters(orderBy: 'name', descending: true);
       // Act
-      final result = await firestoreService.queryData(
-        path: tPath,
-        query: query,
-      );
+      final result = await sut.queryData(path: tPath, query: query);
       // Assert
       expect(result.length, 3);
       expect(
@@ -254,10 +238,7 @@ void main() {
       // Arrange
       final query = const QueryParameters(limit: 2, orderBy: 'name');
       // Act
-      final result = await firestoreService.queryData(
-        path: tPath,
-        query: query,
-      );
+      final result = await sut.queryData(path: tPath, query: query);
       // Assert
       expect(result.length, 2);
       expect(
@@ -279,10 +260,7 @@ void main() {
         limit: 1,
       );
       // Act
-      final result = await firestoreService.queryData(
-        path: tPath,
-        query: query,
-      );
+      final result = await sut.queryData(path: tPath, query: query);
       // Assert
       expect(result.length, 1);
       expect(result.first, docC);

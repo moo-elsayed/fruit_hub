@@ -40,7 +40,7 @@ void main() {
   late MockFacebookAuth mockFacebookAuth;
   late MockUserCredential mockUserCredential;
   late MockUser mockUser;
-  late FirebaseAuthService firebaseAuthService;
+  late FirebaseAuthService sut;
   late MockGoogleSignInAccount mockGoogleSignInAccount;
   late MockGoogleSignInAuthentication mockGoogleSignInAuthentication;
   late MockLoginResult mockLoginResult;
@@ -71,7 +71,7 @@ void main() {
     mockLoginResult = MockLoginResult();
     mockAccessToken = MockAccessToken();
 
-    firebaseAuthService = FirebaseAuthService(
+    sut = FirebaseAuthService(
       mockFirebaseAuth,
       mockGoogleSignIn,
       mockFacebookAuth,
@@ -129,7 +129,7 @@ void main() {
           ),
         ).thenAnswer((_) async => mockUserCredential);
         // Act
-        var call = await firebaseAuthService.createUserWithEmailAndPassword(
+        var call = await sut.createUserWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
         );
@@ -156,7 +156,7 @@ void main() {
           ),
         ).thenAnswer((_) async => mockUserCredential);
         // Act
-        var call = firebaseAuthService.createUserWithEmailAndPassword(
+        var call = sut.createUserWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
         );
@@ -176,7 +176,7 @@ void main() {
           ),
         ).thenThrow(Exception('Failed to create user'));
         // Act
-        var call = firebaseAuthService.createUserWithEmailAndPassword(
+        var call = sut.createUserWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
         );
@@ -196,7 +196,7 @@ void main() {
           ),
         ).thenAnswer((_) async => mockUserCredential);
         // Act
-        var call = await firebaseAuthService.signInWithEmailAndPassword(
+        var call = await sut.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
         );
@@ -217,7 +217,7 @@ void main() {
           ),
         ).thenAnswer((_) async => mockUserCredential);
         // Act
-        var call = firebaseAuthService.signInWithEmailAndPassword(
+        var call = sut.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
         );
@@ -235,7 +235,7 @@ void main() {
         ),
       ).thenThrow(Exception('Failed to sign in'));
       // Act
-      var call = firebaseAuthService.signInWithEmailAndPassword(
+      var call = sut.signInWithEmailAndPassword(
         email: tEmail,
         password: tPassword,
       );
@@ -248,7 +248,7 @@ void main() {
     test('should call sendPasswordResetEmail on success', () async {
       // Arrange
       // Act
-      await firebaseAuthService.forgetPassword(tEmail);
+      await sut.forgetPassword(tEmail);
       // Assert
       verify(
         () => mockFirebaseAuth.sendPasswordResetEmail(email: tEmail),
@@ -261,7 +261,7 @@ void main() {
         () => mockFirebaseAuth.sendPasswordResetEmail(email: tEmail),
       ).thenThrow(Exception('Failed to send password reset email'));
       // Act
-      var call = firebaseAuthService.forgetPassword(tEmail);
+      var call = sut.forgetPassword(tEmail);
       // Assert
       expect(call, throwsException);
     });
@@ -271,7 +271,7 @@ void main() {
     test('should call delete on currentUser successfully', () async {
       // Arrange
       // Act
-      await firebaseAuthService.deleteCurrentUser();
+      await sut.deleteCurrentUser();
       // Assert
       verify(() => mockUser.delete()).called(1);
     });
@@ -280,7 +280,7 @@ void main() {
       // Arrange
       when(() => mockUser.delete()).thenThrow(Exception('Failed to delete'));
       // Act
-      var call = firebaseAuthService.deleteCurrentUser();
+      var call = sut.deleteCurrentUser();
       // Assert
       expect(call, throwsException);
     });
@@ -289,7 +289,7 @@ void main() {
       // Arrange
       when(() => mockFirebaseAuth.currentUser).thenReturn(null);
       // Act
-      await firebaseAuthService.deleteCurrentUser();
+      await sut.deleteCurrentUser();
       // Assert
       verifyNever(() => mockUser.delete());
     });
@@ -301,7 +301,7 @@ void main() {
       () async {
         // Arrange
         // Act
-        await firebaseAuthService.sendEmailVerification();
+        await sut.sendEmailVerification();
         // Assert
         verify(() => mockUser.sendEmailVerification()).called(1);
       },
@@ -313,7 +313,7 @@ void main() {
         () => mockUser.sendEmailVerification(),
       ).thenThrow(Exception('Failed to send email verification'));
       // Act
-      var call = firebaseAuthService.sendEmailVerification();
+      var call = sut.sendEmailVerification();
       // Assert
       expect(call, throwsException);
     });
@@ -322,7 +322,7 @@ void main() {
       // Arrange
       when(() => mockFirebaseAuth.currentUser).thenReturn(null);
       // Act
-      await firebaseAuthService.sendEmailVerification();
+      await sut.sendEmailVerification();
       // Assert
       verifyNever(() => mockUser.sendEmailVerification());
     });
@@ -331,7 +331,7 @@ void main() {
     test('should call signOut on success', () {
       // Arrange
       // Act
-      firebaseAuthService.signOut();
+      sut.signOut();
       // Assert
       verify(() => mockFirebaseAuth.signOut()).called(1);
     });
@@ -342,7 +342,7 @@ void main() {
         () => mockFirebaseAuth.signOut(),
       ).thenThrow(Exception('Failed to sign out'));
       // Act
-      var call = firebaseAuthService.signOut();
+      var call = sut.signOut();
       // Assert
       expect(call, throwsException);
     });
@@ -352,7 +352,7 @@ void main() {
     test('should return UserEntity on success', () async {
       // Arrange
       // Act
-      var call = await firebaseAuthService.googleSignIn();
+      var call = await sut.googleSignIn();
       // Assert
       expect(call, equals(tUserEntity));
       verify(() => mockGoogleSignIn.signOut()).called(1);
@@ -368,7 +368,7 @@ void main() {
         () => mockGoogleSignIn.attemptLightweightAuthentication(),
       ).thenAnswer((_) async => null);
       // Act
-      var call = firebaseAuthService.googleSignIn();
+      var call = sut.googleSignIn();
       // Assert
       expect(
         call,
@@ -388,7 +388,7 @@ void main() {
         // Arrange
         when(() => mockGoogleSignInAuthentication.idToken).thenReturn(null);
         // Act
-        var call = firebaseAuthService.googleSignIn();
+        var call = sut.googleSignIn();
         // Assert
         expect(
           call,
@@ -409,7 +409,7 @@ void main() {
         () => mockFirebaseAuth.signInWithCredential(any()),
       ).thenThrow(Exception('Failed to sign in with credential'));
       // Act
-      var call = firebaseAuthService.googleSignIn();
+      var call = sut.googleSignIn();
       // Assert
       expect(call, throwsException);
     });
@@ -418,7 +418,7 @@ void main() {
       // Arrange
       when(() => mockUserCredential.user).thenReturn(null);
       // Act
-      var call = firebaseAuthService.googleSignIn();
+      var call = sut.googleSignIn();
       // Assert
       expect(
         call,
@@ -437,7 +437,7 @@ void main() {
     test('should return UserEntity on success', () async {
       // Arrange
       // Act
-      var call = await firebaseAuthService.facebookSignIn();
+      var call = await sut.facebookSignIn();
       // Assert
       expect(call, equals(tUserEntity));
       verify(
@@ -452,7 +452,7 @@ void main() {
         () => mockFacebookAuth.login(permissions: any(named: 'permissions')),
       ).thenThrow(Exception('Failed to login with Facebook'));
       // Act
-      var call = firebaseAuthService.facebookSignIn();
+      var call = sut.facebookSignIn();
       // Assert
       expect(call, throwsException);
     });
@@ -461,7 +461,7 @@ void main() {
       // Arrange
       when(() => mockLoginResult.accessToken).thenReturn(null);
       // Act
-      var call = firebaseAuthService.facebookSignIn();
+      var call = sut.facebookSignIn();
       // Assert
       expect(
         call,
@@ -481,7 +481,7 @@ void main() {
         () => mockFirebaseAuth.signInWithCredential(any()),
       ).thenThrow(Exception('Failed to sign in with credential'));
       // Act
-      var call = firebaseAuthService.facebookSignIn();
+      var call = sut.facebookSignIn();
       // Assert
       expect(call, throwsException);
     });
@@ -490,7 +490,7 @@ void main() {
       // Arrange
       when(() => mockUserCredential.user).thenReturn(null);
       // Act
-      var call = firebaseAuthService.facebookSignIn();
+      var call = sut.facebookSignIn();
       // Assert
       expect(
         call,
@@ -528,7 +528,7 @@ void main() {
           () => mockUser.linkWithCredential(any()),
         ).thenAnswer((_) async => mockUserCredential);
         // Act
-        final result = await firebaseAuthService.facebookSignIn();
+        final result = await sut.facebookSignIn();
         // Assert
         expect(result, equals(tUserEntity));
         verify(
@@ -549,7 +549,7 @@ void main() {
         () => mockFirebaseAuth.signInWithCredential(any()),
       ).thenThrow(mockException);
       // Act
-      var call = firebaseAuthService.facebookSignIn();
+      var call = sut.facebookSignIn();
       // Assert
       expect(call, throwsException);
     });
@@ -561,22 +561,25 @@ void main() {
         final mockException = MockFirebaseAuthException();
         final mockCredential = MockAuthCredential();
         when(
-          () => mockException.code).thenReturn('account-exists-with-different-credential');
+          () => mockException.code,
+        ).thenReturn('account-exists-with-different-credential');
         when(() => mockException.credential).thenReturn(mockCredential);
         final googleError = Exception('Google sign in failed');
         var callCount = 0;
-        when(() => mockFirebaseAuth.signInWithCredential(any()))
-            .thenAnswer((_) async {
+        when(() => mockFirebaseAuth.signInWithCredential(any())).thenAnswer((
+          _,
+        ) async {
           if (++callCount == 1) {
             throw mockException;
           } else {
             return mockUserCredential;
           }
         });
-        when(() => mockGoogleSignIn.attemptLightweightAuthentication())
-            .thenThrow(googleError);
+        when(
+          () => mockGoogleSignIn.attemptLightweightAuthentication(),
+        ).thenThrow(googleError);
         // Act
-        var call = firebaseAuthService.facebookSignIn();
+        var call = sut.facebookSignIn();
         // Assert
         expect(call, throwsA(mockException));
       },
@@ -584,16 +587,19 @@ void main() {
 
     test(
       'should re-throw original exception if linkWithCredential fails during linking',
-          () {
+      () {
         // Arrange
         final mockException = MockFirebaseAuthException();
         final mockCredential = MockAuthCredential();
-        when(() => mockException.code).thenReturn('account-exists-with-different-credential');
+        when(
+          () => mockException.code,
+        ).thenReturn('account-exists-with-different-credential');
         when(() => mockException.credential).thenReturn(mockCredential);
         final googleError = Exception('Google sign in failed');
         var callCount = 0;
-        when(() => mockFirebaseAuth.signInWithCredential(any()))
-            .thenAnswer((_) async {
+        when(() => mockFirebaseAuth.signInWithCredential(any())).thenAnswer((
+          _,
+        ) async {
           if (++callCount == 1) {
             throw mockException;
           } else {
@@ -602,7 +608,7 @@ void main() {
         });
         when(() => mockUser.linkWithCredential(any())).thenThrow(googleError);
         // Act
-        var call = firebaseAuthService.facebookSignIn();
+        var call = sut.facebookSignIn();
         // Assert
         expect(call, throwsA(mockException));
       },
