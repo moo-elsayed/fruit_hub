@@ -59,11 +59,12 @@ void setupServiceLocator() {
     ),
   );
 
-  getIt.registerSingleton<SaveUserSessionUseCase>(
-    SaveUserSessionUseCase(getIt<LocalStorageService>()),
+  getIt.registerLazySingleton<SaveUserSessionUseCase>(
+    () => SaveUserSessionUseCase(getIt<LocalStorageService>()),
   );
-  getIt.registerSingleton<SignInWithEmailAndPasswordUseCase>(
-    SignInWithEmailAndPasswordUseCase(
+
+  getIt.registerLazySingleton<SignInWithEmailAndPasswordUseCase>(
+    () => SignInWithEmailAndPasswordUseCase(
       getIt<AuthRepoImp>(),
       getIt.get<SaveUserSessionUseCase>(),
     ),
@@ -73,17 +74,17 @@ void setupServiceLocator() {
     CreateUserWithEmailAndPasswordUseCase(getIt<AuthRepoImp>()),
   );
 
-  getIt.registerSingleton<GoogleSignInUseCase>(
-    GoogleSignInUseCase(
+  getIt.registerLazySingleton<GoogleSignInUseCase>(
+    () => GoogleSignInUseCase(
       getIt<AuthRepoImp>(),
       getIt.get<SaveUserSessionUseCase>(),
     ),
   );
 
-  getIt.registerSingleton<FacebookSignInUseCase>(
-    FacebookSignInUseCase(
+  getIt.registerLazySingleton<FacebookSignInUseCase>(
+    () => FacebookSignInUseCase(
       getIt<AuthRepoImp>(),
-      getIt.get<SaveUserSessionUseCase>()
+      getIt.get<SaveUserSessionUseCase>(),
     ),
   );
 

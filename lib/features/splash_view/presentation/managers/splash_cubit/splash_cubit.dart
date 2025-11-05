@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
+
 part 'splash_state.dart';
 
 class SplashCubit extends Cubit<SplashState> {
