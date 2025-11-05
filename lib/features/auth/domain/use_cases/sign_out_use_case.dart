@@ -1,3 +1,4 @@
+import 'package:fruit_hub/core/helpers/network_response.dart';
 import '../repo/auth_repo.dart';
 
 class SignOutUseCase {
@@ -5,5 +6,5 @@ class SignOutUseCase {
 
   final AuthRepo _authRepo;
 
-  Future<void> call() async => await _authRepo.signOut();
+  Future<NetworkResponse<void>> call() async => await _authRepo.signOut();
 }

@@ -1,9 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
-
 import '../../../../../core/helpers/functions.dart';
 
 part 'sign_up_state.dart';
@@ -28,11 +28,9 @@ class SignupCubit extends Cubit<SignupState> {
     );
     switch (result) {
       case NetworkSuccess<UserEntity>():
-        emit(SignUpSuccess(result.data!));
+        emit(SignUpSuccess());
       case NetworkFailure<UserEntity>():
-        emit(SignUpFailure(getErrorMessage(result)));
+        emit(SignUpFailure(getErrorMessage(result).tr()));
     }
   }
-
-
 }

@@ -57,9 +57,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
 
       if (!userEntity.isVerified) {
         await _authService.sendEmailVerification();
-        return NetworkFailure(
-          Exception("Please verify your email. A new link has been sent."),
-        );
+        return NetworkFailure(Exception("please_verify_your_email"));
       }
 
       final updatedUser = await _getOrUpdateUserFromDB(userEntity);
@@ -82,13 +80,16 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
 
   @override
   Future<NetworkResponse<void>> forgetPassword(String email) async {
-    if (await _checkIfEmailExists(email)) {
-      await _authService.forgetPassword(email);
-      return NetworkSuccess();
-    } else {
-      return NetworkFailure(
-        Exception("No user found with that email address."),
-      );
+    try {
+      var bool = await _checkIfEmailExists(email);
+      if (bool) {
+        await _authService.forgetPassword(email);
+        return const NetworkSuccess();
+      } else {
+        return NetworkFailure(Exception("no_user_found_for_that_email"));
+      }
+    } catch (e) {
+      return _handleAuthError(e, "forgetPassword");
     }
   }
 
@@ -96,7 +97,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   Future<NetworkResponse<void>> signOut() async {
     try {
       await _authService.signOut();
-      return NetworkSuccess();
+      return const NetworkSuccess();
     } catch (e) {
       return _handleAuthError(e, "signOut");
     }
@@ -129,9 +130,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
       );
     }
-    return NetworkFailure(
-      Exception("An unexpected error occurred: ${e.toString()}"),
-    );
+    return NetworkFailure(Exception("error_occurred_please_try_again"));
   }
 
   Future<UserEntity> _getOrUpdateUserFromDB(UserEntity user) async {

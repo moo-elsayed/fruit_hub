@@ -6,6 +6,6 @@ class ForgetPasswordUseCase {
 
   final AuthRepo _authRepo;
 
-  Future<NetworkResponse> forgetPassword(String email) async =>
+  Future<NetworkResponse<void>> call(String email) async =>
       await _authRepo.forgetPassword(email);
 }

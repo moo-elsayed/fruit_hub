@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/auth_repo_imp.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
+import 'package:fruit_hub/features/auth/domain/use_cases/save_user_session_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
 import 'package:fruit_hub/features/home/data/data_sources/remote/home_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/home/data/repo_imp/home_repo_imp.dart';
@@ -12,6 +15,7 @@ import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_product
 import 'package:fruit_hub/features/search/data/data_sources/search_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/search/data/repo_imp/search_repo_imp.dart';
 import 'package:fruit_hub/features/search/domain/use_cases/search_fruits_use_case.dart';
+import 'package:fruit_hub/shared_data/services/local_storage_service/shared_preferences_manager.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../features/auth/data/data_sources/remote/auth_remote_data_source_imp.dart';
@@ -26,9 +30,20 @@ import '../../shared_data/services/database/firestore_service.dart';
 final getIt = GetIt.instance;
 
 void setupServiceLocator() {
+  /// local storage service
+  getIt.registerSingletonAsync<LocalStorageService>(() async {
+    final service = SharedPreferencesManager();
+    await service.init();
+    return service;
+  });
+
   /// auth
   getIt.registerSingleton<AuthService>(
-    FirebaseAuthService(FirebaseAuth.instance, GoogleSignIn.instance),
+    FirebaseAuthService(
+      FirebaseAuth.instance,
+      GoogleSignIn.instance,
+      FacebookAuth.instance,
+    ),
   );
 
   getIt.registerSingleton<DatabaseService>(
@@ -44,20 +59,33 @@ void setupServiceLocator() {
     ),
   );
 
-  getIt.registerSingleton<SignInWithEmailAndPasswordUseCase>(
-    SignInWithEmailAndPasswordUseCase(getIt<AuthRepoImp>()),
+  getIt.registerLazySingleton<SaveUserSessionUseCase>(
+    () => SaveUserSessionUseCase(getIt<LocalStorageService>()),
+  );
+
+  getIt.registerLazySingleton<SignInWithEmailAndPasswordUseCase>(
+    () => SignInWithEmailAndPasswordUseCase(
+      getIt<AuthRepoImp>(),
+      getIt.get<SaveUserSessionUseCase>(),
+    ),
   );
 
   getIt.registerSingleton<CreateUserWithEmailAndPasswordUseCase>(
     CreateUserWithEmailAndPasswordUseCase(getIt<AuthRepoImp>()),
   );
 
-  getIt.registerSingleton<GoogleSignInUseCase>(
-    GoogleSignInUseCase(getIt<AuthRepoImp>()),
+  getIt.registerLazySingleton<GoogleSignInUseCase>(
+    () => GoogleSignInUseCase(
+      getIt<AuthRepoImp>(),
+      getIt.get<SaveUserSessionUseCase>(),
+    ),
   );
 
-  getIt.registerSingleton<FacebookSignInUseCase>(
-    FacebookSignInUseCase(getIt<AuthRepoImp>()),
+  getIt.registerLazySingleton<FacebookSignInUseCase>(
+    () => FacebookSignInUseCase(
+      getIt<AuthRepoImp>(),
+      getIt.get<SaveUserSessionUseCase>(),
+    ),
   );
 
   getIt.registerSingleton<ForgetPasswordUseCase>(

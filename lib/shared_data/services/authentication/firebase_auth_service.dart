@@ -10,8 +10,9 @@ import '../../../core/services/authentication/auth_service.dart';
 class FirebaseAuthService implements AuthService {
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
+  final FacebookAuth _facebookAuth;
 
-  FirebaseAuthService(this._auth, this._googleSignIn);
+  FirebaseAuthService(this._auth, this._googleSignIn, this._facebookAuth);
 
   @override
   Future<UserEntity> createUserWithEmailAndPassword({
@@ -22,8 +23,7 @@ class FirebaseAuthService implements AuthService {
       email: email,
       password: password,
     );
-
-    return UserModel.fromFirebaseUser(credential.user!).toUserEntity();
+    return _returnUserEntity(credential);
   }
 
   @override
@@ -35,7 +35,7 @@ class FirebaseAuthService implements AuthService {
       email: email,
       password: password,
     );
-    return UserModel.fromFirebaseUser(credential.user!).toUserEntity();
+    return _returnUserEntity(credential);
   }
 
   @override
@@ -59,24 +59,28 @@ class FirebaseAuthService implements AuthService {
 
   @override
   Future<void> sendEmailVerification() async =>
-      await _auth.currentUser!.sendEmailVerification();
+      await _auth.currentUser?.sendEmailVerification();
 
   @override
   Future<void> signOut() async => await _auth.signOut();
 
   Future<User> _facebookSignInInternal() async {
     try {
-      final LoginResult loginResult = await FacebookAuth.instance.login(
+      final LoginResult loginResult = await _facebookAuth.login(
         permissions: ['public_profile', 'email'],
       );
 
+      final accessToken = loginResult.accessToken;
+      if (accessToken == null) {
+        throw Exception('Facebook access token is null.');
+      }
       final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
+          FacebookAuthProvider.credential(accessToken.tokenString);
 
-      final UserCredential signInWithCredential = await FirebaseAuth.instance
+      final UserCredential signInWithCredential = await _auth
           .signInWithCredential(facebookAuthCredential);
 
-      return signInWithCredential.user!;
+      return _returnUser(signInWithCredential);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'account-exists-with-different-credential':
@@ -134,6 +138,22 @@ class FirebaseAuthService implements AuthService {
     );
 
     var userCredential = await _auth.signInWithCredential(credential);
-    return userCredential.user!;
+    return _returnUser(userCredential);
+  }
+
+  User _returnUser(UserCredential userCredential) {
+    final user = userCredential.user;
+    if (user == null) {
+      throw Exception('Firebase user object is null after sign in.');
+    }
+    return user;
+  }
+
+  UserEntity _returnUserEntity(UserCredential credential) {
+    final user = credential.user;
+    if (user == null) {
+      throw Exception('Firebase user object is null after sign in.');
+    }
+    return UserModel.fromFirebaseUser(user).toUserEntity();
   }
 }

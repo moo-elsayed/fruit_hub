@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
-import 'package:fruit_hub/animated_splash_view.dart';
+import 'package:fruit_hub/features/splash_view/presentation/views/animated_splash_view.dart';
 import 'package:fruit_hub/features/app_section/presentation/views/app_section.dart';
 import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:fruit_hub/features/search/presentation/views/search_view.dart';
