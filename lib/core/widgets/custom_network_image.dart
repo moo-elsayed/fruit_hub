@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../generated/assets.dart';
 
 class CustomNetworkImage extends StatelessWidget {
-  const CustomNetworkImage({super.key,required this.image});
+  const CustomNetworkImage({super.key,this.image = ''});
 
   final String image;
 

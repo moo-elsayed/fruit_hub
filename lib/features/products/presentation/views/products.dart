@@ -40,9 +40,12 @@ class _ProductsState extends State<Products> {
           backgroundColor: AppColors.white,
           surfaceTintColor: AppColors.white,
           flexibleSpace: FlexibleSpaceBar(
-            background: CustomAppBar(
-              title: "products".tr(),
-              showNotification: true,
+            background: Padding(
+              padding: EdgeInsetsGeometry.only(top: 10.h),
+              child: CustomAppBar(
+                title: "products".tr(),
+                showNotification: true,
+              ),
             ),
           ),
         ),

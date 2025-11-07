@@ -78,5 +78,8 @@
   "language": "اللغة",
   "app_language": "العربية",
   "sign_out": "تسجيل الخروج",
-  "our_products": "منتجاتنا"
+  "our_products": "منتجاتنا",
+  "cart_app_bar": "السلة",
+  "you_have": "لديك",
+  "products_in_the_shopping_cart": "منتجات في سله التسوق"
 }

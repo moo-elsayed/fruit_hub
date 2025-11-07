@@ -78,5 +78,8 @@
   "language": "Language",
   "app_language": "English",
   "sign_out": "Sign out",
-  "our_products": "Our Products"
+  "our_products": "Our Products",
+  "cart_app_bar": "Cart",
+  "you_have": "You have",
+  "products_in_the_shopping_cart": "products in the shopping cart"
 }

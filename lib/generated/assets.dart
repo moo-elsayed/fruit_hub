@@ -24,6 +24,7 @@ class Assets {
   static const String iconsSearchIcon = 'assets/svgs/icons/search_icon.svg';
   static const String iconsShoppingCartFilled = 'assets/svgs/icons/shopping-cart-filled.svg';
   static const String iconsShoppingCartOutline = 'assets/svgs/icons/shopping-cart-outline.svg';
+  static const String iconsTrash = 'assets/svgs/icons/trash.svg';
   static const String imagesAppLogo = 'assets/images/app-logo.png';
   static const String imagesFruitsImage = 'assets/images/fruits-image.png';
   static const String imagesProfileImage = 'assets/images/profile_image.png';

@@ -4,7 +4,6 @@ import 'app_colors.dart';
 import 'font_weight_helper.dart';
 
 abstract class AppTextStyles {
-
   static TextStyle font11color1B5E37semiBold = TextStyle(
     fontSize: 11.sp,
     color: AppColors.color1B5E37,
@@ -19,9 +18,23 @@ abstract class AppTextStyles {
     fontWeight: FontWeightHelper.regular,
   );
 
+  static TextStyle font13color1B5E37Regular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color1B5E37,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
   static TextStyle font13WhiteRegular = TextStyle(
     fontSize: 13.sp,
     color: AppColors.white,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
+  static TextStyle font13colorF4A91FRegular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.colorF4A91F,
     fontFamily: "Cairo",
     fontWeight: FontWeightHelper.regular,
   );
@@ -78,6 +91,13 @@ abstract class AppTextStyles {
   static TextStyle font13color1B5E37Bold = TextStyle(
     fontSize: 13.sp,
     color: AppColors.color1B5E37,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font13color06161CBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color06161C,
     fontFamily: "Cairo",
     fontWeight: FontWeightHelper.bold,
   );
