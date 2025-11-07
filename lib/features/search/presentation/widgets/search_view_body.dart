@@ -78,7 +78,7 @@ class _SearchViewBodyState extends State<SearchViewBody> {
                   return const SizedBox.shrink();
                 } else {
                   if (state is SearchSuccess) {
-                    if (state.products.isEmpty) {
+                    if (state.fruits.isEmpty) {
                       return const SearchPlaceholderWidget();
                     } else {
                       return Expanded(
@@ -97,7 +97,7 @@ class _SearchViewBodyState extends State<SearchViewBody> {
                               ),
                             ),
                             Expanded(
-                              child: FruitsGridView(fruits: state.products),
+                              child: FruitsGridView(fruits: state.fruits),
                             ),
                           ],
                         ),

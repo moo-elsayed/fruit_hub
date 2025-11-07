@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
@@ -19,7 +20,7 @@ class SearchCubit extends Cubit<SearchState> {
       case NetworkSuccess<List<FruitEntity>>():
         emit(SearchSuccess(result.data ?? []));
       case NetworkFailure<List<FruitEntity>>():
-        emit(SearchFailure(getErrorMessage(result)));
+        emit(SearchFailure(getErrorMessage(result).tr()));
     }
   }
 }

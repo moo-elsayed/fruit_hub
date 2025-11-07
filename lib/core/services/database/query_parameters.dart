@@ -1,4 +1,6 @@
-class QueryParameters {
+import 'package:equatable/equatable.dart';
+
+class QueryParameters extends Equatable {
   const QueryParameters({
     this.searchQuery,
     this.orderBy,
@@ -10,4 +12,7 @@ class QueryParameters {
   final String? searchQuery;
   final bool descending;
   final int? limit;
+
+  @override
+  List<Object?> get props => [orderBy, searchQuery, descending, limit];
 }
