@@ -26,6 +26,10 @@ void main() {
   });
 
   group('products cubit', () {
+    test('initial state should be ProductsInitial', () {
+      expect(sut.state, isA<ProductsInitial>());
+    });
+
     blocTest<ProductsCubit, ProductsState>(
       'emits [GetAllProductsLoading, GetAllProductsSuccess] when getBestSellerProducts is successful',
       build: () => sut,

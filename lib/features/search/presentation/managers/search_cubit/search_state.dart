@@ -8,9 +8,9 @@ final class SearchInitial extends SearchState {}
 final class SearchLoading extends SearchState {}
 
 final class SearchSuccess extends SearchState {
-  SearchSuccess(this.products);
+  SearchSuccess(this.fruits);
 
-  final List<FruitEntity> products;
+  final List<FruitEntity> fruits;
 }
 
 final class SearchFailure extends SearchState {
