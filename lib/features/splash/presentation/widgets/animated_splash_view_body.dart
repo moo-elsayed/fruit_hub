@@ -5,9 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fruit_hub/features/app_section/presentation/views/app_section.dart';
 import 'package:fruit_hub/features/auth/presentation/views/login_view.dart';
-import 'package:fruit_hub/features/splash_view/presentation/managers/splash_cubit/splash_cubit.dart';
 import '../../../../generated/assets.dart';
 import '../../../onboarding/presentation/views/onboarding_view.dart';
+import '../managers/splash_cubit/splash_cubit.dart';
 
 class AnimatedSplashViewBody extends StatefulWidget {
   const AnimatedSplashViewBody({super.key});
