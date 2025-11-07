@@ -102,7 +102,7 @@ class _HomeState extends State<Home> {
                         name: Routes.bestSellerView,
                       ),
                       screen: BestSellerView(
-                        scrollController: widget.scrollControllers[1],
+                        scrollController: widget.scrollControllers[0],
                         fruits: fruits,
                       ),
                       withNavBar: true,

@@ -1,32 +1,104 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/theming/app_colors.dart';
+import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
-import 'package:gap/gap.dart';
-import '../../../../core/widgets/search_text_field.dart';
+import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
+import 'package:fruit_hub/generated/assets.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import '../../../../core/widgets/fruits_grid_view.dart';
 
-class Products extends StatelessWidget {
+class Products extends StatefulWidget {
   const Products({super.key});
 
   @override
+  State<Products> createState() => _ProductsState();
+}
+
+class _ProductsState extends State<Products> {
+  List<FruitEntity> fruits = [];
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProductsCubit>().getAllProducts();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      behavior: HitTestBehavior.opaque,
-      child: Column(
-        children: [
-          Gap(5.h),
-          CustomAppBar(title: "products".tr(), showNotification: true),
-          Padding(
-            padding: EdgeInsets.only(
-              right: 16.w,
-              left: 16.w,
-              bottom: 12.h,
-              top: 13.h,
+    return NestedScrollView(
+      headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        SliverAppBar(
+          floating: true,
+          snap: true,
+          pinned: false,
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.white,
+          surfaceTintColor: AppColors.white,
+          flexibleSpace: FlexibleSpaceBar(
+            background: CustomAppBar(
+              title: "products".tr(),
+              showNotification: true,
             ),
-            child: const SearchTextFiled(),
           ),
-        ],
+        ),
+        SliverAppBar(
+          pinned: true,
+          floating: false,
+          snap: false,
+          automaticallyImplyLeading: false,
+          backgroundColor: AppColors.white,
+          surfaceTintColor: AppColors.white,
+          toolbarHeight: 0,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(52.h),
+            child: Padding(
+              padding: EdgeInsetsGeometry.symmetric(
+                horizontal: 16.w,
+                vertical: 8.h,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "our_products".tr(),
+                    style: AppTextStyles.font16color0C0D0DBold,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 6.h,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(4.r)),
+                      border: Border.all(color: AppColors.colorEAEBEB),
+                    ),
+                    child: SvgPicture.asset(Assets.iconsFilter),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+      body: BlocBuilder<ProductsCubit, ProductsState>(
+        builder: (context, state) {
+          if (state is GetAllProductsSuccess) {
+            fruits = state.fruits;
+            return FruitsGridView(fruits: fruits);
+          } else if (state is GetAllProductsLoading) {
+            return const Skeletonizer(
+              enabled: true,
+              child: FruitsGridView(itemCount: 6),
+            );
+          } else {
+            return const Text("error");
+          }
+        },
       ),
     );
   }

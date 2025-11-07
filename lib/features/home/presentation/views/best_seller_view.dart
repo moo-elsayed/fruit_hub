@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/extentions.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
@@ -24,7 +25,10 @@ class BestSellerView extends StatelessWidget {
         showNotification: true,
         onTap: () => context.pop(),
       ),
-      body: FruitsGridView(scrollController: scrollController, fruits: fruits),
+      body: Padding(
+        padding: EdgeInsetsGeometry.only(top: 8.h),
+        child: FruitsGridView(scrollController: scrollController, fruits: fruits),
+      ),
     );
   }
 }

@@ -9,7 +9,7 @@ import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_
 import 'package:fruit_hub/features/home/data/data_sources/remote/home_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/home/data/repo_imp/home_repo_imp.dart';
 import 'package:fruit_hub/features/products/data/data_sources/products_remote_data_source_imp.dart';
-import 'package:fruit_hub/features/products/data/repo_imp/home_repo_imp.dart';
+import 'package:fruit_hub/features/products/data/repo_imp/products_repo_imp.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
 import 'package:fruit_hub/features/search/data/data_sources/search_remote_data_source_imp.dart';

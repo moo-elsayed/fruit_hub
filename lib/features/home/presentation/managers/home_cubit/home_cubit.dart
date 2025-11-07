@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
@@ -22,7 +23,9 @@ class HomeCubit extends Cubit<HomeState> {
       case NetworkSuccess<List<FruitEntity>>():
         emit(GetBestSellerProductsSuccess(networkResponse.data ?? []));
       case NetworkFailure<List<FruitEntity>>():
-        emit(GetBestSellerProductsFailure(getErrorMessage(networkResponse)));
+        emit(
+          GetBestSellerProductsFailure(getErrorMessage(networkResponse).tr()),
+        );
     }
   }
 

@@ -45,10 +45,6 @@ class SearchTextFiled extends StatelessWidget {
           controller: controller,
           onChanged: onChanged,
           contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
-          suffixWidget: SvgPicture.asset(
-            Assets.iconsFilter,
-            fit: BoxFit.scaleDown,
-          ),
           prefixIcon: SvgPicture.asset(
             Assets.iconsSearchIcon,
             fit: BoxFit.scaleDown,
