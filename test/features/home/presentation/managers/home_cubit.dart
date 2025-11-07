@@ -45,7 +45,7 @@ void main() {
           () => mockGetBestSellerProductsUseCase.call(),
         ).thenAnswer((_) async => tSuccessResponse);
       },
-      act: (bloc) => sut.getBestSellerProducts(),
+      act: (_) => sut.getBestSellerProducts(),
       expect: () => [
         isA<GetBestSellerProductsLoading>(),
         isA<GetBestSellerProductsSuccess>().having(

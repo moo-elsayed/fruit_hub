@@ -15,6 +15,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     this.showArrowBack = false,
     this.showNotification = false,
+    this.centerTitle = true,
     this.onTap,
   });
 
@@ -22,6 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showArrowBack;
   final VoidCallback? onTap;
   final bool showNotification;
+  final bool centerTitle;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -29,29 +31,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: Visibility(
-        visible: showArrowBack,
-        child: GestureDetector(
-          onTap: onTap,
-          child: Container(
-            margin: EdgeInsetsDirectional.only(start: 16.w),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-              border: Border.all(color: AppColors.colorF1F1F5),
-            ),
-            child: Transform.rotate(
-              angle: isArabic(context) ? 0 : pi,
-              child: SvgPicture.asset(
-                Assets.iconsArrowBack,
-                fit: BoxFit.scaleDown,
+      leading: showArrowBack
+          ? GestureDetector(
+              onTap: onTap,
+              child: Container(
+                margin: EdgeInsetsDirectional.only(start: 16.w),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  border: Border.all(color: AppColors.colorF1F1F5),
+                ),
+                child: Transform.rotate(
+                  angle: isArabic(context) ? 0 : pi,
+                  child: SvgPicture.asset(
+                    Assets.iconsArrowBack,
+                    fit: BoxFit.scaleDown,
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
+            )
+          : null,
       title: Text(title, style: AppTextStyles.font19color0C0D0DBold),
-      centerTitle: true,
+      centerTitle: centerTitle,
       actions: showNotification
           ? [const NotificationWidget(), Gap(16.w)]
           : null,

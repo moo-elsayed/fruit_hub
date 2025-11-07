@@ -2,15 +2,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
-import 'package:fruit_hub/features/home/domain/repo/home_repo.dart';
-import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
+import 'package:fruit_hub/features/products/domain/repo/products_repo.dart';
+import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockHomeRepo extends Mock implements HomeRepo {}
+class MockProductsRepo extends Mock implements ProductsRepo {}
 
 void main() {
-  late GetBestSellerProductsUseCase sut;
-  late MockHomeRepo mockHomeRepo;
+  late GetAllProductsUseCase sut;
+  late MockProductsRepo mockProductsRepo;
 
   List<FruitEntity> fruits = [FruitEntity(), FruitEntity(), FruitEntity()];
 
@@ -20,35 +20,33 @@ void main() {
   );
 
   setUp(() {
-    mockHomeRepo = MockHomeRepo();
-    sut = GetBestSellerProductsUseCase(mockHomeRepo);
+    mockProductsRepo = MockProductsRepo();
+    sut = GetAllProductsUseCase(mockProductsRepo);
   });
 
-  group("GetBestSellerProductsUseCase", () {
+  group('GetAllProductsUseCase', () {
     test(
       'should return a list of fruits when the call to the repository is successful',
       () async {
         // Arrange
         when(
-          () => mockHomeRepo.getBestSellerProducts(),
+          () => mockProductsRepo.getAllProducts(),
         ).thenAnswer((_) async => tSuccessResponse);
-
         // Act
         final result = await sut.call();
-
         // Assert
         expect(result, tSuccessResponse);
-        verify(() => mockHomeRepo.getBestSellerProducts()).called(1);
-        verifyNoMoreInteractions(mockHomeRepo);
+        verify(() => mockProductsRepo.getAllProducts()).called(1);
+        verifyNoMoreInteractions(mockProductsRepo);
       },
     );
 
     test(
-      'should return a failure when the call to the repository fails',
+      'should return a failure when the call to the repository is unsuccessful',
       () async {
         // Arrange
         when(
-          () => mockHomeRepo.getBestSellerProducts(),
+          () => mockProductsRepo.getAllProducts(),
         ).thenAnswer((_) async => tFailureResponse);
 
         // Act
@@ -57,8 +55,8 @@ void main() {
         // Assert
         expect(result, tFailureResponse);
         expect(getErrorMessage(result), "permission-denied");
-        verify(() => mockHomeRepo.getBestSellerProducts()).called(1);
-        verifyNoMoreInteractions(mockHomeRepo);
+        verify(() => mockProductsRepo.getAllProducts()).called(1);
+        verifyNoMoreInteractions(mockProductsRepo);
       },
     );
   });
