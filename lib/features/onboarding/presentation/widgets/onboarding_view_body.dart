@@ -8,7 +8,7 @@ import 'package:gap/gap.dart';
 import '../../../../core/routing/routes.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/custom_material_button.dart';
-import '../../domain/entities/onboarding_model.dart';
+import '../../domain/entities/onboarding_entity.dart';
 import '../managers/onboarding_cubit/onboarding_cubit.dart';
 import 'onboarding_indicator.dart';
 import 'onboarding_page_view.dart';

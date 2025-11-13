@@ -9,7 +9,7 @@ import 'package:gap/gap.dart';
 import '../../../../core/helpers/functions.dart';
 import '../../../../core/routing/routes.dart';
 import '../../../../core/theming/app_text_styles.dart';
-import '../../domain/entities/onboarding_model.dart';
+import '../../domain/entities/onboarding_entity.dart';
 
 class PageViewItem extends StatelessWidget {
   const PageViewItem({super.key, required this.slide, required this.showSkip});

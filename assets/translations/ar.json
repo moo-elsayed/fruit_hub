@@ -68,6 +68,7 @@
   "more": "المزيد",
   "pounds":"جنية",
   "kilo": "الكيلو",
+  "per_kilo": "كم",
   "home": "الرئيسية",
   "products": "المنتجات",
   "shopping_cart": "سلة التسوق",
@@ -81,5 +82,7 @@
   "our_products": "منتجاتنا",
   "cart_app_bar": "السلة",
   "you_have": "لديك",
-  "products_in_the_shopping_cart": "منتجات في سله التسوق"
+  "products_in_the_shopping_cart": "منتجات في سله التسوق",
+  "checkout": "الدفع",
+  "user_not_logged_in": "المستخدم غير مسجل الدخول"
 }

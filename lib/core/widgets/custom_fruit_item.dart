@@ -8,6 +8,7 @@ import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_favourite_icon.dart';
 import 'package:fruit_hub/generated/assets.dart';
 import '../helpers/functions.dart';
+import 'custom_action_button.dart';
 import 'custom_network_image.dart';
 
 class CustomFruitItem extends StatelessWidget {
@@ -62,13 +63,9 @@ class CustomFruitItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  GestureDetector(
+                  CustomActionButton(
                     onTap: () {},
-                    child: CircleAvatar(
-                      radius: 18.r,
-                      backgroundColor: AppColors.color1B5E37,
-                      child: SvgPicture.asset(Assets.iconsPlus),
-                    ),
+                    child: SvgPicture.asset(Assets.iconsPlus),
                   ),
                 ],
               ),

@@ -94,4 +94,14 @@ class FirestoreService implements DatabaseService {
     final querySnapshot = await collection.get();
     return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
+
+  @override
+  Future<void> deleteData({
+    required String path,
+    required String documentId,
+  }) async {
+    final collection = _firestore.collection(path);
+    final docRef = collection.doc(documentId);
+    await docRef.delete();
+  }
 }

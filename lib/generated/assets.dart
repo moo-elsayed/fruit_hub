@@ -14,6 +14,7 @@ class Assets {
   static const String iconsGoogleIcon = 'assets/svgs/icons/google_icon.svg';
   static const String iconsHomeFilled = 'assets/svgs/icons/home-filled.svg';
   static const String iconsHomeOutline = 'assets/svgs/icons/home-outline.svg';
+  static const String iconsIconsMinus = 'assets/svgs/icons/icons-minus.svg';
   static const String iconsLanguageIcon = 'assets/svgs/icons/language-icon.svg';
   static const String iconsNotification = 'assets/svgs/icons/notification.svg';
   static const String iconsPlus = 'assets/svgs/icons/plus.svg';
