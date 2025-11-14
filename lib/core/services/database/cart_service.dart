@@ -4,4 +4,8 @@ abstract class CartService {
   Future<void> addItemToCart(CartItemEntity item);
 
   Future<void> removeItemFromCart(String productId);
+
+  Future<void> incrementItemQuantity(String productId);
+
+  Future<void> decrementItemQuantity(String productId);
 }

@@ -5,4 +5,11 @@ abstract class CartRepo {
   Future<NetworkResponse<void>> addItemToCart(CartItemEntity item);
 
   Future<NetworkResponse<void>> removeItemFromCart(String productId);
+
+  Future<NetworkResponse<List<CartItemEntity>>> getCartItems();
+
+  Future<NetworkResponse<void>> updateItemQuantity({
+    required String productId,
+    required int newQuantity,
+  });
 }

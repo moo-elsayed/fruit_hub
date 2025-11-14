@@ -5,22 +5,22 @@ sealed class CartState {}
 
 final class CartInitial extends CartState {}
 
-final class AddItemToCartLoading extends CartState {}
+class CartLoading extends CartState {}
 
-final class AddItemToCartSuccess extends CartState {}
+class CartSuccess extends CartState {
+  CartSuccess({
+    required this.items,
+    required this.totalPrice,
+    required this.totalItemCount,
+  });
 
-final class AddItemToCartFailure extends CartState {
-  AddItemToCartFailure(this.errorMessage);
-
-  final String errorMessage;
+  final List<CartItemEntity> items;
+  final double totalPrice;
+  final int totalItemCount;
 }
 
-final class RemoveItemFromCartLoading extends CartState {}
-
-final class RemoveItemFromCartSuccess extends CartState {}
-
-final class RemoveItemFromCartFailure extends CartState {
-  RemoveItemFromCartFailure(this.errorMessage);
+class CartFailure extends CartState {
+  CartFailure(this.errorMessage);
 
   final String errorMessage;
 }

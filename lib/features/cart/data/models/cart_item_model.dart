@@ -1,5 +1,7 @@
 import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
 
+import '../../../../core/entities/fruit_entity.dart';
+
 class CartItemModel {
   CartItemModel({
     required this.fruitCode,
@@ -15,7 +17,7 @@ class CartItemModel {
   final int quantity;
   final double price;
 
-  Map<String, dynamic> toFirestore() => {
+  Map<String, dynamic> toJson() => {
     'fruitCode': fruitCode,
     'quantity': quantity,
     'price': price,
@@ -23,14 +25,13 @@ class CartItemModel {
     'imageUrl': imageUrl,
   };
 
-  factory CartItemModel.fromFirestore(Map<String, dynamic> map) =>
-      CartItemModel(
-        fruitCode: map['fruitCode'] as String,
-        quantity: map['quantity'] as int,
-        price: map['price'] as double,
-        productName: map['productName'] as String,
-        imageUrl: map['imageUrl'] as String,
-      );
+  factory CartItemModel.fromJson(Map<String, dynamic> map) => CartItemModel(
+    fruitCode: map['fruitCode'] as String,
+    quantity: map['quantity'] as int,
+    price: map['price'] as double,
+    productName: map['productName'] as String,
+    imageUrl: map['imageUrl'] as String,
+  );
 
   factory CartItemModel.fromEntity(CartItemEntity cartItem) => CartItemModel(
     fruitCode: cartItem.fruitEntity.code,
@@ -38,5 +39,14 @@ class CartItemModel {
     price: cartItem.fruitEntity.price,
     productName: cartItem.fruitEntity.name,
     imageUrl: cartItem.fruitEntity.imagePath,
+  );
+
+  CartItemEntity toEntity() => CartItemEntity(
+    quantity: quantity,
+    fruitEntity: FruitEntity(
+      code: fruitCode,
+      name: productName,
+      imagePath: imageUrl,
+    ),
   );
 }

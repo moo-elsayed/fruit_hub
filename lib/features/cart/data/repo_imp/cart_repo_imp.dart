@@ -15,4 +15,17 @@ class CartRepoImp implements CartRepo {
   @override
   Future<NetworkResponse<void>> removeItemFromCart(String productId) async =>
       await _cartRemoteDataSource.removeItemFromCart(productId);
+
+  @override
+  Future<NetworkResponse<List<CartItemEntity>>> getCartItems() async =>
+      await _cartRemoteDataSource.getCartItems();
+
+  @override
+  Future<NetworkResponse<void>> updateItemQuantity({
+    required String productId,
+    required int newQuantity,
+  }) async => await _cartRemoteDataSource.updateItemQuantity(
+    productId: productId,
+    newQuantity: newQuantity,
+  );
 }
