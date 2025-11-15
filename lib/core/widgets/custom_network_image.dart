@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../generated/assets.dart';
 
 class CustomNetworkImage extends StatelessWidget {
-  const CustomNetworkImage({super.key,required this.image});
+  const CustomNetworkImage({super.key, this.image = ''});
 
   final String image;
 
@@ -11,8 +11,6 @@ class CustomNetworkImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return image == ''
         ? Image.asset(Assets.imagesWatermelonTest)
-        : Flexible(
-      child: CachedNetworkImage(imageUrl: image, fit: BoxFit.scaleDown),
-    );
+        : CachedNetworkImage(imageUrl: image);
   }
 }

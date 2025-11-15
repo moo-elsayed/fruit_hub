@@ -185,7 +185,7 @@ void main() {
       expect(result, isEmpty);
     });
   });
-  group('delete data', () {
+  group('query data', () {
     final docA = {'name': 'Apple', 'age': 20};
     final docB = {'name': 'Banana', 'age': 30};
     final docC = {'name': 'Apricot', 'age': 10};
@@ -265,5 +265,31 @@ void main() {
       expect(result.length, 1);
       expect(result.first, docC);
     });
+  });
+
+  group('delete data', () {
+    const tPath = 'users/MPftaMy6QegYipyXw8mYGNG7pa42/cart';
+    test('should delete data successfully when document exists', () async {
+      // Arrange
+      await fakeFirestore.collection(tPath).doc(tDocId).set(tData);
+      // Act
+      await sut.deleteData(path: tPath, documentId: tDocId);
+      // Assert
+      final snapshot = await fakeFirestore.collection(tPath).doc(tDocId).get();
+      expect(snapshot.exists, isFalse);
+      expect(snapshot.data(), isNull);
+      expect(snapshot.metadata.hasPendingWrites, isFalse);
+    });
+
+    test(
+      'should complete successfully (not throw) when document does not exist',
+      () {
+        // Arrange (empty, doc doesn't exist)
+        // Act
+        final call = sut.deleteData(path: tPath, documentId: tDocId);
+        // Assert
+        expect(call, completes);
+      },
+    );
   });
 }

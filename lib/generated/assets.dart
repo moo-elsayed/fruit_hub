@@ -14,6 +14,7 @@ class Assets {
   static const String iconsGoogleIcon = 'assets/svgs/icons/google_icon.svg';
   static const String iconsHomeFilled = 'assets/svgs/icons/home-filled.svg';
   static const String iconsHomeOutline = 'assets/svgs/icons/home-outline.svg';
+  static const String iconsIconsMinus = 'assets/svgs/icons/icons-minus.svg';
   static const String iconsLanguageIcon = 'assets/svgs/icons/language-icon.svg';
   static const String iconsNotification = 'assets/svgs/icons/notification.svg';
   static const String iconsPlus = 'assets/svgs/icons/plus.svg';
@@ -24,6 +25,7 @@ class Assets {
   static const String iconsSearchIcon = 'assets/svgs/icons/search_icon.svg';
   static const String iconsShoppingCartFilled = 'assets/svgs/icons/shopping-cart-filled.svg';
   static const String iconsShoppingCartOutline = 'assets/svgs/icons/shopping-cart-outline.svg';
+  static const String iconsTrash = 'assets/svgs/icons/trash.svg';
   static const String imagesAppLogo = 'assets/images/app-logo.png';
   static const String imagesFruitsImage = 'assets/images/fruits-image.png';
   static const String imagesProfileImage = 'assets/images/profile_image.png';

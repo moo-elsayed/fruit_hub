@@ -1,13 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/services/database/cart_service.dart';
 import 'package:fruit_hub/core/theming/app_colors.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_favourite_icon.dart';
+import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:fruit_hub/generated/assets.dart';
+import '../../features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import '../helpers/functions.dart';
+import 'custom_action_button.dart';
 import 'custom_network_image.dart';
 
 class CustomFruitItem extends StatelessWidget {
@@ -32,7 +37,7 @@ class CustomFruitItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             spacing: 8.h,
             children: [
-              CustomNetworkImage(image: fruitEntity.imagePath),
+              Flexible(child: CustomNetworkImage(image: fruitEntity.imagePath)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -62,13 +67,14 @@ class CustomFruitItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: CircleAvatar(
-                      radius: 18.r,
-                      backgroundColor: AppColors.color1B5E37,
-                      child: SvgPicture.asset(Assets.iconsPlus),
-                    ),
+                  CustomActionButton(
+                    onTap: () {
+                      CartService myCartService = context.read<CartCubit>();
+                      myCartService.addItemToCart(
+                        CartItemEntity(fruitEntity: fruitEntity),
+                      );
+                    },
+                    child: SvgPicture.asset(Assets.iconsPlus),
                   ),
                 ],
               ),

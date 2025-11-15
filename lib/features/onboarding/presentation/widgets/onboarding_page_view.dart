@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fruit_hub/features/onboarding/domain/entities/onboarding_model.dart';
+import 'package:fruit_hub/features/onboarding/domain/entities/onboarding_entity.dart';
 import 'package:fruit_hub/features/onboarding/presentation/widgets/page_view_item.dart';
 
 class OnboardingPageView extends StatelessWidget {

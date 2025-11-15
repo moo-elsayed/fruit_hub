@@ -25,7 +25,7 @@ abstract class AppToast {
             )
           : null,
       primaryColor: Colors.white,
-      autoCloseDuration: const Duration(seconds: 2, milliseconds: 500),
+      autoCloseDuration: const Duration(seconds: 2),
       progressBarTheme: ProgressIndicatorThemeData(
         color: type == ToastificationType.success
             ? Colors.green

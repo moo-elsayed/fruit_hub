@@ -68,6 +68,7 @@
   "more": "More",
   "pounds": "Pounds",
   "kilo": "Kilo",
+  "per_kilo": "kilo",
   "home": "Home",
   "products": "Products",
   "shopping_cart": "Shopping Cart",
@@ -78,5 +79,10 @@
   "language": "Language",
   "app_language": "English",
   "sign_out": "Sign out",
-  "our_products": "Our Products"
+  "our_products": "Our Products",
+  "cart_app_bar": "Cart",
+  "you_have": "You have",
+  "products_in_the_shopping_cart": "products in the shopping cart",
+  "checkout": "Checkout",
+  "user_not_logged_in": "User not logged in"
 }
