@@ -27,11 +27,10 @@ class CartCubit extends Cubit<CartState> implements CartService {
 
   @override
   Future<void> addItemToCart(CartItemEntity item) async {
-    emit(CartLoading());
     final result = await _addItemToCartUseCase.call(item);
     switch (result) {
       case NetworkSuccess<void>():
-        await getCartItems();
+        await getCartItems(false);
       case NetworkFailure<void>():
         emit(CartFailure(getErrorMessage(result).tr()));
     }
@@ -39,26 +38,28 @@ class CartCubit extends Cubit<CartState> implements CartService {
 
   @override
   Future<void> removeItemFromCart(String productId) async {
-    emit(CartLoading());
     final result = await _removeItemFromCartUseCase.call(productId);
     switch (result) {
       case NetworkSuccess<void>():
-        await getCartItems();
+        await getCartItems(false);
       case NetworkFailure<void>():
         emit(CartFailure(getErrorMessage(result).tr()));
     }
   }
 
-  Future<void> getCartItems() async {
-    emit(CartLoading());
+  Future<void> getCartItems([bool needLoading = true]) async {
+    if (needLoading) {
+      emit(CartLoading());
+    }
     final result = await _getCartItemsUseCase.call();
     switch (result) {
       case NetworkSuccess<List<CartItemEntity>>():
+        final items = result.data!;
         emit(
           CartSuccess(
-            items: result.data!,
-            totalItemCount: result.data!.length,
-            totalPrice: _calculateTotalPrice(result.data!),
+            items: items,
+            totalItemCount: items.length,
+            totalPrice: _calculateTotalPrice(items),
           ),
         );
       case NetworkFailure<List<CartItemEntity>>():
@@ -73,7 +74,6 @@ class CartCubit extends Cubit<CartState> implements CartService {
       increment: false,
     );
     if (newQuantity == null) return;
-    emit(CartLoading());
     if (newQuantity == 0) {
       await removeItemFromCart(productId);
       return;
@@ -84,7 +84,7 @@ class CartCubit extends Cubit<CartState> implements CartService {
       );
       switch (result) {
         case NetworkSuccess<void>():
-          await getCartItems();
+          await getCartItems(false);
         case NetworkFailure<void>():
           emit(CartFailure(getErrorMessage(result).tr()));
       }
@@ -95,14 +95,13 @@ class CartCubit extends Cubit<CartState> implements CartService {
   Future<void> incrementItemQuantity(String productId) async {
     final int? newQuantity = _getNewQuantity(productId: productId);
     if (newQuantity == null) return;
-    emit(CartLoading());
     final result = await _updateItemQuantityUseCase.call(
       productId: productId,
       newQuantity: newQuantity,
     );
     switch (result) {
       case NetworkSuccess<void>():
-        await getCartItems();
+        await getCartItems(false);
       case NetworkFailure<void>():
         emit(CartFailure(getErrorMessage(result).tr()));
     }

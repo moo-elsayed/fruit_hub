@@ -47,6 +47,7 @@ class CartItemModel {
       code: fruitCode,
       name: productName,
       imagePath: imageUrl,
+      price: price,
     ),
   );
 }

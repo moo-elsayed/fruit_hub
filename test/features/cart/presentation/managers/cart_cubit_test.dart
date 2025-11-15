@@ -127,7 +127,7 @@ void main() {
 
     group('addItemToCart', () {
       blocTest<CartCubit, CartState>(
-        'emits [CartLoading, CartLoading, CartSuccess] when addItemToCart and subsequent getCartItems are successful',
+        'emits [CartSuccess] when addItemToCart and subsequent getCartItems are successful',
         build: () => sut,
         setUp: () {
           when(
@@ -139,8 +139,6 @@ void main() {
         },
         act: (cubit) => cubit.addItemToCart(tCartItemEntity),
         expect: () => [
-          isA<CartLoading>(),
-          isA<CartLoading>(),
           isA<CartSuccess>()
               .having((state) => state.items, 'items', tCartItems)
               .having((state) => state.totalItemCount, 'totalItemCount', 3)
@@ -157,7 +155,7 @@ void main() {
       );
 
       blocTest<CartCubit, CartState>(
-        'emits [CartLoading, CartFailure] when addItemToCart fails',
+        'emits [CartFailure] when addItemToCart fails',
         build: () => sut,
         setUp: () {
           when(
@@ -166,7 +164,6 @@ void main() {
         },
         act: (cubit) => cubit.addItemToCart(tCartItemEntity),
         expect: () => [
-          isA<CartLoading>(),
           isA<CartFailure>().having(
             (state) => state.errorMessage,
             'exception',
@@ -184,7 +181,7 @@ void main() {
 
     group('removeItemFromCart', () {
       blocTest<CartCubit, CartState>(
-        'emits [CartLoading, CartLoading, CartSuccess] when removeItemFromCart and subsequent getCartItems are successful',
+        'emits [CartSuccess] when removeItemFromCart and subsequent getCartItems are successful',
         build: () => sut,
         setUp: () {
           when(
@@ -196,8 +193,6 @@ void main() {
         },
         act: (cubit) => cubit.removeItemFromCart(tProductId),
         expect: () => [
-          isA<CartLoading>(),
-          isA<CartLoading>(),
           isA<CartSuccess>().having(
             (state) => state.items,
             'items',
@@ -215,7 +210,7 @@ void main() {
       );
 
       blocTest<CartCubit, CartState>(
-        'emits [CartLoading, CartFailure] when removeItemFromCart fails',
+        'emits [CartFailure] when removeItemFromCart fails',
         build: () => sut,
         setUp: () {
           when(
@@ -224,7 +219,6 @@ void main() {
         },
         act: (cubit) => cubit.removeItemFromCart(tProductId),
         expect: () => [
-          isA<CartLoading>(),
           isA<CartFailure>().having(
             (state) => state.errorMessage,
             'exception',
@@ -289,7 +283,7 @@ void main() {
 
     group('incrementItemQuantity', () {
       blocTest<CartCubit, CartState>(
-        'emits [CartLoading, CartLoading, CartSuccess] when update and get are successful',
+        'emits [CartSuccess] when update and get are successful',
         build: () => sut,
         seed: () => tInitialState,
         setUp: () {
@@ -305,8 +299,6 @@ void main() {
         },
         act: (cubit) => cubit.incrementItemQuantity(tProductId),
         expect: () => [
-          isA<CartLoading>(),
-          isA<CartLoading>(),
           isA<CartSuccess>()
               .having((state) => state.items, 'items', tUpdatedList)
               .having((state) => state.totalPrice, 'totalPrice', 30.0),
@@ -325,7 +317,7 @@ void main() {
       );
 
       blocTest<CartCubit, CartState>(
-        'emits [CartLoading, CartFailure] when update fails',
+        'emits [CartFailure] when update fails',
         build: () => sut,
         seed: () => tInitialState,
         setUp: () {
@@ -338,7 +330,6 @@ void main() {
         },
         act: (cubit) => cubit.incrementItemQuantity(tProductId),
         expect: () => [
-          isA<CartLoading>(),
           isA<CartFailure>().having(
             (state) => state.errorMessage,
             'exception',
@@ -374,7 +365,7 @@ void main() {
 
     group('decrementItemQuantity', () {
       blocTest<CartCubit, CartState>(
-        'emits [CartLoading, CartLoading, CartSuccess] when update (Q=2 -> Q=1) and get are successful',
+        'emits [CartSuccess] when update (Q=2 -> Q=1) and get are successful',
         build: () => sut,
         seed: () => tInitialState,
         setUp: () {
@@ -390,8 +381,6 @@ void main() {
         },
         act: (cubit) => cubit.decrementItemQuantity(tProductId),
         expect: () => [
-          isA<CartLoading>(),
-          isA<CartLoading>(),
           isA<CartSuccess>()
               .having((state) => state.items, 'items', tUpdatedListDec)
               .having((state) => state.totalPrice, 'totalPrice', 10.0),
@@ -410,7 +399,7 @@ void main() {
       );
 
       blocTest<CartCubit, CartState>(
-        'emits [CartLoading, CartLoading, CartSuccess] when quantity becomes 0 (Q=1 -> Q=0) and remove/get are successful',
+        'emits [CartSuccess] when quantity becomes 0 (Q=1 -> Q=0) and remove/get are successful',
         seed: () => tInitialStateQ1,
         build: () => sut,
         setUp: () {
@@ -423,9 +412,6 @@ void main() {
         },
         act: (cubit) => cubit.decrementItemQuantity(tProductId),
         expect: () => [
-          isA<CartLoading>(),
-          isA<CartLoading>(),
-          isA<CartLoading>(),
           isA<CartSuccess>()
               .having((state) => state.items, 'items', tUpdatedListQ0)
               .having((state) => state.totalItemCount, 'totalItemCount', 0),
@@ -449,7 +435,7 @@ void main() {
 
 
       blocTest(
-        'emits [CartLoading, CartFailure] when update fails',
+        'emits [CartFailure] when update fails',
         seed: () => tInitialState,
         build: () => sut,
         setUp: () {
@@ -462,7 +448,6 @@ void main() {
         },
         act: (cubit) => cubit.decrementItemQuantity(tProductId),
         expect: () => [
-          isA<CartLoading>(),
           isA<CartFailure>().having(
             (state) => state.errorMessage,
             'exception',

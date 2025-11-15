@@ -6,6 +6,8 @@ import 'package:fruit_hub/features/auth/data/repo_imp/auth_repo_imp.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/save_user_session_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
+import 'package:fruit_hub/features/cart/data/data_sources/cart_remote_data_source_imp.dart';
+import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
 import 'package:fruit_hub/features/home/data/data_sources/remote/home_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/home/data/repo_imp/home_repo_imp.dart';
 import 'package:fruit_hub/features/products/data/data_sources/products_remote_data_source_imp.dart';
@@ -22,6 +24,10 @@ import '../../features/auth/data/data_sources/remote/auth_remote_data_source_imp
 import '../../features/auth/domain/use_cases/facebook_sign_in_use_case.dart';
 import '../../features/auth/domain/use_cases/forget_password_use_case.dart';
 import '../../features/auth/domain/use_cases/google_sign_in_use_case.dart';
+import '../../features/cart/data/repo_imp/cart_repo_imp.dart';
+import '../../features/cart/domain/use_cases/get_cart_items_use_case.dart';
+import '../../features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
+import '../../features/cart/domain/use_cases/update_item_quantity_use_case.dart';
 import '../services/authentication/auth_service.dart';
 import '../../shared_data/services/authentication/firebase_auth_service.dart';
 import '../services/database/database_service.dart';
@@ -92,6 +98,7 @@ void setupServiceLocator() {
     ForgetPasswordUseCase(getIt<AuthRepoImp>()),
   );
 
+  /// Home
   ////////////////////////////
 
   getIt.registerSingleton<HomeRepoImp>(
@@ -102,6 +109,7 @@ void setupServiceLocator() {
     GetBestSellerProductsUseCase(getIt<HomeRepoImp>()),
   );
 
+  /// Products
   ////////////////////////////
 
   getIt.registerSingleton<ProductsRepoImp>(
@@ -111,6 +119,7 @@ void setupServiceLocator() {
     GetAllProductsUseCase(getIt<ProductsRepoImp>()),
   );
 
+  /// Search
   ////////////////////////////
 
   getIt.registerSingleton<SearchRepoImp>(
@@ -119,5 +128,33 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<SearchFruitsUseCase>(
     SearchFruitsUseCase(getIt<SearchRepoImp>()),
+  );
+
+  /// Cart
+  ////////////////////////////
+
+  getIt.registerSingleton<CartRepoImp>(
+    CartRepoImp(
+      CartRemoteDataSourceImp(
+        getIt.get<DatabaseService>(),
+        FirebaseAuth.instance,
+      ),
+    ),
+  );
+
+  getIt.registerSingleton<GetCartItemsUseCase>(
+    GetCartItemsUseCase(getIt<CartRepoImp>()),
+  );
+
+  getIt.registerSingleton<AddItemToCartUseCase>(
+    AddItemToCartUseCase(getIt<CartRepoImp>()),
+  );
+
+  getIt.registerSingleton<RemoveItemFromCartUseCase>(
+    RemoveItemFromCartUseCase(getIt<CartRepoImp>()),
+  );
+
+  getIt.registerSingleton<UpdateItemQuantityUseCase>(
+    UpdateItemQuantityUseCase(getIt<CartRepoImp>()),
   );
 }
