@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/core/services/database/database_service.dart';
-import 'package:fruit_hub/features/cart/data/data_sources/cart_remote_data_source.dart';
+import 'package:fruit_hub/features/cart/data/data_sources/remote/cart_remote_data_source.dart';
 import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
-import '../../../../core/helpers/failures.dart';
-import '../../../../core/helpers/functions.dart';
-import '../models/cart_item_model.dart';
+import '../../../../../core/helpers/failures.dart';
+import '../../../../../core/helpers/functions.dart';
+import '../../models/cart_item_model.dart';
 
 class CartRemoteDataSourceImp implements CartRemoteDataSource {
   CartRemoteDataSourceImp(this._databaseService, this._auth);

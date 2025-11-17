@@ -6,7 +6,7 @@ import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/core/services/database/database_service.dart';
 import 'package:fruit_hub/core/services/database/query_parameters.dart';
-import 'package:fruit_hub/features/search/data/data_sources/search_remote_data_source_imp.dart';
+import 'package:fruit_hub/features/search/data/data_sources/remote/search_remote_data_source_imp.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockDatabaseService extends Mock implements DatabaseService {}

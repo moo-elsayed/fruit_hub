@@ -84,5 +84,10 @@
   "you_have": "You have",
   "products_in_the_shopping_cart": "products in the shopping cart",
   "checkout": "Checkout",
-  "user_not_logged_in": "User not logged in"
+  "user_not_logged_in": "User not logged in",
+  "select_language": "Select Language",
+  "language_changed_successfully": "Language changed successfully",
+  "cancel": "Cancel",
+  "confirm_language_change": "Confirm Language Change",
+  "app_will_restart": "App will restart"
 }

@@ -4,7 +4,7 @@ import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/core/services/database/database_service.dart';
-import 'package:fruit_hub/features/cart/data/data_sources/cart_remote_data_source_imp.dart';
+import 'package:fruit_hub/features/cart/data/data_sources/remote/cart_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -61,8 +61,6 @@ void main() {
     sut = CartRemoteDataSourceImp(mockDatabaseService, mockFirebaseAuth);
     when(() => mockFirebaseAuth.currentUser).thenReturn(mockUser);
     when(() => mockUser.uid).thenReturn(tUserId);
-    when(() => mockFirebaseAuth.currentUser).thenReturn(mockUser);
-    when(() => mockUser.uid).thenReturn(tUserId);
     when(() => tFruitEntity.price).thenReturn(10.0);
     when(() => tFruitEntity.code).thenReturn(tProductId);
     when(() => tFruitEntity.name).thenReturn('Apple');
@@ -94,7 +92,7 @@ void main() {
             data: any(named: 'data'),
           ),
         );
-        verify(() => mockFirebaseAuth.currentUser);
+        verify(() => mockFirebaseAuth.currentUser).called(1);
         verifyNoMoreInteractions(mockDatabaseService);
       },
     );
@@ -107,7 +105,7 @@ void main() {
       // Assert
       expect(result, isA<NetworkFailure<void>>());
       expect(getErrorMessage(result), contains("user_not_logged_in"));
-      verify(() => mockFirebaseAuth.currentUser);
+      verify(() => mockFirebaseAuth.currentUser).called(1);
       verifyNoMoreInteractions(mockDatabaseService);
     });
 
@@ -132,7 +130,7 @@ void main() {
           data: any(named: 'data'),
         ),
       );
-      verify(() => mockFirebaseAuth.currentUser);
+      verify(() => mockFirebaseAuth.currentUser).called(1);
       verifyNoMoreInteractions(mockDatabaseService);
     });
   });
@@ -159,7 +157,7 @@ void main() {
             documentId: tProductId,
           ),
         );
-        verify(() => mockFirebaseAuth.currentUser);
+        verify(() => mockFirebaseAuth.currentUser).called(1);
         verifyNoMoreInteractions(mockDatabaseService);
       },
     );
@@ -172,7 +170,7 @@ void main() {
       // Assert
       expect(result, isA<NetworkFailure<void>>());
       expect(getErrorMessage(result), contains("user_not_logged_in"));
-      verify(() => mockFirebaseAuth.currentUser);
+      verify(() => mockFirebaseAuth.currentUser).called(1);
       verifyNoMoreInteractions(mockDatabaseService);
     });
 
@@ -191,7 +189,7 @@ void main() {
         () =>
             mockDatabaseService.deleteData(path: tPath, documentId: tProductId),
       );
-      verify(() => mockFirebaseAuth.currentUser);
+      verify(() => mockFirebaseAuth.currentUser).called(1);
       verifyNoMoreInteractions(mockDatabaseService);
     });
   });
@@ -212,7 +210,7 @@ void main() {
         expect(data, isA<List<CartItemEntity>>());
         expect(data.length, tRawData.length);
         verify(() => mockDatabaseService.getAllData(tPath));
-        verify(() => mockFirebaseAuth.currentUser);
+        verify(() => mockFirebaseAuth.currentUser).called(1);
         verifyNoMoreInteractions(mockDatabaseService);
       },
     );
@@ -225,7 +223,7 @@ void main() {
       // Assert
       expect(result, isA<NetworkFailure<List<CartItemEntity>>>());
       expect(getErrorMessage(result), contains("user_not_logged_in"));
-      verify(() => mockFirebaseAuth.currentUser);
+      verify(() => mockFirebaseAuth.currentUser).called(1);
       verifyNoMoreInteractions(mockDatabaseService);
     });
 
@@ -240,7 +238,7 @@ void main() {
       expect(result, isA<NetworkFailure<List<CartItemEntity>>>());
       expect(getErrorMessage(result), contains("permission-denied"));
       verify(() => mockDatabaseService.getAllData(tPath));
-      verify(() => mockFirebaseAuth.currentUser);
+      verify(() => mockFirebaseAuth.currentUser).called(1);
       verifyNoMoreInteractions(mockDatabaseService);
     });
   });
@@ -271,7 +269,7 @@ void main() {
             data: tUpdateDataMap,
           ),
         );
-        verify(() => mockFirebaseAuth.currentUser);
+        verify(() => mockFirebaseAuth.currentUser).called(1);
         verifyNoMoreInteractions(mockDatabaseService);
       },
     );
@@ -287,7 +285,7 @@ void main() {
       // Assert
       expect(result, isA<NetworkFailure<void>>());
       expect(getErrorMessage(result), contains("user_not_logged_in"));
-      verify(() => mockFirebaseAuth.currentUser);
+      verify(() => mockFirebaseAuth.currentUser).called(1);
       verifyNoMoreInteractions(mockDatabaseService);
     });
 
@@ -315,7 +313,7 @@ void main() {
           data: tUpdateDataMap,
         ),
       );
-      verify(() => mockFirebaseAuth.currentUser);
+      verify(() => mockFirebaseAuth.currentUser).called(1);
       verifyNoMoreInteractions(mockDatabaseService);
     });
   });

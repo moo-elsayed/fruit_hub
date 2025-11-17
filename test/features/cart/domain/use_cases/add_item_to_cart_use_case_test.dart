@@ -1,10 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:fruit_hub/features/cart/domain/repo/cart_repo.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
 import 'package:mocktail/mocktail.dart';
-import '../../data/data_sources/cart_remote_data_source_imp_test.dart';
+import '../../data/data_sources/remote/cart_remote_data_source_imp_test.dart';
 
 class MockCartRepo extends Mock implements CartRepo {}
 
@@ -53,6 +54,7 @@ void main() {
         var result = await sut.call(tCartItemEntity);
         // Assert
         expect(result, tFailureResponseOfTypeVoid);
+        expect(getErrorMessage(result), "permission-denied");
         verify(() => mockCartRepo.addItemToCart(tCartItemEntity)).called(1);
         verifyNoMoreInteractions(mockCartRepo);
       },
