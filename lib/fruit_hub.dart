@@ -9,6 +9,11 @@ import 'package:fruit_hub/core/theming/app_colors.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
+import 'package:fruit_hub/features/profile/domain/use_cases/add_item_to_favorites_use_case.dart';
+import 'package:fruit_hub/features/profile/domain/use_cases/get_favorite_ids_use_case.dart';
+import 'package:fruit_hub/features/profile/domain/use_cases/get_favorites_use_case.dart';
+import 'package:fruit_hub/features/profile/domain/use_cases/remove_item_from_favorites_use_case.dart';
+import 'package:fruit_hub/features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
 
 import 'features/cart/domain/use_cases/get_cart_items_use_case.dart';
 import 'features/cart/domain/use_cases/update_item_quantity_use_case.dart';
@@ -24,13 +29,25 @@ class FruitHub extends StatelessWidget {
       designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: BlocProvider(
-        create: (context) => CartCubit(
-          getIt.get<AddItemToCartUseCase>(),
-          getIt.get<RemoveItemFromCartUseCase>(),
-          getIt.get<GetCartItemsUseCase>(),
-          getIt.get<UpdateItemQuantityUseCase>(),
-        ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => CartCubit(
+              getIt.get<AddItemToCartUseCase>(),
+              getIt.get<RemoveItemFromCartUseCase>(),
+              getIt.get<GetCartItemsUseCase>(),
+              getIt.get<UpdateItemQuantityUseCase>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => FavoriteCubit(
+              getIt.get<AddItemToFavoritesUseCase>(),
+              getIt.get<RemoveItemFromFavoritesUseCase>(),
+              getIt.get<GetFavoriteIdsUseCase>(),
+              getIt.get<GetFavoritesUseCase>(),
+            )..getFavoriteIds(),
+          ),
+        ],
         child: MaterialApp(
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,

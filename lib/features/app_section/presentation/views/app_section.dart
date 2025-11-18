@@ -25,7 +25,6 @@ class AppSection extends StatefulWidget {
 
 class _AppSectionState extends State<AppSection> {
   late PersistentTabController _controller;
-  late List<ScrollController> _scrollControllers;
   final items = bottomNavigationBarItems;
   late final List<Widget> _pages = [
     BlocProvider(
@@ -33,7 +32,7 @@ class _AppSectionState extends State<AppSection> {
         getIt.get<GetBestSellerProductsUseCase>(),
         getIt.get<LocalStorageService>(),
       ),
-      child: Home(scrollControllers: [_scrollControllers[0]]),
+      child: const Home(),
     ),
     BlocProvider(
       create: (context) => ProductsCubit(getIt.get<GetAllProductsUseCase>()),
@@ -46,20 +45,10 @@ class _AppSectionState extends State<AppSection> {
   @override
   void initState() {
     super.initState();
-    _scrollControllers = List.generate(1, (index) => ScrollController());
     _controller = PersistentTabController(initialIndex: 0);
     _controller.addListener(() {
       setState(() {});
     });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    for (var controller in _scrollControllers) {
-      controller.dispose();
-    }
-    super.dispose();
   }
 
   @override
@@ -83,9 +72,8 @@ class _AppSectionState extends State<AppSection> {
         handleAndroidBackButtonPress: true,
         stateManagement: true,
         hideNavigationBarWhenKeyboardAppears: true,
-        hideOnScrollSettings: HideOnScrollSettings(
+        hideOnScrollSettings: const HideOnScrollSettings(
           hideNavBarOnScroll: true,
-          scrollControllers: _scrollControllers,
         ),
         animationSettings: const NavBarAnimationSettings(
           onNavBarHideAnimation: OnHideAnimationSettings(

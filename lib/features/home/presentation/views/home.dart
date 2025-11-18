@@ -17,9 +17,7 @@ import '../widgets/custom_section_header.dart';
 import '../../../../core/widgets/search_text_field.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key, required this.scrollControllers});
-
-  final List<ScrollController> scrollControllers;
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -101,10 +99,7 @@ class _HomeState extends State<Home> {
                       settings: const RouteSettings(
                         name: Routes.bestSellerView,
                       ),
-                      screen: BestSellerView(
-                        scrollController: widget.scrollControllers[0],
-                        fruits: fruits,
-                      ),
+                      screen: BestSellerView(fruits: fruits),
                       withNavBar: true,
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino,

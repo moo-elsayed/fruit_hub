@@ -1,5 +1,5 @@
 abstract class FavoriteService {
-  Future<void> addItemToFavorites(String productId);
+  Future<void> toggleFavorite(String productId);
 
-  Future<void> removeItemFromFavorites(String productId);
+  bool isFavorite(String productId);
 }

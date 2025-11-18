@@ -7,12 +7,4 @@ class CartItemEntity {
   int quantity;
 
   get totalPrice => fruitEntity.price * quantity;
-
-  void increaseCount() => quantity++;
-
-  void decreaseCount() {
-    if (quantity > 1) {
-      quantity--;
-    }
-  }
 }

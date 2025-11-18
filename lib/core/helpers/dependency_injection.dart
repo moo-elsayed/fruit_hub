@@ -14,6 +14,11 @@ import 'package:fruit_hub/features/products/data/data_sources/remote/products_re
 import 'package:fruit_hub/features/products/data/repo_imp/products_repo_imp.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
+import 'package:fruit_hub/features/profile/data/data_sources/remote/profile_remote_data_source_imp.dart';
+import 'package:fruit_hub/features/profile/data/repo_imp/profile_repo_imp.dart';
+import 'package:fruit_hub/features/profile/domain/use_cases/add_item_to_favorites_use_case.dart';
+import 'package:fruit_hub/features/profile/domain/use_cases/get_favorite_ids_use_case.dart';
+import 'package:fruit_hub/features/profile/domain/use_cases/remove_item_from_favorites_use_case.dart';
 import 'package:fruit_hub/features/search/data/data_sources/remote/search_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/search/data/repo_imp/search_repo_imp.dart';
 import 'package:fruit_hub/features/search/domain/use_cases/search_fruits_use_case.dart';
@@ -28,6 +33,7 @@ import '../../features/cart/data/repo_imp/cart_repo_imp.dart';
 import '../../features/cart/domain/use_cases/get_cart_items_use_case.dart';
 import '../../features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
 import '../../features/cart/domain/use_cases/update_item_quantity_use_case.dart';
+import '../../features/profile/domain/use_cases/get_favorites_use_case.dart';
 import '../services/authentication/auth_service.dart';
 import '../../shared_data/services/authentication/firebase_auth_service.dart';
 import '../services/database/database_service.dart';
@@ -156,5 +162,33 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<UpdateItemQuantityUseCase>(
     UpdateItemQuantityUseCase(getIt<CartRepoImp>()),
+  );
+
+  /// favorites
+  ////////////////////////////
+
+  getIt.registerSingleton<ProfileRepoImp>(
+    ProfileRepoImp(
+      ProfileRemoteDataSourceImp(
+        getIt.get<DatabaseService>(),
+        FirebaseAuth.instance,
+      ),
+    ),
+  );
+
+  getIt.registerSingleton<GetFavoritesUseCase>(
+    GetFavoritesUseCase(getIt<ProfileRepoImp>()),
+  );
+
+  getIt.registerSingleton<GetFavoriteIdsUseCase>(
+    GetFavoriteIdsUseCase(getIt<ProfileRepoImp>()),
+  );
+
+  getIt.registerSingleton<AddItemToFavoritesUseCase>(
+    AddItemToFavoritesUseCase(getIt<ProfileRepoImp>()),
+  );
+
+  getIt.registerSingleton<RemoveItemFromFavoritesUseCase>(
+    RemoveItemFromFavoritesUseCase(getIt<ProfileRepoImp>()),
   );
 }

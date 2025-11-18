@@ -5,30 +5,36 @@ sealed class FavoriteState {}
 
 final class FavoriteInitial extends FavoriteState {}
 
-final class FavoriteChanged extends FavoriteState {
-  final Set<String> favoriteIds;
+final class GetFavoriteIdsSuccess extends FavoriteState {}
 
-  FavoriteChanged(this.favoriteIds);
-}
-
-final class FavoriteFailure extends FavoriteState {
-  final String errMessage;
-
-  FavoriteFailure(this.errMessage);
-}
-
-final class AddItemToFavoritesSuccess extends FavoriteState {}
-
-final class AddItemToFavoritesFailure extends FavoriteState {
-  AddItemToFavoritesFailure(this.errorMessage);
+final class GetFavoriteIdsFailure extends FavoriteState {
+  GetFavoriteIdsFailure(this.errorMessage);
 
   final String errorMessage;
 }
 
-final class RemoveItemFromFavoritesSuccess extends FavoriteState {}
+final class GetFavoritesLoading extends FavoriteState {}
 
-final class RemoveItemFromFavoritesFailure extends FavoriteState {
-  RemoveItemFromFavoritesFailure(this.errorMessage);
+final class GetFavoritesSuccess extends FavoriteState {
+  GetFavoritesSuccess(this.favorites);
+
+  final List<FruitEntity> favorites;
+}
+
+final class GetFavoritesFailure extends FavoriteState {
+  GetFavoritesFailure(this.errorMessage);
+
+  final String errorMessage;
+}
+
+final class ToggleFavoriteSuccess extends FavoriteState {
+  ToggleFavoriteSuccess(this.favoriteIds);
+
+  final Set<String> favoriteIds;
+}
+
+final class ToggleFavoriteFailure extends FavoriteState {
+  ToggleFavoriteFailure(this.errorMessage);
 
   final String errorMessage;
 }

@@ -12,6 +12,7 @@ class Assets {
   static const String iconsFacebookIcon = 'assets/svgs/icons/facebook_icon.svg';
   static const String iconsFilter = 'assets/svgs/icons/filter.svg';
   static const String iconsGoogleIcon = 'assets/svgs/icons/google_icon.svg';
+  static const String iconsHeart = 'assets/svgs/icons/heart.svg';
   static const String iconsHomeFilled = 'assets/svgs/icons/home-filled.svg';
   static const String iconsHomeOutline = 'assets/svgs/icons/home-outline.svg';
   static const String iconsIconsMinus = 'assets/svgs/icons/icons-minus.svg';

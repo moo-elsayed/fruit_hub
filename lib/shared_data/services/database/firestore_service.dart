@@ -87,6 +87,10 @@ class FirestoreService implements DatabaseService {
           .where("name", isLessThanOrEqualTo: '${query.searchQuery}\uf8ff');
     }
 
+    if (query.whereInIds != null && query.whereInIds!.isNotEmpty) {
+      collection = collection.where(FieldPath.documentId, whereIn: query.whereInIds);
+    }
+
     if (query.limit != null) {
       collection = collection.limit(query.limit!);
     }

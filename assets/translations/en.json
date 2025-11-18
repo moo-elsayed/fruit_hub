@@ -89,5 +89,7 @@
   "language_changed_successfully": "Language changed successfully",
   "cancel": "Cancel",
   "confirm_language_change": "Confirm Language Change",
-  "app_will_restart": "App will restart"
+  "app_will_restart": "App will restart",
+  "favorites": "Favorites",
+  "general": "General"
 }

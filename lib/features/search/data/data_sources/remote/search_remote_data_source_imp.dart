@@ -18,7 +18,7 @@ class SearchRemoteDataSourceImp implements SearchRemoteDataSource {
   Future<NetworkResponse<List<FruitEntity>>> searchFruits(String query) async {
     try {
       final response = await _databaseService.queryData(
-        path: BackendEndpoints.searchProducts,
+        path: BackendEndpoints.queryProducts,
         query: QueryParameters(searchQuery: query),
       );
 

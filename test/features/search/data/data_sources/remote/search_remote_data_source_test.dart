@@ -16,7 +16,7 @@ void main() {
   late MockDatabaseService mockDatabaseService;
 
   const tSearchQuery = 'man';
-  const tPath = BackendEndpoints.searchProducts;
+  const tPath = BackendEndpoints.queryProducts;
   const tQueryParameters = QueryParameters(searchQuery: tSearchQuery);
 
   const tRawData = [

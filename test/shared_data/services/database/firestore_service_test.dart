@@ -157,6 +157,7 @@ void main() {
       expect(result, isFalse);
     });
   });
+
   group('get all data', () {
     const tData2 = {'name': 'Another User', 'age': 30};
     test('should return a list of data when collection is not empty', () async {
@@ -185,6 +186,7 @@ void main() {
       expect(result, isEmpty);
     });
   });
+
   group('query data', () {
     final docA = {'name': 'Apple', 'age': 20};
     final docB = {'name': 'Banana', 'age': 30};
@@ -234,6 +236,42 @@ void main() {
         docA,
       );
     });
+    test('should filter data based on whereInIds (Document IDs)', () async {
+      // Arrange
+      final query = const QueryParameters(whereInIds: ['A', 'C']);
+      // Act
+      final result = await sut.queryData(path: tPath, query: query);
+      // Assert
+      expect(result.length, 2);
+      expect(
+        result.where((element) => element.containsValue('Apricot')).first,
+        docC,
+      );
+      expect(
+        result.where((element) => element.containsValue('Apple')).first,
+        docA,
+      );
+      expect(result, isNot(contains(docB)));
+    });
+
+    test(
+      'should return only existing documents when strictly using whereInIds',
+      () async {
+        // Arrange
+        final query = const QueryParameters(whereInIds: ['A', 'D']);
+        // Act
+        final result = await sut.queryData(path: tPath, query: query);
+        // Assert
+        expect(result.length, 1);
+        expect(
+          result.where((element) => element.containsValue('Apple')).first,
+          docA,
+        );
+        expect(result, isNot(contains(docB)));
+        expect(result, isNot(contains(docC)));
+      },
+    );
+
     test('should filter data based on limit', () async {
       // Arrange
       final query = const QueryParameters(limit: 2, orderBy: 'name');
@@ -254,16 +292,22 @@ void main() {
     test('should combine all query parameters correctly', () async {
       // Arrange
       final query = const QueryParameters(
-        searchQuery: 'Ap',
+        searchQuery: 'A',
         orderBy: 'name',
         descending: true,
+        whereInIds: ['A'],
         limit: 1,
       );
       // Act
       final result = await sut.queryData(path: tPath, query: query);
       // Assert
       expect(result.length, 1);
-      expect(result.first, docC);
+      expect(
+        result.where((element) => element.containsValue('Apple')).first,
+        docA,
+      );
+      expect(result, isNot(contains(docB)));
+      expect(result, isNot(contains(docC)));
     });
   });
 

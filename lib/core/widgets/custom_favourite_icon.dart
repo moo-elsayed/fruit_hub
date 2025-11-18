@@ -21,6 +21,14 @@ class _CustomFavouriteIconState extends State<CustomFavouriteIcon> {
   late bool _isFavourite = widget.isFavourite;
 
   @override
+  void didUpdateWidget(CustomFavouriteIcon oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isFavourite != oldWidget.isFavourite) {
+      _isFavourite = widget.isFavourite;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 30.h,
