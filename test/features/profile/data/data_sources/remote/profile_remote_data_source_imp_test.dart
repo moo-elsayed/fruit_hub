@@ -33,7 +33,7 @@ void main() {
     {
       'name': 'mango',
       'description':
-      'Este combo é composto por uma seleção de frutas vermelhas frescas e suculentas, incluindo morangos, framboesas, mirtilos e amoras. Elas são ricas em antioxidantes, vitaminas e fibras, tornando-as uma opção saudável e deliciosa para qualquer hora do dia. São perfeitas para consumir in natura, em saladas de frutas, smoothies, iogurtes ou como ingrediente em diversas receitas.',
+          'Este combo é composto por uma seleção de frutas vermelhas frescas e suculentas, incluindo morangos, framboesas, mirtilos e amoras. Elas são ricas em antioxidantes, vitaminas e fibras, tornando-as uma opção saudável e deliciosa para qualquer hora do dia. São perfeitas para consumir in natura, em saladas de frutas, smoothies, iogurtes ou como ingrediente em diversas receitas.',
       'price': 18.5,
       'imagePath': 'assets/images/combo_frutas_vermelhas.png',
       'code': 'FV001',
@@ -326,6 +326,82 @@ void main() {
           (result as NetworkSuccess<List<FruitEntity>>).data,
           isA<List<FruitEntity>>(),
         );
+        verify(
+          () => mockDatabaseService.queryData(
+            path: queryProducts,
+            query: any(
+              named: 'query',
+              that: isA<QueryParameters>().having(
+                (q) => q.whereInIds,
+                'whereInIds',
+                tIds,
+              ),
+            ),
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(mockDatabaseService);
+      },
+    );
+
+    test(
+      'should return NetworkSuccess with empty list immediately if ids is empty',
+      () async {
+        // Arrange
+        // Act
+        final result = await sut.getFavorites([]);
+        // Assert
+        expect(result, isA<NetworkSuccess<List<FruitEntity>>>());
+        expect((result as NetworkSuccess<List<FruitEntity>>).data, isEmpty);
+        verifyNever(
+          () => mockDatabaseService.queryData(
+            path: queryProducts,
+            query: any(named: 'query'),
+          ),
+        );
+        verifyNoMoreInteractions(mockDatabaseService);
+      },
+    );
+
+    test(
+      'should return NetworkFailure when FirebaseException occurs',
+      () async {
+        // Arrange
+        when(
+          () => mockDatabaseService.queryData(
+            path: queryProducts,
+            query: any(named: 'query'),
+          ),
+        ).thenThrow(tFirebaseException);
+        // Act
+        final result = await sut.getFavorites(tIds);
+        // Assert
+        expect(result, isA<NetworkFailure>());
+        expect(getErrorMessage(result), contains("permission-denied"));
+        verify(
+          () => mockDatabaseService.queryData(
+            path: queryProducts,
+            query: any(named: 'query'),
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(mockDatabaseService);
+      },
+    );
+
+    test(
+      'should return NetworkFailure when Parsing/Generic Exception occurs',
+      () async {
+        // Arrange
+        when(
+          () => mockDatabaseService.queryData(
+            path: queryProducts,
+            query: any(named: 'query'),
+          ),
+        ).thenThrow(Exception("parsing error"));
+        // Act
+        final result = await sut.getFavorites(tIds);
+        // Assert
+        expect(result, isA<NetworkFailure>());
+        expect(getErrorMessage(result), contains("parsing error"));
         verify(
           () => mockDatabaseService.queryData(
             path: queryProducts,
