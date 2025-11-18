@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/dependency_injection.dart';
 import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
+import 'package:fruit_hub/core/theming/app_colors.dart';
 import 'package:fruit_hub/features/app_section/domain/entities/bottom_navigation_bar_entity.dart';
 import 'package:fruit_hub/features/app_section/presentation/widgets/custom_bottom_navigation_bar.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
@@ -23,7 +25,6 @@ class AppSection extends StatefulWidget {
 
 class _AppSectionState extends State<AppSection> {
   late PersistentTabController _controller;
-  late List<ScrollController> _scrollControllers;
   final items = bottomNavigationBarItems;
   late final List<Widget> _pages = [
     BlocProvider(
@@ -31,7 +32,7 @@ class _AppSectionState extends State<AppSection> {
         getIt.get<GetBestSellerProductsUseCase>(),
         getIt.get<LocalStorageService>(),
       ),
-      child: Home(scrollControllers: [_scrollControllers[0]]),
+      child: const Home(),
     ),
     BlocProvider(
       create: (context) => ProductsCubit(getIt.get<GetAllProductsUseCase>()),
@@ -44,7 +45,6 @@ class _AppSectionState extends State<AppSection> {
   @override
   void initState() {
     super.initState();
-    _scrollControllers = List.generate(1, (index) => ScrollController());
     _controller = PersistentTabController(initialIndex: 0);
     _controller.addListener(() {
       setState(() {});
@@ -52,33 +52,34 @@ class _AppSectionState extends State<AppSection> {
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    for (var controller in _scrollControllers) {
-      controller.dispose();
-    }
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return PersistentTabView.custom(
-      resizeToAvoidBottomInset: true,
-      context,
-      controller: _controller,
-      screens: _buildScreens(),
-      itemCount: _pages.length,
-      customWidget: _buildCustomNavBar(),
-      confineToSafeArea: true,
-      handleAndroidBackButtonPress: true,
-      stateManagement: true,
-      hideNavigationBarWhenKeyboardAppears: true,
-      hideOnScrollSettings: HideOnScrollSettings(
-        hideNavBarOnScroll: true,
-        scrollControllers: _scrollControllers,
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(34.h),
+        child: ColoredBox(
+          color: AppColors.white,
+          child: SizedBox(height: 34.h),
+        ),
       ),
-      animationSettings: const NavBarAnimationSettings(
-        onNavBarHideAnimation: OnHideAnimationSettings(curve: Curves.easeInOut),
+      body: PersistentTabView.custom(
+        resizeToAvoidBottomInset: true,
+        context,
+        controller: _controller,
+        screens: _buildScreens(),
+        itemCount: _pages.length,
+        customWidget: _buildCustomNavBar(),
+        confineToSafeArea: true,
+        handleAndroidBackButtonPress: true,
+        stateManagement: true,
+        hideNavigationBarWhenKeyboardAppears: true,
+        hideOnScrollSettings: const HideOnScrollSettings(
+          hideNavBarOnScroll: true,
+        ),
+        animationSettings: const NavBarAnimationSettings(
+          onNavBarHideAnimation: OnHideAnimationSettings(
+            curve: Curves.easeInOut,
+          ),
+        ),
       ),
     );
   }
@@ -86,9 +87,7 @@ class _AppSectionState extends State<AppSection> {
   List<CustomNavBarScreen> _buildScreens() => List.generate(
     _pages.length,
     (index) => CustomNavBarScreen(
-      screen: SafeArea(
-        child: ColoredBox(color: Colors.white, child: _pages[index]),
-      ),
+      screen: ColoredBox(color: AppColors.white, child: _pages[index]),
     ),
   );
 

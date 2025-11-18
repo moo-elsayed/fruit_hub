@@ -7,13 +7,8 @@ import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
 import 'package:fruit_hub/core/widgets/fruits_grid_view.dart';
 
 class BestSellerView extends StatelessWidget {
-  const BestSellerView({
-    super.key,
-    required this.scrollController,
-    required this.fruits,
-  });
+  const BestSellerView({super.key, required this.fruits});
 
-  final ScrollController scrollController;
   final List<FruitEntity> fruits;
 
   @override
@@ -27,7 +22,7 @@ class BestSellerView extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsetsGeometry.only(top: 8.h),
-        child: FruitsGridView(scrollController: scrollController, fruits: fruits),
+        child: FruitsGridView(fruits: fruits),
       ),
     );
   }

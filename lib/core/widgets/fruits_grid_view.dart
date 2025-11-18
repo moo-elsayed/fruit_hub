@@ -6,26 +6,27 @@ import 'package:fruit_hub/core/widgets/custom_fruit_item.dart';
 class FruitsGridView extends StatelessWidget {
   const FruitsGridView({
     super.key,
-    this.scrollController,
     this.fruits,
     this.itemCount,
+    this.fromFavorite = false,
   });
 
-  final ScrollController? scrollController;
   final List<FruitEntity>? fruits;
   final int? itemCount;
+  final bool fromFavorite;
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      controller: scrollController,
       padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
       physics: const AlwaysScrollableScrollPhysics(),
       itemCount: itemCount ?? fruits?.length ?? 0,
       gridDelegate: buildSliverGridDelegateWithFixedCrossAxisCount(),
       itemBuilder: (context, index) {
+        var fruitEntity = itemCount != null ? FruitEntity() : fruits![index];
         return CustomFruitItem(
-          fruitEntity: itemCount != null ? FruitEntity() : fruits![index],
+          key: fromFavorite ? ValueKey(fruitEntity.code) : null,
+          fruitEntity: fruitEntity,
         );
       },
     );

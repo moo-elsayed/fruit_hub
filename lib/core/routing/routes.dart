@@ -7,4 +7,7 @@ class Routes {
   static const appSection = '/appSection';
   static const bestSellerView = '/bestSellerView';
   static const searchView = '/searchView';
+  static const favoritesView = '/favoritesView';
+  static const productDetailsView = '/productDetailsView';
+  static const checkoutView = '/checkoutView';
 }

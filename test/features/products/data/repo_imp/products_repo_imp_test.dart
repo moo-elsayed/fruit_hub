@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
-import 'package:fruit_hub/features/products/data/data_sources/products_remote_data_source.dart';
+import 'package:fruit_hub/features/products/data/data_sources/remote/products_remote_data_source.dart';
 import 'package:fruit_hub/features/products/data/repo_imp/products_repo_imp.dart';
 import 'package:mocktail/mocktail.dart';
 

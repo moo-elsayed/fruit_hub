@@ -66,7 +66,7 @@
   "shop_now": "تسوق الان",
   "best_seller": "الأكثر مبيعًا",
   "more": "المزيد",
-  "pounds":"جنية",
+  "pounds": "جنية",
   "kilo": "الكيلو",
   "per_kilo": "كم",
   "home": "الرئيسية",
@@ -84,5 +84,12 @@
   "you_have": "لديك",
   "products_in_the_shopping_cart": "منتجات في سله التسوق",
   "checkout": "الدفع",
-  "user_not_logged_in": "المستخدم غير مسجل الدخول"
+  "user_not_logged_in": "المستخدم غير مسجل الدخول",
+  "select_language": "اختر اللغة",
+  "language_changed_successfully": "تم تغيير اللغة بنجاح",
+  "cancel": "إلغاء",
+  "confirm_language_change": "تأكيد تغيير اللغة",
+  "app_will_restart": "سيتم إعادة تشغيل التطبيق",
+  "favorites": "المفضلة",
+  "general": "عام"
 }

@@ -4,8 +4,8 @@ import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/core/services/database/database_service.dart';
-import '../../../../../../core/helpers/failures.dart';
-import '../../../../../shared_data/models/fruit_model.dart';
+import '../../../../../../../core/helpers/failures.dart';
+import '../../../../../../shared_data/models/fruit_model.dart';
 import 'products_remote_data_source.dart';
 
 class ProductsRemoteDataSourceImp implements ProductsRemoteDataSource {

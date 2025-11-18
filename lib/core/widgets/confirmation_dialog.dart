@@ -10,21 +10,22 @@ class ConfirmationDialog extends StatelessWidget {
     this.fullText,
     this.delete = true,
     this.textOkButton,
+    required this.title,
+    this.textCancelButton,
   });
 
+  final String title;
   final String? name;
-  final void Function()? onTap;
   final String? fullText;
-  final bool delete;
   final String? textOkButton;
+  final String? textCancelButton;
+  final void Function()? onTap;
+  final bool delete;
 
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
-      title: Text(
-        delete ? 'Delete Confirmation' : 'Confirmation',
-        style: GoogleFonts.lato(),
-      ),
+      title: Text(title, style: GoogleFonts.lato()),
       content: fullText != null
           ? Text(fullText!, style: GoogleFonts.lato())
           : Text.rich(
@@ -40,13 +41,10 @@ class ConfirmationDialog extends StatelessWidget {
                 ],
               ),
             ),
-
       actions: [
         CupertinoDialogAction(
-          child: Text('Cancel', style: GoogleFonts.lato()),
-          onPressed: () {
-            context.pop();
-          },
+          child: Text(textCancelButton ?? 'Cancel', style: GoogleFonts.lato()),
+          onPressed: () => context.pop(),
         ),
         CupertinoDialogAction(
           isDestructiveAction: true,

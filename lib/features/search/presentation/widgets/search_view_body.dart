@@ -86,9 +86,9 @@ class _SearchViewBodyState extends State<SearchViewBody> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(
+                              padding: EdgeInsetsDirectional.only(
                                 top: 16.w,
-                                right: 16.w,
+                                start: 16.w,
                                 bottom: 16.h,
                               ),
                               child: Text(

@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
-import 'package:fruit_hub/core/services/database/cart_service.dart';
 import 'package:fruit_hub/core/theming/app_colors.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_favourite_icon.dart';
 import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:fruit_hub/generated/assets.dart';
 import '../../features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
+import '../../features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
 import '../helpers/functions.dart';
 import 'custom_action_button.dart';
 import 'custom_network_image.dart';
@@ -22,6 +22,8 @@ class CustomFruitItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var myFavoriteService = context.read<FavoriteCubit>();
+    var myCartService = context.read<CartCubit>();
     return Stack(
       children: [
         Container(
@@ -69,7 +71,6 @@ class CustomFruitItem extends StatelessWidget {
                   ),
                   CustomActionButton(
                     onTap: () {
-                      CartService myCartService = context.read<CartCubit>();
                       myCartService.addItemToCart(
                         CartItemEntity(fruitEntity: fruitEntity),
                       );
@@ -81,10 +82,19 @@ class CustomFruitItem extends StatelessWidget {
             ],
           ),
         ),
-        PositionedDirectional(
-          start: 4.w,
-          top: 4.h,
-          child: CustomFavouriteIcon(isFavourite: false, onChanged: () {}),
+        BlocBuilder<FavoriteCubit, FavoriteState>(
+          buildWhen: (previous, current) => current is ToggleFavoriteSuccess,
+          builder: (context, state) {
+            return PositionedDirectional(
+              start: 4.w,
+              top: 4.h,
+              child: CustomFavouriteIcon(
+                onChanged: () =>
+                    myFavoriteService.toggleFavorite(fruitEntity.code),
+                isFavourite: myFavoriteService.isFavorite(fruitEntity.code),
+              ),
+            );
+          },
         ),
       ],
     );

@@ -6,5 +6,6 @@ class BackendEndpoints {
   static const updateUserData = 'users';
   static const getAllProducts = 'products';
   static const getBestSellerProducts = 'products';
-  static const searchProducts = 'products';
+  static const queryProducts = 'products';
+  static const favoritesIds = 'favoriteIds';
 }
