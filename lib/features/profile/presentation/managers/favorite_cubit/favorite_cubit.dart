@@ -27,6 +27,9 @@ class FavoriteCubit extends Cubit<FavoriteState> implements FavoriteService {
 
   Set<String> _favoriteIds = {};
 
+  @override
+  bool isFavorite(String productId) => _favoriteIds.contains(productId);
+
   Future<void> getFavoriteIds() async {
     var result = await _getFavoriteIdsUseCase.call();
     switch (result) {
@@ -48,9 +51,6 @@ class FavoriteCubit extends Cubit<FavoriteState> implements FavoriteService {
         emit(GetFavoritesFailure(getErrorMessage(result).tr()));
     }
   }
-
-  @override
-  bool isFavorite(String productId) => _favoriteIds.contains(productId);
 
   @override
   Future<void> toggleFavorite(String productId) async {

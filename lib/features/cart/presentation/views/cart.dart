@@ -26,7 +26,7 @@ class _CartState extends State<Cart> {
   @override
   void initState() {
     super.initState();
-    context.read<CartCubit>().getCartItems();
+    context.read<CartCubit>().getProductsInCart();
   }
 
   @override

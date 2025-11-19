@@ -16,6 +16,7 @@ import 'package:fruit_hub/features/profile/domain/use_cases/remove_item_from_fav
 import 'package:fruit_hub/features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
 
 import 'features/cart/domain/use_cases/get_cart_items_use_case.dart';
+import 'features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import 'features/cart/domain/use_cases/update_item_quantity_use_case.dart';
 
 class FruitHub extends StatelessWidget {
@@ -35,9 +36,10 @@ class FruitHub extends StatelessWidget {
             create: (context) => CartCubit(
               getIt.get<AddItemToCartUseCase>(),
               getIt.get<RemoveItemFromCartUseCase>(),
-              getIt.get<GetCartItemsUseCase>(),
+              getIt.get<GetProductsInCartUseCase>(),
               getIt.get<UpdateItemQuantityUseCase>(),
-            ),
+              getIt.get<GetCartItemsUseCase>(),
+            )..getCartItems(),
           ),
           BlocProvider(
             create: (context) => FavoriteCubit(

@@ -9,16 +9,17 @@ class CartRepoImp implements CartRepo {
   final CartRemoteDataSource _cartRemoteDataSource;
 
   @override
-  Future<NetworkResponse<void>> addItemToCart(CartItemEntity item) async =>
-      await _cartRemoteDataSource.addItemToCart(item);
+  Future<NetworkResponse<void>> addItemToCart(String productId) async =>
+      await _cartRemoteDataSource.addItemToCart(productId);
 
   @override
   Future<NetworkResponse<void>> removeItemFromCart(String productId) async =>
       await _cartRemoteDataSource.removeItemFromCart(productId);
 
   @override
-  Future<NetworkResponse<List<CartItemEntity>>> getCartItems() async =>
-      await _cartRemoteDataSource.getCartItems();
+  Future<NetworkResponse<List<CartItemEntity>>> getProductsInCart(
+    List<Map<String, dynamic>> cartItems,
+  ) async => await _cartRemoteDataSource.getProductsInCart(cartItems);
 
   @override
   Future<NetworkResponse<void>> updateItemQuantity({
@@ -28,4 +29,8 @@ class CartRepoImp implements CartRepo {
     productId: productId,
     newQuantity: newQuantity,
   );
+
+  @override
+  Future<NetworkResponse<List<Map<String, dynamic>>>> getCartItems() async =>
+      _cartRemoteDataSource.getCartItems();
 }
