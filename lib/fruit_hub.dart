@@ -14,7 +14,6 @@ import 'package:fruit_hub/features/profile/domain/use_cases/get_favorite_ids_use
 import 'package:fruit_hub/features/profile/domain/use_cases/get_favorites_use_case.dart';
 import 'package:fruit_hub/features/profile/domain/use_cases/remove_item_from_favorites_use_case.dart';
 import 'package:fruit_hub/features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
-
 import 'features/cart/domain/use_cases/get_cart_items_use_case.dart';
 import 'features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import 'features/cart/domain/use_cases/update_item_quantity_use_case.dart';

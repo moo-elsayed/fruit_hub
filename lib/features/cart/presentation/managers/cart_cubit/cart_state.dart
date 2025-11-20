@@ -22,11 +22,13 @@ final class CartSuccess extends CartState {
     required this.items,
     required this.totalPrice,
     required this.totalItemCount,
+    this.newItemAdded = false,
   });
 
   final List<CartItemEntity> items;
   final double totalPrice;
   final int totalItemCount;
+  final bool newItemAdded;
 }
 
 final class CartFailure extends CartState {

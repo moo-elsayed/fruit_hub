@@ -91,5 +91,6 @@
   "confirm_language_change": "Confirm Language Change",
   "app_will_restart": "App will restart",
   "favorites": "Favorites",
-  "general": "General"
+  "general": "General",
+  "item_added_to_cart": "Added to cart successfully"
 }
