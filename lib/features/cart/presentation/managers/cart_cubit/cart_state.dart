@@ -15,7 +15,12 @@ final class GetCartItemsFailure extends CartState {
   final String errorMessage;
 }
 
-final class CartLoading extends CartState {}
+final class CartLoading extends CartState {
+  CartLoading({this.itemRemoved = false, this.newItemAdded = false});
+
+  final bool itemRemoved;
+  final bool newItemAdded;
+}
 
 final class CartSuccess extends CartState {
   CartSuccess({
@@ -23,12 +28,14 @@ final class CartSuccess extends CartState {
     required this.totalPrice,
     required this.totalItemCount,
     this.newItemAdded = false,
+    this.itemRemoved = false,
   });
 
   final List<CartItemEntity> items;
   final double totalPrice;
   final int totalItemCount;
   final bool newItemAdded;
+  final bool itemRemoved;
 }
 
 final class CartFailure extends CartState {

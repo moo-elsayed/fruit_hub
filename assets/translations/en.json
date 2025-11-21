@@ -92,5 +92,7 @@
   "app_will_restart": "App will restart",
   "favorites": "Favorites",
   "general": "General",
-  "item_added_to_cart": "Added to cart successfully"
+  "item_added_to_cart": "Added to cart successfully",
+  "item_removed_from_cart": "Removed from cart successfully",
+  "loading": "Loading"
 }

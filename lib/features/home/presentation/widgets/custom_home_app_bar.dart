@@ -16,13 +16,13 @@ class CustomHomeAppBar extends StatelessWidget {
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w, vertical: 16.h),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           Image.asset(Assets.imagesProfileImage, height: 44.h, width: 44.w),
           Gap(11.w),
           Column(
             spacing: 2.h,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             children: [
               Text(
                 "good_morning".tr(),

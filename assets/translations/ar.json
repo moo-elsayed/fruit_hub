@@ -92,5 +92,7 @@
   "app_will_restart": "سيتم إعادة تشغيل التطبيق",
   "favorites": "المفضلة",
   "general": "عام",
-  "item_added_to_cart": "تمت الإضافة للسلة بنجاح"
+  "item_added_to_cart": "تمت الإضافة للسلة بنجاح",
+  "item_removed_from_cart": "تم حذف المنتج من السلة بنجاح",
+  "loading": "تحميل"
 }

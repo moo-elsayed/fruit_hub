@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/dependency_injection.dart';
 import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
 import 'package:fruit_hub/core/theming/app_colors.dart';
+import 'package:fruit_hub/core/widgets/app_dialogs.dart';
 import 'package:fruit_hub/features/app_section/presentation/widgets/custom_bottom_navigation_bar.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
@@ -12,6 +13,7 @@ import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cu
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/views/products.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import '../../../../core/helpers/extentions.dart';
 import '../../../../core/widgets/app_toasts.dart';
 import '../../../cart/presentation/views/cart.dart';
 import '../../../home/presentation/views/home.dart';
@@ -55,12 +57,22 @@ class _AppSectionState extends State<AppSection> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<CartCubit, CartState>(
-      listenWhen: (previous, current) => current is CartSuccess,
+      listenWhen: (previous, current) =>
+          current is CartSuccess || current is CartLoading,
       listener: (context, state) {
-        if (state is CartSuccess && state.newItemAdded == true) {
+        if (state is CartLoading && state.itemRemoved) {
+          AppDialogs.showLoadingDialog(context);
+        }
+        if (state is CartLoading && state.newItemAdded) {
+          AppDialogs.showLoadingDialog(context);
+        }
+        if (state is CartSuccess && (state.itemRemoved || state.newItemAdded)) {
+          context.pop();
           AppToast.showToast(
             context: context,
-            title: "item_added_to_cart".tr(),
+            title: state.newItemAdded
+                ? "item_added_to_cart".tr()
+                : "item_removed_from_cart".tr(),
             type: .success,
           );
         }

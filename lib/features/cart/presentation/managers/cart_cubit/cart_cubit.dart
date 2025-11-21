@@ -36,6 +36,7 @@ class CartCubit extends Cubit<CartState> implements CartService {
 
   @override
   Future<void> addItemToCart(String productId) async {
+    emit(CartLoading(newItemAdded: true));
     final result = await _addItemToCartUseCase.call(productId);
     switch (result) {
       case NetworkSuccess<void>():
@@ -48,11 +49,12 @@ class CartCubit extends Cubit<CartState> implements CartService {
 
   @override
   Future<void> removeItemFromCart(String productId) async {
+    emit(CartLoading(itemRemoved: true));
     final result = await _removeItemFromCartUseCase.call(productId);
     switch (result) {
       case NetworkSuccess<void>():
         _removeFromCartItemsLocal(productId);
-        await getProductsInCart(needLoading: false);
+        await getProductsInCart(needLoading: false, itemRemoved: true);
       case NetworkFailure<void>():
         emit(CartFailure(getErrorMessage(result).tr()));
     }
@@ -73,6 +75,7 @@ class CartCubit extends Cubit<CartState> implements CartService {
   Future<void> getProductsInCart({
     bool needLoading = true,
     bool newItemAdded = false,
+    bool itemRemoved = false,
   }) async {
     if (needLoading) {
       emit(CartLoading());
@@ -82,85 +85,11 @@ class CartCubit extends Cubit<CartState> implements CartService {
       case NetworkSuccess<List<CartItemEntity>>():
         final items = result.data!;
         _productsInCart = items;
-        _emitCartSuccess(newItemAdded);
+        _emitCartSuccess(newItemAdded: newItemAdded, itemRemoved: itemRemoved);
       case NetworkFailure<List<CartItemEntity>>():
         emit(CartFailure(getErrorMessage(result).tr()));
     }
   }
-
-  // @override
-  // Future<void> decrementItemQuantity(String productId) async {
-  //   final int newQuantity = _getNewQuantity(
-  //     productId: productId,
-  //     increment: false,
-  //   );
-  //   _productsInCart
-  //           .firstWhere((element) => element.fruitEntity.code == productId)
-  //           .quantity =
-  //       newQuantity;
-  //   if (newQuantity == 0) {
-  //     await removeItemFromCart(productId);
-  //     return;
-  //   } else {
-  //     emit(
-  //       CartSuccess(
-  //         items: _productsInCart,
-  //         totalPrice: _calculateTotalPrice(_productsInCart),
-  //         totalItemCount: _productsInCart.length,
-  //       ),
-  //     );
-  //     final result = await _updateItemQuantityUseCase.call(
-  //       productId: productId,
-  //       newQuantity: newQuantity,
-  //     );
-  //     switch (result) {
-  //       case NetworkSuccess<void>():
-  //         // await getProductsInCart(false);
-  //         break;
-  //       case NetworkFailure<void>():
-  //         _productsInCart
-  //             .firstWhere((element) => element.fruitEntity.code == productId)
-  //             .quantity = _getNewQuantity(
-  //           productId: productId,
-  //           increment: true,
-  //         );
-  //         emit(CartFailure(getErrorMessage(result).tr()));
-  //     }
-  //   }
-  // }
-  //
-  // @override
-  // Future<void> incrementItemQuantity(String productId) async {
-  //   final int newQuantity = _getNewQuantity(productId: productId);
-  //   _productsInCart
-  //           .firstWhere((element) => element.fruitEntity.code == productId)
-  //           .quantity =
-  //       newQuantity;
-  //   emit(
-  //     CartSuccess(
-  //       items: _productsInCart,
-  //       totalPrice: _calculateTotalPrice(_productsInCart),
-  //       totalItemCount: _productsInCart.length,
-  //     ),
-  //   );
-  //   final result = await _updateItemQuantityUseCase.call(
-  //     productId: productId,
-  //     newQuantity: newQuantity,
-  //   );
-  //   switch (result) {
-  //     case NetworkSuccess<void>():
-  //       // await getProductsInCart(false);
-  //       break;
-  //     case NetworkFailure<void>():
-  //       _productsInCart
-  //           .firstWhere((element) => element.fruitEntity.code == productId)
-  //           .quantity = _getNewQuantity(
-  //         productId: productId,
-  //         increment: false,
-  //       );
-  //       emit(CartFailure(getErrorMessage(result).tr()));
-  //   }
-  // }
 
   @override
   Future<void> incrementItemQuantity(String productId) async {
@@ -224,13 +153,14 @@ class CartCubit extends Cubit<CartState> implements CartService {
       .map((e) => e.totalPrice)
       .fold(0, (value, element) => value + element);
 
-  void _emitCartSuccess([bool newItemAdded = false]) {
+  void _emitCartSuccess({bool newItemAdded = false, bool itemRemoved = false}) {
     emit(
       CartSuccess(
         items: List.from(_productsInCart),
         totalItemCount: _productsInCart.length,
         totalPrice: _calculateTotalPrice(_productsInCart),
         newItemAdded: newItemAdded,
+        itemRemoved: itemRemoved,
       ),
     );
   }
@@ -240,7 +170,12 @@ class CartCubit extends Cubit<CartState> implements CartService {
       (e) => e.fruitEntity.code == productId,
     );
     if (productIndex != -1) {
-      _productsInCart[productIndex].quantity = quantity;
+      final oldItem = _productsInCart[productIndex];
+      _productsInCart[productIndex] = CartItemEntity(
+        fruitEntity: oldItem.fruitEntity,
+        quantity: quantity,
+      );
+      _productsInCart[productIndex] = oldItem.copyWith(quantity: quantity);
     }
     final cartIndex = _cartItems.indexWhere((e) => e['fruitCode'] == productId);
     if (cartIndex != -1) {
