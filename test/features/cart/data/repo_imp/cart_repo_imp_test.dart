@@ -9,13 +9,9 @@ import 'package:mocktail/mocktail.dart';
 
 class MockCartRemoteDataSource extends Mock implements CartRemoteDataSource {}
 
-class MockFruitEntity extends Mock implements FruitEntity {}
-
 void main() {
   late CartRepoImp sut;
   late MockCartRemoteDataSource mockCartRemoteDataSource;
-  late MockFruitEntity tFruitEntity;
-  late CartItemEntity tCartItemEntity;
   const tProductId = 'product_id';
   const tNewQuantity = 5;
   final tSuccessResponseOfTypeVoid = const NetworkSuccess<void>();
@@ -34,11 +30,21 @@ void main() {
     Exception("permission-denied"),
   );
 
+  final cartItems = [
+    {'fruitCode': tProductId, 'quantity': 1},
+    {'fruitCode': 'banana_yellow', 'quantity': 10},
+  ];
+
+  final tSuccessResponseOfTypeListMapStringDynamic =
+      NetworkSuccess<List<Map<String, dynamic>>>(cartItems);
+  final tFailureResponseOfTypeListMapStringDynamic =
+      NetworkFailure<List<Map<String, dynamic>>>(
+        Exception("permission-denied"),
+      );
+
   setUp(() {
     mockCartRemoteDataSource = MockCartRemoteDataSource();
     sut = CartRepoImp(mockCartRemoteDataSource);
-    tFruitEntity = MockFruitEntity();
-    tCartItemEntity = CartItemEntity(fruitEntity: tFruitEntity, quantity: 2);
   });
 
   group('CartRepoImp', () {
@@ -48,14 +54,14 @@ void main() {
         () async {
           // Arrange
           when(
-            () => mockCartRemoteDataSource.addItemToCart(tCartItemEntity),
+            () => mockCartRemoteDataSource.addItemToCart(tProductId),
           ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
           // Act
-          var result = await sut.addItemToCart(tCartItemEntity);
+          var result = await sut.addItemToCart(tProductId);
           // Assert
           expect(result, tSuccessResponseOfTypeVoid);
           verify(
-            () => mockCartRemoteDataSource.addItemToCart(tCartItemEntity),
+            () => mockCartRemoteDataSource.addItemToCart(tProductId),
           ).called(1);
           verifyNoMoreInteractions(mockCartRemoteDataSource);
         },
@@ -66,20 +72,21 @@ void main() {
         () async {
           // Arrange
           when(
-            () => mockCartRemoteDataSource.addItemToCart(tCartItemEntity),
+            () => mockCartRemoteDataSource.addItemToCart(tProductId),
           ).thenAnswer((_) async => tFailureResponseOfTypeVoid);
           // Act
-          var result = await sut.addItemToCart(tCartItemEntity);
+          var result = await sut.addItemToCart(tProductId);
           // Assert
           expect(result, tFailureResponseOfTypeVoid);
           expect(getErrorMessage(result), "permission-denied");
           verify(
-            () => mockCartRemoteDataSource.addItemToCart(tCartItemEntity),
+            () => mockCartRemoteDataSource.addItemToCart(tProductId),
           ).called(1);
           verifyNoMoreInteractions(mockCartRemoteDataSource);
         },
       );
     });
+
     group('removeItemFromCart', () {
       test(
         'should call removeItemFromCart from remote data source with correct params when success response',
@@ -125,11 +132,11 @@ void main() {
           // Arrange
           when(
             () => mockCartRemoteDataSource.getCartItems(),
-          ).thenAnswer((_) async => tSuccessResponse);
+          ).thenAnswer((_) async => tSuccessResponseOfTypeListMapStringDynamic);
           // Act
           var result = await sut.getCartItems();
           // Assert
-          expect(result, tSuccessResponse);
+          expect(result, tSuccessResponseOfTypeListMapStringDynamic);
           verify(() => mockCartRemoteDataSource.getCartItems()).called(1);
           verifyNoMoreInteractions(mockCartRemoteDataSource);
         },
@@ -141,17 +148,18 @@ void main() {
           // Arrange
           when(
             () => mockCartRemoteDataSource.getCartItems(),
-          ).thenAnswer((_) async => tFailureResponse);
+          ).thenAnswer((_) async => tFailureResponseOfTypeListMapStringDynamic);
           // Act
           var result = await sut.getCartItems();
           // Assert
-          expect(result, tFailureResponse);
+          expect(result, tFailureResponseOfTypeListMapStringDynamic);
           expect(getErrorMessage(result), "permission-denied");
           verify(() => mockCartRemoteDataSource.getCartItems()).called(1);
           verifyNoMoreInteractions(mockCartRemoteDataSource);
         },
       );
     });
+
     group('updateItemQuantity', () {
       test(
         'should call updateItemQuantity from remote data source with correct params when success response',
@@ -203,6 +211,45 @@ void main() {
               newQuantity: tNewQuantity,
               productId: tProductId,
             ),
+          ).called(1);
+          verifyNoMoreInteractions(mockCartRemoteDataSource);
+        },
+      );
+    });
+
+    group('getProductsInCart', () {
+      test(
+        'should call getProductsInCart from remote data source with correct params when success response',
+        () async {
+          // Arrange
+          when(
+            () => mockCartRemoteDataSource.getProductsInCart(cartItems),
+          ).thenAnswer((_) async => tSuccessResponse);
+          // Act
+          var result = await sut.getProductsInCart(cartItems);
+          // Assert
+          expect(result, tSuccessResponse);
+          verify(
+            () => mockCartRemoteDataSource.getProductsInCart(cartItems),
+          ).called(1);
+          verifyNoMoreInteractions(mockCartRemoteDataSource);
+        },
+      );
+
+      test(
+        'should return failure when getProductsInCart from remote data source returns failure response',
+        () async {
+          // Arrange
+          when(
+            () => mockCartRemoteDataSource.getProductsInCart(cartItems),
+          ).thenAnswer((_) async => tFailureResponse);
+          // Act
+          var result = await sut.getProductsInCart(cartItems);
+          // Assert
+          expect(result, tFailureResponse);
+          expect(getErrorMessage(result), "permission-denied");
+          verify(
+            () => mockCartRemoteDataSource.getProductsInCart(cartItems),
           ).called(1);
           verifyNoMoreInteractions(mockCartRemoteDataSource);
         },

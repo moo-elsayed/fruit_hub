@@ -22,11 +22,12 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   var cartItemsList = <CartItemEntity>[];
+  num totalPrice = 0;
 
   @override
   void initState() {
     super.initState();
-    context.read<CartCubit>().getCartItems();
+    context.read<CartCubit>().getProductsInCart();
   }
 
   @override
@@ -57,18 +58,22 @@ class _CartState extends State<Cart> {
           toolbarHeight: 0,
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(44.h),
-            child: BlocBuilder<CartCubit, CartState>(
+            child: BlocConsumer<CartCubit, CartState>(
+              listener: (context, state) {
+                if (state is CartSuccess) {
+                  cartItemsList = state.items;
+                }
+              },
               builder: (context, state) {
-                if (state is CartLoading) {
+                if (state is CartLoading && !state.itemRemoved) {
                   return Skeletonizer(
                     enabled: true,
                     child: ProductsCount(count: cartItemsList.length),
                   );
                 }
-                if (state is CartSuccess) {
-                  cartItemsList = state.items;
-                  int count = state.totalItemCount;
-                  return ProductsCount(count: count);
+                if (state is CartSuccess ||
+                    (state is CartLoading && state.itemRemoved)) {
+                  return ProductsCount(count: cartItemsList.length);
                 }
                 return Container();
               },
@@ -79,16 +84,21 @@ class _CartState extends State<Cart> {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          BlocBuilder<CartCubit, CartState>(
+          BlocConsumer<CartCubit, CartState>(
+            listener: (context, state) {
+              if (state is CartSuccess) {
+                cartItemsList = state.items;
+              }
+            },
             builder: (context, state) {
-              if (state is CartLoading) {
+              if (state is CartLoading && !state.itemRemoved) {
                 return const Skeletonizer(
                   enabled: true,
                   child: CartItemsListView(itemCount: 6),
                 );
               }
-              if (state is CartSuccess) {
-                cartItemsList = state.items;
+              if (state is CartSuccess ||
+                  (state is CartLoading && state.itemRemoved)) {
                 return CartItemsListView(cartItems: cartItemsList);
               }
               return Container();
@@ -98,9 +108,14 @@ class _CartState extends State<Cart> {
             bottom: 16.h,
             right: 16.w,
             left: 16.w,
-            child: BlocBuilder<CartCubit, CartState>(
+            child: BlocConsumer<CartCubit, CartState>(
+              listener: (context, state) {
+                if (state is CartSuccess && state.items.isNotEmpty) {
+                  totalPrice = getPrice(state.totalPrice);
+                }
+              },
               builder: (context, state) {
-                if (state is CartLoading) {
+                if (state is CartLoading && !state.itemRemoved) {
                   return Skeletonizer(
                     enabled: true,
                     child: CustomMaterialButton(
@@ -111,8 +126,8 @@ class _CartState extends State<Cart> {
                     ),
                   );
                 }
-                if (state is CartSuccess && state.items.isNotEmpty) {
-                  num totalPrice = getPrice(state.totalPrice);
+                if ((state is CartSuccess && state.items.isNotEmpty) ||
+                    (state is CartLoading && state.itemRemoved)) {
                   return CustomMaterialButton(
                     onPressed: () {},
                     maxWidth: true,

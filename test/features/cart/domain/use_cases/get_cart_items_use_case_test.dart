@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
-import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:fruit_hub/features/cart/domain/repo/cart_repo.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/get_cart_items_use_case.dart';
 import 'package:mocktail/mocktail.dart';
@@ -11,16 +10,19 @@ class MockCartRepo extends Mock implements CartRepo {}
 void main() {
   late GetCartItemsUseCase sut;
   late MockCartRepo mockCartRepo;
-  List<CartItemEntity> tCartItems = [
-    CartItemEntity(fruitEntity: FruitEntity(), quantity: 2),
-    CartItemEntity(fruitEntity: FruitEntity(), quantity: 3),
-    CartItemEntity(fruitEntity: FruitEntity(), quantity: 4),
+  const tProductId = 'product_id';
+
+  final cartItems = [
+    {'fruitCode': tProductId, 'quantity': 1},
+    {'fruitCode': 'banana_yellow', 'quantity': 10},
   ];
 
-  final tSuccessResponse = NetworkSuccess<List<CartItemEntity>>(tCartItems);
-  final tFailureResponse = NetworkFailure<List<CartItemEntity>>(
-    Exception("permission-denied"),
-  );
+  final tSuccessResponseOfTypeListMapStringDynamic =
+      NetworkSuccess<List<Map<String, dynamic>>>(cartItems);
+  final tFailureResponseOfTypeListMapStringDynamic =
+      NetworkFailure<List<Map<String, dynamic>>>(
+        Exception("permission-denied"),
+      );
 
   setUp(() {
     mockCartRepo = MockCartRepo();
@@ -32,11 +34,11 @@ void main() {
       // Arrange
       when(
         () => mockCartRepo.getCartItems(),
-      ).thenAnswer((_) async => tSuccessResponse);
+      ).thenAnswer((_) async => tSuccessResponseOfTypeListMapStringDynamic);
       // Act
       final result = await sut.call();
       // Assert
-      expect(result, tSuccessResponse);
+      expect(result, tSuccessResponseOfTypeListMapStringDynamic);
       verify(() => mockCartRepo.getCartItems()).called(1);
       verifyNoMoreInteractions(mockCartRepo);
     });
@@ -45,11 +47,12 @@ void main() {
       // Arrange
       when(
         () => mockCartRepo.getCartItems(),
-      ).thenAnswer((_) async => tFailureResponse);
+      ).thenAnswer((_) async => tFailureResponseOfTypeListMapStringDynamic);
       // Act
       final result = await sut.call();
       // Assert
-      expect(result, tFailureResponse);
+      expect(result, tFailureResponseOfTypeListMapStringDynamic);
+      expect(getErrorMessage(result), "permission-denied");
       verify(() => mockCartRepo.getCartItems()).called(1);
       verifyNoMoreInteractions(mockCartRepo);
     });

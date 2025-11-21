@@ -31,6 +31,7 @@ import '../../features/auth/domain/use_cases/forget_password_use_case.dart';
 import '../../features/auth/domain/use_cases/google_sign_in_use_case.dart';
 import '../../features/cart/data/repo_imp/cart_repo_imp.dart';
 import '../../features/cart/domain/use_cases/get_cart_items_use_case.dart';
+import '../../features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import '../../features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
 import '../../features/cart/domain/use_cases/update_item_quantity_use_case.dart';
 import '../../features/profile/domain/use_cases/get_favorites_use_case.dart';
@@ -148,8 +149,8 @@ void setupServiceLocator() {
     ),
   );
 
-  getIt.registerSingleton<GetCartItemsUseCase>(
-    GetCartItemsUseCase(getIt<CartRepoImp>()),
+  getIt.registerSingleton<GetProductsInCartUseCase>(
+    GetProductsInCartUseCase(getIt<CartRepoImp>()),
   );
 
   getIt.registerSingleton<AddItemToCartUseCase>(
@@ -162,6 +163,10 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<UpdateItemQuantityUseCase>(
     UpdateItemQuantityUseCase(getIt<CartRepoImp>()),
+  );
+
+  getIt.registerSingleton<GetCartItemsUseCase>(
+    GetCartItemsUseCase(getIt<CartRepoImp>()),
   );
 
   /// favorites

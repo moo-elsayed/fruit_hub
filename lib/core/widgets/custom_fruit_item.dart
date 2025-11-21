@@ -7,7 +7,6 @@ import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/theming/app_colors.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_favourite_icon.dart';
-import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:fruit_hub/generated/assets.dart';
 import '../../features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import '../../features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
@@ -71,9 +70,7 @@ class CustomFruitItem extends StatelessWidget {
                   ),
                   CustomActionButton(
                     onTap: () {
-                      myCartService.addItemToCart(
-                        CartItemEntity(fruitEntity: fruitEntity),
-                      );
+                      myCartService.addItemToCart(fruitEntity.code);
                     },
                     child: SvgPicture.asset(Assets.iconsPlus),
                   ),

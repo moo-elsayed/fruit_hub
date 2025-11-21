@@ -10,21 +10,26 @@ class CustomActionButton extends StatelessWidget {
     this.radius,
     this.backgroundColor,
     required this.child,
+    this.opacity,
   });
 
   final VoidCallback onTap;
   final double? radius;
+  final double? opacity;
   final Color? backgroundColor;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: CircleAvatar(
-        radius: radius ?? 18.r,
-        backgroundColor: backgroundColor ?? AppColors.color1B5E37,
-        child: child,
+    return Opacity(
+      opacity: opacity ?? 1,
+      child: GestureDetector(
+        onTap: onTap,
+        child: CircleAvatar(
+          radius: radius ?? 18.r,
+          backgroundColor: backgroundColor ?? AppColors.color1B5E37,
+          child: child,
+        ),
       ),
     );
   }

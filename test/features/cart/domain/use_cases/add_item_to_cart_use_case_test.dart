@@ -1,19 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
-import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:fruit_hub/features/cart/domain/repo/cart_repo.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
 import 'package:mocktail/mocktail.dart';
-import '../../data/data_sources/remote/cart_remote_data_source_imp_test.dart';
 
 class MockCartRepo extends Mock implements CartRepo {}
 
 void main() {
   late AddItemToCartUseCase sut;
   late MockCartRepo mockCartRepo;
-  late MockFruitEntity tFruitEntity;
-  late CartItemEntity tCartItemEntity;
+  const tProductId = 'product_id';
   final tSuccessResponseOfTypeVoid = const NetworkSuccess<void>();
   final tFailureResponseOfTypeVoid = NetworkFailure<void>(
     Exception("permission-denied"),
@@ -22,8 +19,6 @@ void main() {
   setUp(() {
     mockCartRepo = MockCartRepo();
     sut = AddItemToCartUseCase(mockCartRepo);
-    tFruitEntity = MockFruitEntity();
-    tCartItemEntity = CartItemEntity(fruitEntity: tFruitEntity, quantity: 2);
   });
 
   group('addItemToCartUseCase', () {
@@ -32,13 +27,13 @@ void main() {
       () async {
         // Arrange
         when(
-          () => mockCartRepo.addItemToCart(tCartItemEntity),
+          () => mockCartRepo.addItemToCart(tProductId),
         ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
         // Act
-        var result = await sut.call(tCartItemEntity);
+        var result = await sut.call(tProductId);
         // Assert
         expect(result, tSuccessResponseOfTypeVoid);
-        verify(() => mockCartRepo.addItemToCart(tCartItemEntity)).called(1);
+        verify(() => mockCartRepo.addItemToCart(tProductId)).called(1);
         verifyNoMoreInteractions(mockCartRepo);
       },
     );
@@ -48,14 +43,14 @@ void main() {
       () async {
         // Arrange
         when(
-          () => mockCartRepo.addItemToCart(tCartItemEntity),
+          () => mockCartRepo.addItemToCart(tProductId),
         ).thenAnswer((_) async => tFailureResponseOfTypeVoid);
         // Act
-        var result = await sut.call(tCartItemEntity);
+        var result = await sut.call(tProductId);
         // Assert
         expect(result, tFailureResponseOfTypeVoid);
         expect(getErrorMessage(result), "permission-denied");
-        verify(() => mockCartRepo.addItemToCart(tCartItemEntity)).called(1);
+        verify(() => mockCartRepo.addItemToCart(tProductId)).called(1);
         verifyNoMoreInteractions(mockCartRepo);
       },
     );

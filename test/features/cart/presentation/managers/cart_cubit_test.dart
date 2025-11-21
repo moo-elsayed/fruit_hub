@@ -6,6 +6,7 @@ import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/get_cart_items_use_case.dart';
+import 'package:fruit_hub/features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/update_item_quantity_use_case.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
@@ -21,102 +22,55 @@ class MockGetCartItemsUseCase extends Mock implements GetCartItemsUseCase {}
 class MockUpdateItemQuantityUseCase extends Mock
     implements UpdateItemQuantityUseCase {}
 
-class MockFruitEntity extends Mock implements FruitEntity {}
+class MockGetProductsInCartUseCase extends Mock
+    implements GetProductsInCartUseCase {}
 
 void main() {
   late CartCubit sut;
   late MockAddItemToCartUseCase mockAddItemToCartUseCase;
   late MockRemoveItemFromCartUseCase mockRemoveItemFromCartUseCase;
-  late MockGetCartItemsUseCase mockGetCartItemsUseCase;
+  late MockGetProductsInCartUseCase mockGetProductsInCartUseCase;
   late MockUpdateItemQuantityUseCase mockUpdateItemQuantityUseCase;
-  late CartItemEntity tCartItemEntity;
-
-  final tMockFruit = MockFruitEntity();
-  late CartItemEntity tInitialItem;
-  late CartSuccess tInitialState;
+  late MockGetCartItemsUseCase mockGetCartItemsUseCase;
 
   const tProductId = 'apple';
-  const tInitialQuantity = 2;
-  const tNewQuantity = 3;
-
-  late CartItemEntity tUpdatedItem;
-  late List<CartItemEntity> tUpdatedList;
-  late NetworkSuccess<List<CartItemEntity>> tSuccessGetItemsResponse;
+  final tFruitEntity = FruitEntity(
+    code: tProductId,
+    name: 'Apple',
+    price: 10.0,
+    imagePath: 'image',
+    description: 'desc',
+    isFeatured: false,
+  );
 
   final tSuccessResponseOfTypeVoid = const NetworkSuccess<void>();
   final tFailureResponseOfTypeVoid = NetworkFailure<void>(
     Exception("permission-denied"),
   );
 
-  List<CartItemEntity> tCartItems = [
-    CartItemEntity(fruitEntity: FruitEntity(price: 4), quantity: 2),
-    CartItemEntity(fruitEntity: FruitEntity(price: 5), quantity: 3),
-    CartItemEntity(fruitEntity: FruitEntity(price: 6), quantity: 4),
+  List<CartItemEntity> tProductsInCart = [
+    CartItemEntity(fruitEntity: tFruitEntity, quantity: 2),
   ];
 
-  final tSuccessResponse = NetworkSuccess<List<CartItemEntity>>(tCartItems);
+  final tSuccessResponse = NetworkSuccess<List<CartItemEntity>>(
+    tProductsInCart,
+  );
   final tFailureResponse = NetworkFailure<List<CartItemEntity>>(
     Exception("permission-denied"),
   );
 
-  const tNewQuantityDec = 1;
-  late CartItemEntity tUpdatedItemDec;
-  late List<CartItemEntity> tUpdatedListDec;
-  late NetworkSuccess<List<CartItemEntity>> tSuccessGetItemsResponseDec;
-  late CartItemEntity tInitialItemQ1;
-  late CartSuccess tInitialStateQ1;
-  final List<CartItemEntity> tUpdatedListQ0 = const [];
-  late NetworkSuccess<List<CartItemEntity>> tSuccessGetItemsResponseQ0;
-
   setUp(() {
     mockAddItemToCartUseCase = MockAddItemToCartUseCase();
     mockRemoveItemFromCartUseCase = MockRemoveItemFromCartUseCase();
-    mockGetCartItemsUseCase = MockGetCartItemsUseCase();
+    mockGetProductsInCartUseCase = MockGetProductsInCartUseCase();
     mockUpdateItemQuantityUseCase = MockUpdateItemQuantityUseCase();
+    mockGetCartItemsUseCase = MockGetCartItemsUseCase();
     sut = CartCubit(
       mockAddItemToCartUseCase,
       mockRemoveItemFromCartUseCase,
-      mockGetCartItemsUseCase,
+      mockGetProductsInCartUseCase,
       mockUpdateItemQuantityUseCase,
-    );
-    tCartItemEntity = CartItemEntity(fruitEntity: tMockFruit, quantity: 2);
-
-    when(() => tMockFruit.code).thenReturn(tProductId);
-    when(() => tMockFruit.price).thenReturn(10.0);
-
-    tInitialItem = CartItemEntity(
-      fruitEntity: tMockFruit,
-      quantity: tInitialQuantity,
-    );
-    tInitialState = CartSuccess(
-      items: [tInitialItem],
-      totalItemCount: 1,
-      totalPrice: 20.0,
-    );
-
-    tUpdatedItem = CartItemEntity(
-      fruitEntity: tMockFruit,
-      quantity: tNewQuantity,
-    );
-    tUpdatedList = [tUpdatedItem];
-    tSuccessGetItemsResponse = NetworkSuccess<List<CartItemEntity>>(
-      tUpdatedList,
-    );
-
-    tUpdatedItemDec = CartItemEntity(fruitEntity: tMockFruit, quantity: 1);
-    tUpdatedListDec = [tUpdatedItemDec];
-    tSuccessGetItemsResponseDec = NetworkSuccess<List<CartItemEntity>>(
-      tUpdatedListDec,
-    );
-
-    tInitialItemQ1 = CartItemEntity(fruitEntity: tMockFruit, quantity: 1);
-    tInitialStateQ1 = CartSuccess(
-      items: [tInitialItemQ1],
-      totalItemCount: 1,
-      totalPrice: 10.0,
-    );
-    tSuccessGetItemsResponseQ0 = NetworkSuccess<List<CartItemEntity>>(
-      tUpdatedListQ0,
+      mockGetCartItemsUseCase,
     );
   });
 
@@ -127,30 +81,31 @@ void main() {
 
     group('addItemToCart', () {
       blocTest<CartCubit, CartState>(
-        'emits [CartSuccess] when addItemToCart and subsequent getCartItems are successful',
+        'emits [CartSuccess] with newItemAdded equal true when addItemToCart succeeds',
         build: () => sut,
         setUp: () {
           when(
-            () => mockAddItemToCartUseCase.call(tCartItemEntity),
+            () => mockAddItemToCartUseCase.call(tProductId),
           ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
           when(
-            () => mockGetCartItemsUseCase.call(),
+            () => mockGetProductsInCartUseCase.call(any()),
           ).thenAnswer((_) async => tSuccessResponse);
         },
-        act: (cubit) => cubit.addItemToCart(tCartItemEntity),
+        act: (cubit) => cubit.addItemToCart(tProductId),
         expect: () => [
           isA<CartSuccess>()
-              .having((state) => state.items, 'items', tCartItems)
-              .having((state) => state.totalItemCount, 'totalItemCount', 3)
-              .having((state) => state.totalPrice, 'totalPrice', 47),
+              .having((state) => state.items, 'items', tProductsInCart)
+              .having((state) => state.totalItemCount, 'totalItemCount', 1)
+              .having((state) => state.totalPrice, 'totalPrice', 20.0)
+              .having((state) => state.newItemAdded, 'newItemAdded', true),
         ],
         verify: (_) {
           verifyInOrder([
-            () => mockAddItemToCartUseCase.call(tCartItemEntity),
-            () => mockGetCartItemsUseCase.call(),
+            () => mockAddItemToCartUseCase.call(tProductId),
+            () => mockGetProductsInCartUseCase.call(any()),
           ]);
           verifyNoMoreInteractions(mockAddItemToCartUseCase);
-          verifyNoMoreInteractions(mockGetCartItemsUseCase);
+          verifyNoMoreInteractions(mockGetProductsInCartUseCase);
         },
       );
 
@@ -159,10 +114,10 @@ void main() {
         build: () => sut,
         setUp: () {
           when(
-            () => mockAddItemToCartUseCase.call(tCartItemEntity),
+            () => mockAddItemToCartUseCase.call(tProductId),
           ).thenAnswer((_) async => tFailureResponseOfTypeVoid);
         },
-        act: (cubit) => cubit.addItemToCart(tCartItemEntity),
+        act: (cubit) => cubit.addItemToCart(tProductId),
         expect: () => [
           isA<CartFailure>().having(
             (state) => state.errorMessage,
@@ -171,10 +126,37 @@ void main() {
           ),
         ],
         verify: (_) {
-          verify(
-            () => mockAddItemToCartUseCase.call(tCartItemEntity),
-          ).called(1);
+          verify(() => mockAddItemToCartUseCase.call(tProductId)).called(1);
           verifyNoMoreInteractions(mockAddItemToCartUseCase);
+        },
+      );
+
+      blocTest<CartCubit, CartState>(
+        'emits [CartFailure] when getProductsInCart fails',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockAddItemToCartUseCase.call(tProductId),
+          ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
+          when(
+            () => mockGetProductsInCartUseCase.call(any()),
+          ).thenAnswer((_) async => tFailureResponse);
+        },
+        act: (cubit) => cubit.addItemToCart(tProductId),
+        expect: () => [
+          isA<CartFailure>().having(
+            (state) => state.errorMessage,
+            'exception',
+            equals(getErrorMessage(tFailureResponse)),
+          ),
+        ],
+        verify: (_) {
+          verifyInOrder([
+            () => mockAddItemToCartUseCase.call(tProductId),
+            () => mockGetProductsInCartUseCase.call(any()),
+          ]);
+          verifyNoMoreInteractions(mockAddItemToCartUseCase);
+          verifyNoMoreInteractions(mockGetProductsInCartUseCase);
         },
       );
     });
@@ -188,24 +170,24 @@ void main() {
             () => mockRemoveItemFromCartUseCase.call(tProductId),
           ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
           when(
-            () => mockGetCartItemsUseCase.call(),
+            () => mockGetProductsInCartUseCase.call(any()),
           ).thenAnswer((_) async => tSuccessResponse);
         },
         act: (cubit) => cubit.removeItemFromCart(tProductId),
         expect: () => [
-          isA<CartSuccess>().having(
-            (state) => state.items,
-            'items',
-            tCartItems,
-          ),
+          isA<CartSuccess>()
+              .having((state) => state.items, 'items', tProductsInCart)
+              .having((state) => state.totalItemCount, 'totalItemCount', 1)
+              .having((state) => state.totalPrice, 'totalPrice', 20.0)
+              .having((state) => state.newItemAdded, 'newItemAdded', false),
         ],
         verify: (_) {
           verifyInOrder([
             () => mockRemoveItemFromCartUseCase.call(tProductId),
-            () => mockGetCartItemsUseCase.call(),
+            () => mockGetProductsInCartUseCase.call(any()),
           ]);
           verifyNoMoreInteractions(mockRemoveItemFromCartUseCase);
-          verifyNoMoreInteractions(mockGetCartItemsUseCase);
+          verifyNoMoreInteractions(mockGetProductsInCartUseCase);
         },
       );
 
@@ -232,248 +214,371 @@ void main() {
           verifyNoMoreInteractions(mockRemoveItemFromCartUseCase);
         },
       );
-    });
-
-    group('getCartItems', () {
-      blocTest<CartCubit, CartState>(
-        'emits [CartLoading, CartSuccess] when getCartItems is successful',
-        build: () => sut,
-        setUp: () {
-          when(
-            () => mockGetCartItemsUseCase.call(),
-          ).thenAnswer((_) async => tSuccessResponse);
-        },
-        act: (cubit) => cubit.getCartItems(),
-        expect: () => [
-          isA<CartLoading>(),
-          isA<CartSuccess>()
-              .having((state) => state.items, 'items', tCartItems)
-              .having((state) => state.totalItemCount, 'totalItemCount', 3)
-              .having((state) => state.totalPrice, 'totalPrice', 47),
-        ],
-        verify: (_) {
-          verify(() => mockGetCartItemsUseCase.call()).called(1);
-          verifyNoMoreInteractions(mockGetCartItemsUseCase);
-        },
-      );
 
       blocTest<CartCubit, CartState>(
-        'emits [CartLoading, CartFailure] when getCartItems fails',
-        build: () => sut,
-        setUp: () {
-          when(
-            () => mockGetCartItemsUseCase.call(),
-          ).thenAnswer((_) async => tFailureResponse);
-        },
-        act: (cubit) => cubit.getCartItems(),
-        expect: () => [
-          isA<CartLoading>(),
-          isA<CartFailure>().having(
-            (state) => state.errorMessage,
-            'exception',
-            equals(getErrorMessage(tFailureResponse)),
-          ),
-        ],
-        verify: (_) {
-          verify(() => mockGetCartItemsUseCase.call()).called(1);
-          verifyNoMoreInteractions(mockGetCartItemsUseCase);
-        },
-      );
-    });
-
-    group('incrementItemQuantity', () {
-      blocTest<CartCubit, CartState>(
-        'emits [CartSuccess] when update and get are successful',
-        build: () => sut,
-        seed: () => tInitialState,
-        setUp: () {
-          when(
-            () => mockUpdateItemQuantityUseCase.call(
-              productId: tProductId,
-              newQuantity: tNewQuantity,
-            ),
-          ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
-          when(
-            () => mockGetCartItemsUseCase.call(),
-          ).thenAnswer((_) async => tSuccessGetItemsResponse);
-        },
-        act: (cubit) => cubit.incrementItemQuantity(tProductId),
-        expect: () => [
-          isA<CartSuccess>()
-              .having((state) => state.items, 'items', tUpdatedList)
-              .having((state) => state.totalPrice, 'totalPrice', 30.0),
-        ],
-        verify: (_) {
-          verifyInOrder([
-            () => mockUpdateItemQuantityUseCase.call(
-              productId: tProductId,
-              newQuantity: tNewQuantity,
-            ),
-            () => mockGetCartItemsUseCase.call(),
-          ]);
-          verifyNoMoreInteractions(mockUpdateItemQuantityUseCase);
-          verifyNoMoreInteractions(mockGetCartItemsUseCase);
-        },
-      );
-
-      blocTest<CartCubit, CartState>(
-        'emits [CartFailure] when update fails',
-        build: () => sut,
-        seed: () => tInitialState,
-        setUp: () {
-          when(
-            () => mockUpdateItemQuantityUseCase.call(
-              productId: tProductId,
-              newQuantity: tNewQuantity,
-            ),
-          ).thenAnswer((_) async => tFailureResponseOfTypeVoid);
-        },
-        act: (cubit) => cubit.incrementItemQuantity(tProductId),
-        expect: () => [
-          isA<CartFailure>().having(
-            (state) => state.errorMessage,
-            'exception',
-            equals(getErrorMessage(tFailureResponse)),
-          ),
-        ],
-        verify: (_) {
-          verify(
-            () => mockUpdateItemQuantityUseCase.call(
-              productId: tProductId,
-              newQuantity: tNewQuantity,
-            ),
-          ).called(1);
-          verifyNoMoreInteractions(mockUpdateItemQuantityUseCase);
-        },
-      );
-      blocTest<CartCubit, CartState>(
-        'emits [] (nothing) when state is not CartSuccess',
-        build: () => sut,
-        act: (cubit) => cubit.incrementItemQuantity(tProductId),
-        expect: () => [],
-        verify: (_) {
-          verifyNever(
-            () => mockUpdateItemQuantityUseCase.call(
-              productId: tProductId,
-              newQuantity: tNewQuantity,
-            ),
-          );
-          verifyNever(() => mockGetCartItemsUseCase.call());
-        },
-      );
-    });
-
-    group('decrementItemQuantity', () {
-      blocTest<CartCubit, CartState>(
-        'emits [CartSuccess] when update (Q=2 -> Q=1) and get are successful',
-        build: () => sut,
-        seed: () => tInitialState,
-        setUp: () {
-          when(
-            () => mockUpdateItemQuantityUseCase.call(
-              productId: tProductId,
-              newQuantity: tNewQuantityDec,
-            ),
-          ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
-          when(
-            () => mockGetCartItemsUseCase.call(),
-          ).thenAnswer((_) async => tSuccessGetItemsResponseDec);
-        },
-        act: (cubit) => cubit.decrementItemQuantity(tProductId),
-        expect: () => [
-          isA<CartSuccess>()
-              .having((state) => state.items, 'items', tUpdatedListDec)
-              .having((state) => state.totalPrice, 'totalPrice', 10.0),
-        ],
-        verify: (_) {
-          verifyInOrder([
-            () => mockUpdateItemQuantityUseCase.call(
-              productId: tProductId,
-              newQuantity: tNewQuantityDec,
-            ),
-            () => mockGetCartItemsUseCase.call(),
-          ]);
-          verifyNoMoreInteractions(mockUpdateItemQuantityUseCase);
-          verifyNoMoreInteractions(mockGetCartItemsUseCase);
-        },
-      );
-
-      blocTest<CartCubit, CartState>(
-        'emits [CartSuccess] when quantity becomes 0 (Q=1 -> Q=0) and remove/get are successful',
-        seed: () => tInitialStateQ1,
+        'emits [CartFailure] when getProductsInCart fails',
         build: () => sut,
         setUp: () {
           when(
             () => mockRemoveItemFromCartUseCase.call(tProductId),
           ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
           when(
-            () => mockGetCartItemsUseCase.call(),
-          ).thenAnswer((_) async => tSuccessGetItemsResponseQ0);
+            () => mockGetProductsInCartUseCase.call(any()),
+          ).thenAnswer((_) async => tFailureResponse);
         },
-        act: (cubit) => cubit.decrementItemQuantity(tProductId),
+        act: (cubit) => cubit.removeItemFromCart(tProductId),
         expect: () => [
-          isA<CartSuccess>()
-              .having((state) => state.items, 'items', tUpdatedListQ0)
-              .having((state) => state.totalItemCount, 'totalItemCount', 0),
+          isA<CartFailure>().having(
+            (state) => state.errorMessage,
+            'exception',
+            equals(getErrorMessage(tFailureResponse)),
+          ),
         ],
         verify: (_) {
-          verifyNever(
+          verifyInOrder([
+            () => mockRemoveItemFromCartUseCase.call(tProductId),
+            () => mockGetProductsInCartUseCase.call(any()),
+          ]);
+          verifyNoMoreInteractions(mockRemoveItemFromCartUseCase);
+          verifyNoMoreInteractions(mockGetProductsInCartUseCase);
+        },
+      );
+    });
+
+    group('getCartItems', () {
+      final cartItems = [
+        {'fruitCode': tProductId, 'quantity': 1},
+        {'fruitCode': 'banana_yellow', 'quantity': 10},
+      ];
+
+      final tSuccessResponseOfTypeListMapStringDynamic =
+          NetworkSuccess<List<Map<String, dynamic>>>(cartItems);
+      final tFailureResponseOfTypeListMapStringDynamic =
+          NetworkFailure<List<Map<String, dynamic>>>(
+            Exception("permission-denied"),
+          );
+      blocTest<CartCubit, CartState>(
+        'emits [GetCartItemsLoading, GetCartItemsSuccess] when getCartItems is successful',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockGetCartItemsUseCase.call(),
+          ).thenAnswer((_) async => tSuccessResponseOfTypeListMapStringDynamic);
+        },
+        act: (cubit) => cubit.getCartItems(),
+        expect: () => [isA<GetCartItemsLoading>(), isA<GetCartItemsSuccess>()],
+        verify: (_) {
+          verify(() => mockGetCartItemsUseCase.call()).called(1);
+          verifyNoMoreInteractions(mockGetCartItemsUseCase);
+        },
+      );
+
+      blocTest<CartCubit, CartState>(
+        'emits [GetCartItemsLoading, GetCartItemsFailure] when getCartItems fails',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockGetCartItemsUseCase.call(),
+          ).thenAnswer((_) async => tFailureResponseOfTypeListMapStringDynamic);
+        },
+        act: (cubit) => cubit.getCartItems(),
+        expect: () => [
+          isA<GetCartItemsLoading>(),
+          isA<GetCartItemsFailure>().having(
+            (state) => state.errorMessage,
+            'exception',
+            equals(getErrorMessage(tFailureResponse)),
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockGetCartItemsUseCase.call()).called(1);
+          verifyNoMoreInteractions(mockGetCartItemsUseCase);
+        },
+      );
+    });
+
+    group("get products in cart", () {
+      blocTest(
+        'emits [CartLoading, CartSuccess] when getProductsInCart is successful and needLoading is true',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockGetProductsInCartUseCase.call(any()),
+          ).thenAnswer((_) async => tSuccessResponse);
+        },
+        act: (cubit) => cubit.getProductsInCart(needLoading: true),
+        expect: () => [
+          isA<CartLoading>(),
+          isA<CartSuccess>()
+              .having((state) => state.items, 'items', tProductsInCart)
+              .having((state) => state.totalItemCount, 'totalItemCount', 1)
+              .having((state) => state.totalPrice, 'totalPrice', 20.0)
+              .having((state) => state.newItemAdded, 'newItemAdded', false),
+        ],
+        verify: (_) {
+          verify(() => mockGetProductsInCartUseCase.call(any())).called(1);
+          verifyNoMoreInteractions(mockGetProductsInCartUseCase);
+        },
+      );
+
+      blocTest(
+        'emits [CartSuccess] when getProductsInCart is successful and needLoading is false',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockGetProductsInCartUseCase.call(any()),
+          ).thenAnswer((_) async => tSuccessResponse);
+        },
+        act: (cubit) => cubit.getProductsInCart(needLoading: false),
+        expect: () => [
+          isA<CartSuccess>()
+              .having((state) => state.items, 'items', tProductsInCart)
+              .having((state) => state.totalItemCount, 'totalItemCount', 1)
+              .having((state) => state.totalPrice, 'totalPrice', 20.0)
+              .having((state) => state.newItemAdded, 'newItemAdded', false),
+        ],
+        verify: (_) {
+          verify(() => mockGetProductsInCartUseCase.call(any())).called(1);
+          verifyNoMoreInteractions(mockGetProductsInCartUseCase);
+        },
+      );
+
+      blocTest(
+        'emits [CartLoading,CartFailure] when getProductsInCart fails',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockGetProductsInCartUseCase.call(any()),
+          ).thenAnswer((_) async => tFailureResponse);
+        },
+        act: (cubit) => cubit.getProductsInCart(),
+        expect: () => [
+          isA<CartLoading>(),
+          isA<CartFailure>().having(
+            (state) => state.errorMessage,
+            'exception',
+            equals(getErrorMessage(tFailureResponse)),
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockGetProductsInCartUseCase.call(any())).called(1);
+          verifyNoMoreInteractions(mockGetProductsInCartUseCase);
+        },
+      );
+    });
+
+    group('Item Quantity Management', () {
+      final tItemQty1 = CartItemEntity(fruitEntity: tFruitEntity, quantity: 1);
+      final tItemQty2 = CartItemEntity(fruitEntity: tFruitEntity, quantity: 2);
+
+      blocTest(
+        'should emit [CartSuccess] with incremented quantity when increment succeeds',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockGetProductsInCartUseCase.call(any()),
+          ).thenAnswer((_) async => NetworkSuccess([tItemQty1]));
+          when(
+            () => mockUpdateItemQuantityUseCase.call(
+              productId: tProductId,
+              newQuantity: 2,
+            ),
+          ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
+        },
+        act: (cubit) async {
+          await cubit.getProductsInCart(needLoading: false);
+          await cubit.incrementItemQuantity(tProductId);
+        },
+        expect: () => [
+          isA<CartSuccess>().having(
+            (s) => s.items.first.quantity,
+            'init qty',
+            1,
+          ),
+          isA<CartSuccess>().having(
+            (s) => s.items.first.quantity,
+            'optimistic qty',
+            2,
+          ),
+        ],
+        verify: (_) {
+          verifyInOrder([
+            () => mockGetProductsInCartUseCase.call(any()),
+            () => mockUpdateItemQuantityUseCase.call(
+              productId: tProductId,
+              newQuantity: 2,
+            ),
+          ]);
+          verifyNoMoreInteractions(mockGetProductsInCartUseCase);
+          verifyNoMoreInteractions(mockUpdateItemQuantityUseCase);
+        },
+      );
+
+      blocTest(
+        'should emit optimistic update then REVERT to old quantity when increment fails',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockGetProductsInCartUseCase.call(any()),
+          ).thenAnswer((_) async => NetworkSuccess([tItemQty1]));
+          when(
             () => mockUpdateItemQuantityUseCase.call(
               productId: any(named: 'productId'),
               newQuantity: any(named: 'newQuantity'),
             ),
-          );
-          verifyInOrder([
-            () => mockRemoveItemFromCartUseCase.call(tProductId),
-            () => mockGetCartItemsUseCase.call(),
-          ]);
-          verifyNoMoreInteractions(mockRemoveItemFromCartUseCase);
-          verifyNoMoreInteractions(mockGetCartItemsUseCase);
-          verifyNoMoreInteractions(mockUpdateItemQuantityUseCase);
-        },
-      );
-
-
-      blocTest(
-        'emits [CartFailure] when update fails',
-        seed: () => tInitialState,
-        build: () => sut,
-        setUp: () {
-          when(
-            () => mockUpdateItemQuantityUseCase.call(
-              productId: tProductId,
-              newQuantity: tNewQuantityDec,
-            ),
           ).thenAnswer((_) async => tFailureResponseOfTypeVoid);
         },
-        act: (cubit) => cubit.decrementItemQuantity(tProductId),
+        act: (cubit) async {
+          await cubit.getProductsInCart(needLoading: false);
+          await cubit.incrementItemQuantity(tProductId);
+        },
         expect: () => [
-          isA<CartFailure>().having(
-            (state) => state.errorMessage,
-            'exception',
-            equals(getErrorMessage(tFailureResponse)),
+          isA<CartSuccess>().having((s) => s.items.first.quantity, 'init', 1),
+          isA<CartSuccess>().having(
+            (s) => s.items.first.quantity,
+            'optimistic',
+            2,
+          ),
+          isA<CartSuccess>().having(
+            (s) => s.items.first.quantity,
+            'reverted',
+            1,
           ),
         ],
         verify: (_) {
-          verify(
+          verifyInOrder([
+            () => mockGetProductsInCartUseCase.call(any()),
             () => mockUpdateItemQuantityUseCase.call(
               productId: tProductId,
-              newQuantity: tNewQuantityDec,
+              newQuantity: 2,
             ),
-          ).called(1);
+          ]);
+          verifyNoMoreInteractions(mockGetProductsInCartUseCase);
           verifyNoMoreInteractions(mockUpdateItemQuantityUseCase);
         },
       );
 
-      blocTest<CartCubit, CartState>(
-        'emits [] (nothing) when state is not CartSuccess',
+      blocTest(
+        'should emit [CartSuccess] with decremented quantity when decrement succeeds',
         build: () => sut,
-        act: (cubit) => cubit.decrementItemQuantity(tProductId),
-        expect: () => [],
+        setUp: () {
+          when(
+            () => mockGetProductsInCartUseCase.call(any()),
+          ).thenAnswer((_) async => NetworkSuccess([tItemQty2]));
+          when(
+            () => mockUpdateItemQuantityUseCase.call(
+              productId: tProductId,
+              newQuantity: 1,
+            ),
+          ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
+        },
+        act: (cubit) async {
+          await cubit.getProductsInCart(needLoading: false);
+          await cubit.decrementItemQuantity(tProductId);
+        },
+        expect: () => [
+          isA<CartSuccess>().having(
+            (s) => s.items.first.quantity,
+            'init qty',
+            2,
+          ),
+          isA<CartSuccess>().having(
+            (s) => s.items.first.quantity,
+            'optimistic qty',
+            1,
+          ),
+        ],
         verify: (_) {
-          verifyZeroInteractions(mockUpdateItemQuantityUseCase);
-          verifyZeroInteractions(mockRemoveItemFromCartUseCase);
-          verifyZeroInteractions(mockGetCartItemsUseCase);
+          verifyInOrder([
+            () => mockGetProductsInCartUseCase.call(any()),
+            () => mockUpdateItemQuantityUseCase.call(
+              productId: tProductId,
+              newQuantity: 1,
+            ),
+          ]);
+          verifyNoMoreInteractions(mockGetProductsInCartUseCase);
+          verifyNoMoreInteractions(mockUpdateItemQuantityUseCase);
+        },
+      );
+
+      blocTest(
+        'should call removeItemFromCart when quantity becomes 0',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockRemoveItemFromCartUseCase.call(any()),
+          ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
+          int callCount = 0;
+          when(() => mockGetProductsInCartUseCase.call(any())).thenAnswer((
+            _,
+          ) async {
+            callCount++;
+            if (callCount == 1) {
+              return NetworkSuccess([tItemQty1]);
+            }
+            return const NetworkSuccess([]);
+          });
+        },
+        act: (cubit) async {
+          await cubit.getProductsInCart(needLoading: false);
+          await cubit.decrementItemQuantity(tProductId);
+        },
+        expect: () => [
+          isA<CartSuccess>().having((s) => s.items.length, 'init', 1),
+          isA<CartSuccess>().having((s) => s.items.length, 'removed', 0),
+        ],
+        verify: (_) {
+          verifyInOrder([
+            () => mockGetProductsInCartUseCase.call(any()),
+            () => mockRemoveItemFromCartUseCase.call(tProductId),
+            () => mockGetProductsInCartUseCase.call(any()),
+          ]);
+          verifyNoMoreInteractions(mockGetProductsInCartUseCase);
+          verifyNoMoreInteractions(mockRemoveItemFromCartUseCase);
+        },
+      );
+
+      blocTest(
+        'should emit optimistic update then REVERT to old quantity when decrement fails',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockGetProductsInCartUseCase.call(any()),
+          ).thenAnswer((_) async => NetworkSuccess([tItemQty2]));
+          when(
+            () => mockUpdateItemQuantityUseCase.call(
+              productId: any(named: 'productId'),
+              newQuantity: any(named: 'newQuantity'),
+            ),
+          ).thenAnswer((_) async => tFailureResponseOfTypeVoid);
+        },
+        act: (cubit) async {
+          await cubit.getProductsInCart(needLoading: false);
+          await cubit.decrementItemQuantity(tProductId);
+        },
+        expect: () => [
+          isA<CartSuccess>().having((s) => s.items.first.quantity, 'init', 2),
+          isA<CartSuccess>().having(
+            (s) => s.items.first.quantity,
+            'optimistic',
+            1,
+          ),
+          isA<CartSuccess>().having(
+            (s) => s.items.first.quantity,
+            'reverted',
+            2,
+          ),
+        ],
+        verify: (_) {
+          verifyInOrder([
+            () => mockGetProductsInCartUseCase.call(any()),
+            () => mockUpdateItemQuantityUseCase.call(
+              productId: tProductId,
+              newQuantity: 1,
+            ),
+          ]);
+          verifyNoMoreInteractions(mockUpdateItemQuantityUseCase);
+          verifyNoMoreInteractions(mockGetProductsInCartUseCase);
         },
       );
     });

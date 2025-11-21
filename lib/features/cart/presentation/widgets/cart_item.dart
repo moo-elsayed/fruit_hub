@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fruit_hub/core/helpers/functions.dart';
-import 'package:fruit_hub/core/widgets/custom_action_button.dart';
 import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
+import 'package:fruit_hub/features/cart/presentation/widgets/cart_item_action_buttons.dart';
 import 'package:fruit_hub/generated/assets.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/theming/app_colors.dart';
@@ -40,16 +39,16 @@ class CartItem extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 5.h),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: .start,
+                mainAxisAlignment: .spaceBetween,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: .spaceBetween,
+                    crossAxisAlignment: .start,
                     children: [
                       Column(
                         spacing: 3.h,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: .start,
                         children: [
                           Text(
                             cartItemEntity.fruitEntity.name,
@@ -71,47 +70,7 @@ class CartItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Row(
-                    spacing: 16.w,
-                    children: [
-                      CustomActionButton(
-                        onTap: () {
-                          context.read<CartCubit>().incrementItemQuantity(
-                            cartItemEntity.fruitEntity.code,
-                          );
-                        },
-                        radius: 12.r,
-                        child: SvgPicture.asset(
-                          Assets.iconsPlus,
-                          height: 10.h,
-                          width: 10.w,
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ),
-                      Text(
-                        "${cartItemEntity.quantity}",
-                        style: AppTextStyles.font16color06140CBold,
-                      ),
-                      CustomActionButton(
-                        onTap: () {
-                          context.read<CartCubit>().decrementItemQuantity(
-                            cartItemEntity.fruitEntity.code,
-                          );
-                        },
-                        radius: 12.r,
-                        backgroundColor: AppColors.colorF3F5F7,
-                        child: SvgPicture.asset(
-                          Assets.iconsIconsMinus,
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        "${getPrice(cartItemEntity.totalPrice)} ${"pounds".tr()}",
-                        style: AppTextStyles.font13colorF4A91FBold,
-                      ),
-                    ],
-                  ),
+                  CartItemActionButtons(cartItemEntity: cartItemEntity),
                 ],
               ),
             ),
