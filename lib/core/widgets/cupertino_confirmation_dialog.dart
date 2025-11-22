@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:fruit_hub/core/helpers/extentions.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ConfirmationDialog extends StatelessWidget {
-  const ConfirmationDialog({
+class CupertinoConfirmationDialog extends StatelessWidget {
+  const CupertinoConfirmationDialog({
     super.key,
     this.name,
     this.onTap,

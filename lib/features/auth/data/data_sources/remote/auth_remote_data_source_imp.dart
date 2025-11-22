@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fruit_hub/core/helpers/app_logger.dart';
 import '../../../../../../core/helpers/backend_endpoints.dart';
 import '../../../../../../core/helpers/failures.dart';
-import '../../../../../../core/helpers/functions.dart';
 import '../../../../../../core/helpers/network_response.dart';
 import '../../../../../../core/services/authentication/auth_service.dart';
 import '../../../../../../core/services/database/database_service.dart';
@@ -11,9 +11,14 @@ import '../../models/user_model.dart';
 
 class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   final AuthService _authService;
+  final SignOutService _signOutService;
   final DatabaseService _databaseService;
 
-  AuthRemoteDataSourceImp(this._authService, this._databaseService);
+  AuthRemoteDataSourceImp(
+    this._authService,
+    this._databaseService,
+    this._signOutService,
+  );
 
   @override
   Future<NetworkResponse<UserEntity>> createUserWithEmailAndPassword({
@@ -96,7 +101,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   @override
   Future<NetworkResponse<void>> signOut() async {
     try {
-      await _authService.signOut();
+      await _signOutService.signOut();
       return const NetworkSuccess();
     } catch (e) {
       return _handleAuthError(e, "signOut");
@@ -121,10 +126,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   // -------------------------------------------------------------------
 
   NetworkFailure<T> _handleAuthError<T>(Object e, String functionName) {
-    errorLogger(
-      functionName: 'AuthRemoteDataSourceImp.$functionName',
-      error: e.toString(),
-    );
+    AppLogger.error("error occurred in $functionName", error: e);
     if (e is FirebaseAuthException) {
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
@@ -135,14 +137,19 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
 
   Future<UserEntity> _getOrUpdateUserFromDB(UserEntity user) async {
     final userExists = await _checkIfUserExists(user.uid);
-    final userModel = UserModel.fromUserEntity(user);
 
     if (userExists) {
-      await _updateUserData(userModel);
+      await _updateUserData(UserModel.fromUserEntity(user));
+      final storedUserData = await _databaseService.getData(
+        path: BackendEndpoints.getUserData,
+        documentId: user.uid,
+      );
+      return UserModel.fromJson(storedUserData).toUserEntity();
     } else {
+      final userModel = UserModel.fromUserEntity(user);
       await _addUserData(userModel);
+      return userModel.toUserEntity();
     }
-    return userModel.toUserEntity();
   }
 
   Future<void> _addUserData(UserModel user) async =>

@@ -1,4 +1,4 @@
-import 'package:fruit_hub/core/helpers/functions.dart';
+import 'package:fruit_hub/core/helpers/app_logger.dart';
 import '../../../../core/services/local_storage/local_storage_service.dart';
 import '../entities/user_entity.dart';
 
@@ -14,7 +14,7 @@ class SaveUserSessionUseCase {
         _localStorageService.setLoggedIn(true),
       ]);
     } catch (e) {
-      errorLogger(functionName: 'SaveUserSessionUseCase', error: e.toString());
+      AppLogger.error("error in save user session", error: e.toString());
       throw Exception('Failed to save user session');
     }
   }

@@ -81,7 +81,7 @@ void main() {
 
     group('addItemToCart', () {
       blocTest<CartCubit, CartState>(
-        'emits [CartSuccess] with newItemAdded equal true when addItemToCart succeeds',
+        'emits [CartLoading,CartSuccess] with newItemAdded equal true when addItemToCart succeeds',
         build: () => sut,
         setUp: () {
           when(
@@ -93,6 +93,11 @@ void main() {
         },
         act: (cubit) => cubit.addItemToCart(tProductId),
         expect: () => [
+          isA<CartLoading>().having(
+            (state) => state.newItemAdded,
+            'newItemAdded',
+            true,
+          ),
           isA<CartSuccess>()
               .having((state) => state.items, 'items', tProductsInCart)
               .having((state) => state.totalItemCount, 'totalItemCount', 1)
@@ -110,7 +115,7 @@ void main() {
       );
 
       blocTest<CartCubit, CartState>(
-        'emits [CartFailure] when addItemToCart fails',
+        'emits [CartLoading,CartFailure] when addItemToCart fails',
         build: () => sut,
         setUp: () {
           when(
@@ -119,6 +124,11 @@ void main() {
         },
         act: (cubit) => cubit.addItemToCart(tProductId),
         expect: () => [
+          isA<CartLoading>().having(
+            (state) => state.newItemAdded,
+            'newItemAdded',
+            true,
+          ),
           isA<CartFailure>().having(
             (state) => state.errorMessage,
             'exception',
@@ -132,7 +142,7 @@ void main() {
       );
 
       blocTest<CartCubit, CartState>(
-        'emits [CartFailure] when getProductsInCart fails',
+        'emits [CartLoading,CartFailure] when getProductsInCart fails',
         build: () => sut,
         setUp: () {
           when(
@@ -144,6 +154,11 @@ void main() {
         },
         act: (cubit) => cubit.addItemToCart(tProductId),
         expect: () => [
+          isA<CartLoading>().having(
+            (state) => state.newItemAdded,
+            'newItemAdded',
+            true,
+          ),
           isA<CartFailure>().having(
             (state) => state.errorMessage,
             'exception',
@@ -163,7 +178,7 @@ void main() {
 
     group('removeItemFromCart', () {
       blocTest<CartCubit, CartState>(
-        'emits [CartSuccess] when removeItemFromCart and subsequent getCartItems are successful',
+        'emits [CartLoading,CartSuccess] when removeItemFromCart and subsequent getCartItems are successful',
         build: () => sut,
         setUp: () {
           when(
@@ -175,6 +190,11 @@ void main() {
         },
         act: (cubit) => cubit.removeItemFromCart(tProductId),
         expect: () => [
+          isA<CartLoading>().having(
+            (state) => state.itemRemoved,
+            'itemRemoved',
+            true,
+          ),
           isA<CartSuccess>()
               .having((state) => state.items, 'items', tProductsInCart)
               .having((state) => state.totalItemCount, 'totalItemCount', 1)
@@ -192,7 +212,7 @@ void main() {
       );
 
       blocTest<CartCubit, CartState>(
-        'emits [CartFailure] when removeItemFromCart fails',
+        'emits [CartLoading,CartFailure] when removeItemFromCart fails',
         build: () => sut,
         setUp: () {
           when(
@@ -201,6 +221,11 @@ void main() {
         },
         act: (cubit) => cubit.removeItemFromCart(tProductId),
         expect: () => [
+          isA<CartLoading>().having(
+            (state) => state.itemRemoved,
+            'itemRemoved',
+            true,
+          ),
           isA<CartFailure>().having(
             (state) => state.errorMessage,
             'exception',
@@ -216,7 +241,7 @@ void main() {
       );
 
       blocTest<CartCubit, CartState>(
-        'emits [CartFailure] when getProductsInCart fails',
+        'emits [CartLoading,CartFailure] when getProductsInCart fails',
         build: () => sut,
         setUp: () {
           when(
@@ -228,6 +253,11 @@ void main() {
         },
         act: (cubit) => cubit.removeItemFromCart(tProductId),
         expect: () => [
+          isA<CartLoading>().having(
+            (state) => state.itemRemoved,
+            'itemRemoved',
+            true,
+          ),
           isA<CartFailure>().having(
             (state) => state.errorMessage,
             'exception',
@@ -525,6 +555,11 @@ void main() {
         },
         expect: () => [
           isA<CartSuccess>().having((s) => s.items.length, 'init', 1),
+          isA<CartLoading>().having(
+            (state) => state.itemRemoved,
+            'itemRemoved',
+            true,
+          ),
           isA<CartSuccess>().having((s) => s.items.length, 'removed', 0),
         ],
         verify: (_) {

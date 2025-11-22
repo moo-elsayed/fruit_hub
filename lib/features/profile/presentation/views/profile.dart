@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/theming/app_colors.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
-import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:fruit_hub/features/profile/presentation/widgets/custom_profile_item.dart';
+import 'package:fruit_hub/features/profile/presentation/widgets/sign_out_button.dart';
 import 'package:gap/gap.dart';
 import '../../domain/entities/profile_item_entity.dart';
 
@@ -15,9 +15,9 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
+      padding: .symmetric(horizontal: 16.w),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           CustomAppBar(title: "my_account".tr()),
           Gap(16.h),
@@ -36,13 +36,8 @@ class Profile extends StatelessWidget {
           ),
           const Spacer(),
           Padding(
-            padding: EdgeInsetsGeometry.only(bottom: 16.h),
-            child: CustomMaterialButton(
-              onPressed: () {},
-              text: "sign_out".tr(),
-              textStyle: AppTextStyles.font16WhiteBold,
-              maxWidth: true,
-            ),
+            padding: .only(bottom: 16.h),
+            child: const SignOutButton(),
           ),
         ],
       ),

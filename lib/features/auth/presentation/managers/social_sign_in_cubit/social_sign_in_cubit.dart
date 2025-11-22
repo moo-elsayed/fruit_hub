@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
@@ -22,7 +23,7 @@ class SocialSignInCubit extends Cubit<SocialSignInState> {
       case NetworkSuccess<UserEntity>():
         emit(GoogleSuccess());
       case NetworkFailure<UserEntity>():
-        emit(GoogleFailure(getErrorMessage(result)));
+        emit(GoogleFailure(getErrorMessage(result).tr()));
     }
   }
 
@@ -34,7 +35,7 @@ class SocialSignInCubit extends Cubit<SocialSignInState> {
       case NetworkSuccess<UserEntity>():
         emit(FacebookSuccess());
       case NetworkFailure<UserEntity>():
-        emit(FacebookFailure(getErrorMessage(result)));
+        emit(FacebookFailure(getErrorMessage(result).tr()));
     }
   }
 }

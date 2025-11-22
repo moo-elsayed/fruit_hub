@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extentions.dart';
-import 'package:fruit_hub/core/widgets/confirmation_dialog.dart';
 import 'package:gap/gap.dart';
 import 'package:restart_app/restart_app.dart';
 import '../../../../core/helpers/functions.dart';
 import '../../../../core/theming/app_text_styles.dart';
+import '../../../../core/widgets/custom_confirmation_dialog.dart';
 
 class ChangeLanguageBottomSheet extends StatelessWidget {
   const ChangeLanguageBottomSheet({super.key});
@@ -17,7 +17,7 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         children: [
           Text(
             "select_language".tr(),
@@ -52,12 +52,12 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
       context.pop();
       showCupertinoDialog(
         context: context,
-        builder: (context) => ConfirmationDialog(
+        builder: (context) => CustomConfirmationDialog(
           title: "confirm_language_change".tr(),
-          fullText: "app_will_restart".tr(),
-          textOkButton: "ok".tr(),
+          subtitle: "app_will_restart".tr(),
+          textConfirmButton: "ok".tr(),
           textCancelButton: "cancel".tr(),
-          onTap: () async {
+          onConfirm: () async {
             context.pop();
             await context.setLocale(Locale(langCode));
             Restart.restartApp();
@@ -65,7 +65,7 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
         ),
       );
     },
-    visualDensity: VisualDensity.compact,
+    visualDensity: .compact,
     title: Text(title, style: AppTextStyles.font13color0C0D0DSemiBold),
     trailing: isChecked ? const Icon(Icons.check, color: Colors.green) : null,
   );

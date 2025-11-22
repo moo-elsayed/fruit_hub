@@ -13,6 +13,8 @@ class MockAuthService extends Mock implements AuthService {}
 
 class MockDatabaseService extends Mock implements DatabaseService {}
 
+class MockSignOutService extends Mock implements SignOutService {}
+
 class MockFirebaseAuthException extends Mock implements FirebaseAuthException {}
 
 void arrangeGetOrUpdateDBSuccess(MockDatabaseService mockDatabaseService) {
@@ -22,6 +24,20 @@ void arrangeGetOrUpdateDBSuccess(MockDatabaseService mockDatabaseService) {
       documentId: any(named: 'documentId'),
     ),
   ).thenAnswer((_) async => true);
+
+  when(
+    () => mockDatabaseService.getData(
+      path: any(named: 'path'),
+      documentId: any(named: 'documentId'),
+    ),
+  ).thenAnswer(
+    (_) async => {
+      'uid': '123',
+      'name': "محمد السيد",
+      'email': 'test@test.com',
+      'isVerified': true,
+    },
+  );
 
   when(
     () => mockDatabaseService.updateData(
@@ -36,6 +52,7 @@ void main() {
   late AuthRemoteDataSourceImp sut;
   late MockAuthService mockAuthService;
   late MockDatabaseService mockDatabaseService;
+  late MockSignOutService mockSignOutService;
   late MockFirebaseAuthException mockFirebaseAuthException;
   const tEmail = 'test@test.com';
   const tPassword = 'password123';
@@ -45,10 +62,12 @@ void main() {
   setUp(() {
     mockAuthService = MockAuthService();
     mockDatabaseService = MockDatabaseService();
+    mockSignOutService = MockSignOutService();
     mockFirebaseAuthException = MockFirebaseAuthException();
     sut = AuthRemoteDataSourceImp(
       mockAuthService,
       mockDatabaseService,
+      mockSignOutService,
     );
 
     when(
@@ -78,12 +97,11 @@ void main() {
     test('should return NetworkSuccess with UserEntity', () async {
       // Arrange
       // Act
-      final result = await sut
-          .createUserWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-            username: tUsername,
-          );
+      final result = await sut.createUserWithEmailAndPassword(
+        email: tEmail,
+        password: tPassword,
+        username: tUsername,
+      );
       // Assert
       expect(result, isA<NetworkSuccess<UserEntity>>());
       expect((result as NetworkSuccess).data.name, equals(tUsername));
@@ -118,12 +136,11 @@ void main() {
           ),
         ).thenThrow(mockFirebaseAuthException);
         // Act
-        final result = await sut
-            .createUserWithEmailAndPassword(
-              email: tEmail,
-              password: tPassword,
-              username: tUsername,
-            );
+        final result = await sut.createUserWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+          username: tUsername,
+        );
         // Assert
         expect(result, isA<NetworkFailure>());
         expect(
@@ -158,12 +175,11 @@ void main() {
         ).thenThrow(mockFirebaseAuthException);
 
         // Act
-        final result = await sut
-            .createUserWithEmailAndPassword(
-              email: tEmail,
-              password: tPassword,
-              username: tUsername,
-            );
+        final result = await sut.createUserWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+          username: tUsername,
+        );
 
         // Assert
         expect(result, isA<NetworkFailure>());
@@ -186,12 +202,11 @@ void main() {
           ),
         ).thenThrow(Exception('Database failed'));
         // Act
-        final result = await sut
-            .createUserWithEmailAndPassword(
-              email: tEmail,
-              password: tPassword,
-              username: tUsername,
-            );
+        final result = await sut.createUserWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+          username: tUsername,
+        );
         // Assert
         expect(result, isA<NetworkFailure>());
         verify(() => mockAuthService.deleteCurrentUser()).called(1);
@@ -515,18 +530,18 @@ void main() {
     test('should return NetworkSuccess on success', () async {
       // Arrange
       when(
-        () => mockAuthService.signOut(),
+        () => mockSignOutService.signOut(),
       ).thenAnswer((_) async => Future.value());
       // Act
       final result = await sut.signOut();
       // Assert
       expect(result, isA<NetworkSuccess<void>>());
-      verify(() => mockAuthService.signOut()).called(1);
+      verify(() => mockSignOutService.signOut()).called(1);
     });
     test('should return NetworkFailure on failure', () async {
       // Arrange
       when(
-        () => mockAuthService.signOut(),
+        () => mockSignOutService.signOut(),
       ).thenThrow(Exception('Sign out failed'));
       // Act
       final result = await sut.signOut();
@@ -591,15 +606,15 @@ void main() {
 
     test(
       'should return NetworkFailure if _getOrUpdateUserFromDB fails',
-          () async {
+      () async {
         // Arrange
         when(
-              () => mockAuthService.facebookSignIn(),
+          () => mockAuthService.facebookSignIn(),
         ).thenAnswer((_) async => tFacebookUserEntity);
 
         final tException = Exception('Database failed');
         when(
-              () => mockDatabaseService.checkIfDataExists(
+          () => mockDatabaseService.checkIfDataExists(
             path: any(named: 'path'),
             documentId: any(named: 'documentId'),
           ),

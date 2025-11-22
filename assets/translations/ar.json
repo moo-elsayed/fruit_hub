@@ -94,5 +94,7 @@
   "general": "عام",
   "item_added_to_cart": "تمت الإضافة للسلة بنجاح",
   "item_removed_from_cart": "تم حذف المنتج من السلة بنجاح",
-  "loading": "تحميل"
+  "loading": "تحميل",
+  "log_out_confirmation": "هل ترغب في تسجيل الخروج ؟",
+  "logged_out_successfully": "تم تسجيل الخروج بنجاح"
 }
