@@ -20,6 +20,8 @@ abstract class AuthService {
   Future<void> sendEmailVerification();
 
   Future<void> forgetPassword(String email);
+}
 
+abstract class SignOutService {
   Future<void> signOut();
 }

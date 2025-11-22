@@ -88,7 +88,7 @@ void main() {
       when(() => mockLocalStorageService.getUsername()).thenReturn(tUsername);
 
       // Act
-      var userName = sut.getUserName();
+      var userName = sut.getUserName;
 
       // Assert
       expect(userName, tUsername);

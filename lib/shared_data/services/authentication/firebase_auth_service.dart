@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:fruit_hub/core/helpers/app_logger.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../../features/auth/data/models/user_model.dart';
 import '../../../features/auth/domain/entities/user_entity.dart';
 import '../../../core/helpers/firebase_keys.dart';
-import '../../../core/helpers/functions.dart';
 import '../../../core/services/authentication/auth_service.dart';
 
-class FirebaseAuthService implements AuthService {
+class FirebaseAuthService implements AuthService, SignOutService {
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
   final FacebookAuth _facebookAuth;
@@ -62,7 +62,18 @@ class FirebaseAuthService implements AuthService {
       await _auth.currentUser?.sendEmailVerification();
 
   @override
-  Future<void> signOut() async => await _auth.signOut();
+  Future<void> signOut() async {
+    await _auth.signOut();
+    try {
+      await _googleSignIn.disconnect();
+    } catch (e) {}
+    try {
+      await _googleSignIn.signOut();
+    } catch (e) {}
+    try {
+      await _facebookAuth.logOut();
+    } catch (e) {}
+  }
 
   Future<User> _facebookSignInInternal() async {
     try {
@@ -104,8 +115,6 @@ class FirebaseAuthService implements AuthService {
   }
 
   Future<User> _googleSignInInternal() async {
-    await _googleSignIn.signOut();
-
     await _googleSignIn.initialize(
       clientId: FirebaseKeys.clientId,
       serverClientId: FirebaseKeys.serverClientId,
@@ -114,18 +123,15 @@ class FirebaseAuthService implements AuthService {
         .attemptLightweightAuthentication();
 
     if (googleUser == null) {
-      errorLogger(
-        functionName: 'FirebaseAuthService.googleSignIn',
-        error: 'User canceled sign in',
-      );
+      AppLogger.error("error in google sign in", error: 'No user found');
       throw Exception("The sign-in process was canceled.");
     }
 
     final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
     if (googleAuth.idToken == null) {
-      errorLogger(
-        functionName: 'FirebaseAuthService.googleSignIn',
+      AppLogger.error(
+        "error in google sign in",
         error: 'No idToken received from Google',
       );
       throw Exception(

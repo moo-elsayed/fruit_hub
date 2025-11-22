@@ -94,5 +94,7 @@
   "general": "General",
   "item_added_to_cart": "Added to cart successfully",
   "item_removed_from_cart": "Removed from cart successfully",
-  "loading": "Loading"
+  "loading": "Loading",
+  "log_out_confirmation": "Do you want to log out?",
+  "logged_out_successfully": "Logged out successfully"
 }

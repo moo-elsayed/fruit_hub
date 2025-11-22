@@ -29,5 +29,5 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  String getUserName() => _localStorageService.getUsername();
+  String get getUserName => _localStorageService.getUsername();
 }

@@ -30,4 +30,7 @@ class SharedPreferencesManager implements LocalStorageService {
 
   @override
   String getUsername() => _prefs.getString(_usernameKey) ?? '';
+
+  @override
+  Future<void> deleteUseName() async => await _prefs.remove(_usernameKey);
 }

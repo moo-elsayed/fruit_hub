@@ -15,6 +15,8 @@ import 'package:fruit_hub/features/products/presentation/views/products.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import '../../../../core/helpers/extentions.dart';
 import '../../../../core/widgets/app_toasts.dart';
+import '../../../auth/domain/use_cases/sign_out_use_case.dart';
+import '../../../auth/presentation/managers/signout_cubit/sign_out_cubit.dart';
 import '../../../cart/presentation/views/cart.dart';
 import '../../../home/presentation/views/home.dart';
 import '../../../products/domain/use_cases/get_all_products_use_case.dart';
@@ -42,7 +44,10 @@ class _AppSectionState extends State<AppSection> {
       child: const Products(),
     ),
     const Cart(),
-    const Profile(),
+    BlocProvider(
+      create: (context) => SignOutCubit(getIt.get<SignOutUseCase>()),
+      child: const Profile(),
+    ),
   ];
 
   @override

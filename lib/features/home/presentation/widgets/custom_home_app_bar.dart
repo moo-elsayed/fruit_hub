@@ -29,7 +29,7 @@ class CustomHomeAppBar extends StatelessWidget {
                 style: AppTextStyles.font16color949D9ERegular,
               ),
               Text(
-                context.read<HomeCubit>().getUserName(),
+                context.read<HomeCubit>().getUserName,
                 style: AppTextStyles.font16color0C0D0DSemiBold,
               ),
             ],

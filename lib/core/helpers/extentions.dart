@@ -15,9 +15,11 @@ extension Navigation on BuildContext {
     String routeName, {
     Object? arguments,
     required RoutePredicate predicate,
+    bool rootNavigator = false,
   }) {
     return Navigator.of(
       this,
+      rootNavigator: rootNavigator,
     ).pushNamedAndRemoveUntil(routeName, predicate, arguments: arguments);
   }
 

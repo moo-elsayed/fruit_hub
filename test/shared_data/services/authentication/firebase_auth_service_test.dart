@@ -355,7 +355,6 @@ void main() {
       var call = await sut.googleSignIn();
       // Assert
       expect(call, equals(tUserEntity));
-      verify(() => mockGoogleSignIn.signOut()).called(1);
       verify(
         () => mockGoogleSignIn.attemptLightweightAuthentication(),
       ).called(1);

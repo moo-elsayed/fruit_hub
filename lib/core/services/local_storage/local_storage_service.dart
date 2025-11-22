@@ -9,6 +9,8 @@ abstract class LocalStorageService {
 
   String getUsername();
 
+  Future<void> deleteUseName();
+
   Future<void> setLoggedIn(bool isLoggedIn);
 
   bool getLoggedIn();
