@@ -34,7 +34,7 @@ void main() {
   late MockGetCartItemsUseCase mockGetCartItemsUseCase;
 
   const tProductId = 'apple';
-  final tFruitEntity = FruitEntity(
+  final tFruitEntity = const FruitEntity(
     code: tProductId,
     name: 'Apple',
     price: 10.0,

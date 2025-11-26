@@ -96,5 +96,19 @@
   "item_removed_from_cart": "تم حذف المنتج من السلة بنجاح",
   "loading": "تحميل",
   "log_out_confirmation": "هل ترغب في تسجيل الخروج ؟",
-  "logged_out_successfully": "تم تسجيل الخروج بنجاح"
+  "logged_out_successfully": "تم تسجيل الخروج بنجاح",
+  "sort_by": "ترتيب حسب",
+  "price_lowest_to_highest": "السعر (الأقل الي الأعلي)",
+  "price_highest_to_lowest": "السعر (الأعلي الي الأقل)",
+  "alphabetical": "الأبجديه",
+  "apply": "تطبيق",
+  "reset": "إلغاء الترتيب",
+  "add_to_cart": "أضف إلى السلة",
+  "validity": "الصلاحيه",
+  "days": "أيام",
+  "organic": "اوجانيك",
+  "calories": "كالوري",
+  "gram": "جرام",
+  "reviews": "المراجعات",
+  "review": "المراجعه"
 }

@@ -23,7 +23,7 @@ class FruitsGridView extends StatelessWidget {
       itemCount: itemCount ?? fruits?.length ?? 0,
       gridDelegate: buildSliverGridDelegateWithFixedCrossAxisCount(),
       itemBuilder: (context, index) {
-        var fruitEntity = itemCount != null ? FruitEntity() : fruits![index];
+        var fruitEntity = itemCount != null ? const FruitEntity() : fruits![index];
         return CustomFruitItem(
           key: fromFavorite ? ValueKey(fruitEntity.code) : null,
           fruitEntity: fruitEntity,

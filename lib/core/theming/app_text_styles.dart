@@ -39,6 +39,20 @@ abstract class AppTextStyles {
     fontWeight: FontWeightHelper.regular,
   );
 
+  static TextStyle font13color979899Regular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color979899,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
+  static TextStyle font13GreyShade700Medium = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.greyShade700,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.medium,
+  );
+
   static TextStyle font13color949D9ESemiBold = TextStyle(
     fontSize: 13.sp,
     color: AppColors.color949D9E,
@@ -70,6 +84,13 @@ abstract class AppTextStyles {
   static TextStyle font13color4E5556FSemiBold = TextStyle(
     fontSize: 13.sp,
     color: AppColors.color4E5556,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13GreyShade600SemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.greyShade600,
     fontFamily: "Cairo",
     fontWeight: FontWeightHelper.semiBold,
   );
@@ -107,6 +128,20 @@ abstract class AppTextStyles {
     color: AppColors.colorF4A91F,
     fontFamily: "Cairo",
     fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font13color0C0D0DBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color0C0D0D,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font14color979899Medium = TextStyle(
+    fontSize: 14.sp,
+    color: AppColors.color979899,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.medium,
   );
 
   static TextStyle font16color949D9ERegular = TextStyle(
@@ -151,6 +186,13 @@ abstract class AppTextStyles {
     fontWeight: FontWeightHelper.bold,
   );
 
+  static TextStyle font16color23AA49Bold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color23AA49,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
   static TextStyle font16WhiteBold = TextStyle(
     fontSize: 16.sp,
     color: AppColors.white,
@@ -175,6 +217,13 @@ abstract class AppTextStyles {
   static TextStyle font16color06140CBold = TextStyle(
     fontSize: 16.sp,
     color: AppColors.color06140C,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font16RedBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.red,
     fontFamily: "Cairo",
     fontWeight: FontWeightHelper.bold,
   );

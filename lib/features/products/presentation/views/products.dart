@@ -11,6 +11,7 @@ import 'package:fruit_hub/features/products/presentation/managers/products_cubit
 import 'package:fruit_hub/generated/assets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../core/widgets/fruits_grid_view.dart';
+import '../widgets/sort_products_bottom_sheet.dart';
 
 class Products extends StatefulWidget {
   const Products({super.key});
@@ -44,7 +45,6 @@ class _ProductsState extends State<Products> {
               padding: EdgeInsetsGeometry.only(top: 10.h),
               child: CustomAppBar(
                 title: "products".tr(),
-                showNotification: true,
               ),
             ),
           ),
@@ -71,16 +71,41 @@ class _ProductsState extends State<Products> {
                     "our_products".tr(),
                     style: AppTextStyles.font16color0C0D0DBold,
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.w,
-                      vertical: 6.h,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(4.r)),
-                      border: Border.all(color: AppColors.colorEAEBEB),
-                    ),
-                    child: SvgPicture.asset(Assets.iconsFilter),
+                  BlocBuilder<ProductsCubit, ProductsState>(
+                    builder: (context, state) {
+                      var cubit = context.read<ProductsCubit>();
+                      bool isFilterActive = cubit.selectedSortOption != -1;
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 6.h,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(4.r)),
+                          color: isFilterActive
+                              ? AppColors.color1B5E37.withValues(alpha: 0.1)
+                              : Colors.transparent,
+                          border: Border.all(
+                            color: isFilterActive
+                                ? AppColors.color1B5E37
+                                : AppColors.colorEAEBEB,
+                          ),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (_) => BlocProvider.value(
+                                value: context.read<ProductsCubit>(),
+                                child: const SortProductsBottomSheet(),
+                              ),
+                            );
+                          },
+                          child: SvgPicture.asset(Assets.iconsFilter),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

@@ -20,9 +20,9 @@ void main() {
   );
 
   List<CartItemEntity> tCartItems = [
-    CartItemEntity(fruitEntity: FruitEntity(), quantity: 2),
-    CartItemEntity(fruitEntity: FruitEntity(), quantity: 3),
-    CartItemEntity(fruitEntity: FruitEntity(), quantity: 4),
+    const CartItemEntity(fruitEntity: FruitEntity(), quantity: 2),
+    const CartItemEntity(fruitEntity: FruitEntity(), quantity: 3),
+    const CartItemEntity(fruitEntity: FruitEntity(), quantity: 4),
   ];
 
   final tSuccessResponse = NetworkSuccess<List<CartItemEntity>>(tCartItems);

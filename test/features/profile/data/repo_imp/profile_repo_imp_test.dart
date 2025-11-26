@@ -25,7 +25,7 @@ void main() {
   final tFailureResponseOfTypeListOfString = NetworkFailure<List<String>>(
     Exception("permission-denied"),
   );
-  List<FruitEntity> fruits = [FruitEntity(), FruitEntity(), FruitEntity()];
+  List<FruitEntity> fruits = [const FruitEntity(), const FruitEntity(), const FruitEntity()];
 
   final tSuccessResponseOfTypeListFruitEntity =
       NetworkSuccess<List<FruitEntity>>(fruits);
