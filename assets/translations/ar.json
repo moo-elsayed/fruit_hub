@@ -110,5 +110,11 @@
   "calories": "كالوري",
   "gram": "جرام",
   "reviews": "المراجعات",
-  "review": "المراجعه"
+  "review": "المراجعه",
+  "shipping": "الشحن",
+  "address": "العنوان",
+  "payment": "الدفع",
+  "confirm_and_continue": "تأكيد & استمرار",
+  "confirm_order": "تأكيد الطلب",
+  "next": "التالي"
 }

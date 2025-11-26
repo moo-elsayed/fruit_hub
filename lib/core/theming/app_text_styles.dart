@@ -60,6 +60,13 @@ abstract class AppTextStyles {
     fontWeight: FontWeightHelper.semiBold,
   );
 
+  static TextStyle font13colorAAAAAASemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.colorAAAAAA,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
   static TextStyle font13color0C0D0DSemiBold = TextStyle(
     fontSize: 13.sp,
     color: AppColors.color0C0D0D,

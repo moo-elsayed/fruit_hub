@@ -110,5 +110,11 @@
   "calories": "Calories",
   "gram": "Gram",
   "reviews": "Reviews",
-  "review": "Review"
+  "review": "Review",
+  "shipping": "Shipping",
+  "address": "Address",
+  "payment": "Payment",
+  "confirm_and_continue": "Confirm & Continue",
+  "confirm_order": "Confirm Order",
+  "next": "Next"
 }
