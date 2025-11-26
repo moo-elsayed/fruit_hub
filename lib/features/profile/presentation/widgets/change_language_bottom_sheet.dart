@@ -2,11 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fruit_hub/core/helpers/extentions.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:gap/gap.dart';
 import 'package:restart_app/restart_app.dart';
 import '../../../../core/helpers/functions.dart';
+import '../../../../core/theming/app_colors.dart';
 import '../../../../core/theming/app_text_styles.dart';
+import '../../../../core/widgets/custom_bottom_sheet_top_container.dart';
 import '../../../../core/widgets/custom_confirmation_dialog.dart';
 
 class ChangeLanguageBottomSheet extends StatelessWidget {
@@ -15,10 +17,18 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 16.h),
+      padding: .symmetric(vertical: 16.h),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: .circular(16.r),
+          topRight: .circular(16.r),
+        ),
+      ),
       child: Column(
         mainAxisSize: .min,
         children: [
+          const CustomBottomSheetTopContainer(),
           Text(
             "select_language".tr(),
             style: AppTextStyles.font16color0C0D0DSemiBold,

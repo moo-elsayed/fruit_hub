@@ -12,7 +12,7 @@ void main() {
   late HomeRepoImp sut;
   late MockHomeRemoteDataSource mockHomeRemoteDataSource;
 
-  List<FruitEntity> fruits = [FruitEntity(), FruitEntity(), FruitEntity()];
+  List<FruitEntity> fruits = [const FruitEntity(), const FruitEntity(), const FruitEntity()];
 
   final tSuccessResponse = NetworkSuccess<List<FruitEntity>>(fruits);
   final tFailureResponse = NetworkFailure<List<FruitEntity>>(

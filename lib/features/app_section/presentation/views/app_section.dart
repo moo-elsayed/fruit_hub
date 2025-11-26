@@ -13,7 +13,7 @@ import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cu
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/views/products.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import '../../../../core/helpers/extentions.dart';
+import '../../../../core/helpers/extensions.dart';
 import '../../../../core/widgets/app_toasts.dart';
 import '../../../auth/domain/use_cases/sign_out_use_case.dart';
 import '../../../auth/presentation/managers/signout_cubit/sign_out_cubit.dart';

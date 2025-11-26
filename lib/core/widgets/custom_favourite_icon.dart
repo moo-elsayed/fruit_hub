@@ -59,7 +59,7 @@ class _CustomFavouriteIconState extends State<CustomFavouriteIcon> {
               ? const Icon(
                   CupertinoIcons.heart_fill,
                   key: ValueKey("filled"),
-                  color: Colors.red,
+                  color: AppColors.red,
                 )
               : const Icon(
                   CupertinoIcons.heart,

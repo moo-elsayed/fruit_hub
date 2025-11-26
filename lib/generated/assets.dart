@@ -8,8 +8,11 @@ class Assets {
   static const String fontsCairoSemiBold = 'assets/fonts/Cairo-SemiBold.ttf';
   static const String iconsAppleIcon = 'assets/svgs/icons/apple_icon.svg';
   static const String iconsArrowBack = 'assets/svgs/icons/arrow_back.svg';
+  static const String iconsCalendar = 'assets/svgs/icons/calendar.svg';
+  static const String iconsCalory = 'assets/svgs/icons/calory.svg';
   static const String iconsCheck = 'assets/svgs/icons/Check.svg';
   static const String iconsFacebookIcon = 'assets/svgs/icons/facebook_icon.svg';
+  static const String iconsFavourites = 'assets/svgs/icons/favourites.svg';
   static const String iconsFilter = 'assets/svgs/icons/filter.svg';
   static const String iconsGoogleIcon = 'assets/svgs/icons/google_icon.svg';
   static const String iconsHeart = 'assets/svgs/icons/heart.svg';
@@ -19,6 +22,7 @@ class Assets {
   static const String iconsIconsMinus = 'assets/svgs/icons/icons-minus.svg';
   static const String iconsLanguageIcon = 'assets/svgs/icons/language-icon.svg';
   static const String iconsNotification = 'assets/svgs/icons/notification.svg';
+  static const String iconsOrganic = 'assets/svgs/icons/organic.svg';
   static const String iconsPlus = 'assets/svgs/icons/plus.svg';
   static const String iconsProductsFilled = 'assets/svgs/icons/products-filled.svg';
   static const String iconsProductsOutline = 'assets/svgs/icons/products-outline.svg';

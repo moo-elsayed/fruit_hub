@@ -13,7 +13,7 @@ void main() {
   late SearchCubit sut;
   late MockSearchFruitsUseCase mockSearchFruitsUseCase;
 
-  List<FruitEntity> fruits = [FruitEntity(), FruitEntity(), FruitEntity()];
+  List<FruitEntity> fruits = [const FruitEntity(), const FruitEntity(), const FruitEntity()];
   const tSearchQuery = 'man';
   final tSuccessResponse = NetworkSuccess<List<FruitEntity>>(fruits);
   final tFailureResponse = NetworkFailure<List<FruitEntity>>(

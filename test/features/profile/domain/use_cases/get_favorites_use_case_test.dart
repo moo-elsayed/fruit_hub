@@ -11,7 +11,7 @@ void main() {
   late GetFavoritesUseCase sut;
   late MockProfileRepo mockProfileRepo;
 
-  List<FruitEntity> fruits = [FruitEntity(), FruitEntity(), FruitEntity()];
+  List<FruitEntity> fruits = [const FruitEntity(), const FruitEntity(), const FruitEntity()];
 
   final tSuccessResponseOfTypeListFruitEntity =
       NetworkSuccess<List<FruitEntity>>(fruits);

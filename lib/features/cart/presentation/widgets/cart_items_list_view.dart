@@ -24,7 +24,7 @@ class CartItemsListView extends StatelessWidget {
             CartItem(
               size: size,
               cartItemEntity: itemCount != null
-                  ? CartItemEntity(fruitEntity: FruitEntity())
+                  ? const CartItemEntity(fruitEntity: FruitEntity())
                   : cartItems![index],
             ),
             if ((cartItems != null && index == cartItems!.length - 1) ||

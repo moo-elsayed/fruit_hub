@@ -1,12 +1,8 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import '../helpers/functions.dart';
-import '../theming/app_colors.dart';
 import '../theming/app_text_styles.dart';
-import '../../generated/assets.dart';
+import 'custom_arrow_back.dart';
 import 'notification_widget.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -32,23 +28,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: showArrowBack
-          ? GestureDetector(
-              onTap: onTap,
-              child: Container(
-                margin: EdgeInsetsDirectional.only(start: 16.w),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                  border: Border.all(color: AppColors.colorF1F1F5),
-                ),
-                child: Transform.rotate(
-                  angle: isArabic(context) ? 0 : pi,
-                  child: SvgPicture.asset(
-                    Assets.iconsArrowBack,
-                    fit: BoxFit.scaleDown,
-                  ),
-                ),
-              ),
+          ? Padding(
+              padding: EdgeInsetsDirectional.only(start: 16.w),
+              child: CustomArrowBack(onTap: onTap),
             )
           : null,
       title: Text(title, style: AppTextStyles.font19color0C0D0DBold),

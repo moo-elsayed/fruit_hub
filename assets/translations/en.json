@@ -96,5 +96,19 @@
   "item_removed_from_cart": "Removed from cart successfully",
   "loading": "Loading",
   "log_out_confirmation": "Do you want to log out?",
-  "logged_out_successfully": "Logged out successfully"
+  "logged_out_successfully": "Logged out successfully",
+  "sort_by": "Sort by",
+  "price_lowest_to_highest": "Price (Lowest to Highest)",
+  "price_highest_to_lowest": "Price (Highest to Lowest)",
+  "alphabetical": "Alphabetical",
+  "apply": "Apply",
+  "reset": "Reset",
+  "add_to_cart": "Add to cart",
+  "validity": "Validity",
+  "days": "Days",
+  "organic": "Organic",
+  "calories": "Calories",
+  "gram": "Gram",
+  "reviews": "Reviews",
+  "review": "Review"
 }

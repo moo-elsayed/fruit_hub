@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cubit.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
-import 'package:fruit_hub/core/widgets/notification_widget.dart';
 import 'package:fruit_hub/generated/assets.dart';
 import 'package:gap/gap.dart';
 
@@ -34,8 +33,6 @@ class CustomHomeAppBar extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
-          const NotificationWidget(),
         ],
       ),
     );

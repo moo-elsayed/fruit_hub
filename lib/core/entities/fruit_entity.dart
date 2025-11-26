@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:fruit_hub/core/entities/review_entity.dart';
 
-class FruitEntity {
-  FruitEntity({
+class FruitEntity extends Equatable {
+  const FruitEntity({
     this.imagePath = '',
     this.name = '',
     this.code = '',
@@ -17,7 +18,7 @@ class FruitEntity {
     this.reviews = const [],
   });
 
-  String imagePath;
+  final String imagePath;
   final String name;
   final String code;
   final String description;
@@ -30,4 +31,21 @@ class FruitEntity {
   final int ratingCount;
   final num avgRating;
   final List<ReviewEntity> reviews;
+
+  @override
+  List<Object?> get props => [
+    imagePath,
+    name,
+    code,
+    description,
+    price,
+    isFeatured,
+    isOrganic,
+    daysUntilExpiration,
+    numberOfCalories,
+    unitAmount,
+    ratingCount,
+    avgRating,
+    reviews,
+  ];
 }

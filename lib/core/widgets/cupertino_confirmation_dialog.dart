@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:fruit_hub/core/helpers/extentions.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CupertinoConfirmationDialog extends StatelessWidget {

@@ -13,7 +13,7 @@ void main() {
   late SearchRepoImp sut;
   late MockSearchRemoteDataSource mockSearchRemoteDataSource;
   const tSearchQuery = 'man';
-  List<FruitEntity> fruits = [FruitEntity(), FruitEntity(), FruitEntity()];
+  List<FruitEntity> fruits = [const FruitEntity(), const FruitEntity(), const FruitEntity()];
 
   final tSuccessResponse = NetworkSuccess<List<FruitEntity>>(fruits);
   final tFailureResponse = NetworkFailure<List<FruitEntity>>(

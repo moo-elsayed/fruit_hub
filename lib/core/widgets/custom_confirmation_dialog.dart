@@ -6,7 +6,7 @@ import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:fruit_hub/generated/assets.dart';
 import 'package:gap/gap.dart';
-import '../helpers/extentions.dart';
+import '../helpers/extensions.dart';
 
 class CustomConfirmationDialog extends StatelessWidget {
   const CustomConfirmationDialog({
