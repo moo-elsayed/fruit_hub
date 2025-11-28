@@ -1,5 +1,5 @@
 import '../../../../../core/helpers/network_response.dart';
-import '../../../domain/entities/cart_item_entity.dart';
+import '../../../../../core/entities/cart_item_entity.dart';
 
 abstract class CartRemoteDataSource {
   Future<NetworkResponse<void>> addItemToCart(String productId);

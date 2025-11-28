@@ -4,7 +4,7 @@ import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/core/services/database/database_service.dart';
 import 'package:fruit_hub/features/cart/data/data_sources/remote/cart_remote_data_source.dart';
-import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/shared_data/models/fruit_model.dart';
 import '../../../../../core/helpers/app_logger.dart';
 import '../../../../../core/helpers/failures.dart';

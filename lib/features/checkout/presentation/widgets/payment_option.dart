@@ -18,8 +18,9 @@ class PaymentOption extends StatelessWidget {
   final VoidCallback onTap;
   final bool isSelected;
 
-  String getTrailingText(double price) =>
-      price == 0 ? "free".tr() : "$price ${"pounds".tr()}";
+  String getTrailingText(double shippingCost) => shippingCost == 0
+      ? "free_shipping".tr()
+      : "$shippingCost ${"pounds".tr()}";
 
   @override
   Widget build(BuildContext context) {
@@ -61,29 +62,13 @@ class PaymentOption extends StatelessWidget {
                   : null,
             ),
             Gap(10.w),
-            Expanded(
-              child: shippingEntity.subtitle != null
-                  ? Column(
-                      crossAxisAlignment: .start,
-                      spacing: 6.h,
-                      children: [
-                        Text(
-                          shippingEntity.title,
-                          style: AppTextStyles.font13BlackSemiBold,
-                        ),
-                        Text(
-                          shippingEntity.subtitle!,
-                          style: AppTextStyles.font13color7B7B7BRegular,
-                        ),
-                      ],
-                    )
-                  : Text(
-                      shippingEntity.title,
-                      style: AppTextStyles.font13BlackSemiBold,
-                    ),
-            ),
             Text(
-              getTrailingText(shippingEntity.price),
+              shippingEntity.option,
+              style: AppTextStyles.font13BlackSemiBold,
+            ),
+            const Spacer(),
+            Text(
+              getTrailingText(shippingEntity.shippingCost),
               style: AppTextStyles.font13color3A8B33Bold,
             ),
           ],

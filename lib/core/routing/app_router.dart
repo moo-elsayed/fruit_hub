@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/features/app_section/presentation/views/app_section.dart';
@@ -45,7 +46,10 @@ class AppRouter {
           builder: (context) => ProductDetailsView(fruitEntity: args),
         );
       case Routes.checkoutView:
-        return CupertinoPageRoute(builder: (context) => const CheckoutView());
+        final args = arguments as List<CartItemEntity>;
+        return CupertinoPageRoute(
+          builder: (context) => CheckoutView(cartItems: args),
+        );
       // case Routes.bestSellerView:
       //   return CupertinoPageRoute(
       //     builder: (context) => const BestSellerView(),

@@ -1,5 +1,5 @@
 import '../../../../core/helpers/network_response.dart';
-import '../entities/cart_item_entity.dart';
+import '../../../../core/entities/cart_item_entity.dart';
 import '../repo/cart_repo.dart';
 
 class GetProductsInCartUseCase {

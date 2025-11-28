@@ -18,6 +18,20 @@ abstract class AppTextStyles {
     fontWeight: FontWeightHelper.regular,
   );
 
+  static TextStyle font13color616A6BRegular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color616A6B,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
+  static TextStyle font13color4E5556Regular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color4E5556,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
   static TextStyle font13color1B5E37Regular = TextStyle(
     fontSize: 13.sp,
     color: AppColors.color1B5E37,
@@ -63,6 +77,20 @@ abstract class AppTextStyles {
   static TextStyle font13color949D9ESemiBold = TextStyle(
     fontSize: 13.sp,
     color: AppColors.color949D9E,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13color4E5556SemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color4E5556,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13color3A8B33SemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color3A8B33,
     fontFamily: "Cairo",
     fontWeight: FontWeightHelper.semiBold,
   );

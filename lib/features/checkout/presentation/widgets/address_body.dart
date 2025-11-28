@@ -1,53 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/features/checkout/presentation/args/address_args.dart';
+import 'package:fruit_hub/features/checkout/presentation/managers/checkout_cubit/checkout_cubit.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/save_address.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/helpers/validator.dart';
 import '../../../../core/widgets/text_form_field_helper.dart';
 
-class AddressBody extends StatefulWidget {
-  const AddressBody({super.key});
+class AddressBody extends StatelessWidget {
+  const AddressBody({super.key, required this.addressArgs});
 
-  @override
-  State<AddressBody> createState() => _AddressBodyState();
-}
-
-class _AddressBodyState extends State<AddressBody> {
-  late GlobalKey<FormState> _formKey;
-  late TextEditingController _fullNameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneNumberController;
-  late TextEditingController _addressController;
-  late TextEditingController _cityController;
-  late TextEditingController _floorNumberController;
-  late TextEditingController _apartmentNumberController;
-  bool _saveAddress = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _formKey = GlobalKey<FormState>();
-    _fullNameController = TextEditingController();
-    _emailController = TextEditingController();
-    _phoneNumberController = TextEditingController();
-    _addressController = TextEditingController();
-    _cityController = TextEditingController();
-    _floorNumberController = TextEditingController();
-    _apartmentNumberController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _fullNameController.dispose();
-    _emailController.dispose();
-    _phoneNumberController.dispose();
-    _addressController.dispose();
-    _cityController.dispose();
-    _floorNumberController.dispose();
-    _apartmentNumberController.dispose();
-    super.dispose();
-  }
+  final AddressArgs addressArgs;
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +21,11 @@ class _AddressBodyState extends State<AddressBody> {
       behavior: HitTestBehavior.opaque,
       child: SingleChildScrollView(
         child: Form(
-          key: _formKey,
+          key: addressArgs.formKey,
           child: Column(
             children: [
               TextFormFieldHelper(
-                controller: _fullNameController,
+                controller: addressArgs.nameController,
                 hint: "full_name".tr(),
                 keyboardType: TextInputType.name,
                 onValidate: Validator.validateName,
@@ -68,7 +33,7 @@ class _AddressBodyState extends State<AddressBody> {
               ),
               Gap(16.h),
               TextFormFieldHelper(
-                controller: _emailController,
+                controller: addressArgs.emailController,
                 hint: "email".tr(),
                 keyboardType: TextInputType.emailAddress,
                 onValidate: Validator.validateEmail,
@@ -76,7 +41,7 @@ class _AddressBodyState extends State<AddressBody> {
               ),
               Gap(16.h),
               TextFormFieldHelper(
-                controller: _phoneNumberController,
+                controller: addressArgs.phoneController,
                 hint: "phone_number".tr(),
                 keyboardType: TextInputType.phone,
                 onValidate: Validator.validatePhoneNumber,
@@ -84,7 +49,7 @@ class _AddressBodyState extends State<AddressBody> {
               ),
               Gap(16.h),
               TextFormFieldHelper(
-                controller: _addressController,
+                controller: addressArgs.addressController,
                 hint: "address".tr(),
                 keyboardType: TextInputType.streetAddress,
                 onValidate: Validator.validateAddress,
@@ -92,7 +57,7 @@ class _AddressBodyState extends State<AddressBody> {
               ),
               Gap(16.h),
               TextFormFieldHelper(
-                controller: _cityController,
+                controller: addressArgs.cityController,
                 hint: "city".tr(),
                 keyboardType: TextInputType.streetAddress,
                 onValidate: Validator.validateAddress,
@@ -104,7 +69,7 @@ class _AddressBodyState extends State<AddressBody> {
                 children: [
                   Expanded(
                     child: TextFormFieldHelper(
-                      controller: _cityController,
+                      controller: addressArgs.cityController,
                       hint: "floor_number".tr(),
                       keyboardType: TextInputType.streetAddress,
                       onValidate: Validator.validateFloorNumber,
@@ -113,7 +78,7 @@ class _AddressBodyState extends State<AddressBody> {
                   ),
                   Expanded(
                     child: TextFormFieldHelper(
-                      controller: _cityController,
+                      controller: addressArgs.cityController,
                       hint: "apartment_number".tr(),
                       keyboardType: TextInputType.streetAddress,
                       onValidate: Validator.validateApartmentNumber,
@@ -123,7 +88,10 @@ class _AddressBodyState extends State<AddressBody> {
                 ],
               ),
               Gap(16.h),
-              SaveAddress(onChanged: (value) => _saveAddress = value),
+              SaveAddress(
+                onChanged: (value) =>
+                    context.read<CheckoutCubit>().setSaveAddress(value),
+              ),
               Gap(16.h),
             ],
           ),

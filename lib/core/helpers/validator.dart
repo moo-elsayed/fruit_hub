@@ -78,7 +78,7 @@ abstract class Validator {
 
   static String? validatePhoneNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return "phone_number_cannot_be_empty";
+      return "phone_number_cannot_be_empty".tr();
     }
 
     final phone = val.trim();

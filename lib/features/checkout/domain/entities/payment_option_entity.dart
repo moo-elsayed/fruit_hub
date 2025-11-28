@@ -1,23 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 
 class PaymentOptionEntity {
-  PaymentOptionEntity({
-    required this.title,
-    this.subtitle,
-    required this.price,
-  });
+  PaymentOptionEntity({required this.option, required this.shippingCost});
 
-  final String title;
-  final String? subtitle;
-  final double price;
+  final String option;
+  final double shippingCost;
 }
 
 List<PaymentOptionEntity> get paymentOptions => [
-  PaymentOptionEntity(title: "payPal".tr(), price: 0),
-  PaymentOptionEntity(title: "pay_by_visa".tr(), price: 0),
-  PaymentOptionEntity(
-    title: "cash_on_delivery".tr(),
-    subtitle: "delivery_from_place".tr(),
-    price: 40,
-  ),
+  PaymentOptionEntity(option: "pay_by_paypal".tr(), shippingCost: 0),
+  PaymentOptionEntity(option: "pay_by_credit_card".tr(), shippingCost: 0),
+  PaymentOptionEntity(option: "cash_on_delivery".tr(), shippingCost: 40),
 ];

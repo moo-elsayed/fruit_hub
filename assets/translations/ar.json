@@ -120,7 +120,8 @@
   "cash_on_delivery": "الدفع عند الاستلام",
   "delivery_from_place": "التسليم في المكان المحدد",
   "online_payment": "الدفع الإلكتروني",
-  "pay_by_visa": "فيزا أو ماستركارد",
+  "pay_by_credit_card": "بطاقة إئتمان",
+  "free_shipping": "شحن مجاني",
   "free": "مجاني",
   "phone_number": "رقم التليفون",
   "address_cannot_be_empty": "لا يمكن أن يكون العنوان فارغًا",
@@ -133,5 +134,14 @@
   "city_cannot_be_empty": "المدينة لا يمكن أن تكون فارغة",
   "floor_number_cannot_be_empty": "لا يمكن أن يكون رقم الطابق فارغًا",
   "apartment_number_cannot_be_empty": "رقم الشقة لا يمكن أن يكون فارغًا",
-  "paypal": "باي بال"
+  "pay_by_paypal": "باي بال",
+  "choose_the_payment_method_that_suits_you_best": "أختار طريقه الدفع المناسبه:",
+  "order_summary": "ملخص الطلب",
+  "delivery": "التوصيل",
+  "subtotal": "المجموع الفرعي",
+  "total": "الكلي",
+  "please_confirm_your_order": "يرجي تأكيد طلبك",
+  "payment_method": "وسيلة الدفع",
+  "delivery_address": "عنوان التوصيل",
+  "edit": "تعديل"
 }

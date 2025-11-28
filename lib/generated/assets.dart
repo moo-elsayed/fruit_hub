@@ -11,6 +11,7 @@ class Assets {
   static const String iconsCalendar = 'assets/svgs/icons/calendar.svg';
   static const String iconsCalory = 'assets/svgs/icons/calory.svg';
   static const String iconsCheck = 'assets/svgs/icons/Check.svg';
+  static const String iconsEdit = 'assets/svgs/icons/edit.svg';
   static const String iconsFacebookIcon = 'assets/svgs/icons/facebook_icon.svg';
   static const String iconsFavourites = 'assets/svgs/icons/favourites.svg';
   static const String iconsFilter = 'assets/svgs/icons/filter.svg';
@@ -22,6 +23,7 @@ class Assets {
   static const String iconsIconCheck = 'assets/svgs/icons/icon-check.svg';
   static const String iconsIconsMinus = 'assets/svgs/icons/icons-minus.svg';
   static const String iconsLanguageIcon = 'assets/svgs/icons/language-icon.svg';
+  static const String iconsLocation = 'assets/svgs/icons/location.svg';
   static const String iconsNotification = 'assets/svgs/icons/notification.svg';
   static const String iconsOrganic = 'assets/svgs/icons/organic.svg';
   static const String iconsPlus = 'assets/svgs/icons/plus.svg';
@@ -35,16 +37,19 @@ class Assets {
   static const String iconsTrash = 'assets/svgs/icons/trash.svg';
   static const String imagesAppLogo = 'assets/images/app-logo.png';
   static const String imagesFruitsImage = 'assets/images/fruits-image.png';
+  static const String imagesPaypalIcon = 'assets/images/paypal-icon.png';
   static const String imagesProfileImage = 'assets/images/profile_image.png';
   static const String imagesSearchImage = 'assets/images/search-image.png';
   static const String imagesSplashAndroid12 = 'assets/images/splash_android_12.png';
   static const String imagesSplashIosAndroid11 = 'assets/images/splash_ios_android_11.png';
   static const String imagesWatermelonTest = 'assets/images/watermelon_test.png';
+  static const String svgsCard = 'assets/svgs/card.svg';
   static const String svgsFeaturedItemBackground = 'assets/svgs/featured_item_background.svg';
   static const String svgsPageViewItem1BackgroundImage = 'assets/svgs/page_view_item1_background_image.svg';
   static const String svgsPageViewItem1Image = 'assets/svgs/page_view_item1_image.svg';
   static const String svgsPageViewItem2BackgroundImage = 'assets/svgs/page_view_item2_background_image.svg';
   static const String svgsPageViewItem2Image = 'assets/svgs/page_view_item2_image.svg';
+  static const String svgsPaypal = 'assets/svgs/paypal.svg';
   static const String svgsPlant = 'assets/svgs/plant.svg';
   static const String svgsSplashBottom = 'assets/svgs/splash-bottom.svg';
   static const String svgsSuccess = 'assets/svgs/success.svg';

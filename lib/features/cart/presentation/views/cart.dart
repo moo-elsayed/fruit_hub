@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
-import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/products_count.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/cart_items_list_view.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
@@ -138,7 +138,7 @@ class _CartState extends State<Cart> {
                         settings: const RouteSettings(
                           name: Routes.checkoutView,
                         ),
-                        screen: const CheckoutView(),
+                        screen: CheckoutView(cartItems: cartItemsList),
                         withNavBar: false,
                         pageTransitionAnimation:
                             PageTransitionAnimation.cupertino,

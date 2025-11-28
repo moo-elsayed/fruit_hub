@@ -7,22 +7,22 @@ import '../../generated/assets.dart';
 class CustomCheckBox extends StatefulWidget {
   const CustomCheckBox({super.key, required this.onChanged});
 
-  final Function(bool value) onChanged;
+  final ValueChanged<bool> onChanged;
 
   @override
   State<CustomCheckBox> createState() => _CustomCheckBoxState();
 }
 
 class _CustomCheckBoxState extends State<CustomCheckBox> {
-  bool _agreeToTerms = false;
+  bool _myBool = false;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _agreeToTerms = !_agreeToTerms;
-          widget.onChanged(_agreeToTerms);
+          _myBool = !_myBool;
+          widget.onChanged(_myBool);
         });
       },
       child: AnimatedContainer(
@@ -33,14 +33,12 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.r),
           border: Border.all(
-            color: !_agreeToTerms
-                ? AppColors.colorDDDFDF
-                : AppColors.color1B5E37,
+            color: !_myBool ? AppColors.colorDDDFDF : AppColors.color1B5E37,
             width: 1.5,
           ),
-          color: _agreeToTerms ? AppColors.color1B5E37 : Colors.white,
+          color: _myBool ? AppColors.color1B5E37 : Colors.white,
         ),
-        child: _agreeToTerms
+        child: _myBool
             ? Center(
                 child: SvgPicture.asset(
                   Assets.iconsCheck,

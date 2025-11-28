@@ -120,7 +120,8 @@
   "cash_on_delivery": "Cash on Delivery",
   "delivery_from_place": "Delivery at place",
   "online_payment": "Online Payment",
-  "pay_by_visa": "Visa or Mastercard",
+  "pay_by_credit_card": "Credit Card",
+  "free_shipping": "Free Shipping",
   "free": "Free",
   "phone_number": "Phone Number",
   "address_cannot_be_empty": "Address cannot be empty",
@@ -133,5 +134,14 @@
   "city_cannot_be_empty": "City cannot be empty",
   "floor_number_cannot_be_empty": "Floor number cannot be empty",
   "apartment_number_cannot_be_empty": "Apartment number cannot be empty",
-  "paypal": "Paypal"
+  "pay_by_paypal": "Paypal",
+  "choose_the_payment_method_that_suits_you_best": "Choose the payment method that suits you best:",
+  "order_summary": "Order Summary",
+  "delivery": "Delivery",
+  "subtotal": "Subtotal",
+  "total": "Total",
+  "please_confirm_your_order": "Please confirm your order",
+  "payment_method": "Payment method",
+  "delivery_address": "Delivery address",
+  "edit": "Edit"
 }
