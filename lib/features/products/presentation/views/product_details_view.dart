@@ -25,7 +25,7 @@ class ProductDetailsView extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(
-            height: 300.h,
+            height: 350.h,
             child: CustomProductsDetailsHeader(
               imagePath: fruitEntity.imagePath,
             ),

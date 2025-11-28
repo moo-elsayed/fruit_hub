@@ -116,5 +116,22 @@
   "payment": "Payment",
   "confirm_and_continue": "Confirm & Continue",
   "confirm_order": "Confirm Order",
-  "next": "Next"
+  "next": "Next",
+  "cash_on_delivery": "Cash on Delivery",
+  "delivery_from_place": "Delivery at place",
+  "online_payment": "Online Payment",
+  "pay_by_visa": "Visa or Mastercard",
+  "free": "Free",
+  "phone_number": "Phone Number",
+  "address_cannot_be_empty": "Address cannot be empty",
+  "city": "City",
+  "save_address": "Save Address",
+  "floor_number": "Floor Number",
+  "apartment_number": "Apartment Number",
+  "phone_number_cannot_be_empty": "Phone number cannot be empty",
+  "enter_a_valid_phone_number": "Enter a valid phone number",
+  "city_cannot_be_empty": "City cannot be empty",
+  "floor_number_cannot_be_empty": "Floor number cannot be empty",
+  "apartment_number_cannot_be_empty": "Apartment number cannot be empty",
+  "paypal": "Paypal"
 }

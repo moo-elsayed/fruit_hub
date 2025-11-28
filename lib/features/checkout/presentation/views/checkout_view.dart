@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
+import 'package:fruit_hub/features/checkout/presentation/widgets/checkout_page_view.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/checkout_steps.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/theming/app_text_styles.dart';
@@ -16,11 +17,16 @@ class CheckoutView extends StatefulWidget {
 }
 
 class _CheckoutViewState extends State<CheckoutView> {
-  int currentIndex = 0;
   late PageController _pageController;
+  int currentIndex = 0;
+
+  List<String> get steps => [
+    "address".tr(),
+    "payment".tr(),
+    "review".tr(),
+  ];
 
   List<String> get buttonTexts => [
-    "next".tr(),
     "next".tr(),
     "confirm_and_continue".tr(),
     "confirm_order".tr(),
@@ -42,36 +48,37 @@ class _CheckoutViewState extends State<CheckoutView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "shipping".tr(),
+        title: steps[currentIndex],
         showArrowBack: true,
         onTap: () => context.pop(),
       ),
       body: Column(
         children: [
           Gap(16.h),
-          CheckoutSteps(currentIndex: currentIndex),
-          Expanded(
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: buttonTexts.length,
-              onPageChanged: (value) => setState(() => currentIndex = value),
-              itemBuilder: (context, index) {
-                return Container();
-              },
-            ),
-          ),
-          CustomMaterialButton(
-            onPressed: () {
-              _pageController.nextPage(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-              );
-            },
-            text: buttonTexts[currentIndex],
-            textStyle: AppTextStyles.font16WhiteBold,
+          CheckoutSteps(currentIndex: currentIndex, steps: steps),
+          Gap(24.h),
+          CheckoutPageView(
+            pageController: _pageController,
+            onPageChanged: (value) => setState(() => currentIndex = value),
           ),
         ],
       ),
+      bottomNavigationBar: MediaQuery.viewInsetsOf(context).bottom != 0
+          ? null
+          : Padding(
+            padding: .symmetric(horizontal: 16.w, vertical: 16.h),
+            child: CustomMaterialButton(
+                onPressed: () {
+                  _pageController.nextPage(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                  );
+                },
+                text: buttonTexts[currentIndex],
+                textStyle: AppTextStyles.font16WhiteBold,
+                maxWidth: true,
+              ),
+          ),
     );
   }
 }

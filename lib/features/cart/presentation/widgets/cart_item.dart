@@ -29,7 +29,7 @@ class CartItem extends StatelessWidget {
           context,
           settings: const RouteSettings(name: Routes.productDetailsView),
           screen: ProductDetailsView(fruitEntity: cartItemEntity.fruitEntity),
-          withNavBar: true,
+          withNavBar: false,
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
         );
       },

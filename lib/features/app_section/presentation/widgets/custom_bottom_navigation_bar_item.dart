@@ -46,7 +46,7 @@ class CustomBottomNavigationItem extends StatelessWidget {
                 )
               : DecoratedBox(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.r),
+                    borderRadius: .circular(16.r),
                     color: AppColors.colorF3F5F7,
                   ),
                   child: Row(

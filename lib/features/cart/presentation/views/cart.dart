@@ -139,7 +139,7 @@ class _CartState extends State<Cart> {
                           name: Routes.checkoutView,
                         ),
                         screen: const CheckoutView(),
-                        withNavBar: true,
+                        withNavBar: false,
                         pageTransitionAnimation:
                             PageTransitionAnimation.cupertino,
                       );

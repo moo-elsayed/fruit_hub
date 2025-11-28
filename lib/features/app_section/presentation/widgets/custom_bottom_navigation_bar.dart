@@ -25,7 +25,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsetsGeometry.symmetric(horizontal: 27.w),
+      padding: .symmetric(horizontal: 27.w),
       decoration: const BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.only(
@@ -42,7 +42,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: .spaceBetween,
         children: bottomNavigationBarItems.asMap().entries.map((entry) {
           final index = entry.key;
           final entity = entry.value;

@@ -21,6 +21,7 @@ class SortOptionItem extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
         padding: .symmetric(horizontal: 16.w, vertical: 14.h),
         decoration: BoxDecoration(
           color: isSelected

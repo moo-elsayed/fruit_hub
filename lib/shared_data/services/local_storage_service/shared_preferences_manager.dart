@@ -6,6 +6,7 @@ class SharedPreferencesManager implements LocalStorageService {
   final String _isFirstTimeKey = 'isFirstTime';
   final String _isLoggedInKey = 'isLoggedIn';
   final String _usernameKey = 'username';
+  final String _userAddressKey = 'userAddress';
 
   @override
   Future<void> init() async => _prefs = await SharedPreferences.getInstance();
@@ -33,4 +34,14 @@ class SharedPreferencesManager implements LocalStorageService {
 
   @override
   Future<void> deleteUseName() async => await _prefs.remove(_usernameKey);
+
+  @override
+  Future<void> saveAddress(Map<String, dynamic> address) async =>
+      await _prefs.setString(_userAddressKey, address.toString());
+
+  @override
+  String getAddress() => _prefs.getString(_userAddressKey) ?? '';
+
+  @override
+  Future<void> deleteAddress() async => await _prefs.remove(_userAddressKey);
 }

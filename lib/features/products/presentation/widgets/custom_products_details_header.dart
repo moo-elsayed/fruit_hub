@@ -16,7 +16,7 @@ class CustomProductsDetailsHeader extends StatelessWidget {
       alignment: .topCenter,
       children: [
         Positioned(
-          top: -500,
+          top: -450,
           child: Container(
             alignment: .bottomCenter,
             width: 700.w,
@@ -28,12 +28,12 @@ class CustomProductsDetailsHeader extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 70.h,
+          top: 120.h,
           child: CustomNetworkImage(image: imagePath, height: 180.h),
         ),
         PositionedDirectional(
-          top: 20.h,
-          start: 10.w,
+          top: 45.h,
+          start: 15.w,
           child: CustomArrowBack(
             onTap: () => context.pop(),
             padding: .all(8.r),

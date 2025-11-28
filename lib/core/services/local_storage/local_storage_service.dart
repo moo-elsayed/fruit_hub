@@ -14,4 +14,10 @@ abstract class LocalStorageService {
   Future<void> setLoggedIn(bool isLoggedIn);
 
   bool getLoggedIn();
+
+  Future<void> saveAddress(Map<String, dynamic> address);
+
+  String getAddress();
+
+  Future<void> deleteAddress();
 }

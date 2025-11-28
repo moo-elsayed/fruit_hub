@@ -31,7 +31,7 @@ class CustomFruitItem extends StatelessWidget {
           context,
           settings: const RouteSettings(name: Routes.productDetailsView),
           screen: ProductDetailsView(fruitEntity: fruitEntity),
-          withNavBar: true,
+          withNavBar: false,
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
         );
       },

@@ -116,5 +116,22 @@
   "payment": "الدفع",
   "confirm_and_continue": "تأكيد & استمرار",
   "confirm_order": "تأكيد الطلب",
-  "next": "التالي"
+  "next": "التالي",
+  "cash_on_delivery": "الدفع عند الاستلام",
+  "delivery_from_place": "التسليم في المكان المحدد",
+  "online_payment": "الدفع الإلكتروني",
+  "pay_by_visa": "فيزا أو ماستركارد",
+  "free": "مجاني",
+  "phone_number": "رقم التليفون",
+  "address_cannot_be_empty": "لا يمكن أن يكون العنوان فارغًا",
+  "city": "المدينة",
+  "save_address": "حفظ العنوان",
+  "floor_number": "رقم الطابق",
+  "apartment_number": "رقم الشقه",
+  "phone_number_cannot_be_empty": "لا يمكن أن يكون رقم الهاتف فارغًا",
+  "enter_a_valid_phone_number": "أدخل رقم هاتف صالح",
+  "city_cannot_be_empty": "المدينة لا يمكن أن تكون فارغة",
+  "floor_number_cannot_be_empty": "لا يمكن أن يكون رقم الطابق فارغًا",
+  "apartment_number_cannot_be_empty": "رقم الشقة لا يمكن أن يكون فارغًا",
+  "paypal": "باي بال"
 }
