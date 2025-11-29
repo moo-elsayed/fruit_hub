@@ -124,7 +124,7 @@
   "free_shipping": "شحن مجاني",
   "free": "مجاني",
   "phone_number": "رقم التليفون",
-  "address_cannot_be_empty": "لا يمكن أن يكون العنوان فارغًا",
+  "street_name_cannot_be_empty": "لا يمكن أن يكون اسم الشارع فارغًا",
   "city": "المدينة",
   "save_address": "حفظ العنوان",
   "floor_number": "رقم الطابق",
@@ -134,6 +134,7 @@
   "city_cannot_be_empty": "المدينة لا يمكن أن تكون فارغة",
   "floor_number_cannot_be_empty": "لا يمكن أن يكون رقم الطابق فارغًا",
   "apartment_number_cannot_be_empty": "رقم الشقة لا يمكن أن يكون فارغًا",
+  "building_number_cannot_be_empty": "لا يمكن أن يكون رقم المبنى فارغًا",
   "pay_by_paypal": "باي بال",
   "choose_the_payment_method_that_suits_you_best": "أختار طريقه الدفع المناسبه:",
   "order_summary": "ملخص الطلب",
@@ -143,5 +144,12 @@
   "please_confirm_your_order": "يرجي تأكيد طلبك",
   "payment_method": "وسيلة الدفع",
   "delivery_address": "عنوان التوصيل",
-  "edit": "تعديل"
+  "edit": "تعديل",
+  "it_must_be_a_number": "يجب أن يكون رقمًا",
+  "street_name": "اسم الشارع",
+  "building_number": "رقم المبنى",
+  "building": "مبنى",
+  "floor": "الدور",
+  "apartment": "شقة",
+  "please_select_a_payment_method": "الرجاء تحديد طريقة الدفع"
 }

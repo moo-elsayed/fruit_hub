@@ -36,6 +36,7 @@ class Assets {
   static const String iconsShoppingCartOutline = 'assets/svgs/icons/shopping-cart-outline.svg';
   static const String iconsTrash = 'assets/svgs/icons/trash.svg';
   static const String imagesAppLogo = 'assets/images/app-logo.png';
+  static const String imagesCash = 'assets/images/cash.png';
   static const String imagesFruitsImage = 'assets/images/fruits-image.png';
   static const String imagesPaypalIcon = 'assets/images/paypal-icon.png';
   static const String imagesProfileImage = 'assets/images/profile_image.png';

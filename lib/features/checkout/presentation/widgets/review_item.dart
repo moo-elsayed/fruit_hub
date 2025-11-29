@@ -54,7 +54,6 @@ class ReviewItem extends StatelessWidget {
                 child: Text(
                   value,
                   style: AppTextStyles.font13BlackSemiBold,
-                  maxLines: 2,
                 ),
               ),
             ],

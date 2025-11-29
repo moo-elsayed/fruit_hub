@@ -9,13 +9,13 @@ import '../../../../core/theming/app_text_styles.dart';
 class PaymentOption extends StatelessWidget {
   const PaymentOption({
     super.key,
-    required this.shippingEntity,
+    required this.paymentOptionEntity,
     required this.onTap,
     required this.isSelected,
   });
 
-  final PaymentOptionEntity shippingEntity;
-  final VoidCallback onTap;
+  final PaymentOptionEntity paymentOptionEntity;
+  final ValueChanged<PaymentOptionEntity> onTap;
   final bool isSelected;
 
   String getTrailingText(double shippingCost) => shippingCost == 0
@@ -25,7 +25,9 @@ class PaymentOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        onTap(paymentOptionEntity);
+      },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
@@ -63,12 +65,12 @@ class PaymentOption extends StatelessWidget {
             ),
             Gap(10.w),
             Text(
-              shippingEntity.option,
+              paymentOptionEntity.option,
               style: AppTextStyles.font13BlackSemiBold,
             ),
             const Spacer(),
             Text(
-              getTrailingText(shippingEntity.shippingCost),
+              getTrailingText(paymentOptionEntity.shippingCost),
               style: AppTextStyles.font13color3A8B33Bold,
             ),
           ],

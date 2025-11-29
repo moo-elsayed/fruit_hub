@@ -1,5 +1,6 @@
 import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class SharedPreferencesManager implements LocalStorageService {
   late SharedPreferences _prefs;
@@ -36,8 +37,10 @@ class SharedPreferencesManager implements LocalStorageService {
   Future<void> deleteUseName() async => await _prefs.remove(_usernameKey);
 
   @override
-  Future<void> saveAddress(Map<String, dynamic> address) async =>
-      await _prefs.setString(_userAddressKey, address.toString());
+  Future<void> saveAddress(Map<String, dynamic> address) async {
+    final addressJson = jsonEncode(address);
+    await _prefs.setString(_userAddressKey, addressJson);
+  }
 
   @override
   String getAddress() => _prefs.getString(_userAddressKey) ?? '';

@@ -4,18 +4,20 @@ class AddressModel {
   AddressModel({
     required this.name,
     required this.email,
-    required this.address,
-    required this.floorNumber,
-    required this.apartmentNumber,
     required this.phone,
     required this.city,
+    required this.buildingNumber,
+    required this.streetName,
+    required this.floorNumber,
+    required this.apartmentNumber,
   });
 
   final String name;
   final String email;
   final String phone;
-  final String address;
   final String city;
+  final String streetName;
+  final String buildingNumber;
   final String floorNumber;
   final String apartmentNumber;
 
@@ -23,8 +25,9 @@ class AddressModel {
     'name': name,
     'email': email,
     'phone': phone,
-    'street': address,
     'city': city,
+    'street': streetName,
+    'building_number': buildingNumber,
     'floor_number': floorNumber,
     'apartment_number': apartmentNumber,
   };
@@ -33,8 +36,9 @@ class AddressModel {
     name: map['name'] ?? '',
     email: map['email'] ?? '',
     phone: map['phone'] ?? '',
-    address: map['street'] ?? '',
     city: map['city'] ?? '',
+    streetName: map['street'] ?? '',
+    buildingNumber: map['building_number'] ?? '',
     floorNumber: map['floor_number'] ?? '',
     apartmentNumber: map['apartment_number'] ?? '',
   );
@@ -42,20 +46,22 @@ class AddressModel {
   factory AddressModel.fromEntity(AddressEntity entity) => AddressModel(
     name: entity.name,
     email: entity.email,
-    address: entity.address,
-    floorNumber: entity.floorNumber,
-    apartmentNumber: entity.apartmentNumber,
     phone: entity.phone,
     city: entity.city,
+    streetName: entity.streetName,
+    buildingNumber: entity.buildingNumber,
+    floorNumber: entity.floorNumber,
+    apartmentNumber: entity.apartmentNumber,
   );
 
   AddressEntity toEntity() => AddressEntity(
     name: name,
     email: email,
-    address: address,
-    floorNumber: floorNumber,
-    apartmentNumber: apartmentNumber,
     phone: phone,
     city: city,
+    streetName: streetName,
+    buildingNumber: buildingNumber,
+    floorNumber: floorNumber,
+    apartmentNumber: apartmentNumber,
   );
 }

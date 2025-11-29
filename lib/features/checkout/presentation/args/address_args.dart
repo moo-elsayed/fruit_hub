@@ -6,8 +6,9 @@ class AddressArgs {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
+  final TextEditingController streetNameController = TextEditingController();
+  final TextEditingController buildingController = TextEditingController();
   final TextEditingController floorController = TextEditingController();
   final TextEditingController apartmentController = TextEditingController();
 
@@ -17,8 +18,9 @@ class AddressArgs {
     nameController.dispose();
     emailController.dispose();
     phoneController.dispose();
-    addressController.dispose();
     cityController.dispose();
+    streetNameController.dispose();
+    buildingController.dispose();
     floorController.dispose();
     apartmentController.dispose();
   }
@@ -27,8 +29,9 @@ class AddressArgs {
     nameController.text = address.name;
     emailController.text = address.email;
     phoneController.text = address.phone;
-    addressController.text = address.address;
     cityController.text = address.city;
+    streetNameController.text = address.streetName;
+    buildingController.text = address.buildingNumber;
     floorController.text = address.floorNumber;
     apartmentController.text = address.apartmentNumber;
   }
@@ -37,8 +40,9 @@ class AddressArgs {
     name: nameController.text,
     email: emailController.text,
     phone: phoneController.text,
-    address: addressController.text,
     city: cityController.text,
+    streetName: streetNameController.text,
+    buildingNumber: buildingController.text,
     floorNumber: floorController.text,
     apartmentNumber: apartmentController.text,
   );

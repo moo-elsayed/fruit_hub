@@ -48,9 +48,9 @@ abstract class Validator {
     return null;
   }
 
-  static String? validateAddress(String? val) {
+  static String? validateStreetName(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return "address_cannot_be_empty".tr();
+      return "street_name_cannot_be_empty".tr();
     }
     return null;
   }
@@ -62,9 +62,22 @@ abstract class Validator {
     return null;
   }
 
+  static String? validateBuildingNumber(String? val) {
+    if (val == null || val.trim().isEmpty) {
+      return "building_number_cannot_be_empty".tr();
+    }
+    if (int.tryParse(val) == null) {
+      return "it_must_be_a_number".tr();
+    }
+    return null;
+  }
+
   static String? validateFloorNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
       return "floor_number_cannot_be_empty".tr();
+    }
+    if (int.tryParse(val) == null) {
+      return "it_must_be_a_number".tr();
     }
     return null;
   }
@@ -72,6 +85,9 @@ abstract class Validator {
   static String? validateApartmentNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
       return "apartment_number_cannot_be_empty".tr();
+    }
+    if (int.tryParse(val) == null) {
+      return "it_must_be_a_number".tr();
     }
     return null;
   }

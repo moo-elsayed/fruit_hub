@@ -11,6 +11,7 @@ class ClearUserSessionUseCase {
       await Future.wait([
         _localStorageService.deleteUseName(),
         _localStorageService.setLoggedIn(false),
+        _localStorageService.deleteAddress(),
       ]);
     } catch (e) {
       AppLogger.error("error in clear user session", error: e.toString());

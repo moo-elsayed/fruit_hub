@@ -9,10 +9,24 @@ import 'package:gap/gap.dart';
 import '../../../../core/helpers/validator.dart';
 import '../../../../core/widgets/text_form_field_helper.dart';
 
-class AddressBody extends StatelessWidget {
+class AddressBody extends StatefulWidget {
   const AddressBody({super.key, required this.addressArgs});
 
   final AddressArgs addressArgs;
+
+  @override
+  State<AddressBody> createState() => _AddressBodyState();
+}
+
+class _AddressBodyState extends State<AddressBody> {
+  @override
+  void initState() {
+    super.initState();
+    final cubit = context.read<CheckoutCubit>();
+    if (cubit.address != null) {
+      widget.addressArgs.setValues(cubit.address!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +35,11 @@ class AddressBody extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: SingleChildScrollView(
         child: Form(
-          key: addressArgs.formKey,
+          key: widget.addressArgs.formKey,
           child: Column(
             children: [
               TextFormFieldHelper(
-                controller: addressArgs.nameController,
+                controller: widget.addressArgs.nameController,
                 hint: "full_name".tr(),
                 keyboardType: TextInputType.name,
                 onValidate: Validator.validateName,
@@ -33,7 +47,7 @@ class AddressBody extends StatelessWidget {
               ),
               Gap(16.h),
               TextFormFieldHelper(
-                controller: addressArgs.emailController,
+                controller: widget.addressArgs.emailController,
                 hint: "email".tr(),
                 keyboardType: TextInputType.emailAddress,
                 onValidate: Validator.validateEmail,
@@ -41,7 +55,7 @@ class AddressBody extends StatelessWidget {
               ),
               Gap(16.h),
               TextFormFieldHelper(
-                controller: addressArgs.phoneController,
+                controller: widget.addressArgs.phoneController,
                 hint: "phone_number".tr(),
                 keyboardType: TextInputType.phone,
                 onValidate: Validator.validatePhoneNumber,
@@ -49,38 +63,47 @@ class AddressBody extends StatelessWidget {
               ),
               Gap(16.h),
               TextFormFieldHelper(
-                controller: addressArgs.addressController,
-                hint: "address".tr(),
+                controller: widget.addressArgs.cityController,
+                hint: "city".tr(),
                 keyboardType: TextInputType.streetAddress,
-                onValidate: Validator.validateAddress,
+                onValidate: Validator.validateCity,
+                action: TextInputAction.done,
+              ),
+              Gap(16.h),
+              TextFormFieldHelper(
+                controller: widget.addressArgs.streetNameController,
+                hint: "street_name".tr(),
+                keyboardType: TextInputType.streetAddress,
+                onValidate: Validator.validateStreetName,
                 action: TextInputAction.next,
               ),
               Gap(16.h),
               TextFormFieldHelper(
-                controller: addressArgs.cityController,
-                hint: "city".tr(),
-                keyboardType: TextInputType.streetAddress,
-                onValidate: Validator.validateAddress,
-                action: TextInputAction.done,
+                controller: widget.addressArgs.buildingController,
+                hint: "building_number".tr(),
+                keyboardType: TextInputType.number,
+                onValidate: Validator.validateBuildingNumber,
+                action: TextInputAction.next,
               ),
               Gap(16.h),
               Row(
                 spacing: 8.w,
+                crossAxisAlignment: .start,
                 children: [
                   Expanded(
                     child: TextFormFieldHelper(
-                      controller: addressArgs.cityController,
+                      controller: widget.addressArgs.floorController,
                       hint: "floor_number".tr(),
-                      keyboardType: TextInputType.streetAddress,
+                      keyboardType: TextInputType.number,
                       onValidate: Validator.validateFloorNumber,
                       action: TextInputAction.done,
                     ),
                   ),
                   Expanded(
                     child: TextFormFieldHelper(
-                      controller: addressArgs.cityController,
+                      controller: widget.addressArgs.apartmentController,
                       hint: "apartment_number".tr(),
-                      keyboardType: TextInputType.streetAddress,
+                      keyboardType: TextInputType.number,
                       onValidate: Validator.validateApartmentNumber,
                       action: TextInputAction.done,
                     ),
@@ -89,6 +112,7 @@ class AddressBody extends StatelessWidget {
               ),
               Gap(16.h),
               SaveAddress(
+                value: true,
                 onChanged: (value) =>
                     context.read<CheckoutCubit>().setSaveAddress(value),
               ),
