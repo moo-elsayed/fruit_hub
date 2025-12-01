@@ -38,27 +38,27 @@ class CustomFruitItem extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            padding: EdgeInsetsGeometry.symmetric(
+            padding: .symmetric(
               vertical: 20.h,
               horizontal: 10.w,
             ),
             decoration: BoxDecoration(
-              borderRadius: BorderRadiusGeometry.circular(4.r),
+              borderRadius: .circular(4.r),
               color: AppColors.colorF3F5F7,
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: .spaceBetween,
               spacing: 8.h,
               children: [
                 Flexible(
                   child: CustomNetworkImage(image: fruitEntity.imagePath),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: .spaceBetween,
+                  crossAxisAlignment: .end,
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: .start,
                       spacing: 4.h,
                       children: [
                         Text(
