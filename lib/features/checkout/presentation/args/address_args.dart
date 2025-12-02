@@ -2,15 +2,26 @@ import 'package:flutter/material.dart';
 import '../../domain/entities/address_entity.dart';
 
 class AddressArgs {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController cityController = TextEditingController();
-  final TextEditingController streetNameController = TextEditingController();
-  final TextEditingController buildingController = TextEditingController();
-  final TextEditingController floorController = TextEditingController();
-  final TextEditingController apartmentController = TextEditingController();
+  AddressArgs()
+    : formKey = GlobalKey<FormState>(),
+      nameController = TextEditingController(),
+      emailController = TextEditingController(),
+      phoneController = TextEditingController(),
+      cityController = TextEditingController(),
+      streetNameController = TextEditingController(),
+      buildingController = TextEditingController(),
+      floorController = TextEditingController(),
+      apartmentController = TextEditingController();
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController nameController;
+  final TextEditingController emailController;
+  final TextEditingController phoneController;
+  final TextEditingController cityController;
+  final TextEditingController streetNameController;
+  final TextEditingController buildingController;
+  final TextEditingController floorController;
+  final TextEditingController apartmentController;
 
   bool get isValid => formKey.currentState!.validate();
 

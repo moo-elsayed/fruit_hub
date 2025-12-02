@@ -34,6 +34,8 @@ class TextFormFieldHelper extends StatefulWidget {
     this.borderColor,
     this.fillColor,
     this.hintStyle,
+    this.labelText,
+    this.labelStyle,
   });
 
   final TextEditingController? controller;
@@ -55,6 +57,8 @@ class TextFormFieldHelper extends StatefulWidget {
   final Color? borderColor;
   final Color? fillColor;
   final TextStyle? hintStyle;
+  final String? labelText;
+  final TextStyle? labelStyle;
 
   @override
   State<TextFormFieldHelper> createState() => _TextFormFieldHelperState();
@@ -122,6 +126,8 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
         errorStyle: AppTextStyles.font16color0C0D0DSemiBold.copyWith(
           color: Colors.red,
         ),
+        labelText: widget.labelText,
+        labelStyle: widget.labelStyle ?? AppTextStyles.font13color949D9EBold,
         prefixIcon: widget.prefixIcon,
         prefix: widget.prefix,
         suffixIcon: widget.isPassword

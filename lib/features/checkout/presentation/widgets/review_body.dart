@@ -27,6 +27,12 @@ class _ReviewBodyState extends State<ReviewBody> {
   late PaymentOptionEntity paymentOption;
   late double subtotal;
 
+  void _navigateToPage(int pageIndex) => widget.pageController.animateToPage(
+    pageIndex,
+    duration: const Duration(milliseconds: 500),
+    curve: Curves.easeInOut,
+  );
+
   @override
   void initState() {
     super.initState();
@@ -56,22 +62,14 @@ class _ReviewBodyState extends State<ReviewBody> {
           title: "payment_method".tr(),
           value: paymentOption.option,
           icon: _getPaymentIcon(paymentOption),
-          onEditTap: () => widget.pageController.animateToPage(
-            1,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-          ),
+          onEditTap: () => _navigateToPage(1),
         ),
         Gap(16.h),
         ReviewItem(
           title: "delivery_address".tr(),
           value: address.formattedLocation,
           icon: SvgPicture.asset(Assets.iconsLocation),
-          onEditTap: () => widget.pageController.animateToPage(
-            0,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-          ),
+          onEditTap: () => _navigateToPage(0),
         ),
       ],
     );

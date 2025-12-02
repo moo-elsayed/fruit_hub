@@ -38,9 +38,10 @@ class _AddressBodyState extends State<AddressBody> {
           key: widget.addressArgs.formKey,
           child: Column(
             children: [
+              Gap(2.h),
               TextFormFieldHelper(
                 controller: widget.addressArgs.nameController,
-                hint: "full_name".tr(),
+                labelText: "full_name".tr(),
                 keyboardType: TextInputType.name,
                 onValidate: Validator.validateName,
                 action: TextInputAction.next,
@@ -48,7 +49,7 @@ class _AddressBodyState extends State<AddressBody> {
               Gap(16.h),
               TextFormFieldHelper(
                 controller: widget.addressArgs.emailController,
-                hint: "email".tr(),
+                labelText: "email".tr(),
                 keyboardType: TextInputType.emailAddress,
                 onValidate: Validator.validateEmail,
                 action: TextInputAction.next,
@@ -56,7 +57,7 @@ class _AddressBodyState extends State<AddressBody> {
               Gap(16.h),
               TextFormFieldHelper(
                 controller: widget.addressArgs.phoneController,
-                hint: "phone_number".tr(),
+                labelText: "phone_number".tr(),
                 keyboardType: TextInputType.phone,
                 onValidate: Validator.validatePhoneNumber,
                 action: TextInputAction.next,
@@ -64,7 +65,7 @@ class _AddressBodyState extends State<AddressBody> {
               Gap(16.h),
               TextFormFieldHelper(
                 controller: widget.addressArgs.cityController,
-                hint: "city".tr(),
+                labelText: "city".tr(),
                 keyboardType: TextInputType.streetAddress,
                 onValidate: Validator.validateCity,
                 action: TextInputAction.done,
@@ -72,7 +73,7 @@ class _AddressBodyState extends State<AddressBody> {
               Gap(16.h),
               TextFormFieldHelper(
                 controller: widget.addressArgs.streetNameController,
-                hint: "street_name".tr(),
+                labelText: "street_name".tr(),
                 keyboardType: TextInputType.streetAddress,
                 onValidate: Validator.validateStreetName,
                 action: TextInputAction.next,
@@ -80,7 +81,7 @@ class _AddressBodyState extends State<AddressBody> {
               Gap(16.h),
               TextFormFieldHelper(
                 controller: widget.addressArgs.buildingController,
-                hint: "building_number".tr(),
+                labelText: "building_number".tr(),
                 keyboardType: TextInputType.number,
                 onValidate: Validator.validateBuildingNumber,
                 action: TextInputAction.next,
@@ -93,7 +94,7 @@ class _AddressBodyState extends State<AddressBody> {
                   Expanded(
                     child: TextFormFieldHelper(
                       controller: widget.addressArgs.floorController,
-                      hint: "floor_number".tr(),
+                      labelText: "floor_number".tr(),
                       keyboardType: TextInputType.number,
                       onValidate: Validator.validateFloorNumber,
                       action: TextInputAction.done,
@@ -102,7 +103,7 @@ class _AddressBodyState extends State<AddressBody> {
                   Expanded(
                     child: TextFormFieldHelper(
                       controller: widget.addressArgs.apartmentController,
-                      hint: "apartment_number".tr(),
+                      labelText: "apartment_number".tr(),
                       keyboardType: TextInputType.number,
                       onValidate: Validator.validateApartmentNumber,
                       action: TextInputAction.done,

@@ -43,6 +43,18 @@ class _CheckoutViewState extends State<CheckoutView> {
     curve: Curves.easeInOut,
   );
 
+  void _handelPaymentBody(CheckoutCubit cubit, BuildContext context) {
+    if (cubit.paymentOption != null) {
+      _navigateToNextPage();
+    } else {
+      AppToast.showToast(
+        context: context,
+        title: "please_select_a_payment_method".tr(),
+        type: .error,
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -100,15 +112,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                           _navigateToNextPage();
                         }
                         if (currentIndex == 1) {
-                          if (cubit.paymentOption != null) {
-                            _navigateToNextPage();
-                          } else {
-                            AppToast.showToast(
-                              context: context,
-                              title: "please_select_a_payment_method".tr(),
-                              type: .error,
-                            );
-                          }
+                          _handelPaymentBody(cubit, context);
                         }
                         if (currentIndex == 2) {
                           // context.pop();
