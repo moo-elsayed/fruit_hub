@@ -22,14 +22,17 @@ class _PaymentBodyState extends State<PaymentBody> {
     super.initState();
     final cubit = context.read<CheckoutCubit>();
     if (cubit.paymentOption != null) {
-      selectedPaymentOption = paymentOptions.indexWhere(
-        (element) => element.option == cubit.paymentOption!.option,
-      );
+      selectedPaymentOption = getPaymentOptions(
+        cubit.shippingConfig!,
+      ).indexWhere((element) => element.option == cubit.paymentOption!.option);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final paymentOptions = getPaymentOptions(
+      context.read<CheckoutCubit>().shippingConfig!,
+    );
     return Column(
       crossAxisAlignment: .start,
       children: [

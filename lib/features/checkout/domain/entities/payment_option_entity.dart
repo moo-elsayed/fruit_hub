@@ -1,14 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fruit_hub/features/checkout/domain/entities/shipping_config_entity.dart';
 
 class PaymentOptionEntity {
-  PaymentOptionEntity({required this.option, required this.shippingCost});
+  const PaymentOptionEntity({this.option = '', this.shippingCost = 0});
 
   final String option;
   final double shippingCost;
 }
 
-List<PaymentOptionEntity> get paymentOptions => [
-  PaymentOptionEntity(option: "pay_by_paypal".tr(), shippingCost: 0),
-  PaymentOptionEntity(option: "pay_by_credit_card".tr(), shippingCost: 0),
-  PaymentOptionEntity(option: "cash_on_delivery".tr(), shippingCost: 40),
+List<PaymentOptionEntity> getPaymentOptions(
+  ShippingConfigEntity shippingConfig,
+) => [
+  PaymentOptionEntity(option: "pay_by_paypal".tr()),
+  PaymentOptionEntity(option: "pay_by_credit_card".tr()),
+  PaymentOptionEntity(
+    option: "cash_on_delivery".tr(),
+    shippingCost: shippingConfig.shippingCost,
+  ),
 ];

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
+import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/auth_repo_imp.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/clear_user_session_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
@@ -10,6 +10,8 @@ import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_out_use_case.dart';
 import 'package:fruit_hub/features/cart/data/data_sources/remote/cart_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
+import 'package:fruit_hub/features/checkout/data/repo_imp/checkout_repo_imp.dart';
+import 'package:fruit_hub/features/checkout/domain/repo/checkout_repo.dart';
 import 'package:fruit_hub/features/home/data/data_sources/remote/home_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/home/data/repo_imp/home_repo_imp.dart';
 import 'package:fruit_hub/features/products/data/data_sources/remote/products_remote_data_source_imp.dart';
@@ -36,6 +38,9 @@ import '../../features/cart/domain/use_cases/get_cart_items_use_case.dart';
 import '../../features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import '../../features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
 import '../../features/cart/domain/use_cases/update_item_quantity_use_case.dart';
+import '../../features/checkout/data/data_sources/remote/checkout_remote_data_source_imp.dart';
+import '../../features/checkout/domain/use_cases/add_order_use_case.dart';
+import '../../features/checkout/domain/use_cases/fetch_shipping_config_use_case.dart';
 import '../../features/profile/domain/use_cases/get_favorites_use_case.dart';
 import '../services/authentication/auth_service.dart';
 import '../../shared_data/services/authentication/firebase_auth_service.dart';
@@ -45,8 +50,8 @@ import '../../shared_data/services/database/firestore_service.dart';
 final getIt = GetIt.instance;
 
 void setupServiceLocator() {
-  /// local storage service
-  getIt.registerSingletonAsync<LocalStorageService>(() async {
+  /// App Preferences Service
+  getIt.registerSingletonAsync<AppPreferencesManager>(() async {
     final service = SharedPreferencesManager();
     await service.init();
     return service;
@@ -84,11 +89,11 @@ void setupServiceLocator() {
   );
 
   getIt.registerLazySingleton<SaveUserSessionUseCase>(
-    () => SaveUserSessionUseCase(getIt<LocalStorageService>()),
+    () => SaveUserSessionUseCase(getIt<AppPreferencesManager>()),
   );
 
   getIt.registerLazySingleton<ClearUserSessionUseCase>(
-    () => ClearUserSessionUseCase(getIt<LocalStorageService>()),
+    () => ClearUserSessionUseCase(getIt<AppPreferencesManager>()),
   );
 
   getIt.registerLazySingleton<SignInWithEmailAndPasswordUseCase>(
@@ -217,5 +222,20 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<RemoveItemFromFavoritesUseCase>(
     RemoveItemFromFavoritesUseCase(getIt<ProfileRepoImp>()),
+  );
+
+  /// checkout
+  ////////////////////////////
+
+  getIt.registerSingleton<CheckoutRepo>(
+    CheckoutRepoImp(CheckoutRemoteDataSourceImp(getIt.get<DatabaseService>())),
+  );
+
+  getIt.registerSingleton<FetchShippingConfigUseCase>(
+    FetchShippingConfigUseCase(getIt<CheckoutRepo>()),
+  );
+
+  getIt.registerSingleton<AddOrderUseCase>(
+    AddOrderUseCase(getIt<CheckoutRepo>()),
   );
 }

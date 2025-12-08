@@ -6,6 +6,7 @@
   "skip": "تخط",
   "start_now": "ابدأ الان",
   "login": "تسجيل دخول",
+  "register": "إنشاء حساب جديد",
   "email": "البريد الإلكتروني",
   "password": "كلمة المرور",
   "forgot_password": "نسيت كلمة المرور؟",
@@ -151,5 +152,6 @@
   "building": "مبنى",
   "floor": "الدور",
   "apartment": "شقة",
-  "please_select_a_payment_method": "الرجاء تحديد طريقة الدفع"
+  "please_select_a_payment_method": "الرجاء تحديد طريقة الدفع",
+  "order_placed_successfully": "تم الطلب بنجاح"
 }

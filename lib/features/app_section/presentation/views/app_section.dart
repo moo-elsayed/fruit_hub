@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fruit_hub/core/helpers/dependency_injection.dart';
-import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
+import 'package:fruit_hub/core/helpers/di.dart';
+import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/theming/app_colors.dart';
 import 'package:fruit_hub/core/widgets/app_dialogs.dart';
 import 'package:fruit_hub/features/app_section/presentation/widgets/custom_bottom_navigation_bar.dart';
@@ -31,11 +31,11 @@ class AppSection extends StatefulWidget {
 
 class _AppSectionState extends State<AppSection> {
   late PersistentTabController _controller;
-  late final List<Widget> _pages = [
+  final List<Widget> _pages = [
     BlocProvider(
       create: (context) => HomeCubit(
         getIt.get<GetBestSellerProductsUseCase>(),
-        getIt.get<LocalStorageService>(),
+        getIt.get<AppPreferencesManager>(),
       ),
       child: const Home(),
     ),

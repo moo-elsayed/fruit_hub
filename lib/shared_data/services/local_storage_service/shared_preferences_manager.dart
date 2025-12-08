@@ -1,13 +1,14 @@
-import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
+import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-class SharedPreferencesManager implements LocalStorageService {
+class SharedPreferencesManager implements AppPreferencesManager {
   late SharedPreferences _prefs;
   final String _isFirstTimeKey = 'isFirstTime';
   final String _isLoggedInKey = 'isLoggedIn';
   final String _usernameKey = 'username';
   final String _userAddressKey = 'userAddress';
+  final String _uidKey = 'uid';
 
   @override
   Future<void> init() async => _prefs = await SharedPreferences.getInstance();
@@ -18,6 +19,15 @@ class SharedPreferencesManager implements LocalStorageService {
 
   @override
   bool getFirstTime() => _prefs.getBool(_isFirstTimeKey) ?? true;
+
+  @override
+  Future<void> setUid(String uid) async => await _prefs.setString(_uidKey, uid);
+
+  @override
+  String getUid() => _prefs.getString(_uidKey) ?? '';
+
+  @override
+  Future<void> deleteUid() async => await _prefs.remove(_uidKey);
 
   @override
   Future<void> setLoggedIn(bool isLoggedIn) async =>

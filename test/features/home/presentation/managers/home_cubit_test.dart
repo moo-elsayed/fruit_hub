@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
-import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
+import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
 import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cubit.dart';
 import 'package:mocktail/mocktail.dart';
@@ -11,7 +11,7 @@ import 'package:mocktail/mocktail.dart';
 class MockGetBestSellerProductsUseCase extends Mock
     implements GetBestSellerProductsUseCase {}
 
-class MockLocalStorageService extends Mock implements LocalStorageService {}
+class MockLocalStorageService extends Mock implements AppPreferencesManager {}
 
 void main() {
   late HomeCubit sut;

@@ -63,6 +63,7 @@ dependencies:
   google_sign_in: ^7.2.0
   flutter_facebook_auth: ^7.1.2
   cloud_firestore: ^6.0.2
+  flutter_paypal_payment: ^1.0.8
 
 dev_dependencies:
   flutter_test:

@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
-import 'package:fruit_hub/core/helpers/dependency_injection.dart';
+import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
-import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
+import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/widgets/app_toasts.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
+import 'package:fruit_hub/features/checkout/domain/use_cases/add_order_use_case.dart';
+import 'package:fruit_hub/features/checkout/domain/use_cases/fetch_shipping_config_use_case.dart';
 import 'package:fruit_hub/features/checkout/presentation/args/address_args.dart';
 import 'package:fruit_hub/features/checkout/presentation/managers/checkout_cubit/checkout_cubit.dart';
 import 'package:gap/gap.dart';
@@ -72,9 +74,15 @@ class _CheckoutViewState extends State<CheckoutView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CheckoutCubit(getIt.get<LocalStorageService>())
-        ..setProducts(widget.cartItems)
-        ..getAddressFromLocalStorage(),
+      create: (context) =>
+          CheckoutCubit(
+              getIt.get<AppPreferencesManager>(),
+              getIt.get<FetchShippingConfigUseCase>(),
+              getIt.get<AddOrderUseCase>(),
+            )
+            ..setProducts(widget.cartItems)
+            ..getAddressFromLocalStorage()
+            ..fetchShippingConfig(),
       child: Builder(
         builder: (context) {
           return Scaffold(
@@ -104,23 +112,46 @@ class _CheckoutViewState extends State<CheckoutView> {
                 ? null
                 : Padding(
                     padding: .symmetric(horizontal: 16.w, vertical: 16.h),
-                    child: CustomMaterialButton(
-                      onPressed: () {
-                        var cubit = context.read<CheckoutCubit>();
-                        if (currentIndex == 0 && addressArgs.isValid) {
-                          cubit.setAddress(addressArgs.toEntity());
-                          _navigateToNextPage();
+                    child: BlocConsumer<CheckoutCubit, CheckoutState>(
+                      listener: (context, state) {
+                        if (state is AddOrderSuccess) {
+                          AppToast.showToast(
+                            context: context,
+                            title: "order_placed_successfully".tr(),
+                            type: .success,
+                          );
                         }
-                        if (currentIndex == 1) {
-                          _handelPaymentBody(cubit, context);
-                        }
-                        if (currentIndex == 2) {
-                          // context.pop();
+                        if (state is AddOrderFailure) {
+                          AppToast.showToast(
+                            context: context,
+                            title: state.errorMessage,
+                            type: .error,
+                          );
                         }
                       },
-                      text: buttonTexts[currentIndex],
-                      textStyle: AppTextStyles.font16WhiteBold,
-                      maxWidth: true,
+                      builder: (context, state) {
+                        return CustomMaterialButton(
+                          onPressed: () {
+                            var cubit = context.read<CheckoutCubit>();
+                            if (currentIndex == 0 &&
+                                addressArgs.isValid &&
+                                cubit.shippingConfig != null) {
+                              cubit.setAddress(addressArgs.toEntity());
+                              _navigateToNextPage();
+                            }
+                            if (currentIndex == 1) {
+                              _handelPaymentBody(cubit, context);
+                            }
+                            if (currentIndex == 2) {
+                              cubit.addOrder();
+                            }
+                          },
+                          text: buttonTexts[currentIndex],
+                          textStyle: AppTextStyles.font16WhiteBold,
+                          maxWidth: true,
+                          isLoading: state is AddOrderLoading,
+                        );
+                      },
                     ),
                   ),
           );

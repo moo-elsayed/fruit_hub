@@ -47,6 +47,22 @@ void main() {
         expect(sut.getLoggedIn(), isLoggedIn);
       });
     });
+    group('setUid', () {
+      test('should return empty string for getUid by default', () {
+        // Act
+        final result = sut.getUid();
+        // Assert
+        expect(result, '');
+      });
+      test('should set uid correctly', () async {
+        // Arrange
+        const uid = '123456';
+        // Act
+        await sut.setUid(uid);
+        // Assert
+        expect(sut.getUid(), uid);
+      });
+    });
     group('setUsername', () {
       test('should return empty string for getUsername by default', () {
         // Act

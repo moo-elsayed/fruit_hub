@@ -6,6 +6,7 @@
   "skip": "skip",
   "start_now": "Start Now",
   "login": "Login",
+  "register": "Register",
   "email": "Email",
   "password": "Password",
   "forgot_password": "Forgot Password?",
@@ -151,5 +152,6 @@
   "building": "Building",
   "floor": "Floor",
   "apartment": "Apartment",
-  "please_select_a_payment_method": "Please select a payment method"
+  "please_select_a_payment_method": "Please select a payment method",
+  "order_placed_successfully": "Order placed successfully"
 }
