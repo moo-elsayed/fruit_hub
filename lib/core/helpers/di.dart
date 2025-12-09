@@ -34,6 +34,7 @@ import '../../features/auth/domain/use_cases/facebook_sign_in_use_case.dart';
 import '../../features/auth/domain/use_cases/forget_password_use_case.dart';
 import '../../features/auth/domain/use_cases/google_sign_in_use_case.dart';
 import '../../features/cart/data/repo_imp/cart_repo_imp.dart';
+import '../../features/cart/domain/use_cases/clear_cart_use_case.dart';
 import '../../features/cart/domain/use_cases/get_cart_items_use_case.dart';
 import '../../features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import '../../features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
@@ -194,6 +195,10 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<GetCartItemsUseCase>(
     GetCartItemsUseCase(getIt<CartRepoImp>()),
+  );
+
+  getIt.registerSingleton<ClearCartUseCase>(
+    ClearCartUseCase(getIt<CartRepoImp>()),
   );
 
   /// favorites

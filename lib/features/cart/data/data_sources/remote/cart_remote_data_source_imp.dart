@@ -196,6 +196,30 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
     }
   }
 
+  @override
+  Future<NetworkResponse<void>> clearCart() async {
+    try {
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) {
+        return NetworkFailure(Exception("user_not_logged_in"));
+      }
+      await _databaseService.updateData(
+        path: BackendEndpoints.getUserData,
+        documentId: userId,
+        data: {BackendEndpoints.cartItems: []},
+      );
+      return const NetworkSuccess();
+    } on FirebaseException catch (e) {
+      AppLogger.error("Firebase Error in clearCart", error: e);
+      return NetworkFailure(
+        Exception(ServerFailure.fromFirebaseException(e).errorMessage),
+      );
+    } catch (e) {
+      AppLogger.error("Error in clearCart", error: e);
+      return NetworkFailure(Exception(e.toString()));
+    }
+  }
+
   // -----------------------------------------------------------------
 
   List<Map<String, dynamic>> _getCartItemsHelper(

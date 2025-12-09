@@ -5,6 +5,7 @@ import 'order_item_model.dart';
 class OrderModel {
   OrderModel({
     required this.uId,
+    required this.orderId,
     required this.totalPrice,
     required this.status,
     required this.paymentMethod,
@@ -14,6 +15,7 @@ class OrderModel {
   });
 
   final String uId;
+  final int orderId;
   final double totalPrice;
   final String status;
   final String paymentMethod;
@@ -23,6 +25,7 @@ class OrderModel {
 
   factory OrderModel.fromEntity(OrderEntity order) => OrderModel(
     uId: order.uid,
+    orderId: order.orderId,
     totalPrice: order.totalPrice + order.paymentOption.shippingCost,
     status: 'Pending',
     paymentMethod: order.paymentOption.option,
@@ -35,6 +38,7 @@ class OrderModel {
 
   Map<String, dynamic> toJson() => {
     'uId': uId,
+    'orderId': orderId,
     'totalPrice': totalPrice,
     'status': status,
     'paymentMethod': paymentMethod,
@@ -71,6 +75,16 @@ class OrderModel {
               },
             )
             .toList(),
+      },
+      "shipping_address": {
+        "recipient_name": shippingAddress.name,
+        "line1": shippingAddress.streetName,
+        "line2": shippingAddress.buildingNumber,
+        "city": shippingAddress.city,
+        "country_code": "EG",
+        "postal_code": "11111",
+        "phone": shippingAddress.phone,
+        "state": shippingAddress.city,
       },
     };
   }

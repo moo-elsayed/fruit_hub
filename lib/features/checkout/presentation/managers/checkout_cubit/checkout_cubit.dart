@@ -33,6 +33,14 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   bool saveAddress = true;
   ShippingConfigEntity? shippingConfig;
 
+  OrderEntity get orderEntity => OrderEntity(
+    uid: _localStorageService.getUid(),
+    orderId: _generateOrderId(),
+    products: products,
+    address: address!,
+    paymentOption: paymentOption!,
+  );
+
   Future<void> addOrder() async {
     emit(AddOrderLoading());
     final result = await _addOrderUseCase(orderEntity);
@@ -93,10 +101,11 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     _localStorageService.saveAddress(addressModel.toJson());
   }
 
-  OrderEntity get orderEntity => OrderEntity(
-    uid: _localStorageService.getUid(),
-    products: products,
-    address: address!,
-    paymentOption: paymentOption!,
-  );
+  int _generateOrderId() {
+    int id = DateTime.now().microsecondsSinceEpoch % 1000000;
+    if (id < 100000) {
+      id += 100000;
+    }
+    return id;
+  }
 }

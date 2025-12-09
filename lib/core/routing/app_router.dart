@@ -3,7 +3,9 @@ import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/features/app_section/presentation/views/app_section.dart';
+import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
+import 'package:fruit_hub/features/checkout/presentation/views/order_success_view.dart';
 import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:fruit_hub/features/products/presentation/views/product_details_view.dart';
 import 'package:fruit_hub/features/search/presentation/views/search_view.dart';
@@ -49,6 +51,11 @@ class AppRouter {
         final args = arguments as List<CartItemEntity>;
         return CupertinoPageRoute(
           builder: (context) => CheckoutView(cartItems: args),
+        );
+      case Routes.orderSuccessView:
+        final args = arguments as OrderEntity;
+        return CupertinoPageRoute(
+          builder: (context) => OrderSuccessView(orderEntity: args),
         );
       // case Routes.bestSellerView:
       //   return CupertinoPageRoute(

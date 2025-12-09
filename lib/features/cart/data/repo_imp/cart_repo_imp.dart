@@ -33,4 +33,8 @@ class CartRepoImp implements CartRepo {
   @override
   Future<NetworkResponse<List<Map<String, dynamic>>>> getCartItems() async =>
       _cartRemoteDataSource.getCartItems();
+
+  @override
+  Future<NetworkResponse<void>> clearCart() async =>
+      _cartRemoteDataSource.clearCart();
 }

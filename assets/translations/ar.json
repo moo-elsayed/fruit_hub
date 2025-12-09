@@ -153,5 +153,10 @@
   "floor": "الدور",
   "apartment": "شقة",
   "please_select_a_payment_method": "الرجاء تحديد طريقة الدفع",
-  "order_placed_successfully": "تم الطلب بنجاح"
+  "order_placed_successfully": "تم الطلب بنجاح",
+  "order_cancelled": "تم إلغاء الطلب",
+  "contact_us_for_any_questions_on_your_order": "اتصل بنا لأي استفسار بخصوص طلبك",
+  "track_order": "تتبع الطلب",
+  "It_was_done_successfully!": "تم بنجاح !",
+  "order_number": "رقم الطلب"
 }

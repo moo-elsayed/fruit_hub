@@ -5,12 +5,14 @@ import '../../../../core/entities/cart_item_entity.dart';
 class OrderEntity {
   OrderEntity({
     this.uid = '',
+    this.orderId = 0,
     this.products = const [],
     this.address = const AddressEntity(),
     this.paymentOption = const PaymentOptionEntity(),
   });
 
   final String uid;
+  final int orderId;
   final List<CartItemEntity> products;
   final AddressEntity address;
   final PaymentOptionEntity paymentOption;

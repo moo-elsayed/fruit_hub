@@ -16,4 +16,6 @@ abstract class CartRepo {
     required String productId,
     required int newQuantity,
   });
+
+  Future<NetworkResponse<void>> clearCart();
 }

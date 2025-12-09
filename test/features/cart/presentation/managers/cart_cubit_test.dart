@@ -5,6 +5,7 @@ import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
+import 'package:fruit_hub/features/cart/domain/use_cases/clear_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/get_cart_items_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
@@ -25,6 +26,8 @@ class MockUpdateItemQuantityUseCase extends Mock
 class MockGetProductsInCartUseCase extends Mock
     implements GetProductsInCartUseCase {}
 
+class MockClearCartUseCase extends Mock implements ClearCartUseCase {}
+
 void main() {
   late CartCubit sut;
   late MockAddItemToCartUseCase mockAddItemToCartUseCase;
@@ -32,6 +35,7 @@ void main() {
   late MockGetProductsInCartUseCase mockGetProductsInCartUseCase;
   late MockUpdateItemQuantityUseCase mockUpdateItemQuantityUseCase;
   late MockGetCartItemsUseCase mockGetCartItemsUseCase;
+  late MockClearCartUseCase mockClearCartUseCase;
 
   const tProductId = 'apple';
   final tFruitEntity = const FruitEntity(
@@ -65,12 +69,14 @@ void main() {
     mockGetProductsInCartUseCase = MockGetProductsInCartUseCase();
     mockUpdateItemQuantityUseCase = MockUpdateItemQuantityUseCase();
     mockGetCartItemsUseCase = MockGetCartItemsUseCase();
+    mockClearCartUseCase = MockClearCartUseCase();
     sut = CartCubit(
       mockAddItemToCartUseCase,
       mockRemoveItemFromCartUseCase,
       mockGetProductsInCartUseCase,
       mockUpdateItemQuantityUseCase,
       mockGetCartItemsUseCase,
+      mockClearCartUseCase,
     );
   });
 
