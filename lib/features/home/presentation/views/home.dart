@@ -65,7 +65,7 @@ class _HomeState extends State<Home> {
                       context,
                       settings: const RouteSettings(name: Routes.searchView),
                       screen: const SearchView(),
-                      withNavBar: true,
+                      withNavBar: false,
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino,
                     ),

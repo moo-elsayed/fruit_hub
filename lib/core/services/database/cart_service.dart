@@ -7,4 +7,6 @@ abstract class CartService {
   Future<void> incrementItemQuantity(String productId);
 
   Future<void> decrementItemQuantity(String productId);
+
+  Future<void> clearCart();
 }

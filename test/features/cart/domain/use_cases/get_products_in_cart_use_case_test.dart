@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
-import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/features/cart/domain/repo/cart_repo.dart';
 import 'package:mocktail/mocktail.dart';
 

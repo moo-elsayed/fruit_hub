@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
-import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import '../../../../core/theming/app_colors.dart';
 import 'cart_item.dart';
 

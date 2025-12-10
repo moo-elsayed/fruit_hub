@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/helpers/app_logger.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
-import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/core/services/database/database_service.dart';
 import '../../../../../../../core/helpers/failures.dart';
@@ -39,5 +39,5 @@ class ProductsRemoteDataSourceImp implements ProductsRemoteDataSource {
   void _logError({
     required Object e,
     String functionName = "HomeRemoteDataSourceImp.getAllProducts",
-  }) => errorLogger(functionName: functionName, error: e.toString());
+  }) => AppLogger.error("error occurred in $functionName", error: e.toString());
 }

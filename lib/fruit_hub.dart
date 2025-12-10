@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fruit_hub/core/helpers/dependency_injection.dart';
+import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/routing/app_router.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/theming/app_colors.dart';
@@ -14,6 +14,7 @@ import 'package:fruit_hub/features/profile/domain/use_cases/get_favorite_ids_use
 import 'package:fruit_hub/features/profile/domain/use_cases/get_favorites_use_case.dart';
 import 'package:fruit_hub/features/profile/domain/use_cases/remove_item_from_favorites_use_case.dart';
 import 'package:fruit_hub/features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
+import 'features/cart/domain/use_cases/clear_cart_use_case.dart';
 import 'features/cart/domain/use_cases/get_cart_items_use_case.dart';
 import 'features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import 'features/cart/domain/use_cases/update_item_quantity_use_case.dart';
@@ -38,6 +39,7 @@ class FruitHub extends StatelessWidget {
               getIt.get<GetProductsInCartUseCase>(),
               getIt.get<UpdateItemQuantityUseCase>(),
               getIt.get<GetCartItemsUseCase>(),
+              getIt.get<ClearCartUseCase>(),
             )..getCartItems(),
           ),
           BlocProvider(

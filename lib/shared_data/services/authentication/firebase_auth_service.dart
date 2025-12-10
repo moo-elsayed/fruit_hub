@@ -8,11 +8,11 @@ import '../../../core/helpers/firebase_keys.dart';
 import '../../../core/services/authentication/auth_service.dart';
 
 class FirebaseAuthService implements AuthService, SignOutService {
+  FirebaseAuthService(this._auth, this._googleSignIn, this._facebookAuth);
+
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
   final FacebookAuth _facebookAuth;
-
-  FirebaseAuthService(this._auth, this._googleSignIn, this._facebookAuth);
 
   @override
   Future<UserEntity> createUserWithEmailAndPassword({

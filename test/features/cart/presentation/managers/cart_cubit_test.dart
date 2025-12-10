@@ -3,8 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
-import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
+import 'package:fruit_hub/features/cart/domain/use_cases/clear_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/get_cart_items_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
@@ -25,6 +26,8 @@ class MockUpdateItemQuantityUseCase extends Mock
 class MockGetProductsInCartUseCase extends Mock
     implements GetProductsInCartUseCase {}
 
+class MockClearCartUseCase extends Mock implements ClearCartUseCase {}
+
 void main() {
   late CartCubit sut;
   late MockAddItemToCartUseCase mockAddItemToCartUseCase;
@@ -32,6 +35,7 @@ void main() {
   late MockGetProductsInCartUseCase mockGetProductsInCartUseCase;
   late MockUpdateItemQuantityUseCase mockUpdateItemQuantityUseCase;
   late MockGetCartItemsUseCase mockGetCartItemsUseCase;
+  late MockClearCartUseCase mockClearCartUseCase;
 
   const tProductId = 'apple';
   final tFruitEntity = const FruitEntity(
@@ -65,13 +69,19 @@ void main() {
     mockGetProductsInCartUseCase = MockGetProductsInCartUseCase();
     mockUpdateItemQuantityUseCase = MockUpdateItemQuantityUseCase();
     mockGetCartItemsUseCase = MockGetCartItemsUseCase();
+    mockClearCartUseCase = MockClearCartUseCase();
     sut = CartCubit(
       mockAddItemToCartUseCase,
       mockRemoveItemFromCartUseCase,
       mockGetProductsInCartUseCase,
       mockUpdateItemQuantityUseCase,
       mockGetCartItemsUseCase,
+      mockClearCartUseCase,
     );
+  });
+
+  tearDown(() {
+    sut.close();
   });
 
   group('cart cubit', () {
@@ -614,6 +624,50 @@ void main() {
           ]);
           verifyNoMoreInteractions(mockUpdateItemQuantityUseCase);
           verifyNoMoreInteractions(mockGetProductsInCartUseCase);
+        },
+      );
+    });
+
+    group('clearCart', () {
+      blocTest<CartCubit, CartState>(
+        'emits [CartLoading,CartSuccess] when clearCart is successful',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockClearCartUseCase.call(),
+          ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
+        },
+        act: (cubit) => cubit.clearCart(),
+        expect: () => [
+          isA<CartLoading>(),
+          isA<CartSuccess>().having((state) => state.items, 'items', []),
+        ],
+        verify: (_) {
+          verify(() => mockClearCartUseCase.call()).called(1);
+          verifyNoMoreInteractions(mockClearCartUseCase);
+        },
+      );
+
+      blocTest<CartCubit, CartState>(
+        'emits [CartLoading,CartFailure] when clearCart fails',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockClearCartUseCase.call(),
+          ).thenAnswer((_) async => tFailureResponseOfTypeVoid);
+        },
+        act: (cubit) => cubit.clearCart(),
+        expect: () => [
+          isA<CartLoading>(),
+          isA<CartFailure>().having(
+            (state) => state.errorMessage,
+            'exception',
+            equals(getErrorMessage(tFailureResponse)),
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockClearCartUseCase.call()).called(1);
+          verifyNoMoreInteractions(mockClearCartUseCase);
         },
       );
     });

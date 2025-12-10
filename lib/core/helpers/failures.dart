@@ -47,7 +47,9 @@ class ServerFailure extends Failure {
       case 'permission-denied':
         return ServerFailure("permission-denied".tr());
       default:
-        return ServerFailure("error_occurred_please_try_again".tr());
+        return ServerFailure(
+          exception.message ?? "error_occurred_please_try_again".tr(),
+        );
     }
   }
 }

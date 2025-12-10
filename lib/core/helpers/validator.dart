@@ -8,9 +8,8 @@ abstract class Validator {
       return "email_cannot_be_empty".tr();
     } else if (!emailRegex.hasMatch(val)) {
       return "enter_a_valid_email_address".tr();
-    } else {
-      return null;
     }
+    return null;
   }
 
   static String? validatePassword(String? val) {
@@ -38,28 +37,70 @@ abstract class Validator {
       return 'Password cannot be empty';
     } else if (val != password) {
       return 'Confirm password must match the password';
-    } else {
-      return null;
     }
+    return null;
   }
 
   static String? validateName(String? val) {
     if (val == null || val.isEmpty) {
       return "name_cannot_be_empty".tr();
-    } else {
-      return null;
     }
+    return null;
+  }
+
+  static String? validateStreetName(String? val) {
+    if (val == null || val.trim().isEmpty) {
+      return "street_name_cannot_be_empty".tr();
+    }
+    return null;
+  }
+
+  static String? validateCity(String? val) {
+    if (val == null || val.trim().isEmpty) {
+      return "city_cannot_be_empty".tr();
+    }
+    return null;
+  }
+
+  static String? validateBuildingNumber(String? val) {
+    if (val == null || val.trim().isEmpty) {
+      return "building_number_cannot_be_empty".tr();
+    }
+    if (int.tryParse(val) == null) {
+      return "it_must_be_a_number".tr();
+    }
+    return null;
+  }
+
+  static String? validateFloorNumber(String? val) {
+    if (val == null || val.trim().isEmpty) {
+      return "floor_number_cannot_be_empty".tr();
+    }
+    if (int.tryParse(val) == null) {
+      return "it_must_be_a_number".tr();
+    }
+    return null;
+  }
+
+  static String? validateApartmentNumber(String? val) {
+    if (val == null || val.trim().isEmpty) {
+      return "apartment_number_cannot_be_empty".tr();
+    }
+    if (int.tryParse(val) == null) {
+      return "it_must_be_a_number".tr();
+    }
+    return null;
   }
 
   static String? validatePhoneNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return 'Phone number cannot be empty';
+      return "phone_number_cannot_be_empty".tr();
     }
 
     final phone = val.trim();
     final isValid = RegExp(r'^\+?\d+$').hasMatch(phone);
-    if (!isValid || phone.length != 13) {
-      return 'Enter a valid phone number';
+    if (!isValid) {
+      return "enter_a_valid_phone_number".tr();
     }
 
     return null;

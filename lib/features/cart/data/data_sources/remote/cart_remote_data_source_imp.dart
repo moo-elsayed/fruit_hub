@@ -4,7 +4,7 @@ import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/core/services/database/database_service.dart';
 import 'package:fruit_hub/features/cart/data/data_sources/remote/cart_remote_data_source.dart';
-import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/shared_data/models/fruit_model.dart';
 import '../../../../../core/helpers/app_logger.dart';
 import '../../../../../core/helpers/failures.dart';
@@ -192,6 +192,30 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
       );
     } catch (e) {
       AppLogger.error("Error in getCartItems", error: e);
+      return NetworkFailure(Exception(e.toString()));
+    }
+  }
+
+  @override
+  Future<NetworkResponse<void>> clearCart() async {
+    try {
+      final userId = _auth.currentUser?.uid;
+      if (userId == null) {
+        return NetworkFailure(Exception("user_not_logged_in"));
+      }
+      await _databaseService.updateData(
+        path: BackendEndpoints.getUserData,
+        documentId: userId,
+        data: {BackendEndpoints.cartItems: []},
+      );
+      return const NetworkSuccess();
+    } on FirebaseException catch (e) {
+      AppLogger.error("Firebase Error in clearCart", error: e);
+      return NetworkFailure(
+        Exception(ServerFailure.fromFirebaseException(e).errorMessage),
+      );
+    } catch (e) {
+      AppLogger.error("Error in clearCart", error: e);
       return NetworkFailure(Exception(e.toString()));
     }
   }

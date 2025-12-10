@@ -9,4 +9,9 @@ class BackendEndpoints {
   static const queryProducts = 'products';
   static const favoritesIds = 'favoriteIds';
   static const cartItems = 'cartItems';
+  static const clearCart = 'cartItems';
+  static const fetchShippingCost = 'constants';
+  static const shippingConfigId = 'shipping_config';
+  static const addOrder = 'orders';
+  static const getOrders = 'orders';
 }

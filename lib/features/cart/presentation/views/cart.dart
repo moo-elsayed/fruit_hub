@@ -4,10 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
-import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/products_count.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/cart_items_list_view.dart';
+import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import '../../../../core/routing/routes.dart';
 import '../../../../core/theming/app_colors.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
@@ -129,7 +132,18 @@ class _CartState extends State<Cart> {
                 if ((state is CartSuccess && state.items.isNotEmpty) ||
                     (state is CartLoading && state.itemRemoved)) {
                   return CustomMaterialButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                        context,
+                        settings: const RouteSettings(
+                          name: Routes.checkoutView,
+                        ),
+                        screen: CheckoutView(cartItems: cartItemsList),
+                        withNavBar: false,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      );
+                    },
                     maxWidth: true,
                     text: "${"checkout".tr()} $totalPrice ${"pounds".tr()}",
                     textStyle: AppTextStyles.font16WhiteBold,

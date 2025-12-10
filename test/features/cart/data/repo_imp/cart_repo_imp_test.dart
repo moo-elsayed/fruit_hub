@@ -4,7 +4,7 @@ import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/features/cart/data/data_sources/remote/cart_remote_data_source.dart';
 import 'package:fruit_hub/features/cart/data/repo_imp/cart_repo_imp.dart';
-import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockCartRemoteDataSource extends Mock implements CartRemoteDataSource {}
@@ -251,6 +251,40 @@ void main() {
           verify(
             () => mockCartRemoteDataSource.getProductsInCart(cartItems),
           ).called(1);
+          verifyNoMoreInteractions(mockCartRemoteDataSource);
+        },
+      );
+    });
+
+    group('clearCart', () {
+      test(
+        'should call clearCart from remote data source with correct params when success response',
+        () async {
+          // Arrange
+          when(
+            () => mockCartRemoteDataSource.clearCart(),
+          ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
+          // Act
+          var result = await sut.clearCart();
+          // Assert
+          expect(result, tSuccessResponseOfTypeVoid);
+          verify(() => mockCartRemoteDataSource.clearCart()).called(1);
+          verifyNoMoreInteractions(mockCartRemoteDataSource);
+        },
+      );
+      test(
+        'should return failure when clearCart from remote data source returns failure response',
+        () async {
+          // Arrange
+          when(
+            () => mockCartRemoteDataSource.clearCart(),
+          ).thenAnswer((_) async => tFailureResponseOfTypeVoid);
+          // Act
+          var result = await sut.clearCart();
+          // Assert
+          expect(result, tFailureResponseOfTypeVoid);
+          expect(getErrorMessage(result), "permission-denied");
+          verify(() => mockCartRemoteDataSource.clearCart()).called(1);
           verifyNoMoreInteractions(mockCartRemoteDataSource);
         },
       );

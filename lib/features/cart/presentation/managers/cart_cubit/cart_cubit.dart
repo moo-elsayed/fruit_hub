@@ -4,8 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/core/services/database/cart_service.dart';
-import 'package:fruit_hub/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
+import 'package:fruit_hub/features/cart/domain/use_cases/clear_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/get_cart_items_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
@@ -20,6 +21,7 @@ class CartCubit extends Cubit<CartState> implements CartService {
     this._getProductsInCart,
     this._updateItemQuantityUseCase,
     this._getCartItemsUseCase,
+    this._clearCartUseCase,
   ) : super(CartInitial());
 
   final AddItemToCartUseCase _addItemToCartUseCase;
@@ -27,6 +29,7 @@ class CartCubit extends Cubit<CartState> implements CartService {
   final GetProductsInCartUseCase _getProductsInCart;
   final UpdateItemQuantityUseCase _updateItemQuantityUseCase;
   final GetCartItemsUseCase _getCartItemsUseCase;
+  final ClearCartUseCase _clearCartUseCase;
 
   List<Map<String, dynamic>> _cartItems = [];
   List<CartItemEntity> _productsInCart = [];
@@ -69,6 +72,20 @@ class CartCubit extends Cubit<CartState> implements CartService {
         emit(GetCartItemsSuccess());
       case NetworkFailure<List<Map<String, dynamic>>>():
         emit(GetCartItemsFailure(getErrorMessage(result).tr()));
+    }
+  }
+
+  @override
+  Future<void> clearCart() async {
+    emit(CartLoading());
+    final result = await _clearCartUseCase.call();
+    switch (result) {
+      case NetworkSuccess<void>():
+        _cartItems.clear();
+        _productsInCart.clear();
+        _emitCartSuccess();
+      case NetworkFailure<void>():
+        emit(CartFailure(getErrorMessage(result).tr()));
     }
   }
 

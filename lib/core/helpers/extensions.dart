@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import '../../features/checkout/domain/entities/address_entity.dart';
 
 extension Navigation on BuildContext {
   Future<dynamic> pushNamed(String routeName, {Object? arguments}) {
@@ -24,4 +26,9 @@ extension Navigation on BuildContext {
   }
 
   void pop<T extends Object?>([T? result]) => Navigator.of(this).pop(result);
+}
+
+extension AddressFormatter on AddressEntity {
+  String get formattedLocation =>
+      "$streetName, ${"building".tr()} $buildingNumber, ${"floor".tr()} $floorNumber, ${"apartment".tr()} $apartmentNumber, $city";
 }

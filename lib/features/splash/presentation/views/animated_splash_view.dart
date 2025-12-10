@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fruit_hub/core/helpers/dependency_injection.dart';
-import 'package:fruit_hub/core/services/local_storage/local_storage_service.dart';
+import 'package:fruit_hub/core/helpers/di.dart';
+import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 
 import '../managers/splash_cubit/splash_cubit.dart';
 import '../widgets/animated_splash_view_body.dart';
@@ -13,7 +13,7 @@ class AnimatedSplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => SplashCubit(getIt.get<LocalStorageService>()),
+        create: (context) => SplashCubit(getIt.get<AppPreferencesManager>()),
         child: const AnimatedSplashViewBody(),
       ),
     );
