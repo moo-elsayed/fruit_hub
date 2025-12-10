@@ -33,7 +33,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   final MakePaymentUseCase _makePaymentUseCase;
   late List<CartItemEntity> products;
   AddressEntity? address;
-  PaymentOptionEntity? paymentOption;
+  PaymentOptionEntity paymentOption = const PaymentOptionEntity();
   bool saveAddress = true;
   ShippingConfigEntity? shippingConfig;
   late OrderEntity orderEntity = OrderEntity(
@@ -41,7 +41,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     orderId: _generateOrderId(),
     products: products,
     address: address!,
-    paymentOption: paymentOption!,
+    paymentOption: paymentOption,
   );
 
   Future<void> addOrder() async {
@@ -58,7 +58,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   Future<void> makePayment() async {
     emit(MakePaymentLoading());
     var paymentInputEntity = PaymentInputEntity(
-      amount: subtotal + paymentOption!.shippingCost,
+      amount: subtotal + paymentOption.shippingCost,
       currency: 'usd',
     );
     final result = await _makePaymentUseCase.call(paymentInputEntity);

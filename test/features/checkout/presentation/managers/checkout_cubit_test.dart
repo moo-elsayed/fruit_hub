@@ -84,7 +84,7 @@ void main() {
   ];
 
   final tPaymentOption = const PaymentOptionEntity(
-    option: 'Cash',
+    title: 'Cash',
     shippingCost: 40,
   );
   final tShippingConfig = const ShippingConfigEntity(shippingCost: 50.0);
@@ -285,7 +285,7 @@ void main() {
         sut.setAddress(tAddress);
         sut.setPaymentOption(
           PaymentOptionEntity(
-            option: 'pay_by_credit_card'.tr(),
+            title: 'pay_by_credit_card'.tr(),
             shippingCost: 0,
           ),
         );

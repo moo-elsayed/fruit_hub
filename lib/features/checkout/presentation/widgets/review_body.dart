@@ -40,9 +40,7 @@ class _ReviewBodyState extends State<ReviewBody> {
     if (cubit.address != null) {
       address = cubit.address!;
     }
-    if (cubit.paymentOption != null) {
-      paymentOption = cubit.paymentOption!;
-    }
+    paymentOption = cubit.paymentOption;
     subtotal = cubit.subtotal;
   }
 
@@ -60,7 +58,7 @@ class _ReviewBodyState extends State<ReviewBody> {
         Gap(16.h),
         ReviewItem(
           title: "payment_method".tr(),
-          value: paymentOption.option,
+          value: paymentOption.title,
           icon: _getPaymentIcon(paymentOption),
           onEditTap: () => _navigateToPage(1),
         ),
@@ -76,9 +74,9 @@ class _ReviewBodyState extends State<ReviewBody> {
   }
 
   Widget _getPaymentIcon(PaymentOptionEntity paymentOption) =>
-      paymentOption.option == "pay_by_paypal".tr()
+      paymentOption.type == .paypal
       ? Image.asset(Assets.imagesPaypalIcon)
-      : paymentOption.option == "pay_by_credit_card".tr()
+      : paymentOption.type == .card
       ? SvgPicture.asset(Assets.svgsCard)
       : Image.asset(Assets.imagesCash);
 }

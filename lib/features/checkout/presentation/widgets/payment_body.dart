@@ -15,17 +15,15 @@ class PaymentBody extends StatefulWidget {
 }
 
 class _PaymentBodyState extends State<PaymentBody> {
-  int selectedPaymentOption = -1;
+  late int selectedPaymentOption;
 
   @override
   void initState() {
     super.initState();
     final cubit = context.read<CheckoutCubit>();
-    if (cubit.paymentOption != null) {
-      selectedPaymentOption = getPaymentOptions(
-        cubit.shippingConfig!,
-      ).indexWhere((element) => element.option == cubit.paymentOption!.option);
-    }
+    selectedPaymentOption = getPaymentOptions(
+      cubit.shippingConfig!,
+    ).indexWhere((element) => element.type == cubit.paymentOption.type);
   }
 
   @override

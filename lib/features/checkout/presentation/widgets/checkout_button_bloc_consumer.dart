@@ -38,18 +38,6 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
     curve: Curves.easeInOut,
   );
 
-  void _handelPaymentBody(CheckoutCubit cubit, BuildContext context) {
-    if (cubit.paymentOption != null) {
-      _navigateToNextPage();
-    } else {
-      AppToast.showToast(
-        context: context,
-        title: "please_select_a_payment_method".tr(),
-        type: .error,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CheckoutCubit, CheckoutState>(
@@ -94,16 +82,15 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
               _navigateToNextPage();
             }
             if (currentIndex == 1) {
-              _handelPaymentBody(cubit, context);
+              _navigateToNextPage();
             }
             if (currentIndex == 2) {
-              if (cubit.paymentOption!.option == "pay_by_paypal".tr()) {
+              if (cubit.paymentOption.type == .paypal) {
                 _executePaypalPayment(
                   context: context,
                   orderEntity: cubit.orderEntity,
                 );
-              } else if (cubit.paymentOption!.option ==
-                  "pay_by_credit_card".tr()) {
+              } else if (cubit.paymentOption.type == .card) {
                 cubit.makePayment();
               } else {
                 cubit.addOrder();

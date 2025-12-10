@@ -45,7 +45,7 @@ void main() {
       name: 'name',
     ),
     paymentOption: const PaymentOptionEntity(
-      option: 'option',
+      title: 'option',
       shippingCost: 50.0,
     ),
   );

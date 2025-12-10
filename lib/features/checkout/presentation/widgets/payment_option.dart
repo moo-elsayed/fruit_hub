@@ -65,7 +65,7 @@ class PaymentOption extends StatelessWidget {
             ),
             Gap(10.w),
             Text(
-              paymentOptionEntity.option,
+              paymentOptionEntity.title,
               style: AppTextStyles.font13BlackSemiBold,
             ),
             const Spacer(),

@@ -1,3 +1,4 @@
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'address_model.dart';
 import 'order_item_model.dart';
@@ -28,7 +29,7 @@ class OrderModel {
     orderId: order.orderId,
     totalPrice: order.totalPrice + order.paymentOption.shippingCost,
     status: 'Pending',
-    paymentMethod: order.paymentOption.option,
+    paymentMethod: order.paymentOption.type.databaseValue,
     shippingAddress: AddressModel.fromEntity(order.address),
     orderItems: order.products
         .map((e) => OrderItemModel.fromEntity(e))

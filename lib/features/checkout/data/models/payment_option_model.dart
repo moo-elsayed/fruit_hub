@@ -8,12 +8,12 @@ class PaymentOptionModel {
 
   factory PaymentOptionModel.fromEntity(PaymentOptionEntity entity) =>
       PaymentOptionModel(
-        option: entity.option,
+        option: entity.title,
         shippingCost: entity.shippingCost,
       );
 
   PaymentOptionEntity toEntity() =>
-      PaymentOptionEntity(option: option, shippingCost: shippingCost);
+      PaymentOptionEntity(title: option, shippingCost: shippingCost);
 
   Map<String, dynamic> toJson() => {
     'option': option,
