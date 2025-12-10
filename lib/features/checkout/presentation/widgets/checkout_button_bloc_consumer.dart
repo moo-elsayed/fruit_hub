@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/services/database/cart_service.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/checkout/presentation/args/address_args.dart';
 import '../../../../core/helpers/extensions.dart';
@@ -59,7 +60,8 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
             title: "order_placed_successfully".tr(),
             type: .success,
           );
-          context.read<CartCubit>().clearCart();
+          CartService cartService = context.read<CartCubit>();
+          cartService.clearCart();
           context.pushNamedAndRemoveUntil(
             Routes.orderSuccessView,
             arguments: context.read<CheckoutCubit>().orderEntity,
@@ -67,6 +69,13 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
           );
         }
         if (state is AddOrderFailure) {
+          AppToast.showToast(
+            context: context,
+            title: state.errorMessage,
+            type: .error,
+          );
+        }
+        if (state is MakePaymentFailure) {
           AppToast.showToast(
             context: context,
             title: state.errorMessage,
@@ -93,6 +102,9 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
                   context: context,
                   orderEntity: cubit.orderEntity,
                 );
+              } else if (cubit.paymentOption!.option ==
+                  "pay_by_credit_card".tr()) {
+                cubit.makePayment();
               } else {
                 cubit.addOrder();
               }
@@ -101,7 +113,7 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
           text: buttonTexts[currentIndex],
           textStyle: AppTextStyles.font16WhiteBold,
           maxWidth: true,
-          isLoading: state is AddOrderLoading,
+          isLoading: state is AddOrderLoading || state is MakePaymentLoading,
         );
       },
     );

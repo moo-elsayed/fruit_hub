@@ -14,3 +14,13 @@ final class AddOrderFailure extends CheckoutState {
 
   final String errorMessage;
 }
+
+final class MakePaymentLoading extends CheckoutState {}
+
+final class MakePaymentSuccess extends CheckoutState {}
+
+final class MakePaymentFailure extends CheckoutState {
+  MakePaymentFailure(this.errorMessage);
+
+  final String errorMessage;
+}

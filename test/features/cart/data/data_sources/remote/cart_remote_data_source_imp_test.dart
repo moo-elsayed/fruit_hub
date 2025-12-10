@@ -665,4 +665,66 @@ void main() {
       verifyNoMoreInteractions(mockDatabaseService);
     });
   });
+
+  group('clearCart', () {
+    test(
+      'should return NetworkSuccess and clear the cart in the database',
+      () async {
+        // Arrange
+        when(
+          () => mockDatabaseService.updateData(
+            path: keyUpdateUserData,
+            documentId: tUserId,
+            data: any(named: 'data'),
+          ),
+        ).thenAnswer((_) async => Future.value());
+        // Act
+        final result = await sut.clearCart();
+        // Assert
+        expect(result, isA<NetworkSuccess<void>>());
+        verify(
+          () => mockDatabaseService.updateData(
+            path: keyUpdateUserData,
+            documentId: tUserId,
+            data: {'cartItems': []},
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(mockDatabaseService);
+      },
+    );
+    test('should return NetworkFailure when user is not logged in', () async {
+      // Arrange
+      when(() => mockFirebaseAuth.currentUser).thenReturn(null);
+      // Act
+      final result = await sut.clearCart();
+      // Assert
+      expect(result, isA<NetworkFailure<void>>());
+      expect(getErrorMessage(result), contains("user_not_logged_in"));
+      verify(() => mockFirebaseAuth.currentUser).called(1);
+      verifyNoMoreInteractions(mockDatabaseService);
+    });
+    test('should return NetworkFailure when updateData fails', () async {
+      // Arrange
+      when(
+        () => mockDatabaseService.updateData(
+          path: keyUpdateUserData,
+          documentId: tUserId,
+          data: any(named: 'data'),
+        ),
+      ).thenThrow(tFirebaseException);
+      // Act
+      final result = await sut.clearCart();
+      // Assert
+      expect(result, isA<NetworkFailure<void>>());
+      expect(getErrorMessage(result), contains("permission-denied"));
+      verify(
+        () => mockDatabaseService.updateData(
+          path: keyUpdateUserData,
+          documentId: tUserId,
+          data: any(named: 'data'),
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(mockDatabaseService);
+    });
+  });
 }

@@ -75,6 +75,7 @@ class CartCubit extends Cubit<CartState> implements CartService {
     }
   }
 
+  @override
   Future<void> clearCart() async {
     emit(CartLoading());
     final result = await _clearCartUseCase.call();

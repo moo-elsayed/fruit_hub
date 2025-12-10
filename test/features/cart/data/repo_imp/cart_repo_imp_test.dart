@@ -255,5 +255,39 @@ void main() {
         },
       );
     });
+
+    group('clearCart', () {
+      test(
+        'should call clearCart from remote data source with correct params when success response',
+        () async {
+          // Arrange
+          when(
+            () => mockCartRemoteDataSource.clearCart(),
+          ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
+          // Act
+          var result = await sut.clearCart();
+          // Assert
+          expect(result, tSuccessResponseOfTypeVoid);
+          verify(() => mockCartRemoteDataSource.clearCart()).called(1);
+          verifyNoMoreInteractions(mockCartRemoteDataSource);
+        },
+      );
+      test(
+        'should return failure when clearCart from remote data source returns failure response',
+        () async {
+          // Arrange
+          when(
+            () => mockCartRemoteDataSource.clearCart(),
+          ).thenAnswer((_) async => tFailureResponseOfTypeVoid);
+          // Act
+          var result = await sut.clearCart();
+          // Assert
+          expect(result, tFailureResponseOfTypeVoid);
+          expect(getErrorMessage(result), "permission-denied");
+          verify(() => mockCartRemoteDataSource.clearCart()).called(1);
+          verifyNoMoreInteractions(mockCartRemoteDataSource);
+        },
+      );
+    });
   });
 }

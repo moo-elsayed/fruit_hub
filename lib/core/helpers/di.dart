@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
+import 'package:fruit_hub/core/services/payment/payment_service.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/auth_repo_imp.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/clear_user_session_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
@@ -27,6 +30,7 @@ import 'package:fruit_hub/features/search/data/data_sources/remote/search_remote
 import 'package:fruit_hub/features/search/data/repo_imp/search_repo_imp.dart';
 import 'package:fruit_hub/features/search/domain/use_cases/search_fruits_use_case.dart';
 import 'package:fruit_hub/shared_data/services/local_storage_service/shared_preferences_manager.dart';
+import 'package:fruit_hub/shared_data/services/payment/stripe_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../features/auth/data/data_sources/remote/auth_remote_data_source_imp.dart';
@@ -42,6 +46,7 @@ import '../../features/cart/domain/use_cases/update_item_quantity_use_case.dart'
 import '../../features/checkout/data/data_sources/remote/checkout_remote_data_source_imp.dart';
 import '../../features/checkout/domain/use_cases/add_order_use_case.dart';
 import '../../features/checkout/domain/use_cases/fetch_shipping_config_use_case.dart';
+import '../../features/checkout/domain/use_cases/make_payment_use_case.dart';
 import '../../features/profile/domain/use_cases/get_favorites_use_case.dart';
 import '../services/authentication/auth_service.dart';
 import '../../shared_data/services/authentication/firebase_auth_service.dart';
@@ -77,6 +82,10 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<DatabaseService>(
     FirestoreService(FirebaseFirestore.instance),
+  );
+
+  getIt.registerSingleton<PaymentService>(
+    StripeService(Dio(), Stripe.instance),
   );
 
   getIt.registerSingleton<AuthRepoImp>(
@@ -233,7 +242,13 @@ void setupServiceLocator() {
   ////////////////////////////
 
   getIt.registerSingleton<CheckoutRepo>(
-    CheckoutRepoImp(CheckoutRemoteDataSourceImp(getIt.get<DatabaseService>())),
+    CheckoutRepoImp(
+      CheckoutRemoteDataSourceImp(
+        getIt.get<DatabaseService>(),
+        getIt.get<PaymentService>(),
+        FirebaseAuth.instance,
+      ),
+    ),
   );
 
   getIt.registerSingleton<FetchShippingConfigUseCase>(
@@ -242,5 +257,9 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<AddOrderUseCase>(
     AddOrderUseCase(getIt<CheckoutRepo>()),
+  );
+
+  getIt.registerSingleton<MakePaymentUseCase>(
+    MakePaymentUseCase(getIt<CheckoutRepo>()),
   );
 }

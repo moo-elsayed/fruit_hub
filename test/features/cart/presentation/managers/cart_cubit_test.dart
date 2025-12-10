@@ -80,6 +80,10 @@ void main() {
     );
   });
 
+  tearDown(() {
+    sut.close();
+  });
+
   group('cart cubit', () {
     test('initial state should be CartInitial', () {
       expect(sut.state, isA<CartInitial>());
@@ -620,6 +624,50 @@ void main() {
           ]);
           verifyNoMoreInteractions(mockUpdateItemQuantityUseCase);
           verifyNoMoreInteractions(mockGetProductsInCartUseCase);
+        },
+      );
+    });
+
+    group('clearCart', () {
+      blocTest<CartCubit, CartState>(
+        'emits [CartLoading,CartSuccess] when clearCart is successful',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockClearCartUseCase.call(),
+          ).thenAnswer((_) async => tSuccessResponseOfTypeVoid);
+        },
+        act: (cubit) => cubit.clearCart(),
+        expect: () => [
+          isA<CartLoading>(),
+          isA<CartSuccess>().having((state) => state.items, 'items', []),
+        ],
+        verify: (_) {
+          verify(() => mockClearCartUseCase.call()).called(1);
+          verifyNoMoreInteractions(mockClearCartUseCase);
+        },
+      );
+
+      blocTest<CartCubit, CartState>(
+        'emits [CartLoading,CartFailure] when clearCart fails',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockClearCartUseCase.call(),
+          ).thenAnswer((_) async => tFailureResponseOfTypeVoid);
+        },
+        act: (cubit) => cubit.clearCart(),
+        expect: () => [
+          isA<CartLoading>(),
+          isA<CartFailure>().having(
+            (state) => state.errorMessage,
+            'exception',
+            equals(getErrorMessage(tFailureResponse)),
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockClearCartUseCase.call()).called(1);
+          verifyNoMoreInteractions(mockClearCartUseCase);
         },
       );
     });

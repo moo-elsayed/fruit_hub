@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/helpers/app_logger.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
+import 'package:fruit_hub/core/services/payment/payment_input_entity.dart';
 import 'package:fruit_hub/features/checkout/data/models/address_model.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/use_cases/add_order_use_case.dart';
+import 'package:fruit_hub/features/checkout/domain/use_cases/make_payment_use_case.dart';
 import '../../../../../core/entities/cart_item_entity.dart';
 import '../../../../../core/helpers/network_response.dart';
 import '../../../domain/entities/address_entity.dart';
@@ -22,18 +24,19 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     this._localStorageService,
     this._fetchShippingConfigUseCase,
     this._addOrderUseCase,
+    this._makePaymentUseCase,
   ) : super(CheckoutInitial());
 
   final AppPreferencesManager _localStorageService;
   final FetchShippingConfigUseCase _fetchShippingConfigUseCase;
   final AddOrderUseCase _addOrderUseCase;
+  final MakePaymentUseCase _makePaymentUseCase;
   late List<CartItemEntity> products;
   AddressEntity? address;
   PaymentOptionEntity? paymentOption;
   bool saveAddress = true;
   ShippingConfigEntity? shippingConfig;
-
-  OrderEntity get orderEntity => OrderEntity(
+  late OrderEntity orderEntity = OrderEntity(
     uid: _localStorageService.getUid(),
     orderId: _generateOrderId(),
     products: products,
@@ -49,6 +52,21 @@ class CheckoutCubit extends Cubit<CheckoutState> {
         emit(AddOrderSuccess());
       case NetworkFailure<void>():
         emit(AddOrderFailure(getErrorMessage(result)));
+    }
+  }
+
+  Future<void> makePayment() async {
+    emit(MakePaymentLoading());
+    var paymentInputEntity = PaymentInputEntity(
+      amount: subtotal + paymentOption!.shippingCost,
+      currency: 'usd',
+    );
+    final result = await _makePaymentUseCase.call(paymentInputEntity);
+    switch (result) {
+      case NetworkSuccess<void>():
+        addOrder();
+      case NetworkFailure<void>():
+        emit(MakePaymentFailure(getErrorMessage(result).tr()));
     }
   }
 

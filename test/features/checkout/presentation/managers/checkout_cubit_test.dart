@@ -1,17 +1,20 @@
 import 'dart:convert';
 
 import 'package:bloc_test/bloc_test.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
+import 'package:fruit_hub/core/services/payment/payment_input_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/address_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/payment_option_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/shipping_config_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/use_cases/add_order_use_case.dart';
 import 'package:fruit_hub/features/checkout/domain/use_cases/fetch_shipping_config_use_case.dart';
+import 'package:fruit_hub/features/checkout/domain/use_cases/make_payment_use_case.dart';
 import 'package:fruit_hub/features/checkout/presentation/managers/checkout_cubit/checkout_cubit.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -22,13 +25,18 @@ class MockFetchShippingConfigUseCase extends Mock
 
 class MockAddOrderUseCase extends Mock implements AddOrderUseCase {}
 
+class MockMakePaymentUseCase extends Mock implements MakePaymentUseCase {}
+
 class FakeOrderEntity extends Fake implements OrderEntity {}
+
+class FakePaymentInputEntity extends Fake implements PaymentInputEntity {}
 
 void main() {
   late CheckoutCubit sut;
   late MockLocalStorageService mockLocalStorageService;
   late MockFetchShippingConfigUseCase mockFetchShippingConfigUseCase;
   late MockAddOrderUseCase mockAddOrderUseCase;
+  late MockMakePaymentUseCase mockMakePaymentUseCase;
 
   final tAddress = const AddressEntity(
     name: 'Ahmed',
@@ -83,16 +91,19 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(FakeOrderEntity());
+    registerFallbackValue(FakePaymentInputEntity());
   });
 
   setUp(() {
     mockLocalStorageService = MockLocalStorageService();
     mockFetchShippingConfigUseCase = MockFetchShippingConfigUseCase();
     mockAddOrderUseCase = MockAddOrderUseCase();
+    mockMakePaymentUseCase = MockMakePaymentUseCase();
     sut = CheckoutCubit(
       mockLocalStorageService,
       mockFetchShippingConfigUseCase,
       mockAddOrderUseCase,
+      mockMakePaymentUseCase,
     );
   });
 
@@ -259,6 +270,113 @@ void main() {
         verify: (_) {
           verify(() => mockAddOrderUseCase(any())).called(1);
           verifyNoMoreInteractions(mockAddOrderUseCase);
+          verify(() => mockLocalStorageService.getUid()).called(1);
+          verifyNoMoreInteractions(mockLocalStorageService);
+          verifyNever(() => mockLocalStorageService.saveAddress(any()));
+          verifyNever(() => mockLocalStorageService.getAddress());
+        },
+      );
+    });
+
+    group('makePayment', () {
+      void setupCubitData() {
+        sut.saveAddress = false;
+        sut.setProducts(tProducts);
+        sut.setAddress(tAddress);
+        sut.setPaymentOption(
+          PaymentOptionEntity(
+            option: 'pay_by_credit_card'.tr(),
+            shippingCost: 0,
+          ),
+        );
+        when(() => mockLocalStorageService.getUid()).thenReturn('user_123');
+      }
+
+      blocTest(
+        'emits [MakePaymentLoading, AddOrderLoading, AddOrderSuccess] when payment succeeds',
+        build: () => sut,
+        setUp: () {
+          setupCubitData();
+          when(
+            () => mockMakePaymentUseCase(any()),
+          ).thenAnswer((_) async => const NetworkSuccess());
+          when(
+            () => mockAddOrderUseCase(any()),
+          ).thenAnswer((_) async => const NetworkSuccess<void>());
+        },
+        act: (CheckoutCubit cubit) => cubit.makePayment(),
+        expect: () => [
+          isA<MakePaymentLoading>(),
+          isA<AddOrderLoading>(),
+          isA<AddOrderSuccess>(),
+        ],
+        verify: (_) {
+          verify(() => mockMakePaymentUseCase(any())).called(1);
+          verifyNoMoreInteractions(mockMakePaymentUseCase);
+          verify(() => mockAddOrderUseCase(any())).called(1);
+          verifyNoMoreInteractions(mockAddOrderUseCase);
+          verify(() => mockLocalStorageService.getUid()).called(1);
+          verifyNoMoreInteractions(mockLocalStorageService);
+          verifyNever(() => mockLocalStorageService.saveAddress(any()));
+          verifyNever(() => mockLocalStorageService.getAddress());
+          verifyNever(() => mockAddOrderUseCase(any()));
+        },
+      );
+
+      blocTest(
+        'emits [MakePaymentLoading, MakePaymentFailure] when payment fails',
+        build: () => sut,
+        setUp: () {
+          setupCubitData();
+          when(
+            () => mockMakePaymentUseCase(any()),
+          ).thenAnswer((_) async => NetworkFailure(Exception('error')));
+        },
+        act: (CheckoutCubit cubit) => cubit.makePayment(),
+        expect: () => [
+          isA<MakePaymentLoading>(),
+          isA<MakePaymentFailure>().having(
+            (s) => s.errorMessage,
+            'error',
+            contains('error'),
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockMakePaymentUseCase(any())).called(1);
+          verifyNoMoreInteractions(mockMakePaymentUseCase);
+          verifyNever(() => mockAddOrderUseCase(any()));
+          verifyNever(() => mockLocalStorageService.getUid());
+          verifyNoMoreInteractions(mockLocalStorageService);
+          verifyNever(() => mockLocalStorageService.saveAddress(any()));
+          verifyNever(() => mockLocalStorageService.getAddress());
+        },
+      );
+
+      blocTest(
+        'emits [MakePaymentLoading, AddOrderLoading, AddOrderFailure] when payment succeeds but order fails',
+        build: () => sut,
+        setUp: () {
+          setupCubitData();
+          when(
+            () => mockMakePaymentUseCase(any()),
+          ).thenAnswer((_) async => const NetworkSuccess());
+          when(
+            () => mockAddOrderUseCase(any()),
+          ).thenAnswer((_) async => NetworkFailure(Exception('error')));
+        },
+        act: (CheckoutCubit cubit) => cubit.makePayment(),
+        expect: () => [
+          isA<MakePaymentLoading>(),
+          isA<AddOrderLoading>(),
+          isA<AddOrderFailure>().having(
+            (s) => s.errorMessage,
+            'error',
+            contains('error'),
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockMakePaymentUseCase(any())).called(1);
+          verifyNoMoreInteractions(mockMakePaymentUseCase);
           verify(() => mockLocalStorageService.getUid()).called(1);
           verifyNoMoreInteractions(mockLocalStorageService);
           verifyNever(() => mockLocalStorageService.saveAddress(any()));

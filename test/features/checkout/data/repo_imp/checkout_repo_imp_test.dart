@@ -3,6 +3,8 @@ import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
+import 'package:fruit_hub/core/services/payment/payment_input_entity.dart';
+import 'package:fruit_hub/core/services/payment/payment_output_entity.dart';
 import 'package:fruit_hub/features/checkout/data/data_sources/remote/checkout_remote_data_source.dart';
 import 'package:fruit_hub/features/checkout/data/repo_imp/checkout_repo_imp.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/address_entity.dart';
@@ -14,9 +16,12 @@ import 'package:mocktail/mocktail.dart';
 class MockCheckoutRemoteDataSource extends Mock
     implements CheckoutRemoteDataSource {}
 
+class FakePaymentInputEntity extends Fake implements PaymentInputEntity {}
+
 void main() {
   late CheckoutRepoImp sut;
   late MockCheckoutRemoteDataSource mockCheckoutRemoteDataSource;
+  final tPaymentInputEntity = PaymentInputEntity(amount: 100, currency: 'USD');
 
   final tShippingConfigEntity = const ShippingConfigEntity(shippingCost: 50.0);
   final tSuccessResponseOfTypeShippingConfigEntity =
@@ -27,6 +32,12 @@ void main() {
   final tSuccessResponseOfTypeVoid = const NetworkSuccess<void>();
   final tException = Exception('DataSource error');
   final tFailureResponseOfTypeVoid = NetworkFailure<void>(tException);
+
+  final tPaymentOutputEntity = const PaymentOutputEntity(customerId: 'cus_123');
+  final tSuccessResponseOfTypePaymentOutputEntity =
+      NetworkSuccess<PaymentOutputEntity>(tPaymentOutputEntity);
+  final tFailureResponseOfTypePaymentOutputEntity =
+      NetworkFailure<PaymentOutputEntity>(tException);
 
   OrderEntity tOrderEntity = OrderEntity(
     uid: '123',
@@ -61,6 +72,7 @@ void main() {
   setUpAll(() {
     registerFallbackValue(const ShippingConfigEntity());
     registerFallbackValue(tOrderEntity);
+    registerFallbackValue(FakePaymentInputEntity());
   });
 
   setUp(() {
@@ -140,6 +152,45 @@ void main() {
           expect(getErrorMessage(result), 'DataSource error');
           verify(
             () => mockCheckoutRemoteDataSource.addOrder(tOrderEntity),
+          ).called(1);
+          verifyNoMoreInteractions(mockCheckoutRemoteDataSource);
+        },
+      );
+    });
+
+    group("makePayment", () {
+      test(
+        'should return NetworkSuccess when makePayment is successful',
+        () async {
+          // Arrange
+          when(
+            () => mockCheckoutRemoteDataSource.makePayment(tPaymentInputEntity),
+          ).thenAnswer((_) async => tSuccessResponseOfTypePaymentOutputEntity);
+          // Act
+          final result = await sut.makePayment(tPaymentInputEntity);
+          // Assert
+          expect(result, tSuccessResponseOfTypePaymentOutputEntity);
+          verify(
+            () => mockCheckoutRemoteDataSource.makePayment(tPaymentInputEntity),
+          ).called(1);
+          verifyNoMoreInteractions(mockCheckoutRemoteDataSource);
+        },
+      );
+
+      test(
+        'should return NetworkFailure when makePayment throws an exception',
+        () async {
+          // Arrange
+          when(
+            () => mockCheckoutRemoteDataSource.makePayment(tPaymentInputEntity),
+          ).thenAnswer((_) async => tFailureResponseOfTypePaymentOutputEntity);
+          // Act
+          final result = await sut.makePayment(tPaymentInputEntity);
+          // Assert
+          expect(result, tFailureResponseOfTypePaymentOutputEntity);
+          expect(getErrorMessage(result), 'DataSource error');
+          verify(
+            () => mockCheckoutRemoteDataSource.makePayment(tPaymentInputEntity),
           ).called(1);
           verifyNoMoreInteractions(mockCheckoutRemoteDataSource);
         },
