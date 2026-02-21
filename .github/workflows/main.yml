@@ -25,15 +25,33 @@ jobs:
         with:
           flutter-version: '3.38.9'
 
+      # 4. بينزل المكتبات
       - name: Install Dependencies
         run: flutter pub get
 
+      # (جديد) 5. بيكريت ملف الـ .env وبياخد القيم من الـ GitHub Secrets
+      - name: Create .env file
+        run: |
+          echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> .env
+          echo "STRIPE_PUBLISHABLE_KEY=${{ secrets.STRIPE_PUBLISHABLE_KEY }}" >> .env
+          echo "PAYPAL_SECRET_KEY=${{ secrets.PAYPAL_SECRET_KEY }}" >> .env
+          echo "PAYPAL_CLIENT_ID=${{ secrets.PAYPAL_CLIENT_ID }}" >> .env
+          echo "API_KEY_IOS=${{ secrets.API_KEY_IOS }}" >> .env
+          echo "API_KEY_ANDROID=${{ secrets.API_KEY_ANDROID }}" >> .env
+
+      # (جديد) 6. بيشغل الـ build_runner عشان envied يولد ملف الـ env.dart
+      - name: Run build_runner
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      # 7. بيعمل Run للـ Tests اللي إنت كاتبها
       - name: Run Tests
         run: flutter test
 
+      # 8. بيعمل Build للـ APK
       - name: Build APK
         run: flutter build apk --release
 
+      # 9. بيحتفظ بالـ APK
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
