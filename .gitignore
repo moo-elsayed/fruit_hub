@@ -24,7 +24,6 @@ migrate_working_dir/
 #.vscode/
 
 # env files
-lib/env.dart
 lib/env.g.dart
 .env
 
