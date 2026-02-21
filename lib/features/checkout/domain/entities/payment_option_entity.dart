@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/shipping_config_entity.dart';
 
-enum PaymentMethodType { paypal, card, cash }
+import '../../../../core/helpers/enums.dart';
 
 class PaymentOptionEntity {
   const PaymentOptionEntity({

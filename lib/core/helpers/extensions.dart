@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import '../../features/checkout/domain/entities/address_entity.dart';
-import '../../features/checkout/domain/entities/payment_option_entity.dart';
+import 'enums.dart';
 
 extension Navigation on BuildContext {
   Future<dynamic> pushNamed(String routeName, {Object? arguments}) {

@@ -1,5 +1,6 @@
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
+import '../../../../core/helpers/enums.dart';
 import 'address_model.dart';
 import 'order_item_model.dart';
 
@@ -18,7 +19,7 @@ class OrderModel {
   final String uId;
   final int orderId;
   final double totalPrice;
-  final String status;
+  final OrderStatus status;
   final String paymentMethod;
   final AddressModel shippingAddress;
   final List<OrderItemModel> orderItems;
@@ -28,7 +29,7 @@ class OrderModel {
     uId: order.uid,
     orderId: order.orderId,
     totalPrice: order.totalPrice + order.paymentOption.shippingCost,
-    status: 'Pending',
+    status: .pending,
     paymentMethod: order.paymentOption.type.databaseValue,
     shippingAddress: AddressModel.fromEntity(order.address),
     orderItems: order.products
@@ -41,7 +42,7 @@ class OrderModel {
     'uId': uId,
     'orderId': orderId,
     'totalPrice': totalPrice,
-    'status': status,
+    'status': status.name,
     'paymentMethod': paymentMethod,
     'date': date,
     'shippingAddress': shippingAddress.toJson(),
