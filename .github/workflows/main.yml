@@ -56,23 +56,27 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=upload-keystore.jks" >> android/key.properties
 
-      # 8. بيعمل Build للـ APK
+      # 8. بيعمل Build للـ APK وبياخد رقم العملية بتاع جيت هاب كـ Build Number
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --build-number=${{ github.run_number }}
 
-      # 9. بيحتفظ بالـ APK
+      # (جديد) 9. بنغير اسم الملف عشان يكون مميز (مثلاً FruitHub-build-15.apk)
+      - name: Rename APK
+        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/FruitHub-build-${{ github.run_number }}.apk
+
+      # 10. بيحتفظ بالـ APK على جيت هاب بالاسم الجديد
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: FruitHub-Release-APK
+          path: build/app/outputs/flutter-apk/FruitHub-build-${{ github.run_number }}.apk
 
-
-        # 10. رفع الـ APK على Firebase App Distribution
+      # 11. رفع الـ APK على Firebase App Distribution
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIALS }}
           groups: testers
-          file: build/app/outputs/flutter-apk/app-release.apk
+          file: build/app/outputs/flutter-apk/FruitHub-build-${{ github.run_number }}.apk
+          releaseNotes: ${{ github.event.head_commit.message }}
