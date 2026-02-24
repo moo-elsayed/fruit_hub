@@ -1,0 +1,320 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/material.dart';
+import 'app_colors.dart';
+import 'font_weight_helper.dart';
+
+abstract class AppTextStyles {
+  static TextStyle font11color1B5E37semiBold = TextStyle(
+    fontSize: 11.sp,
+    color: AppColors.color1B5E37,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13color949D9ERegular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color949D9E,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
+  static TextStyle font13color616A6BRegular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color616A6B,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
+  static TextStyle font13color4E5556Regular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color4E5556,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
+  static TextStyle font13color1B5E37Regular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color1B5E37,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
+  static TextStyle font13WhiteRegular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.white,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
+  static TextStyle font13colorF4A91FRegular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.colorF4A91F,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
+  static TextStyle font13color979899Regular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color979899,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
+  static TextStyle font13color7B7B7BRegular = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color7B7B7B,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
+  static TextStyle font13GreyShade700Medium = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.greyShade700,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.medium,
+  );
+
+  static TextStyle font13color949D9ESemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color949D9E,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13color4E5556SemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color4E5556,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13color3A8B33SemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color3A8B33,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13BlackSemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.black,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13colorAAAAAASemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.colorAAAAAA,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13color0C0D0DSemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color0C0D0D,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13colorF4A91FSemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.colorF4A91F,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13colorF8C76DSemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.colorF8C76D,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13color4E5556FSemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color4E5556,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13GreyShade600SemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.greyShade600,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13color2D9F5DSemiBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color2D9F5D,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font13color949D9EBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color949D9E,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font13color1B5E37Bold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color1B5E37,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font13color3A8B33Bold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color3A8B33,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font13color06161CBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color06161C,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font13colorF4A91FBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.colorF4A91F,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font13color0C0D0DBold = TextStyle(
+    fontSize: 13.sp,
+    color: AppColors.color0C0D0D,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font14color979899Medium = TextStyle(
+    fontSize: 14.sp,
+    color: AppColors.color979899,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.medium,
+  );
+
+  static TextStyle font16color949D9ERegular = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color949D9E,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.regular,
+  );
+
+  static TextStyle font16color0C0D0DSemiBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color0C0D0D,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font16color616A6BSemiBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color616A6B,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font16color949D9ESemiBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color949D9E,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font16color1B5E37ESemiBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color1B5E37,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.semiBold,
+  );
+
+  static TextStyle font16color1B5E37EBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color1B5E37,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font16color23AA49Bold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color23AA49,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font16WhiteBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.white,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font16color0C0D0DBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color0C0D0D,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font16color616A6BBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color616A6B,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font16color06140CBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.color06140C,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font16RedBold = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.red,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font19color0C0D0DBold = TextStyle(
+    fontSize: 19.sp,
+    color: AppColors.color0C0D0D,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font19WhiteDBold = TextStyle(
+    fontSize: 19.sp,
+    color: AppColors.white,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font22color0C0D0DBold = TextStyle(
+    fontSize: 22.sp,
+    color: AppColors.color0C0D0D,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+
+  static TextStyle font22color1B5E37Bold = TextStyle(
+    fontSize: 22.sp,
+    color: AppColors.color1B5E37,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+  static TextStyle font22colorF4A91FBold = TextStyle(
+    fontSize: 22.sp,
+    color: AppColors.colorF4A91F,
+    fontFamily: "Cairo",
+    fontWeight: FontWeightHelper.bold,
+  );
+}
