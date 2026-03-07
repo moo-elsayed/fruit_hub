@@ -18,3 +18,17 @@ final class GetAllProductsFailure extends ProductsState {
 
   final String error;
 }
+
+final class GetProductDetailsLoading extends ProductsState {}
+
+final class GetProductDetailsSuccess extends ProductsState {
+  GetProductDetailsSuccess(this.fruit);
+
+  final FruitEntity fruit;
+}
+
+final class GetProductDetailsFailure extends ProductsState {
+  GetProductDetailsFailure(this.error);
+
+  final String error;
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
@@ -7,13 +8,17 @@ import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/order_success_view.dart';
 import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view.dart';
+import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/views/product_details_view.dart';
 import 'package:fruit_hub/features/search/presentation/views/search_view.dart';
 import '../../features/auth/presentation/args/login_args.dart';
 import '../../features/auth/presentation/views/forget_password_view.dart';
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/auth/presentation/views/register_view.dart';
+import '../../features/products/domain/use_cases/get_all_products_use_case.dart';
+import '../../features/products/domain/use_cases/get_product_details_use_case.dart';
 import '../../features/splash/presentation/views/animated_splash_view.dart';
+import '../helpers/di.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -43,9 +48,25 @@ class AppRouter {
       case Routes.searchView:
         return CupertinoPageRoute(builder: (context) => const SearchView());
       case Routes.productDetailsView:
-        final args = arguments as FruitEntity;
+        FruitEntity? fruitArg;
+        String? codeArg;
+        if (arguments is FruitEntity) {
+          fruitArg = arguments;
+        } else if (arguments is String) {
+          codeArg = arguments;
+        }
+
         return CupertinoPageRoute(
-          builder: (context) => ProductDetailsView(fruitEntity: args),
+          builder: (context) => BlocProvider(
+            create: (context) => ProductsCubit(
+              getAllProductsUseCase: getIt.get<GetAllProductsUseCase>(),
+              getProductDetailsUseCase: getIt.get<GetProductDetailsUseCase>(),
+            ),
+            child: ProductDetailsView(
+              fruitEntity: fruitArg,
+              fruitCode: codeArg,
+            ),
+          ),
         );
       case Routes.checkoutView:
         final args = arguments as List<CartItemEntity>;

@@ -11,4 +11,8 @@ class ProductsRepoImp implements ProductsRepo {
   @override
   Future<NetworkResponse<List<FruitEntity>>> getAllProducts() async =>
       await _productsRemoteDataSource.getAllProducts();
+
+  @override
+  Future<NetworkResponse<FruitEntity>> getProductDetails(String code) async =>
+      await _productsRemoteDataSource.getProductDetails(code);
 }

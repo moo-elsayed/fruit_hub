@@ -4,14 +4,19 @@ import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
+import 'package:fruit_hub/features/products/domain/use_cases/get_product_details_use_case.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGetAllProductsUseCase extends Mock implements GetAllProductsUseCase {}
 
+class MockGetProductDetailsUseCase extends Mock
+    implements GetProductDetailsUseCase {}
+
 void main() {
   late ProductsCubit sut;
   late MockGetAllProductsUseCase mockGetAllProductsUseCase;
+  late MockGetProductDetailsUseCase mockGetProductDetailsUseCase;
 
   final fruit1 = const FruitEntity(
     name: 'Apple',
@@ -44,7 +49,11 @@ void main() {
 
   setUp(() {
     mockGetAllProductsUseCase = MockGetAllProductsUseCase();
-    sut = ProductsCubit(mockGetAllProductsUseCase);
+    mockGetProductDetailsUseCase = MockGetProductDetailsUseCase();
+    sut = ProductsCubit(
+      getAllProductsUseCase: mockGetAllProductsUseCase,
+      getProductDetailsUseCase: mockGetProductDetailsUseCase,
+    );
   });
 
   group('products cubit', () {
