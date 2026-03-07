@@ -44,9 +44,7 @@ class ProductsCubit extends Cubit<ProductsState> {
 
   Future<void> getProductDetails(String code) async {
     emit(GetProductDetailsLoading());
-    var networkResponse = await _getProductDetailsUseCase.getProductDetails(
-      code,
-    );
+    var networkResponse = await _getProductDetailsUseCase(code);
     switch (networkResponse) {
       case NetworkSuccess<FruitEntity>():
         emit(GetProductDetailsSuccess(networkResponse.data!));

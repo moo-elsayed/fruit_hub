@@ -203,5 +203,51 @@ void main() {
         },
       );
     });
+
+    group('getProductDetails', () {
+      blocTest<ProductsCubit, ProductsState>(
+        'emits [GetProductDetailsLoading, GetProductDetailsSuccess] when getProductDetails is successful',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockGetProductDetailsUseCase.call(any()),
+          ).thenAnswer((_) async => NetworkSuccess(fruit1));
+        },
+        act: (bloc) => sut.getProductDetails('004011'),
+        expect: () => [
+          isA<GetProductDetailsLoading>(),
+          isA<GetProductDetailsSuccess>().having(
+            (s) => s.fruit,
+            'fruit',
+            equals(fruit1),
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockGetProductDetailsUseCase.call(any())).called(1);
+        },
+      );
+
+      blocTest<ProductsCubit, ProductsState>(
+        'emits [GetProductDetailsLoading, GetProductDetailsFailure] when getProductDetails is unsuccessful',
+        build: () => sut,
+        setUp: () {
+          when(
+            () => mockGetProductDetailsUseCase.call(any()),
+          ).thenAnswer((_) async => NetworkFailure(Exception()));
+        },
+        act: (bloc) => sut.getProductDetails('004011'),
+        expect: () => [
+          isA<GetProductDetailsLoading>(),
+          isA<GetProductDetailsFailure>().having(
+            (s) => s.error,
+            'exception',
+            equals(getErrorMessage(NetworkFailure(Exception()))),
+          ),
+        ],
+        verify: (_) {
+          verify(() => mockGetProductDetailsUseCase.call(any())).called(1);
+        },
+      );
+    });
   });
 }

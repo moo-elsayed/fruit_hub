@@ -7,6 +7,6 @@ class GetProductDetailsUseCase {
 
   final ProductsRepo _productsRepo;
 
-  Future<NetworkResponse<FruitEntity>> getProductDetails(String code) async =>
+  Future<NetworkResponse<FruitEntity>> call(String code) async =>
       await _productsRepo.getProductDetails(code);
 }
