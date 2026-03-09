@@ -47,6 +47,7 @@ import '../../features/checkout/data/data_sources/remote/checkout_remote_data_so
 import '../../features/checkout/domain/use_cases/add_order_use_case.dart';
 import '../../features/checkout/domain/use_cases/fetch_shipping_config_use_case.dart';
 import '../../features/checkout/domain/use_cases/make_payment_use_case.dart';
+import '../../features/products/domain/use_cases/get_product_details_use_case.dart';
 import '../../features/profile/domain/use_cases/get_favorites_use_case.dart';
 import '../services/authentication/auth_service.dart';
 import '../../shared_data/services/authentication/firebase_auth_service.dart';
@@ -161,6 +162,9 @@ void setupServiceLocator() {
   );
   getIt.registerSingleton<GetAllProductsUseCase>(
     GetAllProductsUseCase(getIt<ProductsRepoImp>()),
+  );
+  getIt.registerSingleton<GetProductDetailsUseCase>(
+    GetProductDetailsUseCase(getIt<ProductsRepoImp>()),
   );
 
   /// Search

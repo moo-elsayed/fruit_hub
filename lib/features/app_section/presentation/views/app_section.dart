@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:app_links/app_links.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,11 +13,14 @@ import 'package:fruit_hub/features/app_section/presentation/widgets/custom_botto
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
 import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cubit.dart';
+import 'package:fruit_hub/features/products/domain/use_cases/get_product_details_use_case.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/views/products.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import '../../../../core/helpers/extensions.dart';
+import '../../../../core/routing/routes.dart';
 import '../../../../core/widgets/app_toasts.dart';
+import '../../../../main.dart';
 import '../../../auth/domain/use_cases/sign_out_use_case.dart';
 import '../../../auth/presentation/managers/signout_cubit/sign_out_cubit.dart';
 import '../../../cart/presentation/views/cart.dart';
@@ -30,6 +36,9 @@ class AppSection extends StatefulWidget {
 }
 
 class _AppSectionState extends State<AppSection> {
+  final _appLinks = AppLinks();
+  StreamSubscription<Uri>? _linkSubscription;
+  String? _lastOpenedId;
   late PersistentTabController _controller;
   final List<Widget> _pages = [
     BlocProvider(
@@ -40,7 +49,10 @@ class _AppSectionState extends State<AppSection> {
       child: const Home(),
     ),
     BlocProvider(
-      create: (context) => ProductsCubit(getIt.get<GetAllProductsUseCase>()),
+      create: (context) => ProductsCubit(
+        getAllProductsUseCase: getIt.get<GetAllProductsUseCase>(),
+        getProductDetailsUseCase: getIt.get<GetProductDetailsUseCase>(),
+      ),
       child: const Products(),
     ),
     const Cart(),
@@ -57,6 +69,47 @@ class _AppSectionState extends State<AppSection> {
     _controller.addListener(() {
       setState(() {});
     });
+    _initDeepLinks();
+  }
+
+  void _initDeepLinks() {
+    // 1. لو الأبلكيشن كان مقفول (Cold Start)، هنلاقي اللينك مستنينا في المتغير العالمي
+    if (globalInitialLinkProductId != null) {
+      _openProductSafely(globalInitialLinkProductId!);
+      globalInitialLinkProductId = null; // نفضيه عشان ميفتحش تاني
+    }
+
+    // 2. لو الأبلكيشن شغال في الخلفية (Background)
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      if (uri.scheme == 'fruithub' && uri.host == 'product') {
+        _openProductSafely(uri.pathSegments.first);
+      }
+    });
+  }
+
+  void _openProductSafely(String productId) {
+    if (_lastOpenedId == productId) return;
+    _lastOpenedId = productId;
+
+
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (mounted) {
+        Navigator.of(
+          context,
+          rootNavigator: true,
+        ).pushNamed(Routes.productDetailsView, arguments: productId);
+      }
+    });
+
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) _lastOpenedId = null;
+    });
+  }
+
+  @override
+  void dispose() {
+    _linkSubscription?.cancel();
+    super.dispose();
   }
 
   @override

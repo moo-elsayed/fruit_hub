@@ -3,4 +3,5 @@ import '../../../../../../core/helpers/network_response.dart';
 
 abstract class ProductsRemoteDataSource {
   Future<NetworkResponse<List<FruitEntity>>> getAllProducts();
+  Future<NetworkResponse<FruitEntity>> getProductDetails(String code);
 }

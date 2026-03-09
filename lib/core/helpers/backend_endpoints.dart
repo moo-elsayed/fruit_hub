@@ -7,6 +7,7 @@ class BackendEndpoints {
   static const getAllProducts = 'products';
   static const getBestSellerProducts = 'products';
   static const queryProducts = 'products';
+  static const getProductDetails = 'products';
   static const favoritesIds = 'favoriteIds';
   static const cartItems = 'cartItems';
   static const clearCart = 'cartItems';
