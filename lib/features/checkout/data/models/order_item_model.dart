@@ -9,12 +9,6 @@ class OrderItemModel {
     required this.quantity,
   });
 
-  final String code;
-  final String name;
-  final String imagePath;
-  final double price;
-  final int quantity;
-
   factory OrderItemModel.fromEntity(CartItemEntity cartItem) => OrderItemModel(
     code: cartItem.fruitEntity.code,
     name: cartItem.fruitEntity.name,
@@ -22,6 +16,12 @@ class OrderItemModel {
     price: cartItem.fruitEntity.price.toDouble(),
     quantity: cartItem.quantity,
   );
+
+  final String code;
+  final String name;
+  final String imagePath;
+  final double price;
+  final int quantity;
 
   Map<String, dynamic> toJson() => {
     'code': code,

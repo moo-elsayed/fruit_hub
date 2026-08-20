@@ -19,8 +19,7 @@ class CustomBottomNavigationItem extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
       onTap: onTap,
       child: AnimatedSize(
         duration: const Duration(milliseconds: 250),
@@ -28,12 +27,10 @@ class CustomBottomNavigationItem extends StatelessWidget {
         alignment: Alignment.center,
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
-          transitionBuilder: (child, animation) {
-            return FadeTransition(
+          transitionBuilder: (child, animation) => FadeTransition(
               opacity: animation,
               child: ScaleTransition(scale: animation, child: child),
-            );
-          },
+            ),
           child: !active
               ? SvgPicture.asset(
                   entity.outlineIcon,
@@ -71,5 +68,4 @@ class CustomBottomNavigationItem extends StatelessWidget {
         ),
       ),
     );
-  }
 }

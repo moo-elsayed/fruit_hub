@@ -19,12 +19,11 @@ class PaymentOption extends StatelessWidget {
   final bool isSelected;
 
   String getTrailingText(double shippingCost) => shippingCost == 0
-      ? "free_shipping".tr()
+      ? 'free_shipping'.tr()
       : "$shippingCost ${"pounds".tr()}";
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
       onTap: () {
         onTap(paymentOptionEntity);
       },
@@ -77,5 +76,4 @@ class PaymentOption extends StatelessWidget {
         ),
       ),
     );
-  }
 }

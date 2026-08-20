@@ -29,7 +29,7 @@ class SearchRemoteDataSourceImp implements SearchRemoteDataSource {
       return NetworkSuccess(fruits);
     } on FirebaseException catch (e) {
       errorLogger(
-        functionName: "SearchRemoteDataSourceImp.searchFruits",
+        functionName: 'SearchRemoteDataSourceImp.searchFruits',
         error: e.toString(),
       );
       return NetworkFailure(
@@ -37,7 +37,7 @@ class SearchRemoteDataSourceImp implements SearchRemoteDataSource {
       );
     } catch (e) {
       errorLogger(
-        functionName: "SearchRemoteDataSourceImp.searchFruits",
+        functionName: 'SearchRemoteDataSourceImp.searchFruits',
         error: e.toString(),
       );
       return NetworkFailure(Exception(e.toString()));

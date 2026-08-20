@@ -11,20 +11,21 @@ part 'products_state.dart';
 
 class ProductsCubit extends Cubit<ProductsState> {
   ProductsCubit(this._getAllProductsUseCase) : super(ProductsInitial());
+
   final GetAllProductsUseCase _getAllProductsUseCase;
 
   List<FruitEntity> _originalFruits = [];
   List<FruitEntity> fruits = [];
   int selectedSortOption = -1;
   List<String> sortOptions = [
-    "price_lowest_to_highest".tr(),
-    "price_highest_to_lowest".tr(),
-    "alphabetical".tr(),
+    'price_lowest_to_highest'.tr(),
+    'price_highest_to_lowest'.tr(),
+    'alphabetical'.tr(),
   ];
 
   Future<void> getAllProducts() async {
     emit(GetAllProductsLoading());
-    var networkResponse = await _getAllProductsUseCase.call();
+    final networkResponse = await _getAllProductsUseCase.call();
     switch (networkResponse) {
       case NetworkSuccess<List<FruitEntity>>():
         _originalFruits = networkResponse.data ?? [];
@@ -37,7 +38,7 @@ class ProductsCubit extends Cubit<ProductsState> {
 
   void sortProducts(int selectedSortOption) {
     this.selectedSortOption = selectedSortOption;
-    List<FruitEntity> sortedList = List.from(fruits);
+    final List<FruitEntity> sortedList = List.from(fruits);
     switch (selectedSortOption) {
       case 0:
         sortedList.sort((a, b) => a.price.compareTo(b.price));

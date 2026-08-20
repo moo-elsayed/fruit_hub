@@ -16,15 +16,6 @@ class OrderModel {
     required this.date,
   });
 
-  final String uId;
-  final int orderId;
-  final double totalPrice;
-  final OrderStatus status;
-  final String paymentMethod;
-  final AddressModel shippingAddress;
-  final List<OrderItemModel> orderItems;
-  final String date;
-
   factory OrderModel.fromEntity(OrderEntity order) => OrderModel(
     uId: order.uid,
     orderId: order.orderId,
@@ -38,6 +29,15 @@ class OrderModel {
     date: DateTime.now().toString(),
   );
 
+  final String uId;
+  final int orderId;
+  final double totalPrice;
+  final OrderStatus status;
+  final String paymentMethod;
+  final AddressModel shippingAddress;
+  final List<OrderItemModel> orderItems;
+  final String date;
+
   Map<String, dynamic> toJson() => {
     'uId': uId,
     'orderId': orderId,
@@ -50,43 +50,43 @@ class OrderModel {
   };
 
   Map<String, dynamic> toPaypalTransaction() {
-    double subTotal = orderItems.fold(
+    final double subTotal = orderItems.fold(
       0,
       (sum, item) => sum + (item.price * item.quantity),
     );
-    double shippingCost = totalPrice - subTotal;
+    final double shippingCost = totalPrice - subTotal;
     return {
-      "amount": {
-        "total": totalPrice.toString(),
-        "currency": "USD",
-        "details": {
-          "subtotal": subTotal.toString(),
-          "shipping": shippingCost.toString(),
-          "shipping_discount": 0,
+      'amount': {
+        'total': totalPrice.toString(),
+        'currency': 'USD',
+        'details': {
+          'subtotal': subTotal.toString(),
+          'shipping': shippingCost.toString(),
+          'shipping_discount': 0,
         },
       },
-      "description": "The payment transaction description.",
-      "item_list": {
-        "items": orderItems
+      'description': 'The payment transaction description.',
+      'item_list': {
+        'items': orderItems
             .map(
               (item) => {
-                "name": item.name,
-                "quantity": item.quantity,
-                "price": item.price.toString(),
-                "currency": "USD",
+                'name': item.name,
+                'quantity': item.quantity,
+                'price': item.price.toString(),
+                'currency': 'USD',
               },
             )
             .toList(),
       },
-      "shipping_address": {
-        "recipient_name": shippingAddress.name,
-        "line1": shippingAddress.streetName,
-        "line2": shippingAddress.buildingNumber,
-        "city": shippingAddress.city,
-        "country_code": "EG",
-        "postal_code": "11111",
-        "phone": shippingAddress.phone,
-        "state": shippingAddress.city,
+      'shipping_address': {
+        'recipient_name': shippingAddress.name,
+        'line1': shippingAddress.streetName,
+        'line2': shippingAddress.buildingNumber,
+        'city': shippingAddress.city,
+        'country_code': 'EG',
+        'postal_code': '11111',
+        'phone': shippingAddress.phone,
+        'state': shippingAddress.city,
       },
     };
   }

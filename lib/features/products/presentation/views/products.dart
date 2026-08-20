@@ -30,8 +30,7 @@ class _ProductsState extends State<Products> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return NestedScrollView(
+  Widget build(BuildContext context) => NestedScrollView(
       headerSliverBuilder: (context, innerBoxIsScrolled) => [
         SliverAppBar(
           floating: true,
@@ -44,7 +43,7 @@ class _ProductsState extends State<Products> {
             background: Padding(
               padding: EdgeInsetsGeometry.only(top: 10.h),
               child: CustomAppBar(
-                title: "products".tr(),
+                title: 'products'.tr(),
               ),
             ),
           ),
@@ -68,13 +67,13 @@ class _ProductsState extends State<Products> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "our_products".tr(),
+                    'our_products'.tr(),
                     style: AppTextStyles.font16color0C0D0DBold,
                   ),
                   BlocBuilder<ProductsCubit, ProductsState>(
                     builder: (context, state) {
-                      var cubit = context.read<ProductsCubit>();
-                      bool isFilterActive = cubit.selectedSortOption != -1;
+                      final cubit = context.read<ProductsCubit>();
+                      final bool isFilterActive = cubit.selectedSortOption != -1;
                       return AnimatedContainer(
                         duration: const Duration(milliseconds: 200),
                         padding: EdgeInsets.symmetric(
@@ -124,10 +123,9 @@ class _ProductsState extends State<Products> {
               child: FruitsGridView(itemCount: 6),
             );
           } else {
-            return const Text("error");
+            return const Text('error');
           }
         },
       ),
     );
-  }
 }

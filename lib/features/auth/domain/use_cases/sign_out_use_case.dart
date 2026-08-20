@@ -9,14 +9,14 @@ class SignOutUseCase {
   final ClearUserSessionUseCase _clearUserSessionUseCase;
 
   Future<NetworkResponse<void>> call() async {
-    var networkResponse = await _authRepo.signOut();
+    final networkResponse = await _authRepo.signOut();
     switch (networkResponse) {
       case NetworkSuccess<void>():
         try {
           await _clearUserSessionUseCase.call();
           return const NetworkSuccess();
         } catch (e) {
-          return NetworkFailure(Exception("error_occurred_please_try_again"));
+          return NetworkFailure(Exception('error_occurred_please_try_again'));
         }
       case NetworkFailure<void>():
         return NetworkFailure(networkResponse.exception);

@@ -20,9 +20,9 @@ class StripeService implements PaymentService {
       if (customerId.isEmpty) {
         customerId = await _createCustomer();
       }
-      var ephemeralKey = await _createEphemeralKey(customerId: customerId);
+      final ephemeralKey = await _createEphemeralKey(customerId: customerId);
 
-      var paymentIntent = await _createPaymentIntent(input, customerId);
+      final paymentIntent = await _createPaymentIntent(input, customerId);
 
       await _initPaymentSheet(
         paymentIntentClientSecret: paymentIntent['client_secret'],
@@ -42,7 +42,7 @@ class StripeService implements PaymentService {
     PaymentInputEntity input,
     String customerId,
   ) async {
-    var response = await _dio.post(
+    final response = await _dio.post(
       ApiConstants.createPaymentIntentUrl,
       data: {
         'amount': input.amountInCents,
@@ -61,7 +61,7 @@ class StripeService implements PaymentService {
   Future<Map<String, dynamic>> _createEphemeralKey({
     required String customerId,
   }) async {
-    var response = await _dio.post(
+    final response = await _dio.post(
       ApiConstants.createEphemeralKeyUrl,
       data: {'customer': customerId},
       options: Options(
@@ -89,7 +89,7 @@ class StripeService implements PaymentService {
   );
 
   Future<String> _createCustomer() async {
-    var response = await _dio.post(
+    final response = await _dio.post(
       ApiConstants.createCustomerUrl,
       options: Options(
         contentType: Headers.formUrlEncodedContentType,

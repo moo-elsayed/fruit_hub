@@ -10,8 +10,7 @@ class TermsAndConditions extends StatelessWidget {
   final ValueChanged<bool> onChanged;
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
+  Widget build(BuildContext context) => Row(
       mainAxisAlignment: MainAxisAlignment.center,
       spacing: 16.w,
       children: [
@@ -21,12 +20,12 @@ class TermsAndConditions extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: "terms_and_conditions_p1".tr(),
+                  text: 'terms_and_conditions_p1'.tr(),
                   style: AppTextStyles.font13color949D9ESemiBold,
                 ),
                 const TextSpan(text: ' '),
                 TextSpan(
-                  text: "terms_and_conditions_p2".tr(),
+                  text: 'terms_and_conditions_p2'.tr(),
                   style: AppTextStyles.font13color2D9F5DSemiBold,
                 ),
               ],
@@ -35,5 +34,4 @@ class TermsAndConditions extends StatelessWidget {
         ),
       ],
     );
-  }
 }

@@ -57,14 +57,14 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
   Future<void> makePayment() async {
     emit(MakePaymentLoading());
-    var paymentInputEntity = PaymentInputEntity(
+    final paymentInputEntity = PaymentInputEntity(
       amount: subtotal + paymentOption.shippingCost,
       currency: 'usd',
     );
     final result = await _makePaymentUseCase.call(paymentInputEntity);
     switch (result) {
       case NetworkSuccess<void>():
-        addOrder();
+        await addOrder();
       case NetworkFailure<void>():
         emit(MakePaymentFailure(getErrorMessage(result).tr()));
     }
@@ -93,7 +93,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     final addressJson = _localStorageService.getAddress();
     if (addressJson.isNotEmpty) {
       try {
-        var myMap = jsonDecode(addressJson);
+        final myMap = jsonDecode(addressJson);
         final addressModel = AddressModel.fromJson(myMap);
         address = addressModel.toEntity();
       } catch (e) {
@@ -115,7 +115,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   // -----------------------------------------------
 
   void _saveAddressToLocalStorage(AddressEntity address) {
-    AddressModel addressModel = AddressModel.fromEntity(address);
+    final AddressModel addressModel = AddressModel.fromEntity(address);
     _localStorageService.saveAddress(addressModel.toJson());
   }
 

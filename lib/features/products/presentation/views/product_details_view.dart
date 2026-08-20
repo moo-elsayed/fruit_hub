@@ -20,8 +20,7 @@ class ProductDetailsView extends StatelessWidget {
   final FruitEntity fruitEntity;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: Column(
         children: [
           SizedBox(
@@ -48,12 +47,12 @@ class ProductDetailsView extends StatelessWidget {
                       PricePerKilo(price: fruitEntity.price),
                       GestureDetector(
                         onTap: () {
-                          log("Go to Reviews Page");
+                          log('Go to Reviews Page');
                         },
                         child: Row(
                           children: [
                             Text(
-                              "${fruitEntity.avgRating}",
+                              '${fruitEntity.avgRating}',
                               style: AppTextStyles.font13color1B5E37Bold,
                             ),
                             Gap(4.w),
@@ -64,7 +63,7 @@ class ProductDetailsView extends StatelessWidget {
                             ),
                             Gap(4.w),
                             Text(
-                              "review".tr(),
+                              'review'.tr(),
                               style: AppTextStyles.font13color1B5E37Bold
                                   .copyWith(
                                     decoration: TextDecoration.underline,
@@ -87,10 +86,10 @@ class ProductDetailsView extends StatelessWidget {
                   ),
                   CustomMaterialButton(
                     onPressed: () {
-                      var myCartService = context.read<CartCubit>();
+                      final myCartService = context.read<CartCubit>();
                       myCartService.addItemToCart(fruitEntity.code);
                     },
-                    text: "add_to_cart".tr(),
+                    text: 'add_to_cart'.tr(),
                     textStyle: AppTextStyles.font16WhiteBold,
                     maxWidth: true,
                   ),
@@ -102,5 +101,4 @@ class ProductDetailsView extends StatelessWidget {
         ],
       ),
     );
-  }
 }

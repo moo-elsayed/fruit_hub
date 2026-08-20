@@ -26,14 +26,13 @@ class _SortProductsBottomSheetState extends State<SortProductsBottomSheet> {
   @override
   void initState() {
     super.initState();
-    var productsCubit = context.read<ProductsCubit>();
+    final productsCubit = context.read<ProductsCubit>();
     _sortOptions = productsCubit.sortOptions;
     _selectedOption = productsCubit.selectedSortOption;
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.only(
@@ -49,7 +48,7 @@ class _SortProductsBottomSheetState extends State<SortProductsBottomSheet> {
           Row(
             mainAxisAlignment: .spaceBetween,
             children: [
-              Text("sort_by".tr(), style: AppTextStyles.font19color0C0D0DBold),
+              Text('sort_by'.tr(), style: AppTextStyles.font19color0C0D0DBold),
               if (_selectedOption != -1)
                 InkWell(
                   onTap: () {
@@ -68,7 +67,7 @@ class _SortProductsBottomSheetState extends State<SortProductsBottomSheet> {
                           color: AppColors.greyShade600,
                         ),
                         Text(
-                          "reset".tr(),
+                          'reset'.tr(),
                           style: AppTextStyles.font13GreyShade600SemiBold,
                         ),
                       ],
@@ -78,8 +77,7 @@ class _SortProductsBottomSheetState extends State<SortProductsBottomSheet> {
             ],
           ),
           Gap(16.h),
-          ...List.generate(_sortOptions.length, (index) {
-            return Padding(
+          ...List.generate(_sortOptions.length, (index) => Padding(
               padding: .only(
                 bottom: index == _sortOptions.length - 1 ? 0 : 12.h,
               ),
@@ -92,23 +90,21 @@ class _SortProductsBottomSheetState extends State<SortProductsBottomSheet> {
                 isSelected: _selectedOption == index,
                 title: _sortOptions[index],
               ),
-            );
-          }),
+            )),
           Gap(32.h),
           CustomMaterialButton(
             onPressed: () {
-              var productsCubit = context.read<ProductsCubit>();
+              final productsCubit = context.read<ProductsCubit>();
               if (_selectedOption != productsCubit.selectedSortOption) {
                 context.read<ProductsCubit>().sortProducts(_selectedOption);
               }
               context.pop();
             },
-            text: "apply".tr(),
+            text: 'apply'.tr(),
             maxWidth: true,
             textStyle: AppTextStyles.font16WhiteBold,
           ),
         ],
       ),
     );
-  }
 }

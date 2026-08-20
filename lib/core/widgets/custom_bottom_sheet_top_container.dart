@@ -6,8 +6,7 @@ class CustomBottomSheetTopContainer extends StatelessWidget {
   const CustomBottomSheetTopContainer({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       width: 60.w,
       height: 4.h,
       margin: .only(bottom: 8.h),
@@ -16,5 +15,4 @@ class CustomBottomSheetTopContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
     );
-  }
 }

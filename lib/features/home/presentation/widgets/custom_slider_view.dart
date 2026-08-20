@@ -6,8 +6,7 @@ class CustomSliderView extends StatelessWidget {
   const CustomSliderView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return CarouselSlider.builder(
+  Widget build(BuildContext context) => CarouselSlider.builder(
       itemCount: 3,
       itemBuilder: (context, index, realIndex) => const CustomSliderItem(),
       options: CarouselOptions(
@@ -23,5 +22,4 @@ class CustomSliderView extends StatelessWidget {
         scrollDirection: Axis.horizontal,
       ),
     );
-  }
 }

@@ -25,8 +25,7 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
   int currentIndex = 0;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       children: [
         OnboardingPageView(
           slides: slides,
@@ -57,7 +56,7 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
                     context.read<OnboardingCubit>().setFirstTime(false);
                   },
                   maxWidth: true,
-                  text: "start_now".tr(),
+                  text: 'start_now'.tr(),
                   textStyle: AppTextStyles.font16WhiteBold,
                 ),
               ),
@@ -66,5 +65,4 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
         ),
       ],
     );
-  }
 }

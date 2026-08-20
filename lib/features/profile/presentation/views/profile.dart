@@ -13,21 +13,20 @@ class Profile extends StatelessWidget {
   const Profile({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
+  Widget build(BuildContext context) => Padding(
       padding: .symmetric(horizontal: 16.w),
       child: Column(
         crossAxisAlignment: .start,
         children: [
-          CustomAppBar(title: "my_account".tr()),
+          CustomAppBar(title: 'my_account'.tr()),
           Gap(16.h),
-          Text("general".tr(), style: AppTextStyles.font13color0C0D0DSemiBold),
+          Text('general'.tr(), style: AppTextStyles.font13color0C0D0DSemiBold),
           Gap(16.h),
           Expanded(
             child: ListView.separated(
               itemCount: getProfileItems(context).length,
               itemBuilder: (context, index) {
-                var profileItemEntity = getProfileItems(context)[index];
+                final profileItemEntity = getProfileItems(context)[index];
                 return CustomProfileItem(entity: profileItemEntity);
               },
               separatorBuilder: (context, index) =>
@@ -42,5 +41,4 @@ class Profile extends StatelessWidget {
         ],
       ),
     );
-  }
 }

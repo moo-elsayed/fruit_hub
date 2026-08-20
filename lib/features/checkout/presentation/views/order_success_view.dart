@@ -14,8 +14,7 @@ class OrderSuccessView extends StatelessWidget {
   final OrderEntity orderEntity;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: Padding(
         padding: .symmetric(horizontal: 16.w),
         child: Column(
@@ -28,14 +27,14 @@ class OrderSuccessView extends StatelessWidget {
               children: [
                 CustomMaterialButton(
                   onPressed: () {},
-                  text: "track_order".tr(),
+                  text: 'track_order'.tr(),
                   maxWidth: true,
                   textStyle: AppTextStyles.font16WhiteBold,
                 ),
                 GestureDetector(
                   onTap: () => context.pushReplacementNamed(Routes.appSection),
                   child: Text(
-                    "home".tr(),
+                    'home'.tr(),
                     style: AppTextStyles.font16color1B5E37EBold.copyWith(
                       decoration: .underline,
                     ),
@@ -47,5 +46,4 @@ class OrderSuccessView extends StatelessWidget {
         ),
       ),
     );
-  }
 }

@@ -31,7 +31,7 @@ class FavoriteCubit extends Cubit<FavoriteState> implements FavoriteService {
   bool isFavorite(String productId) => _favoriteIds.contains(productId);
 
   Future<void> getFavoriteIds() async {
-    var result = await _getFavoriteIdsUseCase.call();
+    final result = await _getFavoriteIdsUseCase.call();
     switch (result) {
       case NetworkSuccess<List<String>>():
         _setFavorites(result.data!);
@@ -43,7 +43,7 @@ class FavoriteCubit extends Cubit<FavoriteState> implements FavoriteService {
 
   Future<void> getFavorites() async {
     emit(GetFavoritesLoading());
-    var result = await _getFavoritesUseCase.call(_favoriteIds.toList());
+    final result = await _getFavoritesUseCase.call(_favoriteIds.toList());
     switch (result) {
       case NetworkSuccess<List<FruitEntity>>():
         emit(GetFavoritesSuccess(result.data!));
@@ -55,7 +55,7 @@ class FavoriteCubit extends Cubit<FavoriteState> implements FavoriteService {
   @override
   Future<void> toggleFavorite(String productId) async {
     NetworkResponse result;
-    bool favorite = isFavorite(productId);
+    final bool favorite = isFavorite(productId);
     if (favorite) {
       result = await _removeItemFromFavoritesUseCase.call(productId);
     } else {

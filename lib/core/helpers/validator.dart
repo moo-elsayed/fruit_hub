@@ -5,28 +5,28 @@ abstract class Validator {
   static String? validateEmail(String? val) {
     final RegExp emailRegex = RegExp(AppKeys.emailRegex);
     if (val == null || val.trim().isEmpty) {
-      return "email_cannot_be_empty".tr();
+      return 'email_cannot_be_empty'.tr();
     } else if (!emailRegex.hasMatch(val)) {
-      return "enter_a_valid_email_address".tr();
+      return 'enter_a_valid_email_address'.tr();
     }
     return null;
   }
 
   static String? validatePassword(String? val) {
     if (val == null || val.isEmpty) {
-      return "password_cannot_be_empty".tr();
+      return 'password_cannot_be_empty'.tr();
     }
 
     if (!RegExp(r'^[A-Za-z\d]+$').hasMatch(val)) {
-      return "password_must_contain_only_letters_and_numbers".tr();
+      return 'password_must_contain_only_letters_and_numbers'.tr();
     }
 
     if (val.length < 6) {
-      return "password_must_be_at_least_6_characters_long".tr();
+      return 'password_must_be_at_least_6_characters_long'.tr();
     }
 
     if (!RegExp(r'\d').hasMatch(val)) {
-      return "password_must_contain_at_least_one_number".tr();
+      return 'password_must_contain_at_least_one_number'.tr();
     }
 
     return null;
@@ -43,64 +43,64 @@ abstract class Validator {
 
   static String? validateName(String? val) {
     if (val == null || val.isEmpty) {
-      return "name_cannot_be_empty".tr();
+      return 'name_cannot_be_empty'.tr();
     }
     return null;
   }
 
   static String? validateStreetName(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return "street_name_cannot_be_empty".tr();
+      return 'street_name_cannot_be_empty'.tr();
     }
     return null;
   }
 
   static String? validateCity(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return "city_cannot_be_empty".tr();
+      return 'city_cannot_be_empty'.tr();
     }
     return null;
   }
 
   static String? validateBuildingNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return "building_number_cannot_be_empty".tr();
+      return 'building_number_cannot_be_empty'.tr();
     }
     if (int.tryParse(val) == null) {
-      return "it_must_be_a_number".tr();
+      return 'it_must_be_a_number'.tr();
     }
     return null;
   }
 
   static String? validateFloorNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return "floor_number_cannot_be_empty".tr();
+      return 'floor_number_cannot_be_empty'.tr();
     }
     if (int.tryParse(val) == null) {
-      return "it_must_be_a_number".tr();
+      return 'it_must_be_a_number'.tr();
     }
     return null;
   }
 
   static String? validateApartmentNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return "apartment_number_cannot_be_empty".tr();
+      return 'apartment_number_cannot_be_empty'.tr();
     }
     if (int.tryParse(val) == null) {
-      return "it_must_be_a_number".tr();
+      return 'it_must_be_a_number'.tr();
     }
     return null;
   }
 
   static String? validatePhoneNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return "phone_number_cannot_be_empty".tr();
+      return 'phone_number_cannot_be_empty'.tr();
     }
 
     final phone = val.trim();
     final isValid = RegExp(r'^\+?\d+$').hasMatch(phone);
     if (!isValid) {
-      return "enter_a_valid_phone_number".tr();
+      return 'enter_a_valid_phone_number'.tr();
     }
 
     return null;

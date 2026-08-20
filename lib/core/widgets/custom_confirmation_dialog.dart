@@ -27,8 +27,7 @@ class CustomConfirmationDialog extends StatelessWidget {
   final void Function() onConfirm;
 
   @override
-  Widget build(BuildContext context) {
-    return Dialog(
+  Widget build(BuildContext context) => Dialog(
       backgroundColor: AppColors.white,
       child: Padding(
         padding: .all(20.r),
@@ -72,5 +71,4 @@ class CustomConfirmationDialog extends StatelessWidget {
         ),
       ),
     );
-  }
 }

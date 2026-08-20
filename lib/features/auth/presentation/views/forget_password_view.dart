@@ -6,8 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
-import 'package:fruit_hub/features/auth/presentation/managers/forget_password_cubit/forget_password_cubit.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
+import 'package:fruit_hub/features/auth/presentation/managers/forget_password_cubit/forget_password_cubit.dart';
 import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
 
@@ -44,10 +44,9 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: CustomAppBar(
-        title: "password_reset".tr(),
+        title: 'password_reset'.tr(),
         showArrowBack: true,
         onTap: () => context.pop(),
       ),
@@ -65,13 +64,13 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 children: [
                   Gap(24.h),
                   Text(
-                    "send_email_reset_link".tr(),
+                    'send_email_reset_link'.tr(),
                     style: AppTextStyles.font16color616A6BSemiBold,
                   ),
                   Gap(30.h),
                   TextFormFieldHelper(
                     controller: _emailController,
-                    hint: "email".tr(),
+                    hint: 'email'.tr(),
                     keyboardType: TextInputType.emailAddress,
                     onValidate: Validator.validateEmail,
                     action: TextInputAction.done,
@@ -82,18 +81,18 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                       if (state is ForgetPasswordSuccess) {
                         AppToast.showToast(
                           context: context,
-                          title: "email_sent".tr(),
+                          title: 'email_sent'.tr(),
                           type: ToastificationType.success,
                         );
                         showCupertinoDialog(
                           context: context,
                           builder: (context) => CustomDialog(
-                            text: "email_sent_to_reset".tr(),
+                            text: 'email_sent_to_reset'.tr(),
                             onPressed: () {
                               context.pop();
-                              var loginArgs = LoginArgs(
+                              final loginArgs = LoginArgs(
                                 email: _emailController.text.trim(),
-                                password: "",
+                                password: '',
                               );
                               context.pop(loginArgs);
                             },
@@ -108,8 +107,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                         );
                       }
                     },
-                    builder: (context, state) {
-                      return CustomMaterialButton(
+                    builder: (context, state) => CustomMaterialButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             context.read<ForgetPasswordCubit>().forgetPassword(
@@ -118,11 +116,10 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                           }
                         },
                         maxWidth: true,
-                        text: "send_password_reset_link".tr(),
+                        text: 'send_password_reset_link'.tr(),
                         textStyle: AppTextStyles.font16WhiteBold,
                         isLoading: state is ForgetPasswordLoading,
-                      );
-                    },
+                      ),
                   ),
                 ],
               ),
@@ -131,5 +128,4 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
         ),
       ),
     );
-  }
 }

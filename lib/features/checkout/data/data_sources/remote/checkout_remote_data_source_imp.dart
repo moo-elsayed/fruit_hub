@@ -28,34 +28,34 @@ class CheckoutRemoteDataSourceImp implements CheckoutRemoteDataSource {
   @override
   Future<NetworkResponse<ShippingConfigEntity>> fetchShippingConfig() async {
     try {
-      var response = await _databaseService.getData(
+      final response = await _databaseService.getData(
         path: BackendEndpoints.fetchShippingCost,
         documentId: BackendEndpoints.shippingConfigId,
       );
-      var shippingConfigEntity = ShippingConfigModel.fromJson(
+      final shippingConfigEntity = ShippingConfigModel.fromJson(
         response,
       ).toEntity();
       return NetworkSuccess(shippingConfigEntity);
     } on FirebaseException catch (e) {
-      return _handleError(e, "fetchShippingConfig");
+      return _handleError(e, 'fetchShippingConfig');
     } catch (e) {
-      return _handleError(e, "fetchShippingConfig");
+      return _handleError(e, 'fetchShippingConfig');
     }
   }
 
   @override
   Future<NetworkResponse<void>> addOrder(OrderEntity order) async {
     try {
-      OrderModel orderModel = OrderModel.fromEntity(order);
+      final OrderModel orderModel = OrderModel.fromEntity(order);
       await _databaseService.addData(
         path: BackendEndpoints.addOrder,
         data: orderModel.toJson(),
       );
       return const NetworkSuccess();
     } on FirebaseException catch (e) {
-      return _handleError(e, "addOrder");
+      return _handleError(e, 'addOrder');
     } catch (e) {
-      return _handleError(e, "addOrder");
+      return _handleError(e, 'addOrder');
     }
   }
 
@@ -66,16 +66,16 @@ class CheckoutRemoteDataSourceImp implements CheckoutRemoteDataSource {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        return NetworkFailure(Exception("user_not_logged_in"));
+        return NetworkFailure(Exception('user_not_logged_in'));
       }
-      var map = await _databaseService.getData(
+      final map = await _databaseService.getData(
         path: BackendEndpoints.getUserData,
         documentId: userId,
       );
-      String? savedCustomerId = map['customerId'];
+      final String? savedCustomerId = map['customerId'];
       PaymentOutputEntity paymentOutputEntity;
       if (savedCustomerId != null) {
-        PaymentInputModel paymentInputModel = PaymentInputModel.fromEntity(
+        final PaymentInputModel paymentInputModel = PaymentInputModel.fromEntity(
           input,
         ).copyWith(customerId: savedCustomerId);
         paymentOutputEntity = await _paymentService.makePayment(
@@ -91,21 +91,21 @@ class CheckoutRemoteDataSourceImp implements CheckoutRemoteDataSource {
       }
       return const NetworkSuccess();
     } on FirebaseException catch (e) {
-      return _handleError(e, "makePayment");
+      return _handleError(e, 'makePayment');
     } catch (e) {
-      return _handleError(e, "makePayment");
+      return _handleError(e, 'makePayment');
     }
   }
 
   // ------------------------------------
 
   NetworkFailure<T> _handleError<T>(Object e, String functionName) {
-    AppLogger.error("error occurred in $functionName", error: e);
+    AppLogger.error('error occurred in $functionName', error: e);
     if (e is FirebaseException) {
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
       );
     }
-    return NetworkFailure(Exception("error_occurred_please_try_again"));
+    return NetworkFailure(Exception('error_occurred_please_try_again'));
   }
 }

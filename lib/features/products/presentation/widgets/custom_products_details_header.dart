@@ -11,8 +11,7 @@ class CustomProductsDetailsHeader extends StatelessWidget {
   final String imagePath;
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
+  Widget build(BuildContext context) => Stack(
       alignment: .topCenter,
       children: [
         Positioned(
@@ -41,5 +40,4 @@ class CustomProductsDetailsHeader extends StatelessWidget {
         ),
       ],
     );
-  }
 }

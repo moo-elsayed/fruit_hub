@@ -8,16 +8,14 @@ class ForgetPassword extends StatelessWidget {
   final void Function()? onTap;
 
   @override
-  Widget build(BuildContext context) {
-    return Align(
+  Widget build(BuildContext context) => Align(
       alignment: AlignmentDirectional.centerEnd,
       child: GestureDetector(
         onTap: onTap,
         child: Text(
-          "forgot_password".tr(),
+          'forgot_password'.tr(),
           style: AppTextStyles.font13color2D9F5DSemiBold,
         ),
       ),
     );
-  }
 }

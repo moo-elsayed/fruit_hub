@@ -16,7 +16,7 @@ class SignOutCubit extends Cubit<SignOutState> implements SignOutService {
   @override
   Future<void> signOut() async {
     emit(SignOutLoading());
-    var result = await _signOutUseCase();
+    final result = await _signOutUseCase();
     switch (result) {
       case NetworkSuccess<void>():
         emit(SignOutSuccess());

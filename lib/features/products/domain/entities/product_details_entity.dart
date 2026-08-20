@@ -17,12 +17,12 @@ class ProductDetailsEntity {
 List<ProductDetailsEntity> getProductDetails(FruitEntity fruitEntity) => [
   ProductDetailsEntity(
     title: "${fruitEntity.daysUntilExpiration} ${"days".tr()}",
-    subtitle: "validity".tr(),
+    subtitle: 'validity'.tr(),
     trailingAsset: Assets.iconsCalendar,
   ),
   ProductDetailsEntity(
-    title: "100%",
-    subtitle: "organic".tr(),
+    title: '100%',
+    subtitle: 'organic'.tr(),
     trailingAsset: Assets.iconsOrganic,
   ),
   ProductDetailsEntity(
@@ -31,8 +31,8 @@ List<ProductDetailsEntity> getProductDetails(FruitEntity fruitEntity) => [
     trailingAsset: Assets.iconsCalory,
   ),
   ProductDetailsEntity(
-    title: "${fruitEntity.avgRating} (${fruitEntity.reviews.length})",
-    subtitle: "reviews".tr(),
+    title: '${fruitEntity.avgRating} (${fruitEntity.reviews.length})',
+    subtitle: 'reviews'.tr(),
     trailingAsset: Assets.iconsFavourites,
   ),
 ];

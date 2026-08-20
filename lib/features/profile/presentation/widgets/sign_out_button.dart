@@ -14,13 +14,12 @@ class SignOutButton extends StatelessWidget {
   const SignOutButton({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocListener<SignOutCubit, SignOutState>(
+  Widget build(BuildContext context) => BlocListener<SignOutCubit, SignOutState>(
       listener: (context, state) {
         if (state is SignOutSuccess) {
           AppToast.showToast(
             context: context,
-            title: "logged_out_successfully".tr(),
+            title: 'logged_out_successfully'.tr(),
             type: .success,
           );
           context.pushNamedAndRemoveUntil(
@@ -35,20 +34,19 @@ class SignOutButton extends StatelessWidget {
           showCupertinoDialog(
             context: context,
             builder: (_) => CustomConfirmationDialog(
-              title: "log_out_confirmation".tr(),
-              textConfirmButton: "ok".tr(),
-              textCancelButton: "cancel".tr(),
+              title: 'log_out_confirmation'.tr(),
+              textConfirmButton: 'ok'.tr(),
+              textCancelButton: 'cancel'.tr(),
               onConfirm: () async {
-                SignOutService signOutService = context.read<SignOutCubit>();
-                signOutService.signOut();
+                final SignOutService signOutService = context.read<SignOutCubit>();
+                await signOutService.signOut();
               },
             ),
           );
         },
-        text: "sign_out".tr(),
+        text: 'sign_out'.tr(),
         textStyle: AppTextStyles.font16WhiteBold,
         maxWidth: true,
       ),
     );
-  }
 }

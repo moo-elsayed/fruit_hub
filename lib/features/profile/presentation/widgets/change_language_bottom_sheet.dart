@@ -15,8 +15,7 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
   const ChangeLanguageBottomSheet({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: .symmetric(vertical: 16.h),
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -30,27 +29,26 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
         children: [
           const CustomBottomSheetTopContainer(),
           Text(
-            "select_language".tr(),
+            'select_language'.tr(),
             style: AppTextStyles.font16color0C0D0DSemiBold,
           ),
           Gap(16.h),
           buildListTile(
             context: context,
             isChecked: isArabic(context),
-            title: "العربية",
-            langCode: "ar",
+            title: 'العربية',
+            langCode: 'ar',
           ),
           Divider(endIndent: 16.w, indent: 16.w),
           buildListTile(
             context: context,
             isChecked: !isArabic(context),
-            title: "English",
-            langCode: "en",
+            title: 'English',
+            langCode: 'en',
           ),
         ],
       ),
     );
-  }
 
   ListTile buildListTile({
     required BuildContext context,
@@ -63,14 +61,14 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
       showCupertinoDialog(
         context: context,
         builder: (context) => CustomConfirmationDialog(
-          title: "confirm_language_change".tr(),
-          subtitle: "app_will_restart".tr(),
-          textConfirmButton: "ok".tr(),
-          textCancelButton: "cancel".tr(),
+          title: 'confirm_language_change'.tr(),
+          subtitle: 'app_will_restart'.tr(),
+          textConfirmButton: 'ok'.tr(),
+          textCancelButton: 'cancel'.tr(),
           onConfirm: () async {
             context.pop();
             await context.setLocale(Locale(langCode));
-            Restart.restartApp();
+            await Restart.restartApp();
           },
         ),
       );

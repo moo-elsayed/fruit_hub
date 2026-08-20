@@ -90,8 +90,7 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return TextFormField(
+  Widget build(BuildContext context) => TextFormField(
       controller: widget.controller,
       validator: widget.onValidate,
       onChanged: (text) {
@@ -162,15 +161,12 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
         focusedErrorBorder: outlineInputBorder(color: Colors.red, width: 1),
       ),
     );
-  }
 
   OutlineInputBorder outlineInputBorder({
     required Color color,
     required double width,
-  }) {
-    return OutlineInputBorder(
+  }) => OutlineInputBorder(
       borderRadius: widget.borderRadius ?? BorderRadius.circular(8.r),
       borderSide: BorderSide(color: color, width: width),
     );
-  }
 }

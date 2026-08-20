@@ -22,8 +22,7 @@ class SocialLoginButton extends StatelessWidget {
   final String text;
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
+  Widget build(BuildContext context) => Stack(
       alignment: AlignmentDirectional.centerStart,
       children: [
         CustomMaterialButton(
@@ -44,5 +43,4 @@ class SocialLoginButton extends StatelessWidget {
           ),
       ],
     );
-  }
 }

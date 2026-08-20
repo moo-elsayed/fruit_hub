@@ -12,13 +12,14 @@ import 'package:fruit_hub/features/auth/presentation/widgets/custom_dialog.dart'
 import 'package:fruit_hub/features/auth/presentation/widgets/terms_and_conditions.dart';
 import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
+
 import '../../../../core/theming/app_text_styles.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_material_button.dart';
 import '../../../../core/widgets/text_form_field_helper.dart';
 import '../args/login_args.dart';
 import '../managers/signup_cubit/sign_up_cubit.dart';
 import '../widgets/auth_redirect_text.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -52,13 +53,12 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
+  Widget build(BuildContext context) => BlocProvider(
       create: (context) =>
           SignupCubit(getIt.get<CreateUserWithEmailAndPasswordUseCase>()),
       child: Scaffold(
         appBar: CustomAppBar(
-          title: "new_account".tr(),
+          title: 'new_account'.tr(),
           showArrowBack: true,
           onTap: () => context.pop(),
         ),
@@ -74,7 +74,7 @@ class _RegisterViewState extends State<RegisterView> {
                   Gap(24.h),
                   TextFormFieldHelper(
                     controller: _nameController,
-                    hint: "full_name".tr(),
+                    hint: 'full_name'.tr(),
                     keyboardType: TextInputType.name,
                     onValidate: Validator.validateName,
                     action: TextInputAction.next,
@@ -82,7 +82,7 @@ class _RegisterViewState extends State<RegisterView> {
                   Gap(16.h),
                   TextFormFieldHelper(
                     controller: _emailController,
-                    hint: "email".tr(),
+                    hint: 'email'.tr(),
                     keyboardType: TextInputType.emailAddress,
                     onValidate: Validator.validateEmail,
                     action: TextInputAction.next,
@@ -90,7 +90,7 @@ class _RegisterViewState extends State<RegisterView> {
                   Gap(16.h),
                   TextFormFieldHelper(
                     controller: _passwordController,
-                    hint: "password".tr(),
+                    hint: 'password'.tr(),
                     isPassword: true,
                     obscuringCharacter: '●',
                     keyboardType: TextInputType.visiblePassword,
@@ -107,16 +107,16 @@ class _RegisterViewState extends State<RegisterView> {
                       if (state is SignUpSuccess) {
                         AppToast.showToast(
                           context: context,
-                          title: "email_created".tr(),
+                          title: 'email_created'.tr(),
                           type: ToastificationType.success,
                         );
                         showCupertinoDialog(
                           context: context,
                           builder: (context) => CustomDialog(
-                            text: "email_sent_to_verify".tr(),
+                            text: 'email_sent_to_verify'.tr(),
                             onPressed: () {
                               context.pop();
-                              var loginArgs = LoginArgs(
+                              final loginArgs = LoginArgs(
                                 email: _emailController.text.trim(),
                                 password: _passwordController.text.trim(),
                               );
@@ -133,14 +133,13 @@ class _RegisterViewState extends State<RegisterView> {
                         );
                       }
                     },
-                    builder: (context, state) {
-                      return CustomMaterialButton(
+                    builder: (context, state) => CustomMaterialButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             if (!_agreeToTerms) {
                               AppToast.showToast(
                                 context: context,
-                                title: "you_should_accept_terms_and_conditions"
+                                title: 'you_should_accept_terms_and_conditions'
                                     .tr(),
                                 type: ToastificationType.error,
                               );
@@ -157,15 +156,14 @@ class _RegisterViewState extends State<RegisterView> {
                         },
                         maxWidth: true,
                         isLoading: state is SignUpLoading,
-                        text: "register".tr(),
+                        text: 'register'.tr(),
                         textStyle: AppTextStyles.font16WhiteBold,
-                      );
-                    },
+                      ),
                   ),
                   Gap(33.h),
                   AuthRedirectText(
-                    question: "already_have_an_account".tr(),
-                    action: "login".tr(),
+                    question: 'already_have_an_account'.tr(),
+                    action: 'login'.tr(),
                     onTap: () => context.pop(),
                   ),
                 ],
@@ -175,5 +173,4 @@ class _RegisterViewState extends State<RegisterView> {
         ),
       ),
     );
-  }
 }

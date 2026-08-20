@@ -2,10 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fruit_hub/core/helpers/app_logger.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../../../features/auth/data/models/user_model.dart';
-import '../../../features/auth/domain/entities/user_entity.dart';
+
 import '../../../core/helpers/firebase_keys.dart';
 import '../../../core/services/authentication/auth_service.dart';
+import '../../../features/auth/data/models/user_model.dart';
+import '../../../features/auth/domain/entities/user_entity.dart';
 
 class FirebaseAuthService implements AuthService, SignOutService {
   FirebaseAuthService(this._auth, this._googleSignIn, this._facebookAuth);
@@ -66,13 +67,19 @@ class FirebaseAuthService implements AuthService, SignOutService {
     await _auth.signOut();
     try {
       await _googleSignIn.disconnect();
-    } catch (e) {}
+    } catch (_) {
+      // Ignored if not signed in with Google
+    }
     try {
       await _googleSignIn.signOut();
-    } catch (e) {}
+    } catch (_) {
+      // Ignored if not signed in with Google
+    }
     try {
       await _facebookAuth.logOut();
-    } catch (e) {}
+    } catch (_) {
+      // Ignored if not signed in with Facebook
+    }
   }
 
   Future<User> _facebookSignInInternal() async {
@@ -123,19 +130,19 @@ class FirebaseAuthService implements AuthService, SignOutService {
         .attemptLightweightAuthentication();
 
     if (googleUser == null) {
-      AppLogger.error("error in google sign in", error: 'No user found');
-      throw Exception("The sign-in process was canceled.");
+      AppLogger.error('error in google sign in', error: 'No user found');
+      throw Exception('The sign-in process was canceled.');
     }
 
     final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
     if (googleAuth.idToken == null) {
       AppLogger.error(
-        "error in google sign in",
+        'error in google sign in',
         error: 'No idToken received from Google',
       );
       throw Exception(
-        "Could not retrieve authentication details from Google. Please try again.",
+        'Could not retrieve authentication details from Google. Please try again.',
       );
     }
 
@@ -143,7 +150,7 @@ class FirebaseAuthService implements AuthService, SignOutService {
       idToken: googleAuth.idToken,
     );
 
-    var userCredential = await _auth.signInWithCredential(credential);
+    final userCredential = await _auth.signInWithCredential(credential);
     return _returnUser(userCredential);
   }
 

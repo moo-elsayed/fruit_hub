@@ -10,14 +10,14 @@ class GoogleSignInUseCase {
   final SaveUserSessionUseCase _saveUserSessionUseCase;
 
   Future<NetworkResponse<UserEntity>> call() async {
-    var networkResponse = await _authRepo.googleSignIn();
+    final networkResponse = await _authRepo.googleSignIn();
     switch (networkResponse) {
       case NetworkSuccess<UserEntity>():
         try {
           await _saveUserSessionUseCase.call(networkResponse.data!);
           return NetworkSuccess(networkResponse.data);
         } catch (e) {
-          return NetworkFailure(Exception("error_occurred_please_try_again"));
+          return NetworkFailure(Exception('error_occurred_please_try_again'));
         }
       case NetworkFailure<UserEntity>():
         return NetworkFailure(networkResponse.exception);

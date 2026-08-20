@@ -14,8 +14,7 @@ class CustomSectionHeader extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
+  Widget build(BuildContext context) => Padding(
       padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -24,12 +23,11 @@ class CustomSectionHeader extends StatelessWidget {
           GestureDetector(
             onTap: onTap,
             child: Text(
-              "more".tr(),
+              'more'.tr(),
               style: AppTextStyles.font13color949D9ERegular,
             ),
           ),
         ],
       ),
     );
-  }
 }

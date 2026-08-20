@@ -10,8 +10,7 @@ class ProductsCount extends StatelessWidget {
   final int count;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: EdgeInsetsGeometry.symmetric(vertical: 10.h),
       width: double.infinity,
       alignment: Alignment.center,
@@ -20,20 +19,19 @@ class ProductsCount extends StatelessWidget {
         text: TextSpan(
           children: [
             TextSpan(
-              text: "you_have".tr(),
+              text: 'you_have'.tr(),
               style: AppTextStyles.font13color1B5E37Regular,
             ),
             TextSpan(
-              text: " $count ",
+              text: ' $count ',
               style: AppTextStyles.font13color1B5E37Regular,
             ),
             TextSpan(
-              text: "products_in_the_shopping_cart".tr(),
+              text: 'products_in_the_shopping_cart'.tr(),
               style: AppTextStyles.font13color1B5E37Regular,
             ),
           ],
         ),
       ),
     );
-  }
 }

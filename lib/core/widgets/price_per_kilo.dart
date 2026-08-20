@@ -9,8 +9,7 @@ class PricePerKilo extends StatelessWidget {
   final double price;
 
   @override
-  Widget build(BuildContext context) {
-    return RichText(
+  Widget build(BuildContext context) => RichText(
       text: TextSpan(
         children: [
           TextSpan(
@@ -24,5 +23,4 @@ class PricePerKilo extends StatelessWidget {
         ],
       ),
     );
-  }
 }

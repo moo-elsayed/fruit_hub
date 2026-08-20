@@ -23,8 +23,7 @@ class CupertinoConfirmationDialog extends StatelessWidget {
   final bool delete;
 
   @override
-  Widget build(BuildContext context) {
-    return CupertinoAlertDialog(
+  Widget build(BuildContext context) => CupertinoAlertDialog(
       title: Text(title, style: GoogleFonts.lato()),
       content: fullText != null
           ? Text(fullText!, style: GoogleFonts.lato())
@@ -53,5 +52,4 @@ class CupertinoConfirmationDialog extends StatelessWidget {
         ),
       ],
     );
-  }
 }

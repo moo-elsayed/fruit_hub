@@ -19,20 +19,17 @@ class CustomStepItem extends StatelessWidget {
   final String stepText;
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
+  Widget build(BuildContext context) => Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),
           switchInCurve: Curves.easeOutBack,
           switchOutCurve: Curves.easeIn,
-          transitionBuilder: (child, animation) {
-            return RotationTransition(
+          transitionBuilder: (child, animation) => RotationTransition(
               turns: animation,
               child: ScaleTransition(scale: animation, child: child),
-            );
-          },
+            ),
           child: isActive ? _activeIcon() : _inActiveIcon(),
         ),
         Gap(4.w),
@@ -45,7 +42,6 @@ class CustomStepItem extends StatelessWidget {
         ),
       ],
     );
-  }
 
   SvgPicture _activeIcon() =>
       SvgPicture.asset(Assets.iconsIconCheck, key: const ValueKey('active'));

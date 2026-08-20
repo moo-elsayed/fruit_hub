@@ -16,8 +16,7 @@ class SortOptionItem extends StatelessWidget {
   final String title;
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
@@ -69,5 +68,4 @@ class SortOptionItem extends StatelessWidget {
         ),
       ),
     );
-  }
 }

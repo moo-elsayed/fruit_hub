@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../generated/assets.dart';
 import '../theming/app_colors.dart';
 import '../theming/app_text_styles.dart';
 import 'text_form_field_helper.dart';
-import '../../generated/assets.dart';
 
 class SearchTextFiled extends StatelessWidget {
   const SearchTextFiled({
@@ -25,8 +25,7 @@ class SearchTextFiled extends StatelessWidget {
   final FocusNode? focusNode;
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
       onTap: onTap,
       child: DecoratedBox(
         decoration: const BoxDecoration(
@@ -51,10 +50,9 @@ class SearchTextFiled extends StatelessWidget {
           ),
           fillColor: AppColors.white,
           borderColor: AppColors.white,
-          hint: "search_for".tr(),
+          hint: 'search_for'.tr(),
           hintStyle: AppTextStyles.font13color949D9ERegular,
         ),
       ),
     );
-  }
 }

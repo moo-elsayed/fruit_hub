@@ -12,18 +12,16 @@ class OrderSuccessTopWidget extends StatelessWidget {
   final int orderId;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       children: [
         SvgPicture.asset(Assets.svgsSuccess),
         Gap(33.h),
         Text(
-          "It_was_done_successfully!".tr(),
+          'It_was_done_successfully!'.tr(),
           style: AppTextStyles.font16color0C0D0DBold,
         ),
         Gap(9.h),
         Text("${"order_number".tr()}: $orderId#"),
       ],
     );
-  }
 }

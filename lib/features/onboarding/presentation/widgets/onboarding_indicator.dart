@@ -14,11 +14,10 @@ class OnboardingIndicator extends StatelessWidget {
   final int currentIndex;
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
+  Widget build(BuildContext context) => Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(length, (index) {
-        bool isActive = index <= currentIndex;
+        final bool isActive = index <= currentIndex;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           width: isActive ? 10.w : 9.w,
@@ -35,5 +34,4 @@ class OnboardingIndicator extends StatelessWidget {
         );
       }),
     );
-  }
 }

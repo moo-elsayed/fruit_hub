@@ -15,22 +15,22 @@ class BottomNavigationBarEntity {
 
 List<BottomNavigationBarEntity> get bottomNavigationBarItems => [
   BottomNavigationBarEntity(
-    label: "home".tr(),
+    label: 'home'.tr(),
     outlineIcon: Assets.iconsHomeOutline,
     filledIcon: Assets.iconsHomeFilled,
   ),
   BottomNavigationBarEntity(
-    label: "products".tr(),
+    label: 'products'.tr(),
     outlineIcon: Assets.iconsProductsOutline,
     filledIcon: Assets.iconsProductsFilled,
   ),
   BottomNavigationBarEntity(
-    label: "shopping_cart".tr(),
+    label: 'shopping_cart'.tr(),
     outlineIcon: Assets.iconsShoppingCartOutline,
     filledIcon: Assets.iconsShoppingCartFilled,
   ),
   BottomNavigationBarEntity(
-    label: "my_account".tr(),
+    label: 'my_account'.tr(),
     outlineIcon: Assets.iconsProfileOutline,
     filledIcon: Assets.iconsProfileFilled,
   ),

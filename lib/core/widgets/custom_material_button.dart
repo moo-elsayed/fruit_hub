@@ -30,8 +30,7 @@ class CustomMaterialButton extends StatelessWidget {
   final Color loadingIndicatorColor;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialButton(
+  Widget build(BuildContext context) => MaterialButton(
       color: color ?? AppColors.color1B5E37,
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
@@ -49,5 +48,4 @@ class CustomMaterialButton extends StatelessWidget {
           ? CupertinoActivityIndicator(color: loadingIndicatorColor)
           : Text(text, style: textStyle),
     );
-  }
 }

@@ -12,10 +12,9 @@ class SearchView extends StatelessWidget {
   const SearchView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: CustomAppBar(
-        title: "search".tr(),
+        title: 'search'.tr(),
         showArrowBack: true,
         onTap: () => context.pop(),
       ),
@@ -24,5 +23,4 @@ class SearchView extends StatelessWidget {
         child: const SearchViewBody(),
       ),
     );
-  }
 }

@@ -38,6 +38,6 @@ class ProductsRemoteDataSourceImp implements ProductsRemoteDataSource {
 
   void _logError({
     required Object e,
-    String functionName = "HomeRemoteDataSourceImp.getAllProducts",
-  }) => AppLogger.error("error occurred in $functionName", error: e.toString());
+    String functionName = 'HomeRemoteDataSourceImp.getAllProducts',
+  }) => AppLogger.error('error occurred in $functionName', error: e.toString());
 }

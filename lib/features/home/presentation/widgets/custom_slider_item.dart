@@ -13,8 +13,7 @@ class CustomSliderItem extends StatelessWidget {
   const CustomSliderItem({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       margin: EdgeInsetsGeometry.symmetric(horizontal: 4.w),
       width: double.infinity,
       child: Stack(
@@ -41,7 +40,7 @@ class CustomSliderItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "eid_offers".tr(),
+                  'eid_offers'.tr(),
                   style: AppTextStyles.font13WhiteRegular,
                 ),
                 Gap(10.h),
@@ -52,7 +51,7 @@ class CustomSliderItem extends StatelessWidget {
                 Gap(7.h),
                 CustomMaterialButton(
                   onPressed: () {},
-                  text: "shop_now".tr(),
+                  text: 'shop_now'.tr(),
                   textStyle: AppTextStyles.font13color1B5E37Bold,
                   padding: EdgeInsetsGeometry.symmetric(
                     vertical: 4.h,
@@ -68,10 +67,9 @@ class CustomSliderItem extends StatelessWidget {
         ],
       ),
     );
-  }
 
   BorderRadiusGeometry _buildBorderRadiusGeometry(BuildContext context) {
-    var arabic = isArabic(context);
+    final arabic = isArabic(context);
     return BorderRadiusGeometry.directional(
       topStart: Radius.circular(arabic ? 4.r : 0),
       topEnd: Radius.circular(arabic ? 0.r : 4.r),

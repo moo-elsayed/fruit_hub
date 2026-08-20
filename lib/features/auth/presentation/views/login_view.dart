@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,16 +9,17 @@ import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/helpers/validator.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
+import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
 import 'package:fruit_hub/core/widgets/text_form_field_helper.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/social_sign_in_cubit/social_sign_in_cubit.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/auth_redirect_text.dart';
-import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/forget_password.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/or_divider.dart';
 import 'package:fruit_hub/generated/assets.dart';
 import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
+
 import '../../../../core/routing/routes.dart';
 import '../../../../core/widgets/app_toasts.dart';
 import '../../../../core/widgets/custom_material_button.dart';
@@ -77,8 +79,7 @@ class _LoginViewState extends State<LoginView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
+  Widget build(BuildContext context) => MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (context) =>
@@ -92,7 +93,7 @@ class _LoginViewState extends State<LoginView> {
         ),
       ],
       child: Scaffold(
-        appBar: CustomAppBar(title: "login".tr()),
+        appBar: CustomAppBar(title: 'login'.tr()),
         body: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
           behavior: HitTestBehavior.opaque,
@@ -105,7 +106,7 @@ class _LoginViewState extends State<LoginView> {
                   Gap(24.h),
                   TextFormFieldHelper(
                     controller: _emailController,
-                    hint: "email".tr(),
+                    hint: 'email'.tr(),
                     keyboardType: TextInputType.emailAddress,
                     onValidate: Validator.validateEmail,
                     action: TextInputAction.next,
@@ -113,7 +114,7 @@ class _LoginViewState extends State<LoginView> {
                   Gap(16.h),
                   TextFormFieldHelper(
                     controller: _passwordController,
-                    hint: "password".tr(),
+                    hint: 'password'.tr(),
                     isPassword: true,
                     obscuringCharacter: '●',
                     keyboardType: TextInputType.visiblePassword,
@@ -133,7 +134,7 @@ class _LoginViewState extends State<LoginView> {
                       if (state is SignInSuccess) {
                         AppToast.showToast(
                           context: context,
-                          title: "welcome".tr(),
+                          title: 'welcome'.tr(),
                           type: ToastificationType.success,
                         );
                         context.pushReplacementNamed(Routes.appSection);
@@ -146,8 +147,7 @@ class _LoginViewState extends State<LoginView> {
                         );
                       }
                     },
-                    builder: (context, state) {
-                      return CustomMaterialButton(
+                    builder: (context, state) => CustomMaterialButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             context
@@ -159,16 +159,15 @@ class _LoginViewState extends State<LoginView> {
                           }
                         },
                         maxWidth: true,
-                        text: "login".tr(),
+                        text: 'login'.tr(),
                         textStyle: AppTextStyles.font16WhiteBold,
                         isLoading: state is SignInLoading,
-                      );
-                    },
+                      ),
                   ),
                   Gap(33.h),
                   AuthRedirectText(
                     question: "don't_have_account".tr(),
-                    action: "create_an_account".tr(),
+                    action: 'create_an_account'.tr(),
                     onTap: () async => await _navigate(
                       context: context,
                       routeName: Routes.registerView,
@@ -182,7 +181,7 @@ class _LoginViewState extends State<LoginView> {
                       if (state is GoogleSuccess) {
                         AppToast.showToast(
                           context: context,
-                          title: "welcome".tr(),
+                          title: 'welcome'.tr(),
                           type: ToastificationType.success,
                         );
                         context.pushReplacementNamed(Routes.appSection);
@@ -199,15 +198,13 @@ class _LoginViewState extends State<LoginView> {
                         current is GoogleSuccess ||
                         current is GoogleFailure ||
                         current is GoogleLoading,
-                    builder: (context, state) {
-                      return SocialLoginButton(
+                    builder: (context, state) => SocialLoginButton(
                         onPressed: () =>
                             context.read<SocialSignInCubit>().googleSignIn(),
                         isLoading: state is GoogleLoading,
-                        text: "sign_in_with_google".tr(),
+                        text: 'sign_in_with_google'.tr(),
                         socialIcon: SvgPicture.asset(Assets.iconsGoogleIcon),
-                      );
-                    },
+                      ),
                   ),
                   Gap(16.h),
                   if (Platform.isIOS)
@@ -215,7 +212,7 @@ class _LoginViewState extends State<LoginView> {
                       children: [
                         SocialLoginButton(
                           onPressed: () {},
-                          text: "sign_in_with_apple".tr(),
+                          text: 'sign_in_with_apple'.tr(),
                           socialIcon: SvgPicture.asset(Assets.iconsAppleIcon),
                         ),
                         Gap(16.h),
@@ -226,7 +223,7 @@ class _LoginViewState extends State<LoginView> {
                       if (state is FacebookSuccess) {
                         AppToast.showToast(
                           context: context,
-                          title: "welcome".tr(),
+                          title: 'welcome'.tr(),
                           type: ToastificationType.success,
                         );
                         context.pushReplacementNamed(Routes.appSection);
@@ -243,15 +240,13 @@ class _LoginViewState extends State<LoginView> {
                         current is FacebookSuccess ||
                         current is FacebookFailure ||
                         current is FacebookLoading,
-                    builder: (context, state) {
-                      return SocialLoginButton(
+                    builder: (context, state) => SocialLoginButton(
                         onPressed: () =>
                             context.read<SocialSignInCubit>().facebookSignIn(),
                         isLoading: state is FacebookLoading,
-                        text: "sign_in_with_facebook".tr(),
+                        text: 'sign_in_with_facebook'.tr(),
                         socialIcon: SvgPicture.asset(Assets.iconsFacebookIcon),
-                      );
-                    },
+                      ),
                   ),
                 ],
               ),
@@ -260,5 +255,4 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
     );
-  }
 }

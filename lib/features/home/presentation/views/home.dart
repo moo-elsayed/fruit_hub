@@ -13,8 +13,9 @@ import 'package:fruit_hub/features/home/presentation/widgets/custom_slider_view.
 import 'package:fruit_hub/features/search/presentation/views/search_view.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import '../widgets/custom_section_header.dart';
+
 import '../../../../core/widgets/search_text_field.dart';
+import '../widgets/custom_section_header.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -33,8 +34,7 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return NestedScrollView(
+  Widget build(BuildContext context) => NestedScrollView(
       headerSliverBuilder: (context, innerBoxIsScrolled) => [
         SliverAppBar(
           floating: true,
@@ -92,7 +92,7 @@ class _HomeState extends State<Home> {
             child: Padding(
               padding: EdgeInsets.only(bottom: 8.h),
               child: CustomSectionHeader(
-                sectionName: "best_seller".tr(),
+                sectionName: 'best_seller'.tr(),
                 onTap: () =>
                     PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
                       context,
@@ -120,10 +120,9 @@ class _HomeState extends State<Home> {
               child: FruitsGridView(itemCount: 6),
             );
           } else {
-            return const Text("error");
+            return const Text('error');
           }
         },
       ),
     );
-  }
 }

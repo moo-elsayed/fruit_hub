@@ -28,9 +28,9 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
   final AddressArgs addressArgs;
 
   List<String> get buttonTexts => [
-    "next".tr(),
-    "confirm_and_continue".tr(),
-    "confirm_order".tr(),
+    'next'.tr(),
+    'confirm_and_continue'.tr(),
+    'confirm_order'.tr(),
   ];
 
   void _navigateToNextPage() => pageController.nextPage(
@@ -39,16 +39,15 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<CheckoutCubit, CheckoutState>(
+  Widget build(BuildContext context) => BlocConsumer<CheckoutCubit, CheckoutState>(
       listener: (context, state) {
         if (state is AddOrderSuccess) {
           AppToast.showToast(
             context: context,
-            title: "order_placed_successfully".tr(),
+            title: 'order_placed_successfully'.tr(),
             type: .success,
           );
-          CartService cartService = context.read<CartCubit>();
+          final CartService cartService = context.read<CartCubit>();
           cartService.clearCart();
           context.pushNamedAndRemoveUntil(
             Routes.orderSuccessView,
@@ -71,10 +70,9 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
           );
         }
       },
-      builder: (context, state) {
-        return CustomMaterialButton(
+      builder: (context, state) => CustomMaterialButton(
           onPressed: () {
-            var cubit = context.read<CheckoutCubit>();
+            final cubit = context.read<CheckoutCubit>();
             if (currentIndex == 0 &&
                 addressArgs.isValid &&
                 cubit.shippingConfig != null) {
@@ -101,17 +99,15 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
           textStyle: AppTextStyles.font16WhiteBold,
           maxWidth: true,
           isLoading: state is AddOrderLoading || state is MakePaymentLoading,
-        );
-      },
+        ),
     );
-  }
 
   void _executePaypalPayment({
     required BuildContext context,
     required OrderEntity orderEntity,
   }) {
-    var orderModel = OrderModel.fromEntity(orderEntity);
-    var cubit = context.read<CheckoutCubit>();
+    final orderModel = OrderModel.fromEntity(orderEntity);
+    final cubit = context.read<CheckoutCubit>();
 
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -120,10 +116,10 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
           clientId: Env.paypalClientId,
           secretKey: Env.paypalSecretKey,
           transactions: [orderModel.toPaypalTransaction()],
-          note: "contact_us_for_any_questions_on_your_order".tr(),
+          note: 'contact_us_for_any_questions_on_your_order'.tr(),
           onSuccess: (Map params) async {
             context.pop();
-            cubit.addOrder();
+            await cubit.addOrder();
           },
           onError: (error) {
             context.pop();
@@ -137,7 +133,7 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
             context.pop();
             AppToast.showToast(
               context: context,
-              title: "order_cancelled".tr(),
+              title: 'order_cancelled'.tr(),
               type: .error,
             );
           },

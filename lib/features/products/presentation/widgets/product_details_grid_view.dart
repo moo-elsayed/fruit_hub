@@ -11,8 +11,7 @@ class ProductDetailsGridView extends StatelessWidget {
   final List<ProductDetailsEntity> productDetails;
 
   @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
+  Widget build(BuildContext context) => GridView.builder(
       physics: const NeverScrollableScrollPhysics(),
       padding: .only(top: 16.h, bottom: 24.h),
       itemCount: productDetails.length,
@@ -23,7 +22,7 @@ class ProductDetailsGridView extends StatelessWidget {
         childAspectRatio: 163 / 80,
       ),
       itemBuilder: (context, index) {
-        var productDetail = productDetails[index];
+        final productDetail = productDetails[index];
         return Container(
           padding: const .symmetric(vertical: 12),
           decoration: BoxDecoration(
@@ -43,12 +42,12 @@ class ProductDetailsGridView extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: productDetail.title.split(" ").first,
+                                text: productDetail.title.split(' ').first,
                                 style: AppTextStyles.font16color23AA49Bold,
                               ),
-                              const TextSpan(text: " "),
+                              const TextSpan(text: ' '),
                               TextSpan(
-                                text: productDetail.title.split(" ").last,
+                                text: productDetail.title.split(' ').last,
                                 style: AppTextStyles.font14color979899Medium,
                               ),
                             ],
@@ -70,5 +69,4 @@ class ProductDetailsGridView extends StatelessWidget {
         );
       },
     );
-  }
 }

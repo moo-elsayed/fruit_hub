@@ -18,7 +18,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> getBestSellerProducts() async {
     emit(GetBestSellerProductsLoading());
-    var networkResponse = await _getBestSellerProductsUseCase.call();
+    final networkResponse = await _getBestSellerProductsUseCase.call();
     switch (networkResponse) {
       case NetworkSuccess<List<FruitEntity>>():
         emit(GetBestSellerProductsSuccess(networkResponse.data ?? []));

@@ -7,16 +7,16 @@ class PaymentInputModel {
     required this.customerId,
   });
 
-  final double amount;
-  final String currency;
-  final String customerId;
-
   factory PaymentInputModel.fromEntity(PaymentInputEntity entity) =>
       PaymentInputModel(
         amount: entity.amount,
         customerId: entity.customerId,
         currency: entity.currency,
       );
+
+  final double amount;
+  final String currency;
+  final String customerId;
 
   PaymentInputEntity toEntity() => PaymentInputEntity(
     amount: amount,
@@ -28,11 +28,9 @@ class PaymentInputModel {
     double? amount,
     String? currency,
     String? customerId,
-  }) {
-    return PaymentInputModel(
+  }) => PaymentInputModel(
       amount: amount ?? this.amount,
       currency: currency ?? this.currency,
       customerId: customerId ?? this.customerId,
     );
-  }
 }

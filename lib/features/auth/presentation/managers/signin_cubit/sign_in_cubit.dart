@@ -17,7 +17,7 @@ class SignInCubit extends Cubit<SignInState> {
     required String password,
   }) async {
     emit(SignInLoading());
-    var result = await _signInWithEmailAndPasswordUseCase.call(
+    final result = await _signInWithEmailAndPasswordUseCase.call(
       email: email,
       password: password,
     );

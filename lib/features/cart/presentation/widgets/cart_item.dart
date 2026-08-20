@@ -22,8 +22,7 @@ class CartItem extends StatelessWidget {
   final CartItemEntity cartItemEntity;
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
       onTap: () {
         PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
           context,
@@ -92,5 +91,4 @@ class CartItem extends StatelessWidget {
         ),
       ),
     );
-  }
 }

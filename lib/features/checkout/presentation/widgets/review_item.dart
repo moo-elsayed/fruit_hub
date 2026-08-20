@@ -20,8 +20,7 @@ class ReviewItem extends StatelessWidget {
   final VoidCallback onEditTap;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       crossAxisAlignment: .start,
       children: [
         Row(
@@ -31,7 +30,7 @@ class ReviewItem extends StatelessWidget {
             GestureDetector(
               onTap: onEditTap,
               child: Text(
-                "edit".tr(),
+                'edit'.tr(),
                 style: AppTextStyles.font13color1B5E37Bold.copyWith(
                   color: AppColors.color1B5E37,
                 ),
@@ -61,5 +60,4 @@ class ReviewItem extends StatelessWidget {
         ),
       ],
     );
-  }
 }

@@ -19,8 +19,7 @@ class OrderSummary extends StatelessWidget {
   double get total => subtotal + shippingCost;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: .symmetric(horizontal: 16.w, vertical: 14.h),
       decoration: BoxDecoration(
         color: AppColors.colorF7F7F7,
@@ -29,14 +28,14 @@ class OrderSummary extends StatelessWidget {
       child: Column(
         children: [
           _buildRow(
-            title: "subtotal".tr(),
+            title: 'subtotal'.tr(),
             value: "${getPrice(subtotal)} ${"pounds".tr()}",
           ),
           Gap(8.h),
           _buildRow(
-            title: "shipping".tr(),
+            title: 'shipping'.tr(),
             value: shippingCost == 0
-                ? "free".tr()
+                ? 'free'.tr()
                 : "${getPrice(shippingCost)} ${"pounds".tr()}",
             freeShipping: shippingCost == 0,
           ),
@@ -44,7 +43,7 @@ class OrderSummary extends StatelessWidget {
           Row(
             mainAxisAlignment: .spaceBetween,
             children: [
-              Text("total".tr(), style: AppTextStyles.font16color0C0D0DBold),
+              Text('total'.tr(), style: AppTextStyles.font16color0C0D0DBold),
               Text(
                 "${getPrice(total)} ${"pounds".tr()}",
                 style: AppTextStyles.font16color0C0D0DBold,
@@ -54,7 +53,6 @@ class OrderSummary extends StatelessWidget {
         ],
       ),
     );
-  }
 
   Widget _buildRow({
     required String title,

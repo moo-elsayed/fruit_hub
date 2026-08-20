@@ -13,8 +13,7 @@ class CustomProfileItem extends StatelessWidget {
   final ProfileItemEntity entity;
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
+  Widget build(BuildContext context) => Row(
       spacing: 8.w,
       children: [
         SvgPicture.asset(entity.leadingAsset),
@@ -41,5 +40,4 @@ class CustomProfileItem extends StatelessWidget {
         ),
       ],
     );
-  }
 }

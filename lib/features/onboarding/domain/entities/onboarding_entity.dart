@@ -19,13 +19,13 @@ List<OnboardingEntity> get onboardingSlides => [
   OnboardingEntity(
     backgroundImage: Assets.svgsPageViewItem1BackgroundImage,
     image: Assets.svgsPageViewItem1Image,
-    title: "page_view_item1_title".tr(),
-    description: "page_view_item1_description".tr(),
+    title: 'page_view_item1_title'.tr(),
+    description: 'page_view_item1_description'.tr(),
   ),
   OnboardingEntity(
     backgroundImage: Assets.svgsPageViewItem2BackgroundImage,
     image: Assets.svgsPageViewItem2Image,
-    title: "page_view_item2_title".tr(),
-    description: "page_view_item2_description".tr(),
+    title: 'page_view_item2_title'.tr(),
+    description: 'page_view_item2_description'.tr(),
   ),
 ];

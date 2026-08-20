@@ -7,7 +7,7 @@ class CartItemEntity extends Equatable {
   final FruitEntity fruitEntity;
   final int quantity;
 
-  get totalPrice => fruitEntity.price * quantity;
+  double get totalPrice => fruitEntity.price * quantity;
 
   CartItemEntity copyWith({FruitEntity? fruitEntity, int? quantity}) =>
       CartItemEntity(

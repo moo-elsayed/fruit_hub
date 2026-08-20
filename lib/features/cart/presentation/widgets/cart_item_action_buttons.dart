@@ -29,11 +29,11 @@ class _CartItemActionButtonsState extends State<CartItemActionButtons> {
     setState(() => _isEnable = false);
 
     if (isIncrement) {
-      context.read<CartCubit>().incrementItemQuantity(
+      await context.read<CartCubit>().incrementItemQuantity(
         widget.cartItemEntity.fruitEntity.code,
       );
     } else {
-      context.read<CartCubit>().decrementItemQuantity(
+      await context.read<CartCubit>().decrementItemQuantity(
         widget.cartItemEntity.fruitEntity.code,
       );
     }
@@ -45,8 +45,7 @@ class _CartItemActionButtonsState extends State<CartItemActionButtons> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
+  Widget build(BuildContext context) => Row(
       spacing: 16.w,
       children: [
         CustomActionButton(
@@ -61,7 +60,7 @@ class _CartItemActionButtonsState extends State<CartItemActionButtons> {
           ),
         ),
         Text(
-          "${widget.cartItemEntity.quantity}",
+          '${widget.cartItemEntity.quantity}',
           style: AppTextStyles.font16color06140CBold,
         ),
         CustomActionButton(
@@ -81,5 +80,4 @@ class _CartItemActionButtonsState extends State<CartItemActionButtons> {
         ),
       ],
     );
-  }
 }

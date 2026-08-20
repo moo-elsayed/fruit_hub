@@ -11,16 +11,14 @@ class SaveAddress extends StatelessWidget {
   final bool value;
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
+  Widget build(BuildContext context) => Row(
       spacing: 8.w,
       children: [
         CustomCheckBox(onChanged: onChanged, value: value),
         Text(
-          "save_address".tr(),
+          'save_address'.tr(),
           style: AppTextStyles.font13color949D9ESemiBold,
         ),
       ],
     );
-  }
 }

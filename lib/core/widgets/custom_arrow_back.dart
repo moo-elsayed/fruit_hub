@@ -12,8 +12,7 @@ class CustomArrowBack extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
       onTap: onTap,
       child: Container(
         padding: padding,
@@ -28,5 +27,4 @@ class CustomArrowBack extends StatelessWidget {
         ),
       ),
     );
-  }
 }

@@ -8,8 +8,7 @@ class NotificationWidget extends StatelessWidget {
   const NotificationWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return CircleAvatar(
+  Widget build(BuildContext context) => CircleAvatar(
       backgroundColor: AppColors.colorEEF8ED,
       radius: 18.r,
       child: SvgPicture.asset(
@@ -18,5 +17,4 @@ class NotificationWidget extends StatelessWidget {
         width: 20.w,
       ),
     );
-  }
 }

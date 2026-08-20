@@ -1,24 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruit_hub/core/helpers/app_logger.dart';
+
 import '../../../../../../core/helpers/backend_endpoints.dart';
 import '../../../../../../core/helpers/failures.dart';
 import '../../../../../../core/helpers/network_response.dart';
 import '../../../../../../core/services/authentication/auth_service.dart';
 import '../../../../../../core/services/database/database_service.dart';
 import '../../../domain/entities/user_entity.dart';
-import 'auth_remote_data_source.dart';
 import '../../models/user_model.dart';
+import 'auth_remote_data_source.dart';
 
 class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
-  final AuthService _authService;
-  final SignOutService _signOutService;
-  final DatabaseService _databaseService;
 
   AuthRemoteDataSourceImp(
     this._authService,
     this._databaseService,
     this._signOutService,
   );
+  final AuthService _authService;
+  final SignOutService _signOutService;
+  final DatabaseService _databaseService;
 
   @override
   Future<NetworkResponse<UserEntity>> createUserWithEmailAndPassword({
@@ -39,13 +40,13 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
 
       return NetworkSuccess(userModel.toUserEntity());
     } on FirebaseAuthException catch (e) {
-      if (e.code != "email-already-in-use") {
+      if (e.code != 'email-already-in-use') {
         await _authService.deleteCurrentUser();
       }
-      return _handleAuthError(e, "createUserWithEmailAndPassword");
+      return _handleAuthError(e, 'createUserWithEmailAndPassword');
     } catch (e) {
       await _authService.deleteCurrentUser();
-      return _handleAuthError(e, "createUserWithEmailAndPassword");
+      return _handleAuthError(e, 'createUserWithEmailAndPassword');
     }
   }
 
@@ -62,13 +63,13 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
 
       if (!userEntity.isVerified) {
         await _authService.sendEmailVerification();
-        return NetworkFailure(Exception("please_verify_your_email"));
+        return NetworkFailure(Exception('please_verify_your_email'));
       }
 
       final updatedUser = await _getOrUpdateUserFromDB(userEntity);
       return NetworkSuccess(updatedUser);
     } catch (e) {
-      return _handleAuthError(e, "signInWithEmailAndPassword");
+      return _handleAuthError(e, 'signInWithEmailAndPassword');
     }
   }
 
@@ -79,22 +80,22 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
       final updatedUser = await _getOrUpdateUserFromDB(userEntity);
       return NetworkSuccess(updatedUser);
     } catch (e) {
-      return _handleAuthError(e, "googleSignIn");
+      return _handleAuthError(e, 'googleSignIn');
     }
   }
 
   @override
   Future<NetworkResponse<void>> forgetPassword(String email) async {
     try {
-      var bool = await _checkIfEmailExists(email);
+      final bool = await _checkIfEmailExists(email);
       if (bool) {
         await _authService.forgetPassword(email);
         return const NetworkSuccess();
       } else {
-        return NetworkFailure(Exception("no_user_found_for_that_email"));
+        return NetworkFailure(Exception('no_user_found_for_that_email'));
       }
     } catch (e) {
-      return _handleAuthError(e, "forgetPassword");
+      return _handleAuthError(e, 'forgetPassword');
     }
   }
 
@@ -104,7 +105,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
       await _signOutService.signOut();
       return const NetworkSuccess();
     } catch (e) {
-      return _handleAuthError(e, "signOut");
+      return _handleAuthError(e, 'signOut');
     }
   }
 
@@ -117,7 +118,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
 
       return NetworkSuccess(updatedUser);
     } catch (e) {
-      return _handleAuthError(e, "facebookSignIn");
+      return _handleAuthError(e, 'facebookSignIn');
     }
   }
 
@@ -126,13 +127,13 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   // -------------------------------------------------------------------
 
   NetworkFailure<T> _handleAuthError<T>(Object e, String functionName) {
-    AppLogger.error("error occurred in $functionName", error: e);
+    AppLogger.error('error occurred in $functionName', error: e);
     if (e is FirebaseAuthException) {
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
       );
     }
-    return NetworkFailure(Exception("error_occurred_please_try_again"));
+    return NetworkFailure(Exception('error_occurred_please_try_again'));
   }
 
   Future<UserEntity> _getOrUpdateUserFromDB(UserEntity user) async {

@@ -28,10 +28,9 @@ class _FavoritesViewState extends State<FavoritesView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: CustomAppBar(
-        title: "favorites".tr(),
+        title: 'favorites'.tr(),
         showArrowBack: true,
         onTap: () => context.pop(),
       ),
@@ -67,5 +66,4 @@ class _FavoritesViewState extends State<FavoritesView> {
         ),
       ),
     );
-  }
 }

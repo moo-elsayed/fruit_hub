@@ -23,7 +23,7 @@ class ProfileItemEntity {
 List<ProfileItemEntity> getProfileItems(BuildContext context) => [
   ProfileItemEntity(
     leadingAsset: Assets.iconsHeart,
-    titleText: "favorites".tr(),
+    titleText: 'favorites'.tr(),
     onTap: () {
       PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
         context,
@@ -36,8 +36,8 @@ List<ProfileItemEntity> getProfileItems(BuildContext context) => [
   ),
   ProfileItemEntity(
     leadingAsset: Assets.iconsLanguageIcon,
-    titleText: "language".tr(),
-    trailingText: "app_language".tr(),
+    titleText: 'language'.tr(),
+    trailingText: 'app_language'.tr(),
     onTap: () {
       showModalBottomSheet(
         context: context,

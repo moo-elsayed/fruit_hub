@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 class SharedPreferencesManager implements AppPreferencesManager {
   late SharedPreferences _prefs;

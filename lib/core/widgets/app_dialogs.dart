@@ -10,8 +10,7 @@ abstract class AppDialogs {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) {
-        return PopScope(
+      builder: (context) => PopScope(
           canPop: false,
           child: Dialog(
             backgroundColor: Colors.transparent,
@@ -48,8 +47,7 @@ abstract class AppDialogs {
               ),
             ),
           ),
-        );
-      },
+        ),
     );
   }
 }

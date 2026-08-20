@@ -21,7 +21,7 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        return NetworkFailure(Exception("user_not_logged_in"));
+        return NetworkFailure(Exception('user_not_logged_in'));
       }
 
       final Map<String, dynamic> dataToAdd = {
@@ -37,7 +37,7 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
     } on FirebaseException catch (e) {
       _logError(
         e: e,
-        functionName: "ProfileRemoteDataSourceImp.addItemToFavorites",
+        functionName: 'ProfileRemoteDataSourceImp.addItemToFavorites',
       );
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
@@ -45,7 +45,7 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
     } catch (e) {
       _logError(
         e: e,
-        functionName: "ProfileRemoteDataSourceImp.addItemToFavorites",
+        functionName: 'ProfileRemoteDataSourceImp.addItemToFavorites',
       );
       return NetworkFailure(Exception(e.toString()));
     }
@@ -58,7 +58,7 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        return NetworkFailure(Exception("user_not_logged_in"));
+        return NetworkFailure(Exception('user_not_logged_in'));
       }
 
       final Map<String, dynamic> dataToRemove = {
@@ -74,7 +74,7 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
     } on FirebaseException catch (e) {
       _logError(
         e: e,
-        functionName: "ProfileRemoteDataSourceImp.removeItemFromFavorites",
+        functionName: 'ProfileRemoteDataSourceImp.removeItemFromFavorites',
       );
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
@@ -82,7 +82,7 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
     } catch (e) {
       _logError(
         e: e,
-        functionName: "ProfileRemoteDataSourceImp.removeItemFromFavorites",
+        functionName: 'ProfileRemoteDataSourceImp.removeItemFromFavorites',
       );
       return NetworkFailure(Exception(e.toString()));
     }
@@ -93,7 +93,7 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        return NetworkFailure(Exception("user_not_logged_in"));
+        return NetworkFailure(Exception('user_not_logged_in'));
       }
       final userData = await _databaseService.getData(
         path: BackendEndpoints.getUserData,
@@ -109,7 +109,7 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
     } on FirebaseException catch (e) {
       _logError(
         e: e,
-        functionName: "ProfileRemoteDataSourceImp.getFavoriteIds",
+        functionName: 'ProfileRemoteDataSourceImp.getFavoriteIds',
       );
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
@@ -117,7 +117,7 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
     } catch (e) {
       _logError(
         e: e,
-        functionName: "ProfileRemoteDataSourceImp.getFavoriteIds",
+        functionName: 'ProfileRemoteDataSourceImp.getFavoriteIds',
       );
       return NetworkFailure(Exception(e.toString()));
     }
@@ -139,12 +139,12 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
         dataList.map((e) => FruitModel.fromJson(e).toEntity()).toList(),
       );
     } on FirebaseException catch (e) {
-      _logError(e: e, functionName: "ProfileRemoteDataSourceImp.getFavorites");
+      _logError(e: e, functionName: 'ProfileRemoteDataSourceImp.getFavorites');
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
       );
     } catch (e) {
-      _logError(e: e, functionName: "ProfileRemoteDataSourceImp.getFavorites");
+      _logError(e: e, functionName: 'ProfileRemoteDataSourceImp.getFavorites');
       return NetworkFailure(Exception(e.toString()));
     }
   }

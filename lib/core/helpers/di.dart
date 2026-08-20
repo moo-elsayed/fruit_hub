@@ -17,10 +17,10 @@ import 'package:fruit_hub/features/checkout/data/repo_imp/checkout_repo_imp.dart
 import 'package:fruit_hub/features/checkout/domain/repo/checkout_repo.dart';
 import 'package:fruit_hub/features/home/data/data_sources/remote/home_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/home/data/repo_imp/home_repo_imp.dart';
+import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
 import 'package:fruit_hub/features/products/data/data_sources/remote/products_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/products/data/repo_imp/products_repo_imp.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
-import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
 import 'package:fruit_hub/features/profile/data/data_sources/remote/profile_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/profile/data/repo_imp/profile_repo_imp.dart';
 import 'package:fruit_hub/features/profile/domain/use_cases/add_item_to_favorites_use_case.dart';
@@ -33,6 +33,7 @@ import 'package:fruit_hub/shared_data/services/local_storage_service/shared_pref
 import 'package:fruit_hub/shared_data/services/payment/stripe_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 import '../../features/auth/data/data_sources/remote/auth_remote_data_source_imp.dart';
 import '../../features/auth/domain/use_cases/facebook_sign_in_use_case.dart';
 import '../../features/auth/domain/use_cases/forget_password_use_case.dart';
@@ -48,10 +49,10 @@ import '../../features/checkout/domain/use_cases/add_order_use_case.dart';
 import '../../features/checkout/domain/use_cases/fetch_shipping_config_use_case.dart';
 import '../../features/checkout/domain/use_cases/make_payment_use_case.dart';
 import '../../features/profile/domain/use_cases/get_favorites_use_case.dart';
-import '../services/authentication/auth_service.dart';
 import '../../shared_data/services/authentication/firebase_auth_service.dart';
-import '../services/database/database_service.dart';
 import '../../shared_data/services/database/firestore_service.dart';
+import '../services/authentication/auth_service.dart';
+import '../services/database/database_service.dart';
 
 final getIt = GetIt.instance;
 

@@ -22,7 +22,7 @@ class HomeRemoteDataSourceImp implements HomeRemoteDataSource {
         query: const QueryParameters(
           descending: true,
           limit: 10,
-          orderBy: "sellingCount",
+          orderBy: 'sellingCount',
         ),
       );
 
@@ -34,7 +34,7 @@ class HomeRemoteDataSourceImp implements HomeRemoteDataSource {
     } on FirebaseException catch (e) {
       _logError(
         e: e,
-        functionName: "HomeRemoteDataSourceImp.getBestSellerProducts",
+        functionName: 'HomeRemoteDataSourceImp.getBestSellerProducts',
       );
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
@@ -42,7 +42,7 @@ class HomeRemoteDataSourceImp implements HomeRemoteDataSource {
     } catch (e) {
       _logError(
         e: e,
-        functionName: "HomeRemoteDataSourceImp.getBestSellerProducts",
+        functionName: 'HomeRemoteDataSourceImp.getBestSellerProducts',
       );
       return NetworkFailure(Exception(e.toString()));
     }
@@ -50,6 +50,6 @@ class HomeRemoteDataSourceImp implements HomeRemoteDataSource {
 
   void _logError({
     required Object e,
-    String functionName = "HomeRemoteDataSourceImp.getAllProducts",
+    String functionName = 'HomeRemoteDataSourceImp.getAllProducts',
   }) => errorLogger(functionName: functionName, error: e.toString());
 }

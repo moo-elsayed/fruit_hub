@@ -15,8 +15,7 @@ class CheckoutSteps extends StatelessWidget {
   final PageController pageController;
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       height: 23.h,
       child: Row(
         mainAxisAlignment: .spaceAround,
@@ -41,5 +40,4 @@ class CheckoutSteps extends StatelessWidget {
         ),
       ),
     );
-  }
 }

@@ -23,8 +23,8 @@ class CustomFruitItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var myFavoriteService = context.read<FavoriteCubit>();
-    var myCartService = context.read<CartCubit>();
+    final myFavoriteService = context.read<FavoriteCubit>();
+    final myCartService = context.read<CartCubit>();
     return GestureDetector(
       onTap: () {
         PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
@@ -81,8 +81,7 @@ class CustomFruitItem extends StatelessWidget {
           ),
           BlocBuilder<FavoriteCubit, FavoriteState>(
             buildWhen: (previous, current) => current is ToggleFavoriteSuccess,
-            builder: (context, state) {
-              return PositionedDirectional(
+            builder: (context, state) => PositionedDirectional(
                 start: 4.w,
                 top: 4.h,
                 child: CustomFavouriteIcon(
@@ -90,8 +89,7 @@ class CustomFruitItem extends StatelessWidget {
                       myFavoriteService.toggleFavorite(fruitEntity.code),
                   isFavourite: myFavoriteService.isFavorite(fruitEntity.code),
                 ),
-              );
-            },
+              ),
           ),
         ],
       ),

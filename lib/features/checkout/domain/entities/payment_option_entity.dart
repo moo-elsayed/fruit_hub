@@ -18,10 +18,10 @@ class PaymentOptionEntity {
 List<PaymentOptionEntity> getPaymentOptions(
   ShippingConfigEntity shippingConfig,
 ) => [
-  PaymentOptionEntity(title: "pay_by_paypal".tr(), type: .paypal),
-  PaymentOptionEntity(title: "pay_by_credit_card".tr(), type: .card),
+  PaymentOptionEntity(title: 'pay_by_paypal'.tr(), type: .paypal),
+  PaymentOptionEntity(title: 'pay_by_credit_card'.tr(), type: .card),
   PaymentOptionEntity(
-    title: "cash_on_delivery".tr(),
+    title: 'cash_on_delivery'.tr(),
     type: .cash,
     shippingCost: shippingConfig.shippingCost,
   ),

@@ -12,10 +12,9 @@ class BestSellerView extends StatelessWidget {
   final List<FruitEntity> fruits;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: CustomAppBar(
-        title: "best_seller".tr(),
+        title: 'best_seller'.tr(),
         showArrowBack: true,
         showNotification: true,
         onTap: () => context.pop(),
@@ -25,5 +24,4 @@ class BestSellerView extends StatelessWidget {
         child: FruitsGridView(fruits: fruits),
       ),
     );
-  }
 }

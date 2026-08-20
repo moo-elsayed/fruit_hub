@@ -19,21 +19,6 @@ class FruitModel {
     required this.name,
   });
 
-  final String imagePath;
-  final String name;
-  final String code;
-  final String description;
-  final double price;
-  final bool isFeatured;
-  final bool isOrganic;
-  final int daysUntilExpiration;
-  final int numberOfCalories;
-  final int unitAmount;
-  final int ratingCount;
-  final int sellingCount;
-  final num avgRating;
-  final List<ReviewModel> reviews;
-
   factory FruitModel.fromJson(Map<String, dynamic> json) => FruitModel(
     name: json['name'],
     description: json['description'],
@@ -52,6 +37,21 @@ class FruitModel {
         .toList(),
     sellingCount: json['sellingCount'],
   );
+
+  final String imagePath;
+  final String name;
+  final String code;
+  final String description;
+  final double price;
+  final bool isFeatured;
+  final bool isOrganic;
+  final int daysUntilExpiration;
+  final int numberOfCalories;
+  final int unitAmount;
+  final int ratingCount;
+  final int sellingCount;
+  final num avgRating;
+  final List<ReviewModel> reviews;
 
   FruitEntity toEntity() => FruitEntity(
     name: name,

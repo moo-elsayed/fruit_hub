@@ -18,8 +18,7 @@ class PageViewItem extends StatelessWidget {
   final bool showSkip;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       children: [
         Stack(
           alignment: Alignment.bottomCenter,
@@ -41,7 +40,7 @@ class PageViewItem extends StatelessWidget {
                     onTap: () =>
                         context.read<OnboardingCubit>().setFirstTime(false),
                     child: Text(
-                      "skip".tr(),
+                      'skip'.tr(),
                       style: AppTextStyles.font13color949D9ERegular,
                     ),
                   ),
@@ -65,7 +64,6 @@ class PageViewItem extends StatelessWidget {
         ),
       ],
     );
-  }
 
   Widget _getTitle() => slide.title.split(' ').last == 'FruitHUB'
       ? RichText(

@@ -16,7 +16,7 @@ class SignInWithEmailAndPasswordUseCase {
     required String email,
     required String password,
   }) async {
-    var networkResponse = await _authRepo.signInWithEmailAndPassword(
+    final networkResponse = await _authRepo.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -26,7 +26,7 @@ class SignInWithEmailAndPasswordUseCase {
           await _saveUserSessionUseCase.call(networkResponse.data!);
           return NetworkSuccess(networkResponse.data);
         } catch (e) {
-          return NetworkFailure(Exception("error_occurred_please_try_again"));
+          return NetworkFailure(Exception('error_occurred_please_try_again'));
         }
       case NetworkFailure<UserEntity>():
         return NetworkFailure(networkResponse.exception);

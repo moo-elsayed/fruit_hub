@@ -35,11 +35,10 @@ class _PaymentBodyState extends State<PaymentBody> {
       crossAxisAlignment: .start,
       children: [
         Text(
-          "choose_the_payment_method_that_suits_you_best".tr(),
+          'choose_the_payment_method_that_suits_you_best'.tr(),
           style: AppTextStyles.font13color0C0D0DBold,
         ),
-        ...List.generate(paymentOptions.length, (index) {
-          return Padding(
+        ...List.generate(paymentOptions.length, (index) => Padding(
             padding: .only(top: 12.h),
             child: PaymentOption(
               paymentOptionEntity: paymentOptions[index],
@@ -53,8 +52,7 @@ class _PaymentBodyState extends State<PaymentBody> {
               },
               isSelected: selectedPaymentOption == index,
             ),
-          );
-        }),
+          )),
       ],
     );
   }

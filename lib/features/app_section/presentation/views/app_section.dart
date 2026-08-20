@@ -60,8 +60,7 @@ class _AppSectionState extends State<AppSection> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocListener<CartCubit, CartState>(
+  Widget build(BuildContext context) => BlocListener<CartCubit, CartState>(
       listenWhen: (previous, current) =>
           current is CartSuccess || current is CartLoading,
       listener: (context, state) {
@@ -76,8 +75,8 @@ class _AppSectionState extends State<AppSection> {
           AppToast.showToast(
             context: context,
             title: state.newItemAdded
-                ? "item_added_to_cart".tr()
-                : "item_removed_from_cart".tr(),
+                ? 'item_added_to_cart'.tr()
+                : 'item_removed_from_cart'.tr(),
             type: .success,
           );
         }
@@ -112,7 +111,6 @@ class _AppSectionState extends State<AppSection> {
         ),
       ),
     );
-  }
 
   List<CustomNavBarScreen> _buildScreens() => List.generate(
     _pages.length,

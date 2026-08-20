@@ -31,7 +31,7 @@ class _CheckoutViewState extends State<CheckoutView> {
   late PageController _pageController;
   int currentIndex = 0;
 
-  List<String> get steps => ["address".tr(), "payment".tr(), "review".tr()];
+  List<String> get steps => ['address'.tr(), 'payment'.tr(), 'review'.tr()];
 
   @override
   void initState() {
@@ -48,8 +48,7 @@ class _CheckoutViewState extends State<CheckoutView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
+  Widget build(BuildContext context) => BlocProvider(
       create: (context) =>
           CheckoutCubit(
               getIt.get<AppPreferencesManager>(),
@@ -61,8 +60,7 @@ class _CheckoutViewState extends State<CheckoutView> {
             ..getAddressFromLocalStorage()
             ..fetchShippingConfig(),
       child: Builder(
-        builder: (context) {
-          return Scaffold(
+        builder: (context) => Scaffold(
             appBar: CustomAppBar(
               title: steps[currentIndex],
               showArrowBack: true,
@@ -95,9 +93,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                       addressArgs: addressArgs,
                     ),
                   ),
-          );
-        },
+          ),
       ),
     );
-  }
 }

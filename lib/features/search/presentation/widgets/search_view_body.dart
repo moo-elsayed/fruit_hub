@@ -36,7 +36,7 @@ class _SearchViewBodyState extends State<SearchViewBody> {
 
     _debounce = Timer(const Duration(milliseconds: 500), () async {
       if (_searchController.text.trim() == query.trim() && query.isNotEmpty) {
-        context.read<SearchCubit>().searchProducts(query);
+        await context.read<SearchCubit>().searchProducts(query);
       }
     });
   }
@@ -56,8 +56,7 @@ class _SearchViewBodyState extends State<SearchViewBody> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
+  Widget build(BuildContext context) => GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       behavior: HitTestBehavior.opaque,
       child: Padding(
@@ -92,7 +91,7 @@ class _SearchViewBodyState extends State<SearchViewBody> {
                                 bottom: 16.h,
                               ),
                               child: Text(
-                                "search_results".tr(),
+                                'search_results'.tr(),
                                 style: AppTextStyles.font13color949D9ERegular,
                               ),
                             ),
@@ -122,5 +121,4 @@ class _SearchViewBodyState extends State<SearchViewBody> {
         ),
       ),
     );
-  }
 }

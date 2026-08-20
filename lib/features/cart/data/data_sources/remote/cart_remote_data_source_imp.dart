@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
 import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/core/services/database/database_service.dart';
 import 'package:fruit_hub/features/cart/data/data_sources/remote/cart_remote_data_source.dart';
-import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/shared_data/models/fruit_model.dart';
+
 import '../../../../../core/helpers/app_logger.dart';
 import '../../../../../core/helpers/failures.dart';
 import '../../../../../core/services/database/query_parameters.dart';
@@ -21,18 +22,18 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        return NetworkFailure(Exception("user_not_logged_in"));
+        return NetworkFailure(Exception('user_not_logged_in'));
       }
       final userData = await _databaseService.getData(
         path: BackendEndpoints.getUserData,
         documentId: userId,
       );
-      var cartItems = _getCartItemsHelper(userData);
-      int index = cartItems.indexWhere(
+      final cartItems = _getCartItemsHelper(userData);
+      final int index = cartItems.indexWhere(
         (element) => element['fruitCode'] == productId,
       );
       if (index != -1) {
-        int count = cartItems[index]['quantity'];
+        final int count = cartItems[index]['quantity'];
         cartItems[index]['quantity'] = count + 1;
       } else {
         cartItems.add({'fruitCode': productId, 'quantity': 1});
@@ -44,12 +45,12 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
       );
       return const NetworkSuccess();
     } on FirebaseException catch (e) {
-      AppLogger.error("Firebase Error in addItemToCart", error: e);
+      AppLogger.error('Firebase Error in addItemToCart', error: e);
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
       );
     } catch (e) {
-      AppLogger.error("Error in addItemToCart", error: e);
+      AppLogger.error('Error in addItemToCart', error: e);
       return NetworkFailure(Exception(e.toString()));
     }
   }
@@ -59,13 +60,13 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        return NetworkFailure(Exception("user_not_logged_in"));
+        return NetworkFailure(Exception('user_not_logged_in'));
       }
       final userData = await _databaseService.getData(
         path: BackendEndpoints.getUserData,
         documentId: userId,
       );
-      var cartItems = _getCartItemsHelper(userData);
+      final cartItems = _getCartItemsHelper(userData);
       cartItems.removeWhere((element) => element['fruitCode'] == productId);
       await _databaseService.updateData(
         path: BackendEndpoints.updateUserData,
@@ -74,12 +75,12 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
       );
       return const NetworkSuccess();
     } on FirebaseException catch (e) {
-      AppLogger.error("Firebase Error in removeItemFromCart", error: e);
+      AppLogger.error('Firebase Error in removeItemFromCart', error: e);
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
       );
     } catch (e) {
-      AppLogger.error("Error in removeItemFromCart", error: e);
+      AppLogger.error('Error in removeItemFromCart', error: e);
       return NetworkFailure(Exception(e.toString()));
     }
   }
@@ -98,11 +99,11 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
           whereInIds: cartItems.map((e) => e['fruitCode'] as String).toList(),
         ),
       );
-      List<FruitEntity> products = dataList
+      final List<FruitEntity> products = dataList
           .map((e) => FruitModel.fromJson(e).toEntity())
           .toList();
 
-      List<CartItemEntity> cartItemsList = [];
+      final List<CartItemEntity> cartItemsList = [];
 
       for (var product in products) {
         final cartItemMap = cartItems.firstWhere(
@@ -119,12 +120,12 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
 
       return NetworkSuccess(cartItemsList);
     } on FirebaseException catch (e) {
-      AppLogger.error("Firebase Error in getProductsInCart", error: e);
+      AppLogger.error('Firebase Error in getProductsInCart', error: e);
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
       );
     } catch (e) {
-      AppLogger.error("Error in getProductsInCart", error: e);
+      AppLogger.error('Error in getProductsInCart', error: e);
       return NetworkFailure(Exception(e.toString()));
     }
   }
@@ -137,7 +138,7 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        return NetworkFailure(Exception("user_not_logged_in"));
+        return NetworkFailure(Exception('user_not_logged_in'));
       }
 
       final userData = await _databaseService.getData(
@@ -145,9 +146,9 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
         path: BackendEndpoints.getUserData,
       );
 
-      var cartItems = _getCartItemsHelper(userData);
+      final cartItems = _getCartItemsHelper(userData);
 
-      int index = cartItems.indexWhere(
+      final int index = cartItems.indexWhere(
         (element) => element['fruitCode'] == productId,
       );
 
@@ -163,12 +164,12 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
 
       return const NetworkSuccess();
     } on FirebaseException catch (e) {
-      AppLogger.error("Firebase Error in updateItemQuantity", error: e);
+      AppLogger.error('Firebase Error in updateItemQuantity', error: e);
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
       );
     } catch (e) {
-      AppLogger.error("Error in updateItemQuantity", error: e);
+      AppLogger.error('Error in updateItemQuantity', error: e);
       return NetworkFailure(Exception(e.toString()));
     }
   }
@@ -178,7 +179,7 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        return NetworkFailure(Exception("user_not_logged_in"));
+        return NetworkFailure(Exception('user_not_logged_in'));
       }
       final userData = await _databaseService.getData(
         path: BackendEndpoints.getUserData,
@@ -186,12 +187,12 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
       );
       return NetworkSuccess(_getCartItemsHelper(userData));
     } on FirebaseException catch (e) {
-      AppLogger.error("Firebase Error in getCartItems", error: e);
+      AppLogger.error('Firebase Error in getCartItems', error: e);
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
       );
     } catch (e) {
-      AppLogger.error("Error in getCartItems", error: e);
+      AppLogger.error('Error in getCartItems', error: e);
       return NetworkFailure(Exception(e.toString()));
     }
   }
@@ -201,7 +202,7 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
     try {
       final userId = _auth.currentUser?.uid;
       if (userId == null) {
-        return NetworkFailure(Exception("user_not_logged_in"));
+        return NetworkFailure(Exception('user_not_logged_in'));
       }
       await _databaseService.updateData(
         path: BackendEndpoints.getUserData,
@@ -210,12 +211,12 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
       );
       return const NetworkSuccess();
     } on FirebaseException catch (e) {
-      AppLogger.error("Firebase Error in clearCart", error: e);
+      AppLogger.error('Firebase Error in clearCart', error: e);
       return NetworkFailure(
         Exception(ServerFailure.fromFirebaseException(e).errorMessage),
       );
     } catch (e) {
-      AppLogger.error("Error in clearCart", error: e);
+      AppLogger.error('Error in clearCart', error: e);
       return NetworkFailure(Exception(e.toString()));
     }
   }

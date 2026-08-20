@@ -15,8 +15,7 @@ class AuthRedirectText extends StatelessWidget {
   final void Function()? onTap;
 
   @override
-  Widget build(BuildContext context) {
-    return RichText(
+  Widget build(BuildContext context) => RichText(
       text: TextSpan(
         children: [
           TextSpan(
@@ -32,5 +31,4 @@ class AuthRedirectText extends StatelessWidget {
         ],
       ),
     );
-  }
 }

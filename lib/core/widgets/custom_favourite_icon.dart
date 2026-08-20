@@ -29,8 +29,7 @@ class _CustomFavouriteIconState extends State<CustomFavouriteIcon> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       height: 30.h,
       width: 30.w,
       child: IconButton(
@@ -58,16 +57,15 @@ class _CustomFavouriteIconState extends State<CustomFavouriteIcon> {
           child: _isFavourite
               ? const Icon(
                   CupertinoIcons.heart_fill,
-                  key: ValueKey("filled"),
+                  key: ValueKey('filled'),
                   color: AppColors.red,
                 )
               : const Icon(
                   CupertinoIcons.heart,
-                  key: ValueKey("outlined"),
+                  key: ValueKey('outlined'),
                   color: AppColors.color292D32,
                 ),
         ),
       ),
     );
-  }
 }

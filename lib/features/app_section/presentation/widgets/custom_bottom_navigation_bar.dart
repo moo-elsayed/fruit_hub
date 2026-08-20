@@ -23,8 +23,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: .symmetric(horizontal: 27.w),
       decoration: const BoxDecoration(
         color: AppColors.white,
@@ -54,5 +53,4 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         }).toList(),
       ),
     );
-  }
 }

@@ -10,12 +10,10 @@ class AnimatedSplashView extends StatelessWidget {
   const AnimatedSplashView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: BlocProvider(
         create: (context) => SplashCubit(getIt.get<AppPreferencesManager>()),
         child: const AnimatedSplashViewBody(),
       ),
     );
-  }
 }

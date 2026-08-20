@@ -2,14 +2,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
-import 'package:fruit_hub/core/entities/cart_item_entity.dart';
-import 'package:fruit_hub/features/cart/presentation/widgets/products_count.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/cart_items_list_view.dart';
+import 'package:fruit_hub/features/cart/presentation/widgets/products_count.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+
 import '../../../../core/routing/routes.dart';
 import '../../../../core/theming/app_colors.dart';
 import '../../../../core/theming/app_text_styles.dart';
@@ -34,8 +35,7 @@ class _CartState extends State<Cart> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return NestedScrollView(
+  Widget build(BuildContext context) => NestedScrollView(
       headerSliverBuilder: (context, innerBoxIsScrolled) => [
         SliverAppBar(
           floating: true,
@@ -47,7 +47,7 @@ class _CartState extends State<Cart> {
           flexibleSpace: FlexibleSpaceBar(
             background: Padding(
               padding: EdgeInsetsGeometry.only(top: 10.h, bottom: 8.h),
-              child: CustomAppBar(title: "cart_app_bar".tr()),
+              child: CustomAppBar(title: 'cart_app_bar'.tr()),
             ),
           ),
         ),
@@ -156,5 +156,4 @@ class _CartState extends State<Cart> {
         ],
       ),
     );
-  }
 }

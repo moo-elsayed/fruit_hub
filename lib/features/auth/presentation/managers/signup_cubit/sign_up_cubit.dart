@@ -21,7 +21,7 @@ class SignupCubit extends Cubit<SignupState> {
     required String username,
   }) async {
     emit(SignUpLoading());
-    var result = await _createUserWithEmailAndPasswordUseCase.call(
+    final result = await _createUserWithEmailAndPasswordUseCase.call(
       email: email,
       password: password,
       username: username,

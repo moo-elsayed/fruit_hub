@@ -15,7 +15,7 @@ class SaveUserSessionUseCase {
         _appPreferencesManager.setLoggedIn(true),
       ]);
     } catch (e) {
-      AppLogger.error("error in save user session", error: e.toString());
+      AppLogger.error('error in save user session', error: e.toString());
       throw Exception('Failed to save user session');
     }
   }
