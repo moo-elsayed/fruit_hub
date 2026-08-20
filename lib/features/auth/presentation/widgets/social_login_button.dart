@@ -23,24 +23,24 @@ class SocialLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Stack(
-      alignment: AlignmentDirectional.centerStart,
-      children: [
-        CustomMaterialButton(
-          onPressed: onPressed,
-          maxWidth: true,
-          color: AppColors.white,
-          side: const BorderSide(color: AppColors.colorDDDFDF),
-          isLoading: isLoading,
-          loadingIndicatorColor: loadingIndicatorColor,
-          text: text,
-          textStyle: AppTextStyles.font16color0C0D0DSemiBold,
+    alignment: AlignmentDirectional.centerStart,
+    children: [
+      CustomMaterialButton(
+        onPressed: onPressed,
+        maxWidth: true,
+        color: AppColors.white,
+        side: const BorderSide(color: AppColors.colorDDDFDF),
+        isLoading: isLoading,
+        loadingIndicatorColor: loadingIndicatorColor,
+        text: text,
+        textStyle: AppTextStyles.font16color0C0D0DSemiBold,
+      ),
+      if (!isLoading)
+        Positioned(
+          right: isArabic(context) ? 16.w : null,
+          left: !isArabic(context) ? 16.w : null,
+          child: socialIcon,
         ),
-        if (!isLoading)
-          Positioned(
-            right: isArabic(context) ? 16.w : null,
-            left: !isArabic(context) ? 16.w : null,
-            child: socialIcon,
-          ),
-      ],
-    );
+    ],
+  );
 }

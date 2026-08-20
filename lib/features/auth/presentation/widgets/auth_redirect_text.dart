@@ -16,19 +16,19 @@ class AuthRedirectText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: question,
-            style: AppTextStyles.font16color949D9ESemiBold,
-          ),
-          const TextSpan(text: ' '),
-          TextSpan(
-            text: action,
-            style: AppTextStyles.font16color1B5E37ESemiBold,
-            recognizer: TapGestureRecognizer()..onTap = onTap,
-          ),
-        ],
-      ),
-    );
+    text: TextSpan(
+      children: [
+        TextSpan(
+          text: question,
+          style: AppTextStyles.font16color949D9ESemiBold,
+        ),
+        const TextSpan(text: ' '),
+        TextSpan(
+          text: action,
+          style: AppTextStyles.font16color1B5E37ESemiBold,
+          recognizer: TapGestureRecognizer()..onTap = onTap,
+        ),
+      ],
+    ),
+  );
 }

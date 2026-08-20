@@ -30,34 +30,34 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: () {
-        setState(() {
-          _myBool = !_myBool;
-          widget.onChanged(_myBool);
-        });
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeInOut,
-        width: 24.w,
-        height: 24.h,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(
-            color: !_myBool ? AppColors.colorDDDFDF : AppColors.color1B5E37,
-            width: 1.5,
-          ),
-          color: _myBool ? AppColors.color1B5E37 : Colors.white,
+    onTap: () {
+      setState(() {
+        _myBool = !_myBool;
+        widget.onChanged(_myBool);
+      });
+    },
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeInOut,
+      width: 24.w,
+      height: 24.h,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(
+          color: !_myBool ? AppColors.colorDDDFDF : AppColors.color1B5E37,
+          width: 1.5,
         ),
-        child: _myBool
-            ? Center(
-                child: SvgPicture.asset(
-                  Assets.iconsCheck,
-                  width: 16.w,
-                  height: 16.h,
-                ),
-              )
-            : null,
+        color: _myBool ? AppColors.color1B5E37 : Colors.white,
       ),
-    );
+      child: _myBool
+          ? Center(
+              child: SvgPicture.asset(
+                Assets.iconsCheck,
+                width: 16.w,
+                height: 16.h,
+              ),
+            )
+          : null,
+    ),
+  );
 }

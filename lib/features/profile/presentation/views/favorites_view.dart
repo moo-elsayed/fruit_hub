@@ -29,41 +29,41 @@ class _FavoritesViewState extends State<FavoritesView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: CustomAppBar(
-        title: 'favorites'.tr(),
-        showArrowBack: true,
-        onTap: () => context.pop(),
+    appBar: CustomAppBar(
+      title: 'favorites'.tr(),
+      showArrowBack: true,
+      onTap: () => context.pop(),
+    ),
+    body: Padding(
+      padding: EdgeInsetsGeometry.only(top: 8.h),
+      child: BlocConsumer<FavoriteCubit, FavoriteState>(
+        listener: (context, state) {
+          if (state is GetFavoritesSuccess) {
+            favorites = state.favorites;
+          }
+          if (state is ToggleFavoriteSuccess) {
+            favorites.removeWhere(
+              (element) => !state.favoriteIds.contains(element.code),
+            );
+          }
+          if (state is GetFavoritesFailure) {
+            AppToast.showToast(
+              context: context,
+              title: state.errorMessage,
+              type: ToastificationType.error,
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is GetFavoritesLoading) {
+            return const Skeletonizer(
+              enabled: true,
+              child: FruitsGridView(itemCount: 4),
+            );
+          }
+          return FruitsGridView(fruits: favorites, fromFavorite: true);
+        },
       ),
-      body: Padding(
-        padding: EdgeInsetsGeometry.only(top: 8.h),
-        child: BlocConsumer<FavoriteCubit, FavoriteState>(
-          listener: (context, state) {
-            if (state is GetFavoritesSuccess) {
-              favorites = state.favorites;
-            }
-            if (state is ToggleFavoriteSuccess) {
-              favorites.removeWhere(
-                (element) => !state.favoriteIds.contains(element.code),
-              );
-            }
-            if (state is GetFavoritesFailure) {
-              AppToast.showToast(
-                context: context,
-                title: state.errorMessage,
-                type: ToastificationType.error,
-              );
-            }
-          },
-          builder: (context, state) {
-            if (state is GetFavoritesLoading) {
-              return const Skeletonizer(
-                enabled: true,
-                child: FruitsGridView(itemCount: 4),
-              );
-            }
-            return FruitsGridView(fruits: favorites, fromFavorite: true);
-          },
-        ),
-      ),
-    );
+    ),
+  );
 }

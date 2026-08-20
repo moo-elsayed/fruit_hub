@@ -75,9 +75,10 @@ class CheckoutRemoteDataSourceImp implements CheckoutRemoteDataSource {
       final String? savedCustomerId = map['customerId'];
       PaymentOutputEntity paymentOutputEntity;
       if (savedCustomerId != null) {
-        final PaymentInputModel paymentInputModel = PaymentInputModel.fromEntity(
-          input,
-        ).copyWith(customerId: savedCustomerId);
+        final PaymentInputModel paymentInputModel =
+            PaymentInputModel.fromEntity(
+              input,
+            ).copyWith(customerId: savedCustomerId);
         paymentOutputEntity = await _paymentService.makePayment(
           paymentInputModel.toEntity(),
         );

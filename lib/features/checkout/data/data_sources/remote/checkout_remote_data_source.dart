@@ -9,5 +9,7 @@ abstract class CheckoutRemoteDataSource {
 
   Future<NetworkResponse<void>> addOrder(OrderEntity order);
 
-  Future<NetworkResponse<PaymentOutputEntity>> makePayment(PaymentInputEntity input);
+  Future<NetworkResponse<PaymentOutputEntity>> makePayment(
+    PaymentInputEntity input,
+  );
 }

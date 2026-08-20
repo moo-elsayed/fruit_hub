@@ -19,51 +19,51 @@ class PageViewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-      children: [
-        Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            SvgPicture.asset(slide.backgroundImage, fit: BoxFit.fill),
-            SvgPicture.asset(slide.image),
-            if (showSkip)
-              Positioned(
-                top: 60.h,
-                right: isArabic(context) ? 20.w : null,
-                left: !isArabic(context) ? 20.w : null,
-                child: BlocListener<OnboardingCubit, OnboardingState>(
-                  listener: (context, state) {
-                    if (state is OnboardingNavigateToHome) {
-                      context.pushReplacementNamed(Routes.loginView);
-                    }
-                  },
-                  child: GestureDetector(
-                    onTap: () =>
-                        context.read<OnboardingCubit>().setFirstTime(false),
-                    child: Text(
-                      'skip'.tr(),
-                      style: AppTextStyles.font13color949D9ERegular,
-                    ),
+    children: [
+      Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          SvgPicture.asset(slide.backgroundImage, fit: BoxFit.fill),
+          SvgPicture.asset(slide.image),
+          if (showSkip)
+            Positioned(
+              top: 60.h,
+              right: isArabic(context) ? 20.w : null,
+              left: !isArabic(context) ? 20.w : null,
+              child: BlocListener<OnboardingCubit, OnboardingState>(
+                listener: (context, state) {
+                  if (state is OnboardingNavigateToHome) {
+                    context.pushReplacementNamed(Routes.loginView);
+                  }
+                },
+                child: GestureDetector(
+                  onTap: () =>
+                      context.read<OnboardingCubit>().setFirstTime(false),
+                  child: Text(
+                    'skip'.tr(),
+                    style: AppTextStyles.font13color949D9ERegular,
                   ),
                 ),
               ),
+            ),
+        ],
+      ),
+      Padding(
+        padding: EdgeInsetsGeometry.only(right: 37.w, left: 37.w, top: 64.h),
+        child: Column(
+          children: [
+            _getTitle(),
+            Gap(24.h),
+            Text(
+              slide.description,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.font13color4E5556FSemiBold,
+            ),
           ],
         ),
-        Padding(
-          padding: EdgeInsetsGeometry.only(right: 37.w, left: 37.w, top: 64.h),
-          child: Column(
-            children: [
-              _getTitle(),
-              Gap(24.h),
-              Text(
-                slide.description,
-                textAlign: TextAlign.center,
-                style: AppTextStyles.font13color4E5556FSemiBold,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
+      ),
+    ],
+  );
 
   Widget _getTitle() => slide.title.split(' ').last == 'FruitHUB'
       ? RichText(

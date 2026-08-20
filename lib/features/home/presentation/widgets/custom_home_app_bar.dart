@@ -12,27 +12,27 @@ class CustomHomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w, vertical: 16.h),
-      child: Row(
-        crossAxisAlignment: .start,
-        children: [
-          Image.asset(Assets.imagesProfileImage, height: 44.h, width: 44.w),
-          Gap(11.w),
-          Column(
-            spacing: 2.h,
-            crossAxisAlignment: .start,
-            children: [
-              Text(
-                'good_morning'.tr(),
-                style: AppTextStyles.font16color949D9ERegular,
-              ),
-              Text(
-                context.read<HomeCubit>().getUserName,
-                style: AppTextStyles.font16color0C0D0DSemiBold,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+    padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w, vertical: 16.h),
+    child: Row(
+      crossAxisAlignment: .start,
+      children: [
+        Image.asset(Assets.imagesProfileImage, height: 44.h, width: 44.w),
+        Gap(11.w),
+        Column(
+          spacing: 2.h,
+          crossAxisAlignment: .start,
+          children: [
+            Text(
+              'good_morning'.tr(),
+              style: AppTextStyles.font16color949D9ERegular,
+            ),
+            Text(
+              context.read<HomeCubit>().getUserName,
+              style: AppTextStyles.font16color0C0D0DSemiBold,
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }

@@ -16,37 +16,37 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => PopScope(
-      canPop: false,
-      child: Dialog(
-        elevation: 0,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-          decoration: ShapeDecoration(
-            color: AppColors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.r)),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(Assets.svgsSuccess),
-              Gap(16.h),
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: AppTextStyles.font16color0C0D0DSemiBold,
-              ),
-              Gap(16.h),
-              CustomMaterialButton(
-                onPressed: onPressed,
-                text: 'ok'.tr(),
-                maxWidth: true,
-                textStyle: AppTextStyles.font16WhiteBold,
-              ),
-            ],
+    canPop: false,
+    child: Dialog(
+      elevation: 0,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+        decoration: ShapeDecoration(
+          color: AppColors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.r)),
           ),
         ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(Assets.svgsSuccess),
+            Gap(16.h),
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.font16color0C0D0DSemiBold,
+            ),
+            Gap(16.h),
+            CustomMaterialButton(
+              onPressed: onPressed,
+              text: 'ok'.tr(),
+              maxWidth: true,
+              textStyle: AppTextStyles.font16WhiteBold,
+            ),
+          ],
+        ),
       ),
-    );
+    ),
+  );
 }

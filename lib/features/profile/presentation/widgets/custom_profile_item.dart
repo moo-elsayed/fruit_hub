@@ -14,30 +14,30 @@ class CustomProfileItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-      spacing: 8.w,
-      children: [
-        SvgPicture.asset(entity.leadingAsset),
-        Text(entity.titleText, style: AppTextStyles.font13color949D9ESemiBold),
-        const Spacer(),
-        GestureDetector(
-          onTap: entity.onTap,
-          child: Row(
-            children: [
-              if (entity.trailingText != null)
-                Text(
-                  entity.trailingText!,
-                  style: AppTextStyles.font13color0C0D0DSemiBold,
-                ),
-              Transform.rotate(
-                angle: !isArabic(context) ? 0 : pi,
-                child: SvgPicture.asset(
-                  Assets.iconsArrowBack,
-                  fit: BoxFit.scaleDown,
-                ),
+    spacing: 8.w,
+    children: [
+      SvgPicture.asset(entity.leadingAsset),
+      Text(entity.titleText, style: AppTextStyles.font13color949D9ESemiBold),
+      const Spacer(),
+      GestureDetector(
+        onTap: entity.onTap,
+        child: Row(
+          children: [
+            if (entity.trailingText != null)
+              Text(
+                entity.trailingText!,
+                style: AppTextStyles.font13color0C0D0DSemiBold,
               ),
-            ],
-          ),
+            Transform.rotate(
+              angle: !isArabic(context) ? 0 : pi,
+              child: SvgPicture.asset(
+                Assets.iconsArrowBack,
+                fit: BoxFit.scaleDown,
+              ),
+            ),
+          ],
         ),
-      ],
-    );
+      ),
+    ],
+  );
 }

@@ -31,21 +31,21 @@ class CustomMaterialButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialButton(
-      color: color ?? AppColors.color1B5E37,
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      minWidth: maxWidth ? double.infinity : null,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: borderRadius ?? BorderRadiusGeometry.circular(16.r),
-        side: side ?? BorderSide.none,
-      ),
-      padding:
-          padding ??
-          EdgeInsetsGeometry.symmetric(horizontal: 24.w, vertical: 13.h),
-      onPressed: onPressed,
-      child: isLoading
-          ? CupertinoActivityIndicator(color: loadingIndicatorColor)
-          : Text(text, style: textStyle),
-    );
+    color: color ?? AppColors.color1B5E37,
+    splashColor: Colors.transparent,
+    highlightColor: Colors.transparent,
+    minWidth: maxWidth ? double.infinity : null,
+    elevation: 0,
+    shape: RoundedRectangleBorder(
+      borderRadius: borderRadius ?? BorderRadiusGeometry.circular(16.r),
+      side: side ?? BorderSide.none,
+    ),
+    padding:
+        padding ??
+        EdgeInsetsGeometry.symmetric(horizontal: 24.w, vertical: 13.h),
+    onPressed: onPressed,
+    child: isLoading
+        ? CupertinoActivityIndicator(color: loadingIndicatorColor)
+        : Text(text, style: textStyle),
+  );
 }

@@ -46,38 +46,35 @@ class _CartItemActionButtonsState extends State<CartItemActionButtons> {
 
   @override
   Widget build(BuildContext context) => Row(
-      spacing: 16.w,
-      children: [
-        CustomActionButton(
-          onTap: () => _handleQuantityChange(true),
-          opacity: _isEnable ? 1 : 0.5,
-          radius: 12.r,
-          child: SvgPicture.asset(
-            Assets.iconsPlus,
-            height: 10.h,
-            width: 10.w,
-            fit: BoxFit.scaleDown,
-          ),
+    spacing: 16.w,
+    children: [
+      CustomActionButton(
+        onTap: () => _handleQuantityChange(true),
+        opacity: _isEnable ? 1 : 0.5,
+        radius: 12.r,
+        child: SvgPicture.asset(
+          Assets.iconsPlus,
+          height: 10.h,
+          width: 10.w,
+          fit: BoxFit.scaleDown,
         ),
-        Text(
-          '${widget.cartItemEntity.quantity}',
-          style: AppTextStyles.font16color06140CBold,
-        ),
-        CustomActionButton(
-          onTap: () => _handleQuantityChange(false),
-          opacity: _isEnable ? 1 : 0.5,
-          radius: 12.r,
-          backgroundColor: AppColors.colorF3F5F7,
-          child: SvgPicture.asset(
-            Assets.iconsIconsMinus,
-            fit: BoxFit.scaleDown,
-          ),
-        ),
-        const Spacer(),
-        Text(
-          "${getPrice(widget.cartItemEntity.totalPrice)} ${"pounds".tr()}",
-          style: AppTextStyles.font13colorF4A91FBold,
-        ),
-      ],
-    );
+      ),
+      Text(
+        '${widget.cartItemEntity.quantity}',
+        style: AppTextStyles.font16color06140CBold,
+      ),
+      CustomActionButton(
+        onTap: () => _handleQuantityChange(false),
+        opacity: _isEnable ? 1 : 0.5,
+        radius: 12.r,
+        backgroundColor: AppColors.colorF3F5F7,
+        child: SvgPicture.asset(Assets.iconsIconsMinus, fit: BoxFit.scaleDown),
+      ),
+      const Spacer(),
+      Text(
+        "${getPrice(widget.cartItemEntity.totalPrice)} ${"pounds".tr()}",
+        style: AppTextStyles.font13colorF4A91FBold,
+      ),
+    ],
+  );
 }

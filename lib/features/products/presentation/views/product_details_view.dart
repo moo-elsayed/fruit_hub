@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,84 +20,77 @@ class ProductDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      body: Column(
-        children: [
-          SizedBox(
-            height: 350.h,
-            child: CustomProductsDetailsHeader(
-              imagePath: fruitEntity.imagePath,
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: .symmetric(horizontal: 20.w),
-              child: Column(
-                mainAxisAlignment: .spaceBetween,
-                crossAxisAlignment: .start,
-                children: [
-                  Text(
-                    fruitEntity.name,
-                    style: AppTextStyles.font16color0C0D0DBold,
-                  ),
-                  Gap(4.h),
-                  Row(
-                    mainAxisAlignment: .spaceBetween,
-                    children: [
-                      PricePerKilo(price: fruitEntity.price),
-                      GestureDetector(
-                        onTap: () {
-                          log('Go to Reviews Page');
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              '${fruitEntity.avgRating}',
-                              style: AppTextStyles.font13color1B5E37Bold,
+    body: Column(
+      children: [
+        SizedBox(
+          height: 350.h,
+          child: CustomProductsDetailsHeader(imagePath: fruitEntity.imagePath),
+        ),
+        Expanded(
+          child: Padding(
+            padding: .symmetric(horizontal: 20.w),
+            child: Column(
+              mainAxisAlignment: .spaceBetween,
+              crossAxisAlignment: .start,
+              children: [
+                Text(
+                  fruitEntity.name,
+                  style: AppTextStyles.font16color0C0D0DBold,
+                ),
+                Gap(4.h),
+                Row(
+                  mainAxisAlignment: .spaceBetween,
+                  children: [
+                    PricePerKilo(price: fruitEntity.price),
+                    GestureDetector(
+                      onTap: () {
+                        log('Go to Reviews Page');
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            '${fruitEntity.avgRating}',
+                            style: AppTextStyles.font13color1B5E37Bold,
+                          ),
+                          Gap(4.w),
+                          Icon(Icons.star, size: 18.sp, color: Colors.amber),
+                          Gap(4.w),
+                          Text(
+                            'review'.tr(),
+                            style: AppTextStyles.font13color1B5E37Bold.copyWith(
+                              decoration: TextDecoration.underline,
                             ),
-                            Gap(4.w),
-                            Icon(
-                              Icons.star,
-                              size: 18.sp,
-                              color: Colors.amber,
-                            ),
-                            Gap(4.w),
-                            Text(
-                              'review'.tr(),
-                              style: AppTextStyles.font13color1B5E37Bold
-                                  .copyWith(
-                                    decoration: TextDecoration.underline,
-                                  ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Gap(8.h),
-                  Text(
-                    fruitEntity.description,
-                    style: AppTextStyles.font13color979899Regular,
-                  ),
-                  Expanded(
-                    child: ProductDetailsGridView(
-                      productDetails: getProductDetails(fruitEntity),
                     ),
+                  ],
+                ),
+                Gap(8.h),
+                Text(
+                  fruitEntity.description,
+                  style: AppTextStyles.font13color979899Regular,
+                ),
+                Expanded(
+                  child: ProductDetailsGridView(
+                    productDetails: getProductDetails(fruitEntity),
                   ),
-                  CustomMaterialButton(
-                    onPressed: () {
-                      final myCartService = context.read<CartCubit>();
-                      myCartService.addItemToCart(fruitEntity.code);
-                    },
-                    text: 'add_to_cart'.tr(),
-                    textStyle: AppTextStyles.font16WhiteBold,
-                    maxWidth: true,
-                  ),
-                  Gap(16.h),
-                ],
-              ),
+                ),
+                CustomMaterialButton(
+                  onPressed: () {
+                    final myCartService = context.read<CartCubit>();
+                    myCartService.addItemToCart(fruitEntity.code);
+                  },
+                  text: 'add_to_cart'.tr(),
+                  textStyle: AppTextStyles.font16WhiteBold,
+                  maxWidth: true,
+                ),
+                Gap(16.h),
+              ],
             ),
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 }

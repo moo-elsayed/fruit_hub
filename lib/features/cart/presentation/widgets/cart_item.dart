@@ -23,72 +23,72 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: () {
-        PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-          context,
-          settings: const RouteSettings(name: Routes.productDetailsView),
-          screen: ProductDetailsView(fruitEntity: cartItemEntity.fruitEntity),
-          withNavBar: false,
-          pageTransitionAnimation: PageTransitionAnimation.cupertino,
-        );
-      },
-      child: Container(
-        padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
-        height: size.height * 0.11699,
-        child: Row(
-          children: [
-            Container(
-              width: size.width * 0.19466,
-              height: size.height * 0.1133,
-              padding: EdgeInsetsGeometry.symmetric(horizontal: 10.w),
-              color: AppColors.colorF3F5F7,
-              child: CustomNetworkImage(
-                image: cartItemEntity.fruitEntity.imagePath,
+    onTap: () {
+      PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+        context,
+        settings: const RouteSettings(name: Routes.productDetailsView),
+        screen: ProductDetailsView(fruitEntity: cartItemEntity.fruitEntity),
+        withNavBar: false,
+        pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      );
+    },
+    child: Container(
+      padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
+      height: size.height * 0.11699,
+      child: Row(
+        children: [
+          Container(
+            width: size.width * 0.19466,
+            height: size.height * 0.1133,
+            padding: EdgeInsetsGeometry.symmetric(horizontal: 10.w),
+            color: AppColors.colorF3F5F7,
+            child: CustomNetworkImage(
+              image: cartItemEntity.fruitEntity.imagePath,
+            ),
+          ),
+          Gap(17.w),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 5.h),
+              child: Column(
+                crossAxisAlignment: .start,
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: .spaceBetween,
+                    crossAxisAlignment: .start,
+                    children: [
+                      Column(
+                        spacing: 3.h,
+                        crossAxisAlignment: .start,
+                        children: [
+                          Text(
+                            cartItemEntity.fruitEntity.name,
+                            style: AppTextStyles.font13color06161CBold,
+                          ),
+                          Text(
+                            "${cartItemEntity.quantity} ${"per_kilo".tr()}",
+                            style: AppTextStyles.font13colorF4A91FRegular,
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          context.read<CartCubit>().removeItemFromCart(
+                            cartItemEntity.fruitEntity.code,
+                          );
+                        },
+                        child: SvgPicture.asset(Assets.iconsTrash),
+                      ),
+                    ],
+                  ),
+                  CartItemActionButtons(cartItemEntity: cartItemEntity),
+                ],
               ),
             ),
-            Gap(17.w),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 5.h),
-                child: Column(
-                  crossAxisAlignment: .start,
-                  mainAxisAlignment: .spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: .spaceBetween,
-                      crossAxisAlignment: .start,
-                      children: [
-                        Column(
-                          spacing: 3.h,
-                          crossAxisAlignment: .start,
-                          children: [
-                            Text(
-                              cartItemEntity.fruitEntity.name,
-                              style: AppTextStyles.font13color06161CBold,
-                            ),
-                            Text(
-                              "${cartItemEntity.quantity} ${"per_kilo".tr()}",
-                              style: AppTextStyles.font13colorF4A91FRegular,
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            context.read<CartCubit>().removeItemFromCart(
-                              cartItemEntity.fruitEntity.code,
-                            );
-                          },
-                          child: SvgPicture.asset(Assets.iconsTrash),
-                        ),
-                      ],
-                    ),
-                    CartItemActionButtons(cartItemEntity: cartItemEntity),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
+    ),
+  );
 }

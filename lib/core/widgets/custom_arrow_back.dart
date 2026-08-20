@@ -13,18 +13,18 @@ class CustomArrowBack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: padding,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          border: Border.all(color: AppColors.colorF1F1F5),
-        ),
-        child: Transform.rotate(
-          angle: isArabic(context) ? 0 : pi,
-          child: SvgPicture.asset(Assets.iconsArrowBack, fit: BoxFit.scaleDown),
-        ),
+    onTap: onTap,
+    child: Container(
+      padding: padding,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white,
+        border: Border.all(color: AppColors.colorF1F1F5),
       ),
-    );
+      child: Transform.rotate(
+        angle: isArabic(context) ? 0 : pi,
+        child: SvgPicture.asset(Assets.iconsArrowBack, fit: BoxFit.scaleDown),
+      ),
+    ),
+  );
 }

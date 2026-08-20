@@ -16,6 +16,6 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => image == ''
-        ? Image.asset(Assets.imagesWatermelonTest)
-        : CachedNetworkImage(imageUrl: image, height: height, width: width);
+      ? Image.asset(Assets.imagesWatermelonTest)
+      : CachedNetworkImage(imageUrl: image, height: height, width: width);
 }

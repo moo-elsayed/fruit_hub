@@ -13,15 +13,15 @@ class BestSellerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: CustomAppBar(
-        title: 'best_seller'.tr(),
-        showArrowBack: true,
-        showNotification: true,
-        onTap: () => context.pop(),
-      ),
-      body: Padding(
-        padding: EdgeInsetsGeometry.only(top: 8.h),
-        child: FruitsGridView(fruits: fruits),
-      ),
-    );
+    appBar: CustomAppBar(
+      title: 'best_seller'.tr(),
+      showArrowBack: true,
+      showNotification: true,
+      onTap: () => context.pop(),
+    ),
+    body: Padding(
+      padding: EdgeInsetsGeometry.only(top: 8.h),
+      child: FruitsGridView(fruits: fruits),
+    ),
+  );
 }

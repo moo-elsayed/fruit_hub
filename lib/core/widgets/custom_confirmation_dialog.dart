@@ -28,47 +28,47 @@ class CustomConfirmationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Dialog(
-      backgroundColor: AppColors.white,
-      child: Padding(
-        padding: .all(20.r),
-        child: Column(
-          mainAxisSize: .min,
-          spacing: 12.h,
-          children: [
-            Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: GestureDetector(
-                onTap: () => context.pop(),
-                child: SvgPicture.asset(Assets.iconsIconCancel),
+    backgroundColor: AppColors.white,
+    child: Padding(
+      padding: .all(20.r),
+      child: Column(
+        mainAxisSize: .min,
+        spacing: 12.h,
+        children: [
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: GestureDetector(
+              onTap: () => context.pop(),
+              child: SvgPicture.asset(Assets.iconsIconCancel),
+            ),
+          ),
+          Text(title, style: AppTextStyles.font16color0C0D0DBold),
+          if (subtitle != null)
+            Text(subtitle!, style: AppTextStyles.font13color0C0D0DSemiBold),
+          Gap(8.h),
+          Row(
+            spacing: 8.w,
+            children: [
+              Expanded(
+                child: CustomMaterialButton(
+                  onPressed: onCancel ?? () => context.pop(),
+                  text: textCancelButton,
+                  textStyle: AppTextStyles.font16color1B5E37EBold,
+                  color: AppColors.white,
+                  side: const BorderSide(color: AppColors.color1B5E37),
+                ),
               ),
-            ),
-            Text(title, style: AppTextStyles.font16color0C0D0DBold),
-            if (subtitle != null)
-              Text(subtitle!, style: AppTextStyles.font13color0C0D0DSemiBold),
-            Gap(8.h),
-            Row(
-              spacing: 8.w,
-              children: [
-                Expanded(
-                  child: CustomMaterialButton(
-                    onPressed: onCancel ?? () => context.pop(),
-                    text: textCancelButton,
-                    textStyle: AppTextStyles.font16color1B5E37EBold,
-                    color: AppColors.white,
-                    side: const BorderSide(color: AppColors.color1B5E37),
-                  ),
+              Expanded(
+                child: CustomMaterialButton(
+                  onPressed: onConfirm,
+                  text: textConfirmButton,
+                  textStyle: AppTextStyles.font16WhiteBold,
                 ),
-                Expanded(
-                  child: CustomMaterialButton(
-                    onPressed: onConfirm,
-                    text: textConfirmButton,
-                    textStyle: AppTextStyles.font16WhiteBold,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
-    );
+    ),
+  );
 }

@@ -10,12 +10,12 @@ class ReviewModel {
   });
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) => ReviewModel(
-      name: json['name'],
-      description: json['description'],
-      rating: json['rating'],
-      date: json['date'],
-      image: json['image'],
-    );
+    name: json['name'],
+    description: json['description'],
+    rating: json['rating'],
+    date: json['date'],
+    image: json['image'],
+  );
 
   factory ReviewModel.fromEntity(ReviewEntity reviewEntity) => ReviewModel(
     name: reviewEntity.name,
@@ -32,12 +32,12 @@ class ReviewModel {
   final double rating;
 
   Map<String, dynamic> toJson() => {
-      'name': name,
-      'description': description,
-      'rating': rating,
-      'date': date,
-      'image': image,
-    };
+    'name': name,
+    'description': description,
+    'rating': rating,
+    'date': date,
+    'image': image,
+  };
 
   ReviewEntity toEntity() => ReviewEntity(
     name: name,

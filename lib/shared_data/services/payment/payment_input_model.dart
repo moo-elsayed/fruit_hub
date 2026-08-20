@@ -29,8 +29,8 @@ class PaymentInputModel {
     String? currency,
     String? customerId,
   }) => PaymentInputModel(
-      amount: amount ?? this.amount,
-      currency: currency ?? this.currency,
-      customerId: customerId ?? this.customerId,
-    );
+    amount: amount ?? this.amount,
+    currency: currency ?? this.currency,
+    customerId: customerId ?? this.customerId,
+  );
 }

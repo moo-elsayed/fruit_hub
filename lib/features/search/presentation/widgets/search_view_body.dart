@@ -57,68 +57,66 @@ class _SearchViewBodyState extends State<SearchViewBody> {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      behavior: HitTestBehavior.opaque,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.w),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w),
-              child: SearchTextFiled(
-                focusNode: _focusNode,
-                onChanged: _buildOnChanged,
-                controller: _searchController,
-              ),
+    onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    behavior: HitTestBehavior.opaque,
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.w),
+            child: SearchTextFiled(
+              focusNode: _focusNode,
+              onChanged: _buildOnChanged,
+              controller: _searchController,
             ),
-            BlocBuilder<SearchCubit, SearchState>(
-              builder: (context, state) {
-                if (_searchController.text.isEmpty) {
-                  return const SizedBox.shrink();
-                } else {
-                  if (state is SearchSuccess) {
-                    if (state.fruits.isEmpty) {
-                      return const SearchPlaceholderWidget();
-                    } else {
-                      return Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.only(
-                                top: 16.w,
-                                start: 16.w,
-                                bottom: 16.h,
-                              ),
-                              child: Text(
-                                'search_results'.tr(),
-                                style: AppTextStyles.font13color949D9ERegular,
-                              ),
-                            ),
-                            Expanded(
-                              child: FruitsGridView(fruits: state.fruits),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  } else if (state is SearchLoading) {
-                    return const Expanded(
-                      child: Skeletonizer(
-                        enabled: true,
-                        child: FruitsGridView(itemCount: 3),
-                      ),
-                    );
-                  } else if (state is SearchFailure) {
+          ),
+          BlocBuilder<SearchCubit, SearchState>(
+            builder: (context, state) {
+              if (_searchController.text.isEmpty) {
+                return const SizedBox.shrink();
+              } else {
+                if (state is SearchSuccess) {
+                  if (state.fruits.isEmpty) {
                     return const SearchPlaceholderWidget();
                   } else {
-                    return const SizedBox.shrink();
+                    return Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.only(
+                              top: 16.w,
+                              start: 16.w,
+                              bottom: 16.h,
+                            ),
+                            child: Text(
+                              'search_results'.tr(),
+                              style: AppTextStyles.font13color949D9ERegular,
+                            ),
+                          ),
+                          Expanded(child: FruitsGridView(fruits: state.fruits)),
+                        ],
+                      ),
+                    );
                   }
+                } else if (state is SearchLoading) {
+                  return const Expanded(
+                    child: Skeletonizer(
+                      enabled: true,
+                      child: FruitsGridView(itemCount: 3),
+                    ),
+                  );
+                } else if (state is SearchFailure) {
+                  return const SearchPlaceholderWidget();
+                } else {
+                  return const SizedBox.shrink();
                 }
-              },
-            ),
-          ],
-        ),
+              }
+            },
+          ),
+        ],
       ),
-    );
+    ),
+  );
 }

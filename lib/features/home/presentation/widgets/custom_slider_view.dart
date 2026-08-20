@@ -7,19 +7,19 @@ class CustomSliderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CarouselSlider.builder(
-      itemCount: 3,
-      itemBuilder: (context, index, realIndex) => const CustomSliderItem(),
-      options: CarouselOptions(
-        viewportFraction: 0.912,
-        aspectRatio: 342 / 158,
-        initialPage: 0,
-        enableInfiniteScroll: true,
-        reverse: false,
-        autoPlay: true,
-        autoPlayInterval: const Duration(seconds: 3),
-        autoPlayAnimationDuration: const Duration(milliseconds: 800),
-        autoPlayCurve: Curves.fastOutSlowIn,
-        scrollDirection: Axis.horizontal,
-      ),
-    );
+    itemCount: 3,
+    itemBuilder: (context, index, realIndex) => const CustomSliderItem(),
+    options: CarouselOptions(
+      viewportFraction: 0.912,
+      aspectRatio: 342 / 158,
+      initialPage: 0,
+      enableInfiniteScroll: true,
+      reverse: false,
+      autoPlay: true,
+      autoPlayInterval: const Duration(seconds: 3),
+      autoPlayAnimationDuration: const Duration(milliseconds: 800),
+      autoPlayCurve: Curves.fastOutSlowIn,
+      scrollDirection: Axis.horizontal,
+    ),
+  );
 }

@@ -24,56 +24,56 @@ class PaymentOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: () {
-        onTap(paymentOptionEntity);
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        padding: .symmetric(horizontal: 16.w, vertical: 14.h),
-        decoration: BoxDecoration(
-          color: AppColors.colorF7F7F7,
-          borderRadius: .circular(12.r),
-          border: Border.all(
-            color: isSelected ? AppColors.color1B5E37 : AppColors.colorF7F7F7,
-          ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              height: 20.h,
-              width: 20.w,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isSelected
-                      ? AppColors.color1B5E37
-                      : Colors.grey.shade400,
-                  width: 2,
-                ),
-              ),
-              padding: const .all(3),
-              child: isSelected
-                  ? Container(
-                      decoration: const BoxDecoration(
-                        shape: .circle,
-                        color: AppColors.color1B5E37,
-                      ),
-                    )
-                  : null,
-            ),
-            Gap(10.w),
-            Text(
-              paymentOptionEntity.title,
-              style: AppTextStyles.font13BlackSemiBold,
-            ),
-            const Spacer(),
-            Text(
-              getTrailingText(paymentOptionEntity.shippingCost),
-              style: AppTextStyles.font13color3A8B33Bold,
-            ),
-          ],
+    onTap: () {
+      onTap(paymentOptionEntity);
+    },
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+      padding: .symmetric(horizontal: 16.w, vertical: 14.h),
+      decoration: BoxDecoration(
+        color: AppColors.colorF7F7F7,
+        borderRadius: .circular(12.r),
+        border: Border.all(
+          color: isSelected ? AppColors.color1B5E37 : AppColors.colorF7F7F7,
         ),
       ),
-    );
+      child: Row(
+        children: [
+          Container(
+            height: 20.h,
+            width: 20.w,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isSelected
+                    ? AppColors.color1B5E37
+                    : Colors.grey.shade400,
+                width: 2,
+              ),
+            ),
+            padding: const .all(3),
+            child: isSelected
+                ? Container(
+                    decoration: const BoxDecoration(
+                      shape: .circle,
+                      color: AppColors.color1B5E37,
+                    ),
+                  )
+                : null,
+          ),
+          Gap(10.w),
+          Text(
+            paymentOptionEntity.title,
+            style: AppTextStyles.font13BlackSemiBold,
+          ),
+          const Spacer(),
+          Text(
+            getTrailingText(paymentOptionEntity.shippingCost),
+            style: AppTextStyles.font13color3A8B33Bold,
+          ),
+        ],
+      ),
+    ),
+  );
 }

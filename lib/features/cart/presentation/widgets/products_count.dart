@@ -11,27 +11,27 @@ class ProductsCount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-      padding: EdgeInsetsGeometry.symmetric(vertical: 10.h),
-      width: double.infinity,
-      alignment: Alignment.center,
-      color: AppColors.colorEBF9F1,
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'you_have'.tr(),
-              style: AppTextStyles.font13color1B5E37Regular,
-            ),
-            TextSpan(
-              text: ' $count ',
-              style: AppTextStyles.font13color1B5E37Regular,
-            ),
-            TextSpan(
-              text: 'products_in_the_shopping_cart'.tr(),
-              style: AppTextStyles.font13color1B5E37Regular,
-            ),
-          ],
-        ),
+    padding: EdgeInsetsGeometry.symmetric(vertical: 10.h),
+    width: double.infinity,
+    alignment: Alignment.center,
+    color: AppColors.colorEBF9F1,
+    child: RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: 'you_have'.tr(),
+            style: AppTextStyles.font13color1B5E37Regular,
+          ),
+          TextSpan(
+            text: ' $count ',
+            style: AppTextStyles.font13color1B5E37Regular,
+          ),
+          TextSpan(
+            text: 'products_in_the_shopping_cart'.tr(),
+            style: AppTextStyles.font13color1B5E37Regular,
+          ),
+        ],
       ),
-    );
+    ),
+  );
 }

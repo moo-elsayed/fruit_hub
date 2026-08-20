@@ -26,43 +26,43 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
 
   @override
   Widget build(BuildContext context) => Column(
-      children: [
-        OnboardingPageView(
-          slides: slides,
-          onPageChanged: (index) => setState(() => currentIndex = index),
-        ),
-        OnboardingIndicator(length: slides.length, currentIndex: currentIndex),
-        Visibility(
-          visible: currentIndex == slides.length - 1,
-          replacement: Gap(121.h),
-          child: Padding(
-            padding: EdgeInsetsGeometry.only(
-              top: 29.h,
-              bottom: 43.h,
-              right: 16.w,
-              left: 16.w,
-            ),
-            child: FadeInUp(
-              duration: const Duration(milliseconds: 500),
-              from: 50,
-              child: BlocListener<OnboardingCubit, OnboardingState>(
-                listener: (context, state) {
-                  if (state is OnboardingNavigateToHome) {
-                    context.pushReplacementNamed(Routes.loginView);
-                  }
+    children: [
+      OnboardingPageView(
+        slides: slides,
+        onPageChanged: (index) => setState(() => currentIndex = index),
+      ),
+      OnboardingIndicator(length: slides.length, currentIndex: currentIndex),
+      Visibility(
+        visible: currentIndex == slides.length - 1,
+        replacement: Gap(121.h),
+        child: Padding(
+          padding: EdgeInsetsGeometry.only(
+            top: 29.h,
+            bottom: 43.h,
+            right: 16.w,
+            left: 16.w,
+          ),
+          child: FadeInUp(
+            duration: const Duration(milliseconds: 500),
+            from: 50,
+            child: BlocListener<OnboardingCubit, OnboardingState>(
+              listener: (context, state) {
+                if (state is OnboardingNavigateToHome) {
+                  context.pushReplacementNamed(Routes.loginView);
+                }
+              },
+              child: CustomMaterialButton(
+                onPressed: () {
+                  context.read<OnboardingCubit>().setFirstTime(false);
                 },
-                child: CustomMaterialButton(
-                  onPressed: () {
-                    context.read<OnboardingCubit>().setFirstTime(false);
-                  },
-                  maxWidth: true,
-                  text: 'start_now'.tr(),
-                  textStyle: AppTextStyles.font16WhiteBold,
-                ),
+                maxWidth: true,
+                text: 'start_now'.tr(),
+                textStyle: AppTextStyles.font16WhiteBold,
               ),
             ),
           ),
         ),
-      ],
-    );
+      ),
+    ],
+  );
 }

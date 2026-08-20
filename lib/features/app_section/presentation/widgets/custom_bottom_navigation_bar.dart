@@ -24,33 +24,33 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) => Container(
-      padding: .symmetric(horizontal: 27.w),
-      decoration: const BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
+    padding: .symmetric(horizontal: 27.w),
+    decoration: const BoxDecoration(
+      color: AppColors.white,
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(30),
+        topRight: Radius.circular(30),
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: AppColors.bottomNavigationBarShadowColor,
+          blurRadius: 7,
+          offset: Offset(0, -2),
+          spreadRadius: 0,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.bottomNavigationBarShadowColor,
-            blurRadius: 7,
-            offset: Offset(0, -2),
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: .spaceBetween,
-        children: bottomNavigationBarItems.asMap().entries.map((entry) {
-          final index = entry.key;
-          final entity = entry.value;
-          return CustomBottomNavigationItem(
-            onTap: () => _onItemTapped(index),
-            entity: entity,
-            active: index == _selectedIndex,
-          );
-        }).toList(),
-      ),
-    );
+      ],
+    ),
+    child: Row(
+      mainAxisAlignment: .spaceBetween,
+      children: bottomNavigationBarItems.asMap().entries.map((entry) {
+        final index = entry.key;
+        final entity = entry.value;
+        return CustomBottomNavigationItem(
+          onTap: () => _onItemTapped(index),
+          entity: entity,
+          active: index == _selectedIndex,
+        );
+      }).toList(),
+    ),
+  );
 }

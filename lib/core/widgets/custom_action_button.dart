@@ -21,14 +21,14 @@ class CustomActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Opacity(
-      opacity: opacity ?? 1,
-      child: GestureDetector(
-        onTap: onTap,
-        child: CircleAvatar(
-          radius: radius ?? 18.r,
-          backgroundColor: backgroundColor ?? AppColors.color1B5E37,
-          child: child,
-        ),
+    opacity: opacity ?? 1,
+    child: GestureDetector(
+      onTap: onTap,
+      child: CircleAvatar(
+        radius: radius ?? 18.r,
+        backgroundColor: backgroundColor ?? AppColors.color1B5E37,
+        child: child,
       ),
-    );
+    ),
+  );
 }

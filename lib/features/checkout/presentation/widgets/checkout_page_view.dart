@@ -25,15 +25,15 @@ class CheckoutPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Expanded(
-      child: PageView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: pageController,
-        itemCount: pageViews.length,
-        onPageChanged: onPageChanged,
-        itemBuilder: (context, index) => Padding(
-            padding: .symmetric(horizontal: 16.w),
-            child: pageViews[index],
-          ),
+    child: PageView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      controller: pageController,
+      itemCount: pageViews.length,
+      onPageChanged: onPageChanged,
+      itemBuilder: (context, index) => Padding(
+        padding: .symmetric(horizontal: 16.w),
+        child: pageViews[index],
       ),
-    );
+    ),
+  );
 }

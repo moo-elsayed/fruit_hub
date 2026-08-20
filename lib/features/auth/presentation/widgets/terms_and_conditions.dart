@@ -11,27 +11,27 @@ class TermsAndConditions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      spacing: 16.w,
-      children: [
-        CustomCheckBox(onChanged: onChanged),
-        Expanded(
-          child: RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'terms_and_conditions_p1'.tr(),
-                  style: AppTextStyles.font13color949D9ESemiBold,
-                ),
-                const TextSpan(text: ' '),
-                TextSpan(
-                  text: 'terms_and_conditions_p2'.tr(),
-                  style: AppTextStyles.font13color2D9F5DSemiBold,
-                ),
-              ],
-            ),
+    mainAxisAlignment: MainAxisAlignment.center,
+    spacing: 16.w,
+    children: [
+      CustomCheckBox(onChanged: onChanged),
+      Expanded(
+        child: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'terms_and_conditions_p1'.tr(),
+                style: AppTextStyles.font13color949D9ESemiBold,
+              ),
+              const TextSpan(text: ' '),
+              TextSpan(
+                text: 'terms_and_conditions_p2'.tr(),
+                style: AppTextStyles.font13color2D9F5DSemiBold,
+              ),
+            ],
           ),
         ),
-      ],
-    );
+      ),
+    ],
+  );
 }

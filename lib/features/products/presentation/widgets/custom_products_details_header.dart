@@ -12,32 +12,29 @@ class CustomProductsDetailsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Stack(
-      alignment: .topCenter,
-      children: [
-        Positioned(
-          top: -450,
-          child: Container(
-            alignment: .bottomCenter,
-            width: 700.w,
-            height: 906.h,
-            decoration: const BoxDecoration(
-              color: AppColors.colorF3F5F7,
-              shape: .circle,
-            ),
+    alignment: .topCenter,
+    children: [
+      Positioned(
+        top: -450,
+        child: Container(
+          alignment: .bottomCenter,
+          width: 700.w,
+          height: 906.h,
+          decoration: const BoxDecoration(
+            color: AppColors.colorF3F5F7,
+            shape: .circle,
           ),
         ),
-        Positioned(
-          top: 120.h,
-          child: CustomNetworkImage(image: imagePath, height: 180.h),
-        ),
-        PositionedDirectional(
-          top: 45.h,
-          start: 15.w,
-          child: CustomArrowBack(
-            onTap: () => context.pop(),
-            padding: .all(8.r),
-          ),
-        ),
-      ],
-    );
+      ),
+      Positioned(
+        top: 120.h,
+        child: CustomNetworkImage(image: imagePath, height: 180.h),
+      ),
+      PositionedDirectional(
+        top: 45.h,
+        start: 15.w,
+        child: CustomArrowBack(onTap: () => context.pop(), padding: .all(8.r)),
+      ),
+    ],
+  );
 }

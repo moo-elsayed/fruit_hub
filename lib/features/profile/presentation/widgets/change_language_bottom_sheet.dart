@@ -16,39 +16,39 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-      padding: .symmetric(vertical: 16.h),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: .circular(16.r),
-          topRight: .circular(16.r),
+    padding: .symmetric(vertical: 16.h),
+    decoration: BoxDecoration(
+      color: AppColors.white,
+      borderRadius: BorderRadius.only(
+        topLeft: .circular(16.r),
+        topRight: .circular(16.r),
+      ),
+    ),
+    child: Column(
+      mainAxisSize: .min,
+      children: [
+        const CustomBottomSheetTopContainer(),
+        Text(
+          'select_language'.tr(),
+          style: AppTextStyles.font16color0C0D0DSemiBold,
         ),
-      ),
-      child: Column(
-        mainAxisSize: .min,
-        children: [
-          const CustomBottomSheetTopContainer(),
-          Text(
-            'select_language'.tr(),
-            style: AppTextStyles.font16color0C0D0DSemiBold,
-          ),
-          Gap(16.h),
-          buildListTile(
-            context: context,
-            isChecked: isArabic(context),
-            title: 'العربية',
-            langCode: 'ar',
-          ),
-          Divider(endIndent: 16.w, indent: 16.w),
-          buildListTile(
-            context: context,
-            isChecked: !isArabic(context),
-            title: 'English',
-            langCode: 'en',
-          ),
-        ],
-      ),
-    );
+        Gap(16.h),
+        buildListTile(
+          context: context,
+          isChecked: isArabic(context),
+          title: 'العربية',
+          langCode: 'ar',
+        ),
+        Divider(endIndent: 16.w, indent: 16.w),
+        buildListTile(
+          context: context,
+          isChecked: !isArabic(context),
+          title: 'English',
+          langCode: 'en',
+        ),
+      ],
+    ),
+  );
 
   ListTile buildListTile({
     required BuildContext context,

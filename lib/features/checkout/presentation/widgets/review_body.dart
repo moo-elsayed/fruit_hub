@@ -46,30 +46,30 @@ class _ReviewBodyState extends State<ReviewBody> {
 
   @override
   Widget build(BuildContext context) => Column(
-      crossAxisAlignment: .start,
-      children: [
-        Text('order_summary'.tr(), style: AppTextStyles.font16color0C0D0DBold),
-        Gap(12.h),
-        OrderSummary(
-          shippingCost: paymentOption.shippingCost,
-          subtotal: subtotal,
-        ),
-        Gap(16.h),
-        ReviewItem(
-          title: 'payment_method'.tr(),
-          value: paymentOption.title,
-          icon: _getPaymentIcon(paymentOption),
-          onEditTap: () => _navigateToPage(1),
-        ),
-        Gap(16.h),
-        ReviewItem(
-          title: 'delivery_address'.tr(),
-          value: address.formattedLocation,
-          icon: SvgPicture.asset(Assets.iconsLocation),
-          onEditTap: () => _navigateToPage(0),
-        ),
-      ],
-    );
+    crossAxisAlignment: .start,
+    children: [
+      Text('order_summary'.tr(), style: AppTextStyles.font16color0C0D0DBold),
+      Gap(12.h),
+      OrderSummary(
+        shippingCost: paymentOption.shippingCost,
+        subtotal: subtotal,
+      ),
+      Gap(16.h),
+      ReviewItem(
+        title: 'payment_method'.tr(),
+        value: paymentOption.title,
+        icon: _getPaymentIcon(paymentOption),
+        onEditTap: () => _navigateToPage(1),
+      ),
+      Gap(16.h),
+      ReviewItem(
+        title: 'delivery_address'.tr(),
+        value: address.formattedLocation,
+        icon: SvgPicture.asset(Assets.iconsLocation),
+        onEditTap: () => _navigateToPage(0),
+      ),
+    ],
+  );
 
   Widget _getPaymentIcon(PaymentOptionEntity paymentOption) =>
       paymentOption.type == .paypal

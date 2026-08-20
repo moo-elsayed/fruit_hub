@@ -7,12 +7,12 @@ class CustomBottomSheetTopContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-      width: 60.w,
-      height: 4.h,
-      margin: .only(bottom: 8.h),
-      decoration: BoxDecoration(
-        color: AppColors.color131F46,
-        borderRadius: BorderRadius.circular(16),
-      ),
-    );
+    width: 60.w,
+    height: 4.h,
+    margin: .only(bottom: 8.h),
+    decoration: BoxDecoration(
+      color: AppColors.color131F46,
+      borderRadius: BorderRadius.circular(16),
+    ),
+  );
 }

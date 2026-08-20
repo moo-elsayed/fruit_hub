@@ -20,39 +20,39 @@ class OrderSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-      padding: .symmetric(horizontal: 16.w, vertical: 14.h),
-      decoration: BoxDecoration(
-        color: AppColors.colorF7F7F7,
-        borderRadius: .circular(12.r),
-      ),
-      child: Column(
-        children: [
-          _buildRow(
-            title: 'subtotal'.tr(),
-            value: "${getPrice(subtotal)} ${"pounds".tr()}",
-          ),
-          Gap(8.h),
-          _buildRow(
-            title: 'shipping'.tr(),
-            value: shippingCost == 0
-                ? 'free'.tr()
-                : "${getPrice(shippingCost)} ${"pounds".tr()}",
-            freeShipping: shippingCost == 0,
-          ),
-          Divider(color: AppColors.colorCACECE, thickness: 0.5, height: 30.h),
-          Row(
-            mainAxisAlignment: .spaceBetween,
-            children: [
-              Text('total'.tr(), style: AppTextStyles.font16color0C0D0DBold),
-              Text(
-                "${getPrice(total)} ${"pounds".tr()}",
-                style: AppTextStyles.font16color0C0D0DBold,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+    padding: .symmetric(horizontal: 16.w, vertical: 14.h),
+    decoration: BoxDecoration(
+      color: AppColors.colorF7F7F7,
+      borderRadius: .circular(12.r),
+    ),
+    child: Column(
+      children: [
+        _buildRow(
+          title: 'subtotal'.tr(),
+          value: "${getPrice(subtotal)} ${"pounds".tr()}",
+        ),
+        Gap(8.h),
+        _buildRow(
+          title: 'shipping'.tr(),
+          value: shippingCost == 0
+              ? 'free'.tr()
+              : "${getPrice(shippingCost)} ${"pounds".tr()}",
+          freeShipping: shippingCost == 0,
+        ),
+        Divider(color: AppColors.colorCACECE, thickness: 0.5, height: 30.h),
+        Row(
+          mainAxisAlignment: .spaceBetween,
+          children: [
+            Text('total'.tr(), style: AppTextStyles.font16color0C0D0DBold),
+            Text(
+              "${getPrice(total)} ${"pounds".tr()}",
+              style: AppTextStyles.font16color0C0D0DBold,
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 
   Widget _buildRow({
     required String title,

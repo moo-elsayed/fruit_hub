@@ -49,51 +49,50 @@ class _CheckoutViewState extends State<CheckoutView> {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-      create: (context) =>
-          CheckoutCubit(
-              getIt.get<AppPreferencesManager>(),
-              getIt.get<FetchShippingConfigUseCase>(),
-              getIt.get<AddOrderUseCase>(),
-              getIt.get<MakePaymentUseCase>(),
-            )
-            ..setProducts(widget.cartItems)
-            ..getAddressFromLocalStorage()
-            ..fetchShippingConfig(),
-      child: Builder(
-        builder: (context) => Scaffold(
-            appBar: CustomAppBar(
-              title: steps[currentIndex],
-              showArrowBack: true,
-              onTap: () => context.pop(),
+    create: (context) =>
+        CheckoutCubit(
+            getIt.get<AppPreferencesManager>(),
+            getIt.get<FetchShippingConfigUseCase>(),
+            getIt.get<AddOrderUseCase>(),
+            getIt.get<MakePaymentUseCase>(),
+          )
+          ..setProducts(widget.cartItems)
+          ..getAddressFromLocalStorage()
+          ..fetchShippingConfig(),
+    child: Builder(
+      builder: (context) => Scaffold(
+        appBar: CustomAppBar(
+          title: steps[currentIndex],
+          showArrowBack: true,
+          onTap: () => context.pop(),
+        ),
+        body: Column(
+          children: [
+            Gap(16.h),
+            CheckoutSteps(
+              currentIndex: currentIndex,
+              steps: steps,
+              pageController: _pageController,
             ),
-            body: Column(
-              children: [
-                Gap(16.h),
-                CheckoutSteps(
+            Gap(24.h),
+            CheckoutPageView(
+              pageController: _pageController,
+              onPageChanged: (value) => setState(() => currentIndex = value),
+              addressArgs: addressArgs,
+            ),
+          ],
+        ),
+        bottomNavigationBar: MediaQuery.viewInsetsOf(context).bottom != 0
+            ? null
+            : Padding(
+                padding: .symmetric(horizontal: 16.w, vertical: 16.h),
+                child: CheckoutButtonBlocConsumer(
+                  pageController: _pageController,
                   currentIndex: currentIndex,
-                  steps: steps,
-                  pageController: _pageController,
-                ),
-                Gap(24.h),
-                CheckoutPageView(
-                  pageController: _pageController,
-                  onPageChanged: (value) =>
-                      setState(() => currentIndex = value),
                   addressArgs: addressArgs,
                 ),
-              ],
-            ),
-            bottomNavigationBar: MediaQuery.viewInsetsOf(context).bottom != 0
-                ? null
-                : Padding(
-                    padding: .symmetric(horizontal: 16.w, vertical: 16.h),
-                    child: CheckoutButtonBlocConsumer(
-                      pageController: _pageController,
-                      currentIndex: currentIndex,
-                      addressArgs: addressArgs,
-                    ),
-                  ),
-          ),
+              ),
       ),
-    );
+    ),
+  );
 }

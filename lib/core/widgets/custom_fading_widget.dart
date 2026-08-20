@@ -40,5 +40,6 @@ class _CustomFadingWidgetState extends State<CustomFadingWidget>
   }
 
   @override
-  Widget build(BuildContext context) => Opacity(opacity: animation.value, child: widget.child);
+  Widget build(BuildContext context) =>
+      Opacity(opacity: animation.value, child: widget.child);
 }

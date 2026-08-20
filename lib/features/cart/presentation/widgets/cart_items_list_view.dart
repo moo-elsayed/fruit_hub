@@ -19,19 +19,19 @@ class CartItemsListView extends StatelessWidget {
       padding: EdgeInsetsGeometry.only(top: 14.h, bottom: 80.h),
       itemCount: itemCount ?? cartItems!.length,
       itemBuilder: (context, index) => Column(
-          children: [
-            if (index == 0) buildDivider(),
-            CartItem(
-              size: size,
-              cartItemEntity: itemCount != null
-                  ? const CartItemEntity(fruitEntity: FruitEntity())
-                  : cartItems![index],
-            ),
-            if ((cartItems != null && index == cartItems!.length - 1) ||
-                (itemCount != null && index == itemCount! - 1))
-              buildDivider(),
-          ],
-        ),
+        children: [
+          if (index == 0) buildDivider(),
+          CartItem(
+            size: size,
+            cartItemEntity: itemCount != null
+                ? const CartItemEntity(fruitEntity: FruitEntity())
+                : cartItems![index],
+          ),
+          if ((cartItems != null && index == cartItems!.length - 1) ||
+              (itemCount != null && index == itemCount! - 1))
+            buildDivider(),
+        ],
+      ),
       separatorBuilder: (context, index) => buildDivider(),
     );
   }

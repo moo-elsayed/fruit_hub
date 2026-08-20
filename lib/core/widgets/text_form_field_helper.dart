@@ -91,82 +91,82 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
 
   @override
   Widget build(BuildContext context) => TextFormField(
-      controller: widget.controller,
-      validator: widget.onValidate,
-      onChanged: (text) {
-        widget.onChanged?.call(text);
-        _updateTextDirection(text);
-      },
-      onEditingComplete: widget.onEditingComplete,
-      onFieldSubmitted: widget.onFieldSubmitted,
-      onSaved: widget.onSaved,
-      onTap: widget.onTap,
-      maxLines: widget.maxLines,
-      minLines: widget.minLines,
-      maxLength: widget.maxLength,
-      obscureText: _obscureText,
-      obscuringCharacter: widget.obscuringCharacter ?? '*',
-      keyboardType: widget.keyboardType,
-      inputFormatters: widget.inputFormatters,
-      enabled: widget.enabled,
-      cursorColor: AppColors.color1B5E37,
-      textInputAction: widget.action ?? TextInputAction.next,
-      focusNode: widget.focusNode,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      style: AppTextStyles.font16color0C0D0DSemiBold,
-      textDirection: _textDirection,
-      textAlignVertical: TextAlignVertical.center,
-      decoration: InputDecoration(
-        fillColor: widget.fillColor ?? AppColors.colorF9FAFA,
-        filled: true,
-        hintText: widget.hint,
-        hintStyle: widget.hintStyle ?? AppTextStyles.font13color949D9EBold,
-        errorMaxLines: 4,
-        errorStyle: AppTextStyles.font16color0C0D0DSemiBold.copyWith(
-          color: Colors.red,
-        ),
-        labelText: widget.labelText,
-        labelStyle: widget.labelStyle ?? AppTextStyles.font13color949D9EBold,
-        prefixIcon: widget.prefixIcon,
-        prefix: widget.prefix,
-        suffixIcon: widget.isPassword
-            ? GestureDetector(
-                onTap: _toggleObscureText,
-                child: Icon(
-                  _obscureText
-                      ? Icons.remove_red_eye
-                      : Icons.remove_red_eye_outlined,
-                  color: AppColors.colorC9CECF,
-                  size: 24.r,
-                ),
-              )
-            : widget.suffixWidget,
-        contentPadding:
-            widget.contentPadding ??
-            EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
-        border: outlineInputBorder(color: AppColors.colorE6E9EA, width: 1),
-        enabledBorder: outlineInputBorder(
-          color: widget.borderColor ?? AppColors.colorE6E9EA,
-          width: 1,
-        ),
-        disabledBorder: outlineInputBorder(
-          color: widget.borderColor ?? AppColors.colorE6E9EA,
-          width: 1,
-        ),
-        focusedBorder: outlineInputBorder(
-          color: widget.borderColor ?? AppColors.colorE6E9EA,
-          width: 1,
-        ),
-        errorBorder: outlineInputBorder(color: Colors.red, width: 1),
-        focusedErrorBorder: outlineInputBorder(color: Colors.red, width: 1),
+    controller: widget.controller,
+    validator: widget.onValidate,
+    onChanged: (text) {
+      widget.onChanged?.call(text);
+      _updateTextDirection(text);
+    },
+    onEditingComplete: widget.onEditingComplete,
+    onFieldSubmitted: widget.onFieldSubmitted,
+    onSaved: widget.onSaved,
+    onTap: widget.onTap,
+    maxLines: widget.maxLines,
+    minLines: widget.minLines,
+    maxLength: widget.maxLength,
+    obscureText: _obscureText,
+    obscuringCharacter: widget.obscuringCharacter ?? '*',
+    keyboardType: widget.keyboardType,
+    inputFormatters: widget.inputFormatters,
+    enabled: widget.enabled,
+    cursorColor: AppColors.color1B5E37,
+    textInputAction: widget.action ?? TextInputAction.next,
+    focusNode: widget.focusNode,
+    autovalidateMode: AutovalidateMode.onUserInteraction,
+    style: AppTextStyles.font16color0C0D0DSemiBold,
+    textDirection: _textDirection,
+    textAlignVertical: TextAlignVertical.center,
+    decoration: InputDecoration(
+      fillColor: widget.fillColor ?? AppColors.colorF9FAFA,
+      filled: true,
+      hintText: widget.hint,
+      hintStyle: widget.hintStyle ?? AppTextStyles.font13color949D9EBold,
+      errorMaxLines: 4,
+      errorStyle: AppTextStyles.font16color0C0D0DSemiBold.copyWith(
+        color: Colors.red,
       ),
-    );
+      labelText: widget.labelText,
+      labelStyle: widget.labelStyle ?? AppTextStyles.font13color949D9EBold,
+      prefixIcon: widget.prefixIcon,
+      prefix: widget.prefix,
+      suffixIcon: widget.isPassword
+          ? GestureDetector(
+              onTap: _toggleObscureText,
+              child: Icon(
+                _obscureText
+                    ? Icons.remove_red_eye
+                    : Icons.remove_red_eye_outlined,
+                color: AppColors.colorC9CECF,
+                size: 24.r,
+              ),
+            )
+          : widget.suffixWidget,
+      contentPadding:
+          widget.contentPadding ??
+          EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+      border: outlineInputBorder(color: AppColors.colorE6E9EA, width: 1),
+      enabledBorder: outlineInputBorder(
+        color: widget.borderColor ?? AppColors.colorE6E9EA,
+        width: 1,
+      ),
+      disabledBorder: outlineInputBorder(
+        color: widget.borderColor ?? AppColors.colorE6E9EA,
+        width: 1,
+      ),
+      focusedBorder: outlineInputBorder(
+        color: widget.borderColor ?? AppColors.colorE6E9EA,
+        width: 1,
+      ),
+      errorBorder: outlineInputBorder(color: Colors.red, width: 1),
+      focusedErrorBorder: outlineInputBorder(color: Colors.red, width: 1),
+    ),
+  );
 
   OutlineInputBorder outlineInputBorder({
     required Color color,
     required double width,
   }) => OutlineInputBorder(
-      borderRadius: widget.borderRadius ?? BorderRadius.circular(8.r),
-      borderSide: BorderSide(color: color, width: width),
-    );
+    borderRadius: widget.borderRadius ?? BorderRadius.circular(8.r),
+    borderSide: BorderSide(color: color, width: width),
+  );
 }

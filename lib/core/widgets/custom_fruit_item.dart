@@ -38,10 +38,7 @@ class CustomFruitItem extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            padding: .symmetric(
-              vertical: 20.h,
-              horizontal: 10.w,
-            ),
+            padding: .symmetric(vertical: 20.h, horizontal: 10.w),
             decoration: BoxDecoration(
               borderRadius: .circular(4.r),
               color: AppColors.colorF3F5F7,
@@ -82,14 +79,14 @@ class CustomFruitItem extends StatelessWidget {
           BlocBuilder<FavoriteCubit, FavoriteState>(
             buildWhen: (previous, current) => current is ToggleFavoriteSuccess,
             builder: (context, state) => PositionedDirectional(
-                start: 4.w,
-                top: 4.h,
-                child: CustomFavouriteIcon(
-                  onChanged: () =>
-                      myFavoriteService.toggleFavorite(fruitEntity.code),
-                  isFavourite: myFavoriteService.isFavorite(fruitEntity.code),
-                ),
+              start: 4.w,
+              top: 4.h,
+              child: CustomFavouriteIcon(
+                onChanged: () =>
+                    myFavoriteService.toggleFavorite(fruitEntity.code),
+                isFavourite: myFavoriteService.isFavorite(fruitEntity.code),
               ),
+            ),
           ),
         ],
       ),

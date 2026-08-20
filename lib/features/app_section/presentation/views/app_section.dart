@@ -61,56 +61,56 @@ class _AppSectionState extends State<AppSection> {
 
   @override
   Widget build(BuildContext context) => BlocListener<CartCubit, CartState>(
-      listenWhen: (previous, current) =>
-          current is CartSuccess || current is CartLoading,
-      listener: (context, state) {
-        if (state is CartLoading && state.itemRemoved) {
-          AppDialogs.showLoadingDialog(context);
-        }
-        if (state is CartLoading && state.newItemAdded) {
-          AppDialogs.showLoadingDialog(context);
-        }
-        if (state is CartSuccess && (state.itemRemoved || state.newItemAdded)) {
-          context.pop();
-          AppToast.showToast(
-            context: context,
-            title: state.newItemAdded
-                ? 'item_added_to_cart'.tr()
-                : 'item_removed_from_cart'.tr(),
-            type: .success,
-          );
-        }
-      },
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(34.h),
-          child: ColoredBox(
-            color: AppColors.white,
-            child: SizedBox(height: 34.h),
-          ),
+    listenWhen: (previous, current) =>
+        current is CartSuccess || current is CartLoading,
+    listener: (context, state) {
+      if (state is CartLoading && state.itemRemoved) {
+        AppDialogs.showLoadingDialog(context);
+      }
+      if (state is CartLoading && state.newItemAdded) {
+        AppDialogs.showLoadingDialog(context);
+      }
+      if (state is CartSuccess && (state.itemRemoved || state.newItemAdded)) {
+        context.pop();
+        AppToast.showToast(
+          context: context,
+          title: state.newItemAdded
+              ? 'item_added_to_cart'.tr()
+              : 'item_removed_from_cart'.tr(),
+          type: .success,
+        );
+      }
+    },
+    child: Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(34.h),
+        child: ColoredBox(
+          color: AppColors.white,
+          child: SizedBox(height: 34.h),
         ),
-        body: PersistentTabView.custom(
-          resizeToAvoidBottomInset: true,
-          context,
-          controller: _controller,
-          screens: _buildScreens(),
-          itemCount: _pages.length,
-          customWidget: _buildCustomNavBar(),
-          confineToSafeArea: true,
-          handleAndroidBackButtonPress: true,
-          stateManagement: true,
-          hideNavigationBarWhenKeyboardAppears: true,
-          hideOnScrollSettings: const HideOnScrollSettings(
-            hideNavBarOnScroll: true,
-          ),
-          animationSettings: const NavBarAnimationSettings(
-            onNavBarHideAnimation: OnHideAnimationSettings(
-              curve: Curves.easeInOut,
-            ),
+      ),
+      body: PersistentTabView.custom(
+        resizeToAvoidBottomInset: true,
+        context,
+        controller: _controller,
+        screens: _buildScreens(),
+        itemCount: _pages.length,
+        customWidget: _buildCustomNavBar(),
+        confineToSafeArea: true,
+        handleAndroidBackButtonPress: true,
+        stateManagement: true,
+        hideNavigationBarWhenKeyboardAppears: true,
+        hideOnScrollSettings: const HideOnScrollSettings(
+          hideNavBarOnScroll: true,
+        ),
+        animationSettings: const NavBarAnimationSettings(
+          onNavBarHideAnimation: OnHideAnimationSettings(
+            curve: Curves.easeInOut,
           ),
         ),
       ),
-    );
+    ),
+  );
 
   List<CustomNavBarScreen> _buildScreens() => List.generate(
     _pages.length,

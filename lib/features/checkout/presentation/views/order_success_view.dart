@@ -15,35 +15,35 @@ class OrderSuccessView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      body: Padding(
-        padding: .symmetric(horizontal: 16.w),
-        child: Column(
-          mainAxisAlignment: .spaceAround,
-          crossAxisAlignment: .center,
-          children: [
-            OrderSuccessTopWidget(orderId: orderEntity.orderId),
-            Column(
-              spacing: 16.h,
-              children: [
-                CustomMaterialButton(
-                  onPressed: () {},
-                  text: 'track_order'.tr(),
-                  maxWidth: true,
-                  textStyle: AppTextStyles.font16WhiteBold,
-                ),
-                GestureDetector(
-                  onTap: () => context.pushReplacementNamed(Routes.appSection),
-                  child: Text(
-                    'home'.tr(),
-                    style: AppTextStyles.font16color1B5E37EBold.copyWith(
-                      decoration: .underline,
-                    ),
+    body: Padding(
+      padding: .symmetric(horizontal: 16.w),
+      child: Column(
+        mainAxisAlignment: .spaceAround,
+        crossAxisAlignment: .center,
+        children: [
+          OrderSuccessTopWidget(orderId: orderEntity.orderId),
+          Column(
+            spacing: 16.h,
+            children: [
+              CustomMaterialButton(
+                onPressed: () {},
+                text: 'track_order'.tr(),
+                maxWidth: true,
+                textStyle: AppTextStyles.font16WhiteBold,
+              ),
+              GestureDetector(
+                onTap: () => context.pushReplacementNamed(Routes.appSection),
+                child: Text(
+                  'home'.tr(),
+                  style: AppTextStyles.font16color1B5E37EBold.copyWith(
+                    decoration: .underline,
                   ),
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
-    );
+    ),
+  );
 }

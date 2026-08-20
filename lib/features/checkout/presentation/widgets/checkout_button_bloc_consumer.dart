@@ -39,38 +39,39 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) => BlocConsumer<CheckoutCubit, CheckoutState>(
-      listener: (context, state) {
-        if (state is AddOrderSuccess) {
-          AppToast.showToast(
-            context: context,
-            title: 'order_placed_successfully'.tr(),
-            type: .success,
-          );
-          final CartService cartService = context.read<CartCubit>();
-          cartService.clearCart();
-          context.pushNamedAndRemoveUntil(
-            Routes.orderSuccessView,
-            arguments: context.read<CheckoutCubit>().orderEntity,
-            predicate: (route) => false,
-          );
-        }
-        if (state is AddOrderFailure) {
-          AppToast.showToast(
-            context: context,
-            title: state.errorMessage,
-            type: .error,
-          );
-        }
-        if (state is MakePaymentFailure) {
-          AppToast.showToast(
-            context: context,
-            title: state.errorMessage,
-            type: .error,
-          );
-        }
-      },
-      builder: (context, state) => CustomMaterialButton(
+  Widget build(BuildContext context) =>
+      BlocConsumer<CheckoutCubit, CheckoutState>(
+        listener: (context, state) {
+          if (state is AddOrderSuccess) {
+            AppToast.showToast(
+              context: context,
+              title: 'order_placed_successfully'.tr(),
+              type: .success,
+            );
+            final CartService cartService = context.read<CartCubit>();
+            cartService.clearCart();
+            context.pushNamedAndRemoveUntil(
+              Routes.orderSuccessView,
+              arguments: context.read<CheckoutCubit>().orderEntity,
+              predicate: (route) => false,
+            );
+          }
+          if (state is AddOrderFailure) {
+            AppToast.showToast(
+              context: context,
+              title: state.errorMessage,
+              type: .error,
+            );
+          }
+          if (state is MakePaymentFailure) {
+            AppToast.showToast(
+              context: context,
+              title: state.errorMessage,
+              type: .error,
+            );
+          }
+        },
+        builder: (context, state) => CustomMaterialButton(
           onPressed: () {
             final cubit = context.read<CheckoutCubit>();
             if (currentIndex == 0 &&
@@ -100,7 +101,7 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
           maxWidth: true,
           isLoading: state is AddOrderLoading || state is MakePaymentLoading,
         ),
-    );
+      );
 
   void _executePaypalPayment({
     required BuildContext context,

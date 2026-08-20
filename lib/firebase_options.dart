@@ -30,15 +30,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -53,18 +47,18 @@ class DefaultFirebaseOptions {
 
   static final FirebaseOptions android = FirebaseOptions(
     apiKey: Env.apiKeyAndroid,
-    appId: '1:915498031769:android:3cbab3046736a3cc77b608',
-    messagingSenderId: '915498031769',
-    projectId: 'fruit-hub-2a6b2',
-    storageBucket: 'fruit-hub-2a6b2.firebasestorage.app',
+    appId: '1:868341775085:android:c24d30514cd16393fb6ae4',
+    messagingSenderId: '868341775085',
+    projectId: 'fruithub-84bf2',
+    storageBucket: 'fruithub-84bf2.firebasestorage.app',
   );
 
   static final FirebaseOptions ios = FirebaseOptions(
     apiKey: Env.apiKeyIos,
-    appId: '1:915498031769:ios:c22191bfea006fec77b608',
-    messagingSenderId: '915498031769',
-    projectId: 'fruit-hub-2a6b2',
-    storageBucket: 'fruit-hub-2a6b2.firebasestorage.app',
+    appId: '1:868341775085:ios:ace9e2220dfc390cfb6ae4',
+    messagingSenderId: '868341775085',
+    projectId: 'fruithub-84bf2',
+    storageBucket: 'fruithub-84bf2.firebasestorage.app',
     iosBundleId: 'com.example.fruitHub',
   );
 }

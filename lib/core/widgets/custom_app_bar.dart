@@ -26,16 +26,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => AppBar(
-      leading: showArrowBack
-          ? Padding(
-              padding: EdgeInsetsDirectional.only(start: 16.w),
-              child: CustomArrowBack(onTap: onTap),
-            )
-          : null,
-      title: Text(title, style: AppTextStyles.font19color0C0D0DBold),
-      centerTitle: centerTitle,
-      actions: showNotification
-          ? [const NotificationWidget(), Gap(16.w)]
-          : null,
-    );
+    leading: showArrowBack
+        ? Padding(
+            padding: EdgeInsetsDirectional.only(start: 16.w),
+            child: CustomArrowBack(onTap: onTap),
+          )
+        : null,
+    title: Text(title, style: AppTextStyles.font19color0C0D0DBold),
+    centerTitle: centerTitle,
+    actions: showNotification ? [const NotificationWidget(), Gap(16.w)] : null,
+  );
 }

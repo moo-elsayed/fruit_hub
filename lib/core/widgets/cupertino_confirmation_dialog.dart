@@ -24,32 +24,32 @@ class CupertinoConfirmationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CupertinoAlertDialog(
-      title: Text(title, style: GoogleFonts.lato()),
-      content: fullText != null
-          ? Text(fullText!, style: GoogleFonts.lato())
-          : Text.rich(
-              TextSpan(
-                style: GoogleFonts.lato(),
-                children: [
-                  const TextSpan(text: 'Are you sure you want to delete '),
-                  TextSpan(
-                    text: name,
-                    style: GoogleFonts.lato(fontWeight: FontWeight.bold),
-                  ),
-                  const TextSpan(text: ' ? This action cannot be undone.'),
-                ],
-              ),
+    title: Text(title, style: GoogleFonts.lato()),
+    content: fullText != null
+        ? Text(fullText!, style: GoogleFonts.lato())
+        : Text.rich(
+            TextSpan(
+              style: GoogleFonts.lato(),
+              children: [
+                const TextSpan(text: 'Are you sure you want to delete '),
+                TextSpan(
+                  text: name,
+                  style: GoogleFonts.lato(fontWeight: FontWeight.bold),
+                ),
+                const TextSpan(text: ' ? This action cannot be undone.'),
+              ],
             ),
-      actions: [
-        CupertinoDialogAction(
-          child: Text(textCancelButton ?? 'Cancel', style: GoogleFonts.lato()),
-          onPressed: () => context.pop(),
-        ),
-        CupertinoDialogAction(
-          isDestructiveAction: true,
-          onPressed: onTap,
-          child: Text(textOkButton ?? 'Delete', style: GoogleFonts.lato()),
-        ),
-      ],
-    );
+          ),
+    actions: [
+      CupertinoDialogAction(
+        child: Text(textCancelButton ?? 'Cancel', style: GoogleFonts.lato()),
+        onPressed: () => context.pop(),
+      ),
+      CupertinoDialogAction(
+        isDestructiveAction: true,
+        onPressed: onTap,
+        child: Text(textOkButton ?? 'Delete', style: GoogleFonts.lato()),
+      ),
+    ],
+  );
 }

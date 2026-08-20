@@ -54,123 +54,121 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-      create: (context) =>
-          SignupCubit(getIt.get<CreateUserWithEmailAndPasswordUseCase>()),
-      child: Scaffold(
-        appBar: CustomAppBar(
-          title: 'new_account'.tr(),
-          showArrowBack: true,
-          onTap: () => context.pop(),
-        ),
-        body: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
-          behavior: HitTestBehavior.opaque,
-          child: SingleChildScrollView(
-            padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Gap(24.h),
-                  TextFormFieldHelper(
-                    controller: _nameController,
-                    hint: 'full_name'.tr(),
-                    keyboardType: TextInputType.name,
-                    onValidate: Validator.validateName,
-                    action: TextInputAction.next,
-                  ),
-                  Gap(16.h),
-                  TextFormFieldHelper(
-                    controller: _emailController,
-                    hint: 'email'.tr(),
-                    keyboardType: TextInputType.emailAddress,
-                    onValidate: Validator.validateEmail,
-                    action: TextInputAction.next,
-                  ),
-                  Gap(16.h),
-                  TextFormFieldHelper(
-                    controller: _passwordController,
-                    hint: 'password'.tr(),
-                    isPassword: true,
-                    obscuringCharacter: '●',
-                    keyboardType: TextInputType.visiblePassword,
-                    onValidate: Validator.validatePassword,
-                    action: TextInputAction.done,
-                  ),
-                  Gap(16.h),
-                  TermsAndConditions(
-                    onChanged: (value) => _agreeToTerms = value,
-                  ),
-                  Gap(30.h),
-                  BlocConsumer<SignupCubit, SignupState>(
-                    listener: (context, state) {
-                      if (state is SignUpSuccess) {
-                        AppToast.showToast(
-                          context: context,
-                          title: 'email_created'.tr(),
-                          type: ToastificationType.success,
-                        );
-                        showCupertinoDialog(
-                          context: context,
-                          builder: (context) => CustomDialog(
-                            text: 'email_sent_to_verify'.tr(),
-                            onPressed: () {
-                              context.pop();
-                              final loginArgs = LoginArgs(
+    create: (context) =>
+        SignupCubit(getIt.get<CreateUserWithEmailAndPasswordUseCase>()),
+    child: Scaffold(
+      appBar: CustomAppBar(
+        title: 'new_account'.tr(),
+        showArrowBack: true,
+        onTap: () => context.pop(),
+      ),
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
+        behavior: HitTestBehavior.opaque,
+        child: SingleChildScrollView(
+          padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Gap(24.h),
+                TextFormFieldHelper(
+                  controller: _nameController,
+                  hint: 'full_name'.tr(),
+                  keyboardType: TextInputType.name,
+                  onValidate: Validator.validateName,
+                  action: TextInputAction.next,
+                ),
+                Gap(16.h),
+                TextFormFieldHelper(
+                  controller: _emailController,
+                  hint: 'email'.tr(),
+                  keyboardType: TextInputType.emailAddress,
+                  onValidate: Validator.validateEmail,
+                  action: TextInputAction.next,
+                ),
+                Gap(16.h),
+                TextFormFieldHelper(
+                  controller: _passwordController,
+                  hint: 'password'.tr(),
+                  isPassword: true,
+                  obscuringCharacter: '●',
+                  keyboardType: TextInputType.visiblePassword,
+                  onValidate: Validator.validatePassword,
+                  action: TextInputAction.done,
+                ),
+                Gap(16.h),
+                TermsAndConditions(onChanged: (value) => _agreeToTerms = value),
+                Gap(30.h),
+                BlocConsumer<SignupCubit, SignupState>(
+                  listener: (context, state) {
+                    if (state is SignUpSuccess) {
+                      AppToast.showToast(
+                        context: context,
+                        title: 'email_created'.tr(),
+                        type: ToastificationType.success,
+                      );
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) => CustomDialog(
+                          text: 'email_sent_to_verify'.tr(),
+                          onPressed: () {
+                            context.pop();
+                            final loginArgs = LoginArgs(
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim(),
+                            );
+                            context.pop(loginArgs);
+                          },
+                        ),
+                      );
+                    }
+                    if (state is SignUpFailure) {
+                      AppToast.showToast(
+                        context: context,
+                        title: state.message,
+                        type: ToastificationType.error,
+                      );
+                    }
+                  },
+                  builder: (context, state) => CustomMaterialButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        if (!_agreeToTerms) {
+                          AppToast.showToast(
+                            context: context,
+                            title: 'you_should_accept_terms_and_conditions'
+                                .tr(),
+                            type: ToastificationType.error,
+                          );
+                        } else {
+                          context
+                              .read<SignupCubit>()
+                              .createUserWithEmailAndPassword(
+                                username: _nameController.text.trim(),
                                 email: _emailController.text.trim(),
                                 password: _passwordController.text.trim(),
                               );
-                              context.pop(loginArgs);
-                            },
-                          ),
-                        );
-                      }
-                      if (state is SignUpFailure) {
-                        AppToast.showToast(
-                          context: context,
-                          title: state.message,
-                          type: ToastificationType.error,
-                        );
+                        }
                       }
                     },
-                    builder: (context, state) => CustomMaterialButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            if (!_agreeToTerms) {
-                              AppToast.showToast(
-                                context: context,
-                                title: 'you_should_accept_terms_and_conditions'
-                                    .tr(),
-                                type: ToastificationType.error,
-                              );
-                            } else {
-                              context
-                                  .read<SignupCubit>()
-                                  .createUserWithEmailAndPassword(
-                                    username: _nameController.text.trim(),
-                                    email: _emailController.text.trim(),
-                                    password: _passwordController.text.trim(),
-                                  );
-                            }
-                          }
-                        },
-                        maxWidth: true,
-                        isLoading: state is SignUpLoading,
-                        text: 'register'.tr(),
-                        textStyle: AppTextStyles.font16WhiteBold,
-                      ),
+                    maxWidth: true,
+                    isLoading: state is SignUpLoading,
+                    text: 'register'.tr(),
+                    textStyle: AppTextStyles.font16WhiteBold,
                   ),
-                  Gap(33.h),
-                  AuthRedirectText(
-                    question: 'already_have_an_account'.tr(),
-                    action: 'login'.tr(),
-                    onTap: () => context.pop(),
-                  ),
-                ],
-              ),
+                ),
+                Gap(33.h),
+                AuthRedirectText(
+                  question: 'already_have_an_account'.tr(),
+                  action: 'login'.tr(),
+                  onTap: () => context.pop(),
+                ),
+              ],
             ),
           ),
         ),
       ),
-    );
+    ),
+  );
 }

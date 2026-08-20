@@ -21,43 +21,40 @@ class ReviewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-      crossAxisAlignment: .start,
-      children: [
-        Row(
-          mainAxisAlignment: .spaceBetween,
-          children: [
-            Text(title, style: AppTextStyles.font16color0C0D0DBold),
-            GestureDetector(
-              onTap: onEditTap,
-              child: Text(
-                'edit'.tr(),
-                style: AppTextStyles.font13color1B5E37Bold.copyWith(
-                  color: AppColors.color1B5E37,
-                ),
+    crossAxisAlignment: .start,
+    children: [
+      Row(
+        mainAxisAlignment: .spaceBetween,
+        children: [
+          Text(title, style: AppTextStyles.font16color0C0D0DBold),
+          GestureDetector(
+            onTap: onEditTap,
+            child: Text(
+              'edit'.tr(),
+              style: AppTextStyles.font13color1B5E37Bold.copyWith(
+                color: AppColors.color1B5E37,
               ),
+            ),
+          ),
+        ],
+      ),
+      Gap(8.h),
+      Container(
+        padding: .symmetric(horizontal: 16.w, vertical: 14.h),
+        decoration: BoxDecoration(
+          color: AppColors.colorF7F7F7,
+          borderRadius: .circular(12.r),
+        ),
+        child: Row(
+          children: [
+            SizedBox(height: 24.h, width: 24.w, child: icon),
+            Gap(12.w),
+            Expanded(
+              child: Text(value, style: AppTextStyles.font13BlackSemiBold),
             ),
           ],
         ),
-        Gap(8.h),
-        Container(
-          padding: .symmetric(horizontal: 16.w, vertical: 14.h),
-          decoration: BoxDecoration(
-            color: AppColors.colorF7F7F7,
-            borderRadius: .circular(12.r),
-          ),
-          child: Row(
-            children: [
-              SizedBox(height: 24.h, width: 24.w, child: icon),
-              Gap(12.w),
-              Expanded(
-                child: Text(
-                  value,
-                  style: AppTextStyles.font13BlackSemiBold,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
+      ),
+    ],
+  );
 }

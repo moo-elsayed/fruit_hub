@@ -14,31 +14,31 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: .symmetric(horizontal: 16.w),
-      child: Column(
-        crossAxisAlignment: .start,
-        children: [
-          CustomAppBar(title: 'my_account'.tr()),
-          Gap(16.h),
-          Text('general'.tr(), style: AppTextStyles.font13color0C0D0DSemiBold),
-          Gap(16.h),
-          Expanded(
-            child: ListView.separated(
-              itemCount: getProfileItems(context).length,
-              itemBuilder: (context, index) {
-                final profileItemEntity = getProfileItems(context)[index];
-                return CustomProfileItem(entity: profileItemEntity);
-              },
-              separatorBuilder: (context, index) =>
-                  const Divider(color: AppColors.colorF2F3F3),
-            ),
+    padding: .symmetric(horizontal: 16.w),
+    child: Column(
+      crossAxisAlignment: .start,
+      children: [
+        CustomAppBar(title: 'my_account'.tr()),
+        Gap(16.h),
+        Text('general'.tr(), style: AppTextStyles.font13color0C0D0DSemiBold),
+        Gap(16.h),
+        Expanded(
+          child: ListView.separated(
+            itemCount: getProfileItems(context).length,
+            itemBuilder: (context, index) {
+              final profileItemEntity = getProfileItems(context)[index];
+              return CustomProfileItem(entity: profileItemEntity);
+            },
+            separatorBuilder: (context, index) =>
+                const Divider(color: AppColors.colorF2F3F3),
           ),
-          const Spacer(),
-          Padding(
-            padding: .only(bottom: 16.h),
-            child: const SignOutButton(),
-          ),
-        ],
-      ),
-    );
+        ),
+        const Spacer(),
+        Padding(
+          padding: .only(bottom: 16.h),
+          child: const SignOutButton(),
+        ),
+      ],
+    ),
+  );
 }

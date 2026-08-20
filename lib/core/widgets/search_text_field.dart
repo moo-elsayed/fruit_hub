@@ -26,33 +26,33 @@ class SearchTextFiled extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: onTap,
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.shadowColor,
-              blurRadius: 9,
-              offset: Offset(0, 2),
-              spreadRadius: 0,
-            ),
-          ],
-        ),
-        child: TextFormFieldHelper(
-          focusNode: focusNode,
-          enabled: enabled,
-          controller: controller,
-          onChanged: onChanged,
-          contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
-          prefixIcon: SvgPicture.asset(
-            Assets.iconsSearchIcon,
-            fit: BoxFit.scaleDown,
+    onTap: onTap,
+    child: DecoratedBox(
+      decoration: const BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadowColor,
+            blurRadius: 9,
+            offset: Offset(0, 2),
+            spreadRadius: 0,
           ),
-          fillColor: AppColors.white,
-          borderColor: AppColors.white,
-          hint: 'search_for'.tr(),
-          hintStyle: AppTextStyles.font13color949D9ERegular,
-        ),
+        ],
       ),
-    );
+      child: TextFormFieldHelper(
+        focusNode: focusNode,
+        enabled: enabled,
+        controller: controller,
+        onChanged: onChanged,
+        contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
+        prefixIcon: SvgPicture.asset(
+          Assets.iconsSearchIcon,
+          fit: BoxFit.scaleDown,
+        ),
+        fillColor: AppColors.white,
+        borderColor: AppColors.white,
+        hint: 'search_for'.tr(),
+        hintStyle: AppTextStyles.font13color949D9ERegular,
+      ),
+    ),
+  );
 }

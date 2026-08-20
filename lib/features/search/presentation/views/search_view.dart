@@ -13,14 +13,14 @@ class SearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: CustomAppBar(
-        title: 'search'.tr(),
-        showArrowBack: true,
-        onTap: () => context.pop(),
-      ),
-      body: BlocProvider(
-        create: (context) => SearchCubit(getIt.get<SearchFruitsUseCase>()),
-        child: const SearchViewBody(),
-      ),
-    );
+    appBar: CustomAppBar(
+      title: 'search'.tr(),
+      showArrowBack: true,
+      onTap: () => context.pop(),
+    ),
+    body: BlocProvider(
+      create: (context) => SearchCubit(getIt.get<SearchFruitsUseCase>()),
+      child: const SearchViewBody(),
+    ),
+  );
 }

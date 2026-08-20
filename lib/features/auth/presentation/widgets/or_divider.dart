@@ -9,13 +9,13 @@ class OrDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-      spacing: 18.w,
-      children: [
-        buildDivider(),
-        Text('or'.tr(), style: AppTextStyles.font16color0C0D0DSemiBold),
-        buildDivider(),
-      ],
-    );
+    spacing: 18.w,
+    children: [
+      buildDivider(),
+      Text('or'.tr(), style: AppTextStyles.font16color0C0D0DSemiBold),
+      buildDivider(),
+    ],
+  );
 
   Expanded buildDivider() =>
       const Expanded(child: Divider(color: AppColors.colorDDDFDF));

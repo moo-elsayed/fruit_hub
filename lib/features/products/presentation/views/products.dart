@@ -31,101 +31,99 @@ class _ProductsState extends State<Products> {
 
   @override
   Widget build(BuildContext context) => NestedScrollView(
-      headerSliverBuilder: (context, innerBoxIsScrolled) => [
-        SliverAppBar(
-          floating: true,
-          snap: true,
-          pinned: false,
-          automaticallyImplyLeading: false,
-          backgroundColor: AppColors.white,
-          surfaceTintColor: AppColors.white,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Padding(
-              padding: EdgeInsetsGeometry.only(top: 10.h),
-              child: CustomAppBar(
-                title: 'products'.tr(),
-              ),
-            ),
+    headerSliverBuilder: (context, innerBoxIsScrolled) => [
+      SliverAppBar(
+        floating: true,
+        snap: true,
+        pinned: false,
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.white,
+        surfaceTintColor: AppColors.white,
+        flexibleSpace: FlexibleSpaceBar(
+          background: Padding(
+            padding: EdgeInsetsGeometry.only(top: 10.h),
+            child: CustomAppBar(title: 'products'.tr()),
           ),
         ),
-        SliverAppBar(
-          pinned: true,
-          floating: false,
-          snap: false,
-          automaticallyImplyLeading: false,
-          backgroundColor: AppColors.white,
-          surfaceTintColor: AppColors.white,
-          toolbarHeight: 0,
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(52.h),
-            child: Padding(
-              padding: EdgeInsetsGeometry.symmetric(
-                horizontal: 16.w,
-                vertical: 8.h,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'our_products'.tr(),
-                    style: AppTextStyles.font16color0C0D0DBold,
-                  ),
-                  BlocBuilder<ProductsCubit, ProductsState>(
-                    builder: (context, state) {
-                      final cubit = context.read<ProductsCubit>();
-                      final bool isFilterActive = cubit.selectedSortOption != -1;
-                      return AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12.w,
-                          vertical: 6.h,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(4.r)),
-                          color: isFilterActive
-                              ? AppColors.color1B5E37.withValues(alpha: 0.1)
-                              : Colors.transparent,
-                          border: Border.all(
-                            color: isFilterActive
-                                ? AppColors.color1B5E37
-                                : AppColors.colorEAEBEB,
-                          ),
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (_) => BlocProvider.value(
-                                value: context.read<ProductsCubit>(),
-                                child: const SortProductsBottomSheet(),
-                              ),
-                            );
-                          },
-                          child: SvgPicture.asset(Assets.iconsFilter),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-      body: BlocBuilder<ProductsCubit, ProductsState>(
-        builder: (context, state) {
-          if (state is GetAllProductsSuccess) {
-            fruits = state.fruits;
-            return FruitsGridView(fruits: fruits);
-          } else if (state is GetAllProductsLoading) {
-            return const Skeletonizer(
-              enabled: true,
-              child: FruitsGridView(itemCount: 6),
-            );
-          } else {
-            return const Text('error');
-          }
-        },
       ),
-    );
+      SliverAppBar(
+        pinned: true,
+        floating: false,
+        snap: false,
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.white,
+        surfaceTintColor: AppColors.white,
+        toolbarHeight: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(52.h),
+          child: Padding(
+            padding: EdgeInsetsGeometry.symmetric(
+              horizontal: 16.w,
+              vertical: 8.h,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'our_products'.tr(),
+                  style: AppTextStyles.font16color0C0D0DBold,
+                ),
+                BlocBuilder<ProductsCubit, ProductsState>(
+                  builder: (context, state) {
+                    final cubit = context.read<ProductsCubit>();
+                    final bool isFilterActive = cubit.selectedSortOption != -1;
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 6.h,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(4.r)),
+                        color: isFilterActive
+                            ? AppColors.color1B5E37.withValues(alpha: 0.1)
+                            : Colors.transparent,
+                        border: Border.all(
+                          color: isFilterActive
+                              ? AppColors.color1B5E37
+                              : AppColors.colorEAEBEB,
+                        ),
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (_) => BlocProvider.value(
+                              value: context.read<ProductsCubit>(),
+                              child: const SortProductsBottomSheet(),
+                            ),
+                          );
+                        },
+                        child: SvgPicture.asset(Assets.iconsFilter),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ],
+    body: BlocBuilder<ProductsCubit, ProductsState>(
+      builder: (context, state) {
+        if (state is GetAllProductsSuccess) {
+          fruits = state.fruits;
+          return FruitsGridView(fruits: fruits);
+        } else if (state is GetAllProductsLoading) {
+          return const Skeletonizer(
+            enabled: true,
+            child: FruitsGridView(itemCount: 6),
+          );
+        } else {
+          return const Text('error');
+        }
+      },
+    ),
+  );
 }

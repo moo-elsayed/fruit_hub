@@ -21,9 +21,9 @@ class _AnimatedSplashViewBodyState extends State<AnimatedSplashViewBody> {
     PageRouteBuilder(
       pageBuilder: (_, _, _) => view,
       transitionsBuilder: (_, animation, _, child) => FadeTransition(
-          opacity: CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-          child: child,
-        ),
+        opacity: CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+        child: child,
+      ),
     ),
   );
 
@@ -35,37 +35,37 @@ class _AnimatedSplashViewBodyState extends State<AnimatedSplashViewBody> {
 
   @override
   Widget build(BuildContext context) => BlocListener<SplashCubit, SplashState>(
-      listener: (context, state) {
-        if (state is SplashNavigateToHome) {
-          navigate(const AppSection());
-        } else if (state is SplashNavigateToLogin) {
-          navigate(const LoginView());
-        } else if (state is SplashNavigateToOnboarding) {
-          navigate(const OnboardingView());
-        }
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          FadeInDown(
-            duration: const Duration(milliseconds: 1000),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: SvgPicture.asset(Assets.svgsPlant),
-            ),
+    listener: (context, state) {
+      if (state is SplashNavigateToHome) {
+        navigate(const AppSection());
+      } else if (state is SplashNavigateToLogin) {
+        navigate(const LoginView());
+      } else if (state is SplashNavigateToOnboarding) {
+        navigate(const OnboardingView());
+      }
+    },
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        FadeInDown(
+          duration: const Duration(milliseconds: 1000),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: SvgPicture.asset(Assets.svgsPlant),
           ),
-          BounceInDown(
-            duration: const Duration(milliseconds: 1200),
-            child: Image.asset(
-              'assets/images/splash_android_12.png',
-              height: 300.h,
-            ),
+        ),
+        BounceInDown(
+          duration: const Duration(milliseconds: 1200),
+          child: Image.asset(
+            'assets/images/splash_android_12.png',
+            height: 300.h,
           ),
-          FadeInUp(
-            duration: const Duration(milliseconds: 1000),
-            child: SvgPicture.asset(Assets.svgsSplashBottom),
-          ),
-        ],
-      ),
-    );
+        ),
+        FadeInUp(
+          duration: const Duration(milliseconds: 1000),
+          child: SvgPicture.asset(Assets.svgsSplashBottom),
+        ),
+      ],
+    ),
+  );
 }

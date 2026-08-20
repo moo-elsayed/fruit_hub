@@ -33,78 +33,79 @@ class _SortProductsBottomSheetState extends State<SortProductsBottomSheet> {
 
   @override
   Widget build(BuildContext context) => Container(
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: .circular(24.r),
-          topRight: .circular(24.r),
-        ),
+    decoration: BoxDecoration(
+      color: AppColors.white,
+      borderRadius: BorderRadius.only(
+        topLeft: .circular(24.r),
+        topRight: .circular(24.r),
       ),
-      padding: .all(16.h),
-      child: Column(
-        mainAxisSize: .min,
-        children: [
-          const CustomBottomSheetTopContainer(),
-          Row(
-            mainAxisAlignment: .spaceBetween,
-            children: [
-              Text('sort_by'.tr(), style: AppTextStyles.font19color0C0D0DBold),
-              if (_selectedOption != -1)
-                InkWell(
-                  onTap: () {
-                    context.read<ProductsCubit>().resetSorting();
-                    context.pop();
-                  },
-                  borderRadius: .circular(8.r),
-                  child: Padding(
-                    padding: .symmetric(horizontal: 8.w, vertical: 4.h),
-                    child: Row(
-                      spacing: 4.w,
-                      children: [
-                        Icon(
-                          Icons.restart_alt_rounded,
-                          size: 18.sp,
-                          color: AppColors.greyShade600,
-                        ),
-                        Text(
-                          'reset'.tr(),
-                          style: AppTextStyles.font13GreyShade600SemiBold,
-                        ),
-                      ],
-                    ),
+    ),
+    padding: .all(16.h),
+    child: Column(
+      mainAxisSize: .min,
+      children: [
+        const CustomBottomSheetTopContainer(),
+        Row(
+          mainAxisAlignment: .spaceBetween,
+          children: [
+            Text('sort_by'.tr(), style: AppTextStyles.font19color0C0D0DBold),
+            if (_selectedOption != -1)
+              InkWell(
+                onTap: () {
+                  context.read<ProductsCubit>().resetSorting();
+                  context.pop();
+                },
+                borderRadius: .circular(8.r),
+                child: Padding(
+                  padding: .symmetric(horizontal: 8.w, vertical: 4.h),
+                  child: Row(
+                    spacing: 4.w,
+                    children: [
+                      Icon(
+                        Icons.restart_alt_rounded,
+                        size: 18.sp,
+                        color: AppColors.greyShade600,
+                      ),
+                      Text(
+                        'reset'.tr(),
+                        style: AppTextStyles.font13GreyShade600SemiBold,
+                      ),
+                    ],
                   ),
                 ),
-            ],
-          ),
-          Gap(16.h),
-          ...List.generate(_sortOptions.length, (index) => Padding(
-              padding: .only(
-                bottom: index == _sortOptions.length - 1 ? 0 : 12.h,
               ),
-              child: SortOptionItem(
-                onTap: () {
-                  setState(() {
-                    _selectedOption = index;
-                  });
-                },
-                isSelected: _selectedOption == index,
-                title: _sortOptions[index],
-              ),
-            )),
-          Gap(32.h),
-          CustomMaterialButton(
-            onPressed: () {
-              final productsCubit = context.read<ProductsCubit>();
-              if (_selectedOption != productsCubit.selectedSortOption) {
-                context.read<ProductsCubit>().sortProducts(_selectedOption);
-              }
-              context.pop();
-            },
-            text: 'apply'.tr(),
-            maxWidth: true,
-            textStyle: AppTextStyles.font16WhiteBold,
+          ],
+        ),
+        Gap(16.h),
+        ...List.generate(
+          _sortOptions.length,
+          (index) => Padding(
+            padding: .only(bottom: index == _sortOptions.length - 1 ? 0 : 12.h),
+            child: SortOptionItem(
+              onTap: () {
+                setState(() {
+                  _selectedOption = index;
+                });
+              },
+              isSelected: _selectedOption == index,
+              title: _sortOptions[index],
+            ),
           ),
-        ],
-      ),
-    );
+        ),
+        Gap(32.h),
+        CustomMaterialButton(
+          onPressed: () {
+            final productsCubit = context.read<ProductsCubit>();
+            if (_selectedOption != productsCubit.selectedSortOption) {
+              context.read<ProductsCubit>().sortProducts(_selectedOption);
+            }
+            context.pop();
+          },
+          text: 'apply'.tr(),
+          maxWidth: true,
+          textStyle: AppTextStyles.font16WhiteBold,
+        ),
+      ],
+    ),
+  );
 }

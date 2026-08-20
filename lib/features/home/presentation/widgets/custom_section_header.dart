@@ -15,19 +15,19 @@ class CustomSectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(sectionName, style: AppTextStyles.font16color0C0D0DBold),
-          GestureDetector(
-            onTap: onTap,
-            child: Text(
-              'more'.tr(),
-              style: AppTextStyles.font13color949D9ERegular,
-            ),
+    padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(sectionName, style: AppTextStyles.font16color0C0D0DBold),
+        GestureDetector(
+          onTap: onTap,
+          child: Text(
+            'more'.tr(),
+            style: AppTextStyles.font13color949D9ERegular,
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 }

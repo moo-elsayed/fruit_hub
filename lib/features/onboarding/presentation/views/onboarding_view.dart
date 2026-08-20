@@ -15,9 +15,9 @@ class OnboardingView extends StatefulWidget {
 class _OnboardingViewState extends State<OnboardingView> {
   @override
   Widget build(BuildContext context) => Scaffold(
-      body: BlocProvider(
-        create: (context) => OnboardingCubit(getIt.get<AppPreferencesManager>()),
-        child: const OnboardingViewBody(),
-      ),
-    );
+    body: BlocProvider(
+      create: (context) => OnboardingCubit(getIt.get<AppPreferencesManager>()),
+      child: const OnboardingViewBody(),
+    ),
+  );
 }

@@ -20,52 +20,52 @@ class CustomBottomNavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: onTap,
-      child: AnimatedSize(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeInOut,
-        alignment: Alignment.center,
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          transitionBuilder: (child, animation) => FadeTransition(
-              opacity: animation,
-              child: ScaleTransition(scale: animation, child: child),
-            ),
-          child: !active
-              ? SvgPicture.asset(
-                  entity.outlineIcon,
-                  height: 20.h,
-                  width: 20.w,
-                  colorFilter: const ColorFilter.mode(
-                    AppColors.color4E5556,
-                    BlendMode.srcIn,
-                  ),
-                )
-              : DecoratedBox(
-                  decoration: BoxDecoration(
-                    borderRadius: .circular(16.r),
-                    color: AppColors.colorF3F5F7,
-                  ),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 15.r,
-                        backgroundColor: AppColors.color1B5E37,
-                        child: SvgPicture.asset(
-                          entity.filledIcon,
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ),
-                      Gap(4.w),
-                      Text(
-                        entity.label,
-                        style: AppTextStyles.font11color1B5E37semiBold,
-                      ),
-                      Gap(7.w),
-                    ],
-                  ),
-                ),
+    onTap: onTap,
+    child: AnimatedSize(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeInOut,
+      alignment: Alignment.center,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        transitionBuilder: (child, animation) => FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(scale: animation, child: child),
         ),
+        child: !active
+            ? SvgPicture.asset(
+                entity.outlineIcon,
+                height: 20.h,
+                width: 20.w,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.color4E5556,
+                  BlendMode.srcIn,
+                ),
+              )
+            : DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: .circular(16.r),
+                  color: AppColors.colorF3F5F7,
+                ),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 15.r,
+                      backgroundColor: AppColors.color1B5E37,
+                      child: SvgPicture.asset(
+                        entity.filledIcon,
+                        fit: BoxFit.scaleDown,
+                      ),
+                    ),
+                    Gap(4.w),
+                    Text(
+                      entity.label,
+                      style: AppTextStyles.font11color1B5E37semiBold,
+                    ),
+                    Gap(7.w),
+                  ],
+                ),
+              ),
       ),
-    );
+    ),
+  );
 }

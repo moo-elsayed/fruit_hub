@@ -15,23 +15,19 @@ class OnboardingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(length, (index) {
-        final bool isActive = index <= currentIndex;
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          width: isActive ? 10.w : 9.w,
-          height: isActive ? 10.h : 9.h,
-          margin: EdgeInsetsDirectional.only(
-            end: index == length - 1 ? 0 : 10.w,
-          ),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: isActive
-                ? AppColors.color1B5E37
-                : AppColors.colorEBF6EA,
-          ),
-        );
-      }),
-    );
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: List.generate(length, (index) {
+      final bool isActive = index <= currentIndex;
+      return AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        width: isActive ? 10.w : 9.w,
+        height: isActive ? 10.h : 9.h,
+        margin: EdgeInsetsDirectional.only(end: index == length - 1 ? 0 : 10.w),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: isActive ? AppColors.color1B5E37 : AppColors.colorEBF6EA,
+        ),
+      );
+    }),
+  );
 }

@@ -26,45 +26,45 @@ class FruitHub extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ScreenUtilInit(
-      designSize: const Size(375, 812),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => CartCubit(
-              getIt.get<AddItemToCartUseCase>(),
-              getIt.get<RemoveItemFromCartUseCase>(),
-              getIt.get<GetProductsInCartUseCase>(),
-              getIt.get<UpdateItemQuantityUseCase>(),
-              getIt.get<GetCartItemsUseCase>(),
-              getIt.get<ClearCartUseCase>(),
-            )..getCartItems(),
-          ),
-          BlocProvider(
-            create: (context) => FavoriteCubit(
-              getIt.get<AddItemToFavoritesUseCase>(),
-              getIt.get<RemoveItemFromFavoritesUseCase>(),
-              getIt.get<GetFavoriteIdsUseCase>(),
-              getIt.get<GetFavoritesUseCase>(),
-            )..getFavoriteIds(),
-          ),
-        ],
-        child: MaterialApp(
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          debugShowCheckedModeBanner: false,
-          onGenerateRoute: appRouter.generateRoute,
-          theme: ThemeData(
-            scaffoldBackgroundColor: AppColors.white,
-            appBarTheme: const AppBarTheme(
-              backgroundColor: AppColors.white,
-              surfaceTintColor: AppColors.white,
-            ),
-          ),
-          initialRoute: Routes.splashView,
+    designSize: const Size(375, 812),
+    minTextAdapt: true,
+    splitScreenMode: true,
+    child: MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => CartCubit(
+            getIt.get<AddItemToCartUseCase>(),
+            getIt.get<RemoveItemFromCartUseCase>(),
+            getIt.get<GetProductsInCartUseCase>(),
+            getIt.get<UpdateItemQuantityUseCase>(),
+            getIt.get<GetCartItemsUseCase>(),
+            getIt.get<ClearCartUseCase>(),
+          )..getCartItems(),
         ),
+        BlocProvider(
+          create: (context) => FavoriteCubit(
+            getIt.get<AddItemToFavoritesUseCase>(),
+            getIt.get<RemoveItemFromFavoritesUseCase>(),
+            getIt.get<GetFavoriteIdsUseCase>(),
+            getIt.get<GetFavoritesUseCase>(),
+          )..getFavoriteIds(),
+        ),
+      ],
+      child: MaterialApp(
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: appRouter.generateRoute,
+        theme: ThemeData(
+          scaffoldBackgroundColor: AppColors.white,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: AppColors.white,
+            surfaceTintColor: AppColors.white,
+          ),
+        ),
+        initialRoute: Routes.splashView,
       ),
-    );
+    ),
+  );
 }

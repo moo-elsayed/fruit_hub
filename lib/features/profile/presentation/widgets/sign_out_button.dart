@@ -14,39 +14,41 @@ class SignOutButton extends StatelessWidget {
   const SignOutButton({super.key});
 
   @override
-  Widget build(BuildContext context) => BlocListener<SignOutCubit, SignOutState>(
-      listener: (context, state) {
-        if (state is SignOutSuccess) {
-          AppToast.showToast(
-            context: context,
-            title: 'logged_out_successfully'.tr(),
-            type: .success,
-          );
-          context.pushNamedAndRemoveUntil(
-            Routes.loginView,
-            predicate: (Route<dynamic> route) => false,
-            rootNavigator: true,
-          );
-        }
-      },
-      child: CustomMaterialButton(
-        onPressed: () {
-          showCupertinoDialog(
-            context: context,
-            builder: (_) => CustomConfirmationDialog(
-              title: 'log_out_confirmation'.tr(),
-              textConfirmButton: 'ok'.tr(),
-              textCancelButton: 'cancel'.tr(),
-              onConfirm: () async {
-                final SignOutService signOutService = context.read<SignOutCubit>();
-                await signOutService.signOut();
-              },
-            ),
-          );
+  Widget build(BuildContext context) =>
+      BlocListener<SignOutCubit, SignOutState>(
+        listener: (context, state) {
+          if (state is SignOutSuccess) {
+            AppToast.showToast(
+              context: context,
+              title: 'logged_out_successfully'.tr(),
+              type: .success,
+            );
+            context.pushNamedAndRemoveUntil(
+              Routes.loginView,
+              predicate: (Route<dynamic> route) => false,
+              rootNavigator: true,
+            );
+          }
         },
-        text: 'sign_out'.tr(),
-        textStyle: AppTextStyles.font16WhiteBold,
-        maxWidth: true,
-      ),
-    );
+        child: CustomMaterialButton(
+          onPressed: () {
+            showCupertinoDialog(
+              context: context,
+              builder: (_) => CustomConfirmationDialog(
+                title: 'log_out_confirmation'.tr(),
+                textConfirmButton: 'ok'.tr(),
+                textCancelButton: 'cancel'.tr(),
+                onConfirm: () async {
+                  final SignOutService signOutService = context
+                      .read<SignOutCubit>();
+                  await signOutService.signOut();
+                },
+              ),
+            );
+          },
+          text: 'sign_out'.tr(),
+          textStyle: AppTextStyles.font16WhiteBold,
+          maxWidth: true,
+        ),
+      );
 }

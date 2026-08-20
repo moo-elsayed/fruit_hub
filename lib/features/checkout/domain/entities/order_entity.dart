@@ -17,7 +17,6 @@ class OrderEntity {
   final AddressEntity address;
   final PaymentOptionEntity paymentOption;
 
-
   double get totalPrice => products.fold(
     0,
     (previousValue, element) => previousValue + element.totalPrice,

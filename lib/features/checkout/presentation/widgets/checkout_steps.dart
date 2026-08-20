@@ -16,28 +16,28 @@ class CheckoutSteps extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-      height: 23.h,
-      child: Row(
-        mainAxisAlignment: .spaceAround,
-        children: List.generate(
-          steps.length,
-          (index) => GestureDetector(
-            onTap: () {
-              if (index < currentIndex) {
-                pageController.animateToPage(
-                  index,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                );
-              }
-            },
-            child: CustomStepItem(
-              isActive: index <= currentIndex,
-              stepNumber: index + 1,
-              stepText: steps[index],
-            ),
+    height: 23.h,
+    child: Row(
+      mainAxisAlignment: .spaceAround,
+      children: List.generate(
+        steps.length,
+        (index) => GestureDetector(
+          onTap: () {
+            if (index < currentIndex) {
+              pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
+            }
+          },
+          child: CustomStepItem(
+            isActive: index <= currentIndex,
+            stepNumber: index + 1,
+            stepText: steps[index],
           ),
         ),
       ),
-    );
+    ),
+  );
 }

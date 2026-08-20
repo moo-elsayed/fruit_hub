@@ -9,12 +9,12 @@ class NotificationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CircleAvatar(
-      backgroundColor: AppColors.colorEEF8ED,
-      radius: 18.r,
-      child: SvgPicture.asset(
-        Assets.iconsNotification,
-        height: 20.h,
-        width: 20.w,
-      ),
-    );
+    backgroundColor: AppColors.colorEEF8ED,
+    radius: 18.r,
+    child: SvgPicture.asset(
+      Assets.iconsNotification,
+      height: 20.h,
+      width: 20.w,
+    ),
+  );
 }
