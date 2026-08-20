@@ -49,6 +49,7 @@ dependencies:
 
   # Networking & Deep Linking
   dio: ^5.9.0
+  app_links: ^7.0.0
 
 dev_dependencies:
   flutter_test:

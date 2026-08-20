@@ -12,7 +12,11 @@ import 'package:fruit_hub/features/products/presentation/views/product_details_v
 import 'package:fruit_hub/generated/assets.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import '../../features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
+import '../../features/products/domain/use_cases/get_all_products_use_case.dart';
+import '../../features/products/domain/use_cases/get_product_details_use_case.dart';
+import '../../features/products/presentation/managers/products_cubit/products_cubit.dart';
 import '../../features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
+import '../helpers/di.dart';
 import 'custom_action_button.dart';
 import 'custom_network_image.dart';
 
@@ -30,7 +34,13 @@ class CustomFruitItem extends StatelessWidget {
         PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
           context,
           settings: const RouteSettings(name: Routes.productDetailsView),
-          screen: ProductDetailsView(fruitEntity: fruitEntity),
+          screen: BlocProvider(
+            create: (context) => ProductsCubit(
+              getAllProductsUseCase: getIt.get<GetAllProductsUseCase>(),
+              getProductDetailsUseCase: getIt.get<GetProductDetailsUseCase>(),
+            ),
+            child: ProductDetailsView(fruitEntity: fruitEntity),
+          ),
           withNavBar: false,
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
         );

@@ -36,6 +36,21 @@ class ProductsRemoteDataSourceImp implements ProductsRemoteDataSource {
     }
   }
 
+  @override
+  Future<NetworkResponse<FruitEntity>> getProductDetails(String code) async {
+    try {
+      final response = await _databaseService.getData(
+        documentId: code,
+        path: BackendEndpoints.getProductDetails,
+      );
+      final fruit = FruitModel.fromJson(response).toEntity();
+      return NetworkSuccess(fruit);
+    } catch (e) {
+      _logError(e: e);
+      return NetworkFailure(Exception(e.toString()));
+    }
+  }
+
   void _logError({
     required Object e,
     String functionName = 'HomeRemoteDataSourceImp.getAllProducts',

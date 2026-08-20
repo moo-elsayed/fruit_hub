@@ -6,13 +6,18 @@ import 'package:fruit_hub/core/helpers/network_response.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
 
 import '../../../../../core/entities/fruit_entity.dart';
+import '../../../domain/use_cases/get_product_details_use_case.dart';
 
 part 'products_state.dart';
 
 class ProductsCubit extends Cubit<ProductsState> {
-  ProductsCubit(this._getAllProductsUseCase) : super(ProductsInitial());
+  ProductsCubit({
+    required this.getAllProductsUseCase,
+    required this.getProductDetailsUseCase,
+  }) : super(ProductsInitial());
 
-  final GetAllProductsUseCase _getAllProductsUseCase;
+  final GetAllProductsUseCase getAllProductsUseCase;
+  final GetProductDetailsUseCase getProductDetailsUseCase;
 
   List<FruitEntity> _originalFruits = [];
   List<FruitEntity> fruits = [];
@@ -25,7 +30,7 @@ class ProductsCubit extends Cubit<ProductsState> {
 
   Future<void> getAllProducts() async {
     emit(GetAllProductsLoading());
-    final networkResponse = await _getAllProductsUseCase.call();
+    final networkResponse = await getAllProductsUseCase.call();
     switch (networkResponse) {
       case NetworkSuccess<List<FruitEntity>>():
         _originalFruits = networkResponse.data ?? [];
@@ -33,6 +38,17 @@ class ProductsCubit extends Cubit<ProductsState> {
         emit(GetAllProductsSuccess(_originalFruits));
       case NetworkFailure<List<FruitEntity>>():
         emit(GetAllProductsFailure(getErrorMessage(networkResponse).tr()));
+    }
+  }
+
+  Future<void> getProductDetails(String code) async {
+    emit(GetProductDetailsLoading());
+    final networkResponse = await getProductDetailsUseCase(code);
+    switch (networkResponse) {
+      case NetworkSuccess<FruitEntity>():
+        emit(GetProductDetailsSuccess(networkResponse.data!));
+      case NetworkFailure<FruitEntity>():
+        emit(GetProductDetailsFailure(getErrorMessage(networkResponse).tr()));
     }
   }
 
