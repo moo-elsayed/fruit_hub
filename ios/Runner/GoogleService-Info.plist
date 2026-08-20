@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>868341775085-vnvasss5832pb89nammb2qi3gb3odiqh.apps.googleusercontent.com</string>
+	<string>868341775085-mqls2jn8aa0069lvd4ecr08urb4hp2d0.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.868341775085-vnvasss5832pb89nammb2qi3gb3odiqh</string>
+	<string>com.googleusercontent.apps.868341775085-mqls2jn8aa0069lvd4ecr08urb4hp2d0</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>868341775085-17m45j5cov1gug1s8dbrfejublldcngv.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBPcrYR-EWysqjCFlSQwbBVXN4-YHgMkEs</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.fruitHub</string>
+	<string>com.fruithub.app</string>
 	<key>PROJECT_ID</key>
 	<string>fruithub-84bf2</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:868341775085:ios:ace9e2220dfc390cfb6ae4</string>
+	<string>1:868341775085:ios:061aed14ae4faeb0fb6ae4</string>
 </dict>
 </plist>

@@ -1,4 +1,3 @@
-import 'package:app_links/app_links.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ import 'package:fruit_hub/simple_bloc_observer.dart';
 
 import 'firebase_options.dart';
 
-String? globalInitialLinkProductId;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
@@ -24,15 +22,6 @@ void main() async {
 
   setupServiceLocator();
   await getIt.allReady();
-
-  try {
-    final uri = await AppLinks().getInitialLink();
-    if (uri != null && uri.scheme == 'fruithub' && uri.host == 'product') {
-      globalInitialLinkProductId = uri.pathSegments.first;
-    }
-  } catch (e) {
-    debugPrint('Deep Link Error: $e');
-  }
 
   runApp(
     EasyLocalization(

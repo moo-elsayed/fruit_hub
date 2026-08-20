@@ -47,9 +47,8 @@ dependencies:
   flutter_paypal_payment: ^1.0.8
   flutter_stripe: ^14.0.0
 
-  # Networking & Deep Linking
+  # Networking
   dio: ^5.9.0
-  app_links: ^7.0.0
 
 dev_dependencies:
   flutter_test:
