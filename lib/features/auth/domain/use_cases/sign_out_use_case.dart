@@ -1,4 +1,6 @@
-import 'package:fruit_hub/core/helpers/network_response.dart';
+import 'package:fruit_hub/core/errors/failures.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/clear_user_session_use_case.dart';
 import '../repo/auth_repo.dart';
 
@@ -16,10 +18,12 @@ class SignOutUseCase {
           await _clearUserSessionUseCase.call();
           return const NetworkSuccess();
         } catch (e) {
-          return NetworkFailure(Exception('error_occurred_please_try_again'));
+          return NetworkFailure(
+            ServerFailure(error: AppStrings.unexpectedError),
+          );
         }
       case NetworkFailure<void>():
-        return NetworkFailure(networkResponse.exception);
+        return NetworkFailure(networkResponse.failure);
     }
   }
 }

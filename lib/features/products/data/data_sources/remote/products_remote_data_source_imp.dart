@@ -1,58 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fruit_hub/core/entities/fruit_entity.dart';
-import 'package:fruit_hub/core/helpers/app_logger.dart';
+import 'package:fruit_hub/core/errors/exceptions.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
-import 'package:fruit_hub/core/helpers/network_response.dart';
-import 'package:fruit_hub/core/services/database/database_service.dart';
-import '../../../../../../../core/helpers/failures.dart';
-import '../../../../../../shared_data/models/fruit_model.dart';
+import 'package:fruit_hub/core/network/api_helper.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
+import 'package:fruit_hub/shared_data/models/fruit_model.dart';
 import 'products_remote_data_source.dart';
 
 class ProductsRemoteDataSourceImp implements ProductsRemoteDataSource {
-  ProductsRemoteDataSourceImp(this._databaseService);
+  ProductsRemoteDataSourceImp({FirebaseFirestore? firestore})
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
-  final DatabaseService _databaseService;
-
-  @override
-  Future<NetworkResponse<List<FruitEntity>>> getAllProducts() async {
-    try {
-      final response = await _databaseService.getAllData(
-        BackendEndpoints.getAllProducts,
-      );
-
-      final List<FruitEntity> fruits = response
-          .map((e) => FruitModel.fromJson(e).toEntity())
-          .toList();
-
-      return NetworkSuccess(fruits);
-    } on FirebaseException catch (e) {
-      _logError(e: e);
-      return NetworkFailure(
-        Exception(ServerFailure.fromFirebaseException(e).errorMessage),
-      );
-    } catch (e) {
-      _logError(e: e);
-      return NetworkFailure(Exception(e.toString()));
-    }
-  }
+  final FirebaseFirestore _firestore;
 
   @override
-  Future<NetworkResponse<FruitEntity>> getProductDetails(String code) async {
-    try {
-      final response = await _databaseService.getData(
-        documentId: code,
-        path: BackendEndpoints.getProductDetails,
-      );
-      final fruit = FruitModel.fromJson(response).toEntity();
-      return NetworkSuccess(fruit);
-    } catch (e) {
-      _logError(e: e);
-      return NetworkFailure(Exception(e.toString()));
-    }
-  }
+  Future<NetworkResponse<List<FruitModel>>> getAllProducts() async =>
+      ApiHelper.executeSafely(() async {
+        final querySnapshot = await _firestore
+            .collection(BackendEndpoints.productsCollection)
+            .get();
 
-  void _logError({
-    required Object e,
-    String functionName = 'HomeRemoteDataSourceImp.getAllProducts',
-  }) => AppLogger.error('error occurred in $functionName', error: e.toString());
+        return querySnapshot.docs
+            .map((doc) => FruitModel.fromJson(doc.data()))
+            .toList();
+      }, functionName: 'getAllProducts');
+
+  @override
+  Future<NetworkResponse<FruitModel>> getProductDetails(String code) async =>
+      ApiHelper.executeSafely(() async {
+        final doc = await _firestore
+            .collection(BackendEndpoints.productsCollection)
+            .doc(code)
+            .get();
+
+        if (!doc.exists || doc.data() == null) {
+          throw BusinessException(AppStrings.notFoundError);
+        }
+
+        return FruitModel.fromJson(doc.data()!);
+      }, functionName: 'getProductDetails');
 }

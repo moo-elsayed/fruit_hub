@@ -11,7 +11,7 @@ import 'package:fruit_hub/core/helpers/validator.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
 import 'package:fruit_hub/core/widgets/text_form_field_helper.dart';
-import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
+import 'package:fruit_hub/features/auth/presentation/managers/signin_cubit/sign_in_cubit.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/social_sign_in_cubit/social_sign_in_cubit.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/auth_redirect_text.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/forget_password.dart';
@@ -19,14 +19,10 @@ import 'package:fruit_hub/features/auth/presentation/widgets/or_divider.dart';
 import 'package:fruit_hub/generated/assets.dart';
 import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
-
 import '../../../../core/routing/routes.dart';
 import '../../../../core/widgets/app_toasts.dart';
 import '../../../../core/widgets/custom_material_button.dart';
-import '../../domain/use_cases/facebook_sign_in_use_case.dart';
-import '../../domain/use_cases/google_sign_in_use_case.dart';
 import '../args/login_args.dart';
-import '../managers/signin_cubit/sign_in_cubit.dart';
 import '../widgets/social_login_button.dart';
 
 class LoginView extends StatefulWidget {
@@ -81,16 +77,8 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
     providers: [
-      BlocProvider(
-        create: (context) =>
-            SignInCubit(getIt.get<SignInWithEmailAndPasswordUseCase>()),
-      ),
-      BlocProvider(
-        create: (context) => SocialSignInCubit(
-          getIt.get<GoogleSignInUseCase>(),
-          getIt.get<FacebookSignInUseCase>(),
-        ),
-      ),
+      BlocProvider(create: (context) => getIt.get<SignInCubit>()),
+      BlocProvider(create: (context) => getIt.get<SocialSignInCubit>()),
     ],
     child: Scaffold(
       appBar: CustomAppBar(title: 'login'.tr()),
@@ -132,7 +120,7 @@ class _LoginViewState extends State<LoginView> {
                 BlocConsumer<SignInCubit, SignInState>(
                   listener: (context, state) {
                     if (state is SignInSuccess) {
-                      AppToast.showToast(
+                      AppToast.show(
                         context: context,
                         title: 'welcome'.tr(),
                         type: ToastificationType.success,
@@ -140,7 +128,7 @@ class _LoginViewState extends State<LoginView> {
                       context.pushReplacementNamed(Routes.appSection);
                     }
                     if (state is SignInFailure) {
-                      AppToast.showToast(
+                      AppToast.show(
                         context: context,
                         title: state.message,
                         type: ToastificationType.error,
@@ -177,7 +165,7 @@ class _LoginViewState extends State<LoginView> {
                 BlocConsumer<SocialSignInCubit, SocialSignInState>(
                   listener: (context, state) {
                     if (state is GoogleSuccess) {
-                      AppToast.showToast(
+                      AppToast.show(
                         context: context,
                         title: 'welcome'.tr(),
                         type: ToastificationType.success,
@@ -185,7 +173,7 @@ class _LoginViewState extends State<LoginView> {
                       context.pushReplacementNamed(Routes.appSection);
                     }
                     if (state is GoogleFailure) {
-                      AppToast.showToast(
+                      AppToast.show(
                         context: context,
                         title: state.message,
                         type: ToastificationType.error,
@@ -219,7 +207,7 @@ class _LoginViewState extends State<LoginView> {
                 BlocConsumer<SocialSignInCubit, SocialSignInState>(
                   listener: (context, state) {
                     if (state is FacebookSuccess) {
-                      AppToast.showToast(
+                      AppToast.show(
                         context: context,
                         title: 'welcome'.tr(),
                         type: ToastificationType.success,
@@ -227,7 +215,7 @@ class _LoginViewState extends State<LoginView> {
                       context.pushReplacementNamed(Routes.appSection);
                     }
                     if (state is FacebookFailure) {
-                      AppToast.showToast(
+                      AppToast.show(
                         context: context,
                         title: state.message,
                         type: ToastificationType.error,

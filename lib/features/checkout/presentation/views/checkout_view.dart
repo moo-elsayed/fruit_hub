@@ -5,11 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
-import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
-import 'package:fruit_hub/features/checkout/domain/use_cases/add_order_use_case.dart';
-import 'package:fruit_hub/features/checkout/domain/use_cases/fetch_shipping_config_use_case.dart';
-import 'package:fruit_hub/features/checkout/domain/use_cases/make_payment_use_case.dart';
 import 'package:fruit_hub/features/checkout/presentation/args/address_args.dart';
 import 'package:fruit_hub/features/checkout/presentation/managers/checkout_cubit/checkout_cubit.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/checkout_button_bloc_consumer.dart';
@@ -49,16 +45,10 @@ class _CheckoutViewState extends State<CheckoutView> {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-    create: (context) =>
-        CheckoutCubit(
-            getIt.get<AppPreferencesManager>(),
-            getIt.get<FetchShippingConfigUseCase>(),
-            getIt.get<AddOrderUseCase>(),
-            getIt.get<MakePaymentUseCase>(),
-          )
-          ..setProducts(widget.cartItems)
-          ..getAddressFromLocalStorage()
-          ..fetchShippingConfig(),
+    create: (context) => getIt.get<CheckoutCubit>()
+      ..setProducts(widget.cartItems)
+      ..getAddressFromLocalStorage()
+      ..fetchShippingConfig(),
     child: Builder(
       builder: (context) => Scaffold(
         appBar: CustomAppBar(

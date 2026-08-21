@@ -2,8 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/features/app_section/presentation/views/app_section.dart';
+import 'package:fruit_hub/features/auth/presentation/args/login_args.dart';
+import 'package:fruit_hub/features/auth/presentation/views/forget_password_view.dart';
+import 'package:fruit_hub/features/auth/presentation/views/login_view.dart';
+import 'package:fruit_hub/features/auth/presentation/views/register_view.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/order_success_view.dart';
@@ -11,57 +16,42 @@ import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/views/product_details_view.dart';
 import 'package:fruit_hub/features/search/presentation/views/search_view.dart';
-import '../../features/auth/presentation/args/login_args.dart';
-import '../../features/auth/presentation/views/forget_password_view.dart';
-import '../../features/auth/presentation/views/login_view.dart';
-import '../../features/auth/presentation/views/register_view.dart';
-import '../../features/products/domain/use_cases/get_all_products_use_case.dart';
-import '../../features/products/domain/use_cases/get_product_details_use_case.dart';
-import '../../features/splash/presentation/views/animated_splash_view.dart';
-import '../helpers/di.dart';
+import 'package:fruit_hub/features/splash/presentation/views/animated_splash_view.dart';
 
 class AppRouter {
+  RouteSettings? _currentSettings;
+
   Route? generateRoute(RouteSettings settings) {
-    //this arguments to be passed in any screen like this ( arguments as ClassName )
-    final arguments = settings.arguments;
+    _currentSettings = settings;
 
     switch (settings.name) {
       case Routes.splashView:
-        return CupertinoPageRoute(
-          builder: (context) => const AnimatedSplashView(),
-        );
+        return _route(const AnimatedSplashView());
       case Routes.onboardingView:
-        return CupertinoPageRoute(builder: (context) => const OnboardingView());
+        return _route(const OnboardingView());
       case Routes.loginView:
-        final args = arguments as LoginArgs?;
-        return CupertinoPageRoute(
-          builder: (context) => LoginView(loginArgs: args),
-        );
+        final args = settings.arguments as LoginArgs?;
+        return _route(LoginView(loginArgs: args));
       case Routes.registerView:
-        return CupertinoPageRoute(builder: (context) => const RegisterView());
+        return _route(const RegisterView());
       case Routes.forgetPasswordView:
-        return CupertinoPageRoute(
-          builder: (context) => const ForgetPasswordView(),
-        );
+        return _route(const ForgetPasswordView());
       case Routes.appSection:
-        return CupertinoPageRoute(builder: (context) => const AppSection());
+        return _route(const AppSection());
       case Routes.searchView:
-        return CupertinoPageRoute(builder: (context) => const SearchView());
+        return _route(const SearchView());
       case Routes.productDetailsView:
         FruitEntity? fruitArg;
         String? codeArg;
-        if (arguments is FruitEntity) {
-          fruitArg = arguments;
-        } else if (arguments is String) {
-          codeArg = arguments;
+        if (settings.arguments is FruitEntity) {
+          fruitArg = settings.arguments as FruitEntity;
+        } else if (settings.arguments is String) {
+          codeArg = settings.arguments as String;
         }
 
-        return CupertinoPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => ProductsCubit(
-              getAllProductsUseCase: getIt.get<GetAllProductsUseCase>(),
-              getProductDetailsUseCase: getIt.get<GetProductDetailsUseCase>(),
-            ),
+        return _route(
+          BlocProvider(
+            create: (context) => getIt.get<ProductsCubit>(),
             child: ProductDetailsView(
               fruitEntity: fruitArg,
               fruitCode: codeArg,
@@ -69,21 +59,39 @@ class AppRouter {
           ),
         );
       case Routes.checkoutView:
-        final args = arguments as List<CartItemEntity>;
-        return CupertinoPageRoute(
-          builder: (context) => CheckoutView(cartItems: args),
-        );
+        final args = settings.arguments as List<CartItemEntity>;
+        return _route(CheckoutView(cartItems: args));
       case Routes.orderSuccessView:
-        final args = arguments as OrderEntity;
-        return CupertinoPageRoute(
-          builder: (context) => OrderSuccessView(orderEntity: args),
-        );
-      // case Routes.bestSellerView:
-      //   return CupertinoPageRoute(
-      //     builder: (context) => const BestSellerView(),
-      //   );
+        final args = settings.arguments as OrderEntity;
+        return _route(OrderSuccessView(orderEntity: args));
       default:
         return null;
     }
   }
+
+  PageRouteBuilder<dynamic> _route(Widget view) => PageRouteBuilder(
+    settings: _currentSettings,
+    transitionDuration: const Duration(milliseconds: 300),
+    reverseTransitionDuration: const Duration(milliseconds: 250),
+    pageBuilder: (context, animation, secondaryAnimation) => view,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      final slideTween = Tween<Offset>(
+        begin: const Offset(0.08, 0.0),
+        end: Offset.zero,
+      ).chain(CurveTween(curve: Curves.easeOutCubic));
+
+      final fadeTween = Tween<double>(
+        begin: 0.0,
+        end: 1.0,
+      ).chain(CurveTween(curve: Curves.easeOutCubic));
+
+      return FadeTransition(
+        opacity: animation.drive(fadeTween),
+        child: SlideTransition(
+          position: animation.drive(slideTween),
+          child: child,
+        ),
+      );
+    },
+  );
 }

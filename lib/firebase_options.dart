@@ -54,8 +54,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '868341775085',
     projectId: 'fruithub-84bf2',
     storageBucket: 'fruithub-84bf2.firebasestorage.app',
-    androidClientId: '868341775085-17m45j5cov1gug1s8dbrfejublldcngv.apps.googleusercontent.com',
-    iosClientId: '868341775085-mqls2jn8aa0069lvd4ecr08urb4hp2d0.apps.googleusercontent.com',
+    androidClientId:
+        '868341775085-17m45j5cov1gug1s8dbrfejublldcngv.apps.googleusercontent.com',
+    iosClientId:
+        '868341775085-mqls2jn8aa0069lvd4ecr08urb4hp2d0.apps.googleusercontent.com',
     iosBundleId: 'com.fruithub.app',
   );
 }

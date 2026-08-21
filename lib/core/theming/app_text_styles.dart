@@ -1,321 +1,233 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'app_colors.dart';
-import 'font_weight_helper.dart';
 
-abstract class AppTextStyles {
-  static TextStyle font11color1B5E37semiBold = TextStyle(
-    fontSize: 11.sp,
-    color: AppColors.color1B5E37,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+class AppTextStyles {
+  AppTextStyles._();
 
-  static TextStyle font13color949D9ERegular = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color949D9E,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.regular,
-  );
+  // --- Clean Typography Getters (Cairo Font) ---
+  static TextStyle get font10Bold =>
+      GoogleFonts.cairo(fontSize: 10.sp, fontWeight: FontWeight.w700);
 
-  static TextStyle font13color616A6BRegular = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color616A6B,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.regular,
-  );
+  static TextStyle get font11Regular =>
+      GoogleFonts.cairo(fontSize: 11.sp, fontWeight: FontWeight.w400);
 
-  static TextStyle font13color4E5556Regular = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color4E5556,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.regular,
-  );
+  static TextStyle get font11Medium =>
+      GoogleFonts.cairo(fontSize: 11.sp, fontWeight: FontWeight.w500);
 
-  static TextStyle font13color1B5E37Regular = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color1B5E37,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.regular,
-  );
+  static TextStyle get font11SemiBold =>
+      GoogleFonts.cairo(fontSize: 11.sp, fontWeight: FontWeight.w600);
 
-  static TextStyle font13WhiteRegular = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.white,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.regular,
-  );
+  static TextStyle get font12Regular =>
+      GoogleFonts.cairo(fontSize: 12.sp, fontWeight: FontWeight.w400);
 
-  static TextStyle font13colorF4A91FRegular = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.colorF4A91F,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.regular,
-  );
+  static TextStyle get font12Medium =>
+      GoogleFonts.cairo(fontSize: 12.sp, fontWeight: FontWeight.w500);
 
-  static TextStyle font13color979899Regular = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color979899,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.regular,
-  );
+  static TextStyle get font12Bold =>
+      GoogleFonts.cairo(fontSize: 12.sp, fontWeight: FontWeight.w700);
 
-  static TextStyle font13color7B7B7BRegular = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color7B7B7B,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.regular,
-  );
+  static TextStyle get font13Regular =>
+      GoogleFonts.cairo(fontSize: 13.sp, fontWeight: FontWeight.w400);
 
-  static TextStyle font13GreyShade700Medium = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.greyShade700,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.medium,
-  );
+  static TextStyle get font13Medium =>
+      GoogleFonts.cairo(fontSize: 13.sp, fontWeight: FontWeight.w500);
 
-  static TextStyle font13color949D9ESemiBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color949D9E,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font13SemiBold =>
+      GoogleFonts.cairo(fontSize: 13.sp, fontWeight: FontWeight.w600);
 
-  static TextStyle font13color4E5556SemiBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color4E5556,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font13Bold =>
+      GoogleFonts.cairo(fontSize: 13.sp, fontWeight: FontWeight.w700);
 
-  static TextStyle font13color3A8B33SemiBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color3A8B33,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font14Regular =>
+      GoogleFonts.cairo(fontSize: 14.sp, fontWeight: FontWeight.w400);
 
-  static TextStyle font13BlackSemiBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.black,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font14Medium =>
+      GoogleFonts.cairo(fontSize: 14.sp, fontWeight: FontWeight.w500);
 
-  static TextStyle font13colorAAAAAASemiBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.colorAAAAAA,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font14SemiBold =>
+      GoogleFonts.cairo(fontSize: 14.sp, fontWeight: FontWeight.w600);
 
-  static TextStyle font13color0C0D0DSemiBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color0C0D0D,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font14Bold =>
+      GoogleFonts.cairo(fontSize: 14.sp, fontWeight: FontWeight.w700);
 
-  static TextStyle font13colorF4A91FSemiBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.colorF4A91F,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font15Medium =>
+      GoogleFonts.cairo(fontSize: 15.sp, fontWeight: FontWeight.w500);
 
-  static TextStyle font13colorF8C76DSemiBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.colorF8C76D,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font15SemiBold =>
+      GoogleFonts.cairo(fontSize: 15.sp, fontWeight: FontWeight.w600);
 
-  static TextStyle font13color4E5556FSemiBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color4E5556,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font15Bold =>
+      GoogleFonts.cairo(fontSize: 15.sp, fontWeight: FontWeight.w700);
 
-  static TextStyle font13GreyShade600SemiBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.greyShade600,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font15ExtraBold =>
+      GoogleFonts.cairo(fontSize: 15.sp, fontWeight: FontWeight.w800);
 
-  static TextStyle font13color2D9F5DSemiBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color2D9F5D,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font16Regular =>
+      GoogleFonts.cairo(fontSize: 16.sp, fontWeight: FontWeight.w400);
 
-  static TextStyle font13color949D9EBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color949D9E,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font16Medium =>
+      GoogleFonts.cairo(fontSize: 16.sp, fontWeight: FontWeight.w500);
 
-  static TextStyle font13color1B5E37Bold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color1B5E37,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font16SemiBold =>
+      GoogleFonts.cairo(fontSize: 16.sp, fontWeight: FontWeight.w600);
 
-  static TextStyle font13color3A8B33Bold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color3A8B33,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font16Bold =>
+      GoogleFonts.cairo(fontSize: 16.sp, fontWeight: FontWeight.w700);
 
-  static TextStyle font13color06161CBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color06161C,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font18Bold =>
+      GoogleFonts.cairo(fontSize: 18.sp, fontWeight: FontWeight.w700);
 
-  static TextStyle font13colorF4A91FBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.colorF4A91F,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font19Bold =>
+      GoogleFonts.cairo(fontSize: 19.sp, fontWeight: FontWeight.w700);
 
-  static TextStyle font13color0C0D0DBold = TextStyle(
-    fontSize: 13.sp,
-    color: AppColors.color0C0D0D,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font20Bold =>
+      GoogleFonts.cairo(fontSize: 20.sp, fontWeight: FontWeight.w700);
 
-  static TextStyle font14color979899Medium = TextStyle(
-    fontSize: 14.sp,
-    color: AppColors.color979899,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.medium,
-  );
+  static TextStyle get font22Bold =>
+      GoogleFonts.cairo(fontSize: 22.sp, fontWeight: FontWeight.w700);
 
-  static TextStyle font16color949D9ERegular = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.color949D9E,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.regular,
-  );
+  static TextStyle get font24Bold =>
+      GoogleFonts.cairo(fontSize: 24.sp, fontWeight: FontWeight.w700);
 
-  static TextStyle font16color0C0D0DSemiBold = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.color0C0D0D,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font32Bold =>
+      GoogleFonts.cairo(fontSize: 32.sp, fontWeight: FontWeight.w700);
 
-  static TextStyle font16color616A6BSemiBold = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.color616A6B,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  // --- Legacy Compatibility Styles ---
+  static TextStyle get font11color1B5E37semiBold =>
+      font11SemiBold.copyWith(color: AppColors.color1B5E37);
 
-  static TextStyle font16color949D9ESemiBold = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.color949D9E,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font13color949D9ERegular =>
+      font13Regular.copyWith(color: AppColors.color949D9E);
 
-  static TextStyle font16color1B5E37ESemiBold = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.color1B5E37,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.semiBold,
-  );
+  static TextStyle get font13color616A6BRegular =>
+      font13Regular.copyWith(color: AppColors.color616A6B);
 
-  static TextStyle font16color1B5E37EBold = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.color1B5E37,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font13color4E5556Regular =>
+      font13Regular.copyWith(color: AppColors.color4E5556);
 
-  static TextStyle font16color23AA49Bold = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.color23AA49,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font13color1B5E37Regular =>
+      font13Regular.copyWith(color: AppColors.color1B5E37);
 
-  static TextStyle font16WhiteBold = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.white,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font13WhiteRegular =>
+      font13Regular.copyWith(color: AppColors.white);
 
-  static TextStyle font16color0C0D0DBold = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.color0C0D0D,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font13colorF4A91FRegular =>
+      font13Regular.copyWith(color: AppColors.colorF4A91F);
 
-  static TextStyle font16color616A6BBold = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.color616A6B,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font13color979899Regular =>
+      font13Regular.copyWith(color: AppColors.color979899);
 
-  static TextStyle font16color06140CBold = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.color06140C,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font13color7B7B7BRegular =>
+      font13Regular.copyWith(color: AppColors.color7B7B7B);
 
-  static TextStyle font16RedBold = TextStyle(
-    fontSize: 16.sp,
-    color: AppColors.red,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font13GreyShade700Medium =>
+      font13Medium.copyWith(color: AppColors.greyShade700);
 
-  static TextStyle font19color0C0D0DBold = TextStyle(
-    fontSize: 19.sp,
-    color: AppColors.color0C0D0D,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font13color949D9ESemiBold =>
+      font13SemiBold.copyWith(color: AppColors.color949D9E);
 
-  static TextStyle font19WhiteDBold = TextStyle(
-    fontSize: 19.sp,
-    color: AppColors.white,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font13color4E5556SemiBold =>
+      font13SemiBold.copyWith(color: AppColors.color4E5556);
 
-  static TextStyle font22color0C0D0DBold = TextStyle(
-    fontSize: 22.sp,
-    color: AppColors.color0C0D0D,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font13color3A8B33SemiBold =>
+      font13SemiBold.copyWith(color: AppColors.color3A8B33);
 
-  static TextStyle font22color1B5E37Bold = TextStyle(
-    fontSize: 22.sp,
-    color: AppColors.color1B5E37,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
-  static TextStyle font22colorF4A91FBold = TextStyle(
-    fontSize: 22.sp,
-    color: AppColors.colorF4A91F,
-    fontFamily: 'Cairo',
-    fontWeight: FontWeightHelper.bold,
-  );
+  static TextStyle get font13BlackSemiBold =>
+      font13SemiBold.copyWith(color: AppColors.black);
+
+  static TextStyle get font13colorAAAAAASemiBold =>
+      font13SemiBold.copyWith(color: AppColors.colorAAAAAA);
+
+  static TextStyle get font13color0C0D0DSemiBold =>
+      font13SemiBold.copyWith(color: AppColors.color0C0D0D);
+
+  static TextStyle get font13colorF4A91FSemiBold =>
+      font13SemiBold.copyWith(color: AppColors.colorF4A91F);
+
+  static TextStyle get font13colorF8C76DSemiBold =>
+      font13SemiBold.copyWith(color: AppColors.colorF8C76D);
+
+  static TextStyle get font13color4E5556FSemiBold =>
+      font13SemiBold.copyWith(color: AppColors.color4E5556);
+
+  static TextStyle get font13GreyShade600SemiBold =>
+      font13SemiBold.copyWith(color: AppColors.greyShade600);
+
+  static TextStyle get font13color2D9F5DSemiBold =>
+      font13SemiBold.copyWith(color: AppColors.color2D9F5D);
+
+  static TextStyle get font13color949D9EBold =>
+      font13Bold.copyWith(color: AppColors.color949D9E);
+
+  static TextStyle get font13color1B5E37Bold =>
+      font13Bold.copyWith(color: AppColors.color1B5E37);
+
+  static TextStyle get font13color3A8B33Bold =>
+      font13Bold.copyWith(color: AppColors.color3A8B33);
+
+  static TextStyle get font13color06161CBold =>
+      font13Bold.copyWith(color: AppColors.color06161C);
+
+  static TextStyle get font13colorF4A91FBold =>
+      font13Bold.copyWith(color: AppColors.colorF4A91F);
+
+  static TextStyle get font13color0C0D0DBold =>
+      font13Bold.copyWith(color: AppColors.color0C0D0D);
+
+  static TextStyle get font14color979899Medium =>
+      font14Medium.copyWith(color: AppColors.color979899);
+
+  static TextStyle get font16color949D9ERegular =>
+      font16Regular.copyWith(color: AppColors.color949D9E);
+
+  static TextStyle get font16color0C0D0DSemiBold =>
+      font16SemiBold.copyWith(color: AppColors.color0C0D0D);
+
+  static TextStyle get font16color616A6BSemiBold =>
+      font16SemiBold.copyWith(color: AppColors.color616A6B);
+
+  static TextStyle get font16color949D9ESemiBold =>
+      font16SemiBold.copyWith(color: AppColors.color949D9E);
+
+  static TextStyle get font16color1B5E37ESemiBold =>
+      font16SemiBold.copyWith(color: AppColors.color1B5E37);
+
+  static TextStyle get font16color1B5E37EBold =>
+      font16Bold.copyWith(color: AppColors.color1B5E37);
+
+  static TextStyle get font16color23AA49Bold =>
+      font16Bold.copyWith(color: AppColors.color23AA49);
+
+  static TextStyle get font16WhiteBold =>
+      font16Bold.copyWith(color: AppColors.white);
+
+  static TextStyle get font16color0C0D0DBold =>
+      font16Bold.copyWith(color: AppColors.color0C0D0D);
+
+  static TextStyle get font16color616A6BBold =>
+      font16Bold.copyWith(color: AppColors.color616A6B);
+
+  static TextStyle get font16color06140CBold =>
+      font16Bold.copyWith(color: AppColors.color06140C);
+
+  static TextStyle get font16RedBold =>
+      font16Bold.copyWith(color: AppColors.red);
+
+  static TextStyle get font19color0C0D0DBold =>
+      font19Bold.copyWith(color: AppColors.color0C0D0D);
+
+  static TextStyle get font19WhiteDBold =>
+      font19Bold.copyWith(color: AppColors.white);
+
+  static TextStyle get font22color0C0D0DBold =>
+      font22Bold.copyWith(color: AppColors.color0C0D0D);
+
+  static TextStyle get font22color1B5E37Bold =>
+      font22Bold.copyWith(color: AppColors.color1B5E37);
+
+  static TextStyle get font22colorF4A91FBold =>
+      font22Bold.copyWith(color: AppColors.colorF4A91F);
 }

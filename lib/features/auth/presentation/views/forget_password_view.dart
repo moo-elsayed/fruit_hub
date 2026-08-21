@@ -10,12 +10,10 @@ import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/forget_password_cubit/forget_password_cubit.dart';
 import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
-
 import '../../../../core/helpers/validator.dart';
 import '../../../../core/widgets/app_toasts.dart';
 import '../../../../core/widgets/custom_material_button.dart';
 import '../../../../core/widgets/text_form_field_helper.dart';
-import '../../domain/use_cases/forget_password_use_case.dart';
 import '../args/login_args.dart';
 import '../widgets/custom_dialog.dart';
 
@@ -51,8 +49,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
       onTap: () => context.pop(),
     ),
     body: BlocProvider(
-      create: (context) =>
-          ForgetPasswordCubit(getIt.get<ForgetPasswordUseCase>()),
+      create: (context) => getIt.get<ForgetPasswordCubit>(),
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
         behavior: HitTestBehavior.opaque,
@@ -79,7 +76,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
                   listener: (context, state) {
                     if (state is ForgetPasswordSuccess) {
-                      AppToast.showToast(
+                      AppToast.show(
                         context: context,
                         title: 'email_sent'.tr(),
                         type: ToastificationType.success,
@@ -100,7 +97,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                       );
                     }
                     if (state is ForgetPasswordFailure) {
-                      AppToast.showToast(
+                      AppToast.show(
                         context: context,
                         title: state.errorMessage,
                         type: ToastificationType.error,

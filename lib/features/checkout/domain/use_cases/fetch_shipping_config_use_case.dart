@@ -1,5 +1,5 @@
+import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/checkout/domain/repo/checkout_repo.dart';
-import '../../../../core/helpers/network_response.dart';
 import '../entities/shipping_config_entity.dart';
 
 class FetchShippingConfigUseCase {

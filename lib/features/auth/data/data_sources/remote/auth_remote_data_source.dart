@@ -1,21 +1,23 @@
-import '../../../../../core/helpers/network_response.dart';
-import '../../../domain/entities/user_entity.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
+import '../../models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<NetworkResponse<UserEntity>> signInWithEmailAndPassword({
-    required String email,
-    required String password,
-  });
-
-  Future<NetworkResponse<UserEntity>> createUserWithEmailAndPassword({
+  Future<NetworkResponse<UserModel>> createUserWithEmailAndPassword({
     required String email,
     required String password,
     required String username,
   });
 
-  Future<NetworkResponse<UserEntity>> googleSignIn();
+  Future<NetworkResponse<UserModel>> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  });
 
-  Future<NetworkResponse<UserEntity>> facebookSignIn();
+  Future<NetworkResponse<UserModel>> googleSignIn();
+
+  Future<NetworkResponse<UserModel>> facebookSignIn();
+
+  Future<NetworkResponse<UserModel>> getUserInfo(String uid);
 
   Future<NetworkResponse<void>> forgetPassword(String email);
 

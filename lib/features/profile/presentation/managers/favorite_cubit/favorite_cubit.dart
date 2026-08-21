@@ -3,8 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
-import 'package:fruit_hub/core/helpers/network_response.dart';
-import 'package:fruit_hub/core/services/database/favorite_service.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/profile/domain/use_cases/add_item_to_favorites_use_case.dart';
 import 'package:fruit_hub/features/profile/domain/use_cases/get_favorite_ids_use_case.dart';
 import 'package:fruit_hub/features/profile/domain/use_cases/get_favorites_use_case.dart';
@@ -12,7 +11,7 @@ import 'package:fruit_hub/features/profile/domain/use_cases/remove_item_from_fav
 
 part 'favorite_state.dart';
 
-class FavoriteCubit extends Cubit<FavoriteState> implements FavoriteService {
+class FavoriteCubit extends Cubit<FavoriteState> {
   FavoriteCubit(
     this._addItemToFavoritesUseCase,
     this._removeItemFromFavoritesUseCase,
@@ -27,7 +26,6 @@ class FavoriteCubit extends Cubit<FavoriteState> implements FavoriteService {
 
   Set<String> _favoriteIds = {};
 
-  @override
   bool isFavorite(String productId) => _favoriteIds.contains(productId);
 
   Future<void> getFavoriteIds() async {
@@ -52,7 +50,6 @@ class FavoriteCubit extends Cubit<FavoriteState> implements FavoriteService {
     }
   }
 
-  @override
   Future<void> toggleFavorite(String productId) async {
     NetworkResponse result;
     final bool favorite = isFavorite(productId);

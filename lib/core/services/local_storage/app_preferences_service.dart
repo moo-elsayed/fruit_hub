@@ -26,4 +26,8 @@ abstract class AppPreferencesManager {
   String getAddress();
 
   Future<void> deleteAddress();
+
+  Future<void> saveThemeMode(String themeMode);
+
+  String getThemeMode();
 }

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
-import 'package:fruit_hub/core/services/database/cart_service.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/checkout/presentation/args/address_args.dart';
+import 'package:toastification/toastification.dart';
 import '../../../../core/helpers/extensions.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/app_toasts.dart';
@@ -27,11 +27,7 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
   final int currentIndex;
   final AddressArgs addressArgs;
 
-  List<String> get buttonTexts => [
-    'next'.tr(),
-    'confirm_and_continue'.tr(),
-    'confirm_order'.tr(),
-  ];
+  static const List<String> buttonTexts = ['next', 'next', 'pay_with'];
 
   void _navigateToNextPage() => pageController.nextPage(
     duration: const Duration(milliseconds: 500),
@@ -43,13 +39,12 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
       BlocConsumer<CheckoutCubit, CheckoutState>(
         listener: (context, state) {
           if (state is AddOrderSuccess) {
-            AppToast.showToast(
+            AppToast.show(
               context: context,
               title: 'order_placed_successfully'.tr(),
-              type: .success,
+              type: ToastificationType.success,
             );
-            final CartService cartService = context.read<CartCubit>();
-            cartService.clearCart();
+            context.read<CartCubit>().clearCart();
             context.pushNamedAndRemoveUntil(
               Routes.orderSuccessView,
               arguments: context.read<CheckoutCubit>().orderEntity,
@@ -57,17 +52,17 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
             );
           }
           if (state is AddOrderFailure) {
-            AppToast.showToast(
+            AppToast.show(
               context: context,
               title: state.errorMessage,
-              type: .error,
+              type: ToastificationType.error,
             );
           }
           if (state is MakePaymentFailure) {
-            AppToast.showToast(
+            AppToast.show(
               context: context,
               title: state.errorMessage,
-              type: .error,
+              type: ToastificationType.error,
             );
           }
         },
@@ -96,7 +91,7 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
               }
             }
           },
-          text: buttonTexts[currentIndex],
+          text: buttonTexts[currentIndex].tr(),
           textStyle: AppTextStyles.font16WhiteBold,
           maxWidth: true,
           isLoading: state is AddOrderLoading || state is MakePaymentLoading,
@@ -124,18 +119,18 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
           },
           onError: (error) {
             context.pop();
-            AppToast.showToast(
+            AppToast.show(
               context: context,
               title: error.toString(),
-              type: .error,
+              type: ToastificationType.error,
             );
           },
           onCancel: () {
             context.pop();
-            AppToast.showToast(
+            AppToast.show(
               context: context,
               title: 'order_cancelled'.tr(),
-              type: .error,
+              type: ToastificationType.error,
             );
           },
         ),

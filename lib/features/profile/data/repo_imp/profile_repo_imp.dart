@@ -1,7 +1,8 @@
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
-import 'package:fruit_hub/features/profile/data/data_sources/remote/profile_remote_data_source.dart';
-import 'package:fruit_hub/features/profile/domain/repo/profile_repo.dart';
-import '../../../../core/helpers/network_response.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
+import 'package:fruit_hub/shared_data/models/fruit_model.dart';
+import '../../domain/repo/profile_repo.dart';
+import '../data_sources/remote/profile_remote_data_source.dart';
 
 class ProfileRepoImp implements ProfileRepo {
   ProfileRepoImp(this._profileRemoteDataSource);
@@ -24,5 +25,16 @@ class ProfileRepoImp implements ProfileRepo {
   @override
   Future<NetworkResponse<List<FruitEntity>>> getFavorites(
     List<String> ids,
-  ) async => _profileRemoteDataSource.getFavorites(ids);
+  ) async {
+    final response = await _profileRemoteDataSource.getFavorites(ids);
+    switch (response) {
+      case NetworkSuccess<List<FruitModel>>():
+        final entities = (response.data ?? [])
+            .map((model) => model.toEntity())
+            .toList();
+        return NetworkSuccess(entities);
+      case NetworkFailure<List<FruitModel>>():
+        return NetworkFailure(response.failure);
+    }
+  }
 }

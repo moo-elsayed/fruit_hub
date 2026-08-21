@@ -47,7 +47,7 @@ class _FavoritesViewState extends State<FavoritesView> {
             );
           }
           if (state is GetFavoritesFailure) {
-            AppToast.showToast(
+            AppToast.show(
               context: context,
               title: state.errorMessage,
               type: ToastificationType.error,

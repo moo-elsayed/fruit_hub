@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
-import '../../../../../core/helpers/network_response.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
 import '../../../domain/entities/user_entity.dart';
 import '../../../domain/use_cases/facebook_sign_in_use_case.dart';
 import '../../../domain/use_cases/google_sign_in_use_case.dart';

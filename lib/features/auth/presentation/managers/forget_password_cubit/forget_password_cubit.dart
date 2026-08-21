@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/forget_password_use_case.dart';
 import '../../../../../core/helpers/functions.dart';
-import '../../../../../core/helpers/network_response.dart';
 
 part 'forget_password_state.dart';
 

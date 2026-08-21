@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:toastification/toastification.dart';
 import '../../../../core/helpers/extensions.dart';
 import '../../../../core/routing/routes.dart';
-import '../../../../core/services/authentication/auth_service.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/app_toasts.dart';
 import '../../../../core/widgets/custom_confirmation_dialog.dart';
@@ -18,10 +18,10 @@ class SignOutButton extends StatelessWidget {
       BlocListener<SignOutCubit, SignOutState>(
         listener: (context, state) {
           if (state is SignOutSuccess) {
-            AppToast.showToast(
+            AppToast.show(
               context: context,
               title: 'logged_out_successfully'.tr(),
-              type: .success,
+              type: ToastificationType.success,
             );
             context.pushNamedAndRemoveUntil(
               Routes.loginView,
@@ -39,9 +39,7 @@ class SignOutButton extends StatelessWidget {
                 textConfirmButton: 'ok'.tr(),
                 textCancelButton: 'cancel'.tr(),
                 onConfirm: () async {
-                  final SignOutService signOutService = context
-                      .read<SignOutCubit>();
-                  await signOutService.signOut();
+                  await context.read<SignOutCubit>().signOut();
                 },
               ),
             );

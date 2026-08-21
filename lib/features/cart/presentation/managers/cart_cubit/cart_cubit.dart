@@ -3,8 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
-import 'package:fruit_hub/core/helpers/network_response.dart';
-import 'package:fruit_hub/core/services/database/cart_service.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/clear_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/get_cart_items_use_case.dart';
@@ -14,7 +13,7 @@ import 'package:fruit_hub/features/cart/domain/use_cases/update_item_quantity_us
 
 part 'cart_state.dart';
 
-class CartCubit extends Cubit<CartState> implements CartService {
+class CartCubit extends Cubit<CartState> {
   CartCubit(
     this._addItemToCartUseCase,
     this._removeItemFromCartUseCase,
@@ -37,7 +36,6 @@ class CartCubit extends Cubit<CartState> implements CartService {
   bool isInCart(String productId) =>
       _cartItems.any((item) => item['productId'] == productId);
 
-  @override
   Future<void> addItemToCart(String productId) async {
     emit(CartLoading(newItemAdded: true));
     final result = await _addItemToCartUseCase.call(productId);
@@ -50,7 +48,6 @@ class CartCubit extends Cubit<CartState> implements CartService {
     }
   }
 
-  @override
   Future<void> removeItemFromCart(String productId) async {
     emit(CartLoading(itemRemoved: true));
     final result = await _removeItemFromCartUseCase.call(productId);
@@ -75,7 +72,6 @@ class CartCubit extends Cubit<CartState> implements CartService {
     }
   }
 
-  @override
   Future<void> clearCart() async {
     emit(CartLoading());
     final result = await _clearCartUseCase.call();
@@ -108,7 +104,6 @@ class CartCubit extends Cubit<CartState> implements CartService {
     }
   }
 
-  @override
   Future<void> incrementItemQuantity(String productId) async {
     await _updateQuantityOptimistically(
       productId: productId,
@@ -116,7 +111,6 @@ class CartCubit extends Cubit<CartState> implements CartService {
     );
   }
 
-  @override
   Future<void> decrementItemQuantity(String productId) async {
     await _updateQuantityOptimistically(
       productId: productId,

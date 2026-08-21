@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../errors/failures.dart';
 
 sealed class NetworkResponse<T> {
   const NetworkResponse();
@@ -14,10 +15,12 @@ class NetworkSuccess<T> extends Equatable implements NetworkResponse<T> {
 }
 
 class NetworkFailure<T> extends Equatable implements NetworkResponse<T> {
-  const NetworkFailure(this.exception);
+  const NetworkFailure(this.failure);
 
-  final Exception exception;
+  final Failure failure;
+
+  String get error => failure.error;
 
   @override
-  List<Object?> get props => [exception];
+  List<Object?> get props => [failure];
 }

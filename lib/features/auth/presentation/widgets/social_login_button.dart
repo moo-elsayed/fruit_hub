@@ -28,7 +28,7 @@ class SocialLoginButton extends StatelessWidget {
       CustomMaterialButton(
         onPressed: onPressed,
         maxWidth: true,
-        color: AppColors.white,
+        backgroundColor: AppColors.white,
         side: const BorderSide(color: AppColors.colorDDDFDF),
         isLoading: isLoading,
         loadingIndicatorColor: loadingIndicatorColor,

@@ -1,59 +1,64 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/services/payment/payment_service.dart';
+import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
+import 'package:fruit_hub/features/auth/data/data_sources/remote/auth_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/auth_repo_imp.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/clear_user_session_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
+import 'package:fruit_hub/features/auth/domain/use_cases/facebook_sign_in_use_case.dart';
+import 'package:fruit_hub/features/auth/domain/use_cases/forget_password_use_case.dart';
+import 'package:fruit_hub/features/auth/domain/use_cases/google_sign_in_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/save_user_session_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_out_use_case.dart';
+import 'package:fruit_hub/features/auth/presentation/managers/forget_password_cubit/forget_password_cubit.dart';
+import 'package:fruit_hub/features/auth/presentation/managers/signin_cubit/sign_in_cubit.dart';
+import 'package:fruit_hub/features/auth/presentation/managers/signout_cubit/sign_out_cubit.dart';
+import 'package:fruit_hub/features/auth/presentation/managers/signup_cubit/sign_up_cubit.dart';
+import 'package:fruit_hub/features/auth/presentation/managers/social_sign_in_cubit/social_sign_in_cubit.dart';
 import 'package:fruit_hub/features/cart/data/data_sources/remote/cart_remote_data_source_imp.dart';
+import 'package:fruit_hub/features/cart/data/repo_imp/cart_repo_imp.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
+import 'package:fruit_hub/features/cart/domain/use_cases/clear_cart_use_case.dart';
+import 'package:fruit_hub/features/cart/domain/use_cases/get_cart_items_use_case.dart';
+import 'package:fruit_hub/features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
+import 'package:fruit_hub/features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
+import 'package:fruit_hub/features/cart/domain/use_cases/update_item_quantity_use_case.dart';
+import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
+import 'package:fruit_hub/features/checkout/data/data_sources/remote/checkout_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/checkout/data/repo_imp/checkout_repo_imp.dart';
 import 'package:fruit_hub/features/checkout/domain/repo/checkout_repo.dart';
+import 'package:fruit_hub/features/checkout/domain/use_cases/add_order_use_case.dart';
+import 'package:fruit_hub/features/checkout/domain/use_cases/fetch_shipping_config_use_case.dart';
+import 'package:fruit_hub/features/checkout/domain/use_cases/make_payment_use_case.dart';
+import 'package:fruit_hub/features/checkout/presentation/managers/checkout_cubit/checkout_cubit.dart';
 import 'package:fruit_hub/features/home/data/data_sources/remote/home_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/home/data/repo_imp/home_repo_imp.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
+import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cubit.dart';
+import 'package:fruit_hub/features/onboarding/presentation/managers/onboarding_cubit/onboarding_cubit.dart';
 import 'package:fruit_hub/features/products/data/data_sources/remote/products_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/products/data/repo_imp/products_repo_imp.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
+import 'package:fruit_hub/features/products/domain/use_cases/get_product_details_use_case.dart';
+import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/profile/data/data_sources/remote/profile_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/profile/data/repo_imp/profile_repo_imp.dart';
 import 'package:fruit_hub/features/profile/domain/use_cases/add_item_to_favorites_use_case.dart';
 import 'package:fruit_hub/features/profile/domain/use_cases/get_favorite_ids_use_case.dart';
+import 'package:fruit_hub/features/profile/domain/use_cases/get_favorites_use_case.dart';
 import 'package:fruit_hub/features/profile/domain/use_cases/remove_item_from_favorites_use_case.dart';
+import 'package:fruit_hub/features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
 import 'package:fruit_hub/features/search/data/data_sources/remote/search_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/search/data/repo_imp/search_repo_imp.dart';
 import 'package:fruit_hub/features/search/domain/use_cases/search_fruits_use_case.dart';
+import 'package:fruit_hub/features/search/presentation/managers/search_cubit/search_cubit.dart';
+import 'package:fruit_hub/features/splash/presentation/managers/splash_cubit/splash_cubit.dart';
 import 'package:fruit_hub/shared_data/services/local_storage_service/shared_preferences_manager.dart';
 import 'package:fruit_hub/shared_data/services/payment/stripe_service.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
-import '../../features/auth/data/data_sources/remote/auth_remote_data_source_imp.dart';
-import '../../features/auth/domain/use_cases/facebook_sign_in_use_case.dart';
-import '../../features/auth/domain/use_cases/forget_password_use_case.dart';
-import '../../features/auth/domain/use_cases/google_sign_in_use_case.dart';
-import '../../features/cart/data/repo_imp/cart_repo_imp.dart';
-import '../../features/cart/domain/use_cases/clear_cart_use_case.dart';
-import '../../features/cart/domain/use_cases/get_cart_items_use_case.dart';
-import '../../features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
-import '../../features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
-import '../../features/cart/domain/use_cases/update_item_quantity_use_case.dart';
-import '../../features/checkout/data/data_sources/remote/checkout_remote_data_source_imp.dart';
-import '../../features/checkout/domain/use_cases/add_order_use_case.dart';
-import '../../features/checkout/domain/use_cases/fetch_shipping_config_use_case.dart';
-import '../../features/checkout/domain/use_cases/make_payment_use_case.dart';
-import '../../features/products/domain/use_cases/get_product_details_use_case.dart';
-import '../../features/profile/domain/use_cases/get_favorites_use_case.dart';
-import '../../shared_data/services/authentication/firebase_auth_service.dart';
-import '../../shared_data/services/database/firestore_service.dart';
-import '../services/authentication/auth_service.dart';
-import '../services/database/database_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -65,40 +70,16 @@ void setupServiceLocator() {
     return service;
   });
 
-  /// auth
-  getIt.registerSingleton<AuthService>(
-    FirebaseAuthService(
-      FirebaseAuth.instance,
-      GoogleSignIn.instance,
-      FacebookAuth.instance,
-    ),
-  );
-
-  getIt.registerSingleton<SignOutService>(
-    FirebaseAuthService(
-      FirebaseAuth.instance,
-      GoogleSignIn.instance,
-      FacebookAuth.instance,
-    ),
-  );
-
-  getIt.registerSingleton<DatabaseService>(
-    FirestoreService(FirebaseFirestore.instance),
+  /// Theming
+  getIt.registerFactory<AppThemeCubit>(
+    () => AppThemeCubit(getIt<AppPreferencesManager>()),
   );
 
   getIt.registerSingleton<PaymentService>(
     StripeService(Dio(), Stripe.instance),
   );
 
-  getIt.registerSingleton<AuthRepoImp>(
-    AuthRepoImp(
-      AuthRemoteDataSourceImp(
-        getIt.get<AuthService>(),
-        getIt.get<DatabaseService>(),
-        getIt.get<SignOutService>(),
-      ),
-    ),
-  );
+  getIt.registerSingleton<AuthRepoImp>(AuthRepoImp(AuthRemoteDataSourceImp()));
 
   getIt.registerLazySingleton<SaveUserSessionUseCase>(
     () => SaveUserSessionUseCase(getIt<AppPreferencesManager>()),
@@ -144,52 +125,92 @@ void setupServiceLocator() {
     ),
   );
 
+  /// Splash & Onboarding
+  getIt.registerFactory<SplashCubit>(
+    () => SplashCubit(getIt<AppPreferencesManager>()),
+  );
+
+  getIt.registerFactory<OnboardingCubit>(
+    () => OnboardingCubit(getIt<AppPreferencesManager>()),
+  );
+
+  /// Auth Cubits
+  getIt.registerFactory<SignInCubit>(
+    () => SignInCubit(getIt<SignInWithEmailAndPasswordUseCase>()),
+  );
+
+  getIt.registerFactory<SignupCubit>(
+    () => SignupCubit(getIt<CreateUserWithEmailAndPasswordUseCase>()),
+  );
+
+  getIt.registerFactory<SocialSignInCubit>(
+    () => SocialSignInCubit(
+      getIt<GoogleSignInUseCase>(),
+      getIt<FacebookSignInUseCase>(),
+    ),
+  );
+
+  getIt.registerFactory<ForgetPasswordCubit>(
+    () => ForgetPasswordCubit(getIt<ForgetPasswordUseCase>()),
+  );
+
+  getIt.registerFactory<SignOutCubit>(
+    () => SignOutCubit(getIt<SignOutUseCase>()),
+  );
+
   /// Home
   ////////////////////////////
-
-  getIt.registerSingleton<HomeRepoImp>(
-    HomeRepoImp(HomeRemoteDataSourceImp(getIt.get<DatabaseService>())),
-  );
+  getIt.registerSingleton<HomeRepoImp>(HomeRepoImp(HomeRemoteDataSourceImp()));
 
   getIt.registerSingleton<GetBestSellerProductsUseCase>(
     GetBestSellerProductsUseCase(getIt<HomeRepoImp>()),
   );
 
+  getIt.registerFactory<HomeCubit>(
+    () => HomeCubit(
+      getIt<GetBestSellerProductsUseCase>(),
+      getIt<AppPreferencesManager>(),
+    ),
+  );
+
   /// Products
   ////////////////////////////
-
   getIt.registerSingleton<ProductsRepoImp>(
-    ProductsRepoImp(ProductsRemoteDataSourceImp(getIt.get<DatabaseService>())),
+    ProductsRepoImp(ProductsRemoteDataSourceImp()),
   );
+
   getIt.registerSingleton<GetAllProductsUseCase>(
     GetAllProductsUseCase(getIt<ProductsRepoImp>()),
   );
+
   getIt.registerSingleton<GetProductDetailsUseCase>(
     GetProductDetailsUseCase(getIt<ProductsRepoImp>()),
   );
 
+  getIt.registerFactory<ProductsCubit>(
+    () => ProductsCubit(
+      getAllProductsUseCase: getIt<GetAllProductsUseCase>(),
+      getProductDetailsUseCase: getIt<GetProductDetailsUseCase>(),
+    ),
+  );
+
   /// Search
   ////////////////////////////
-
   getIt.registerSingleton<SearchRepoImp>(
-    SearchRepoImp(SearchRemoteDataSourceImp(getIt.get<DatabaseService>())),
+    SearchRepoImp(SearchRemoteDataSourceImp()),
   );
 
   getIt.registerSingleton<SearchFruitsUseCase>(
     SearchFruitsUseCase(getIt<SearchRepoImp>()),
   );
 
+  getIt.registerFactory<SearchCubit>(
+    () => SearchCubit(getIt<SearchFruitsUseCase>()),
+  );
+
   /// Cart
   ////////////////////////////
-
-  getIt.registerSingleton<CartRepoImp>(
-    CartRepoImp(
-      CartRemoteDataSourceImp(
-        getIt.get<DatabaseService>(),
-        FirebaseAuth.instance,
-      ),
-    ),
-  );
+  getIt.registerSingleton<CartRepoImp>(CartRepoImp(CartRemoteDataSourceImp()));
 
   getIt.registerSingleton<GetProductsInCartUseCase>(
     GetProductsInCartUseCase(getIt<CartRepoImp>()),
@@ -215,16 +236,21 @@ void setupServiceLocator() {
     ClearCartUseCase(getIt<CartRepoImp>()),
   );
 
-  /// favorites
-  ////////////////////////////
-
-  getIt.registerSingleton<ProfileRepoImp>(
-    ProfileRepoImp(
-      ProfileRemoteDataSourceImp(
-        getIt.get<DatabaseService>(),
-        FirebaseAuth.instance,
-      ),
+  getIt.registerFactory<CartCubit>(
+    () => CartCubit(
+      getIt<AddItemToCartUseCase>(),
+      getIt<RemoveItemFromCartUseCase>(),
+      getIt<GetProductsInCartUseCase>(),
+      getIt<UpdateItemQuantityUseCase>(),
+      getIt<GetCartItemsUseCase>(),
+      getIt<ClearCartUseCase>(),
     ),
+  );
+
+  /// Favorites
+  ////////////////////////////
+  getIt.registerSingleton<ProfileRepoImp>(
+    ProfileRepoImp(ProfileRemoteDataSourceImp()),
   );
 
   getIt.registerSingleton<GetFavoritesUseCase>(
@@ -243,16 +269,20 @@ void setupServiceLocator() {
     RemoveItemFromFavoritesUseCase(getIt<ProfileRepoImp>()),
   );
 
-  /// checkout
-  ////////////////////////////
+  getIt.registerFactory<FavoriteCubit>(
+    () => FavoriteCubit(
+      getIt<AddItemToFavoritesUseCase>(),
+      getIt<RemoveItemFromFavoritesUseCase>(),
+      getIt<GetFavoriteIdsUseCase>(),
+      getIt<GetFavoritesUseCase>(),
+    ),
+  );
 
+  /// Checkout
+  ////////////////////////////
   getIt.registerSingleton<CheckoutRepo>(
     CheckoutRepoImp(
-      CheckoutRemoteDataSourceImp(
-        getIt.get<DatabaseService>(),
-        getIt.get<PaymentService>(),
-        FirebaseAuth.instance,
-      ),
+      CheckoutRemoteDataSourceImp(paymentService: getIt.get<PaymentService>()),
     ),
   );
 
@@ -266,5 +296,14 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<MakePaymentUseCase>(
     MakePaymentUseCase(getIt<CheckoutRepo>()),
+  );
+
+  getIt.registerFactory<CheckoutCubit>(
+    () => CheckoutCubit(
+      getIt<AppPreferencesManager>(),
+      getIt<FetchShippingConfigUseCase>(),
+      getIt<AddOrderUseCase>(),
+      getIt<MakePaymentUseCase>(),
+    ),
   );
 }

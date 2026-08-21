@@ -10,6 +10,7 @@ class SharedPreferencesManager implements AppPreferencesManager {
   final String _usernameKey = 'username';
   final String _userAddressKey = 'userAddress';
   final String _uidKey = 'uid';
+  final String _themeModeKey = 'themeMode';
 
   @override
   Future<void> init() async => _prefs = await SharedPreferences.getInstance();
@@ -58,4 +59,11 @@ class SharedPreferencesManager implements AppPreferencesManager {
 
   @override
   Future<void> deleteAddress() async => await _prefs.remove(_userAddressKey);
+
+  @override
+  Future<void> saveThemeMode(String themeMode) async =>
+      await _prefs.setString(_themeModeKey, themeMode);
+
+  @override
+  String getThemeMode() => _prefs.getString(_themeModeKey) ?? 'system';
 }

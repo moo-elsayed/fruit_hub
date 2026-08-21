@@ -1,4 +1,4 @@
-import 'package:fruit_hub/core/helpers/network_response.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import '../../../../core/services/payment/payment_input_entity.dart';
 import '../../../../core/services/payment/payment_output_entity.dart';

@@ -1,6 +1,6 @@
-import 'package:fruit_hub/core/entities/fruit_entity.dart';
-import '../../../../../core/helpers/network_response.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
+import 'package:fruit_hub/shared_data/models/fruit_model.dart';
 
 abstract class SearchRemoteDataSource {
-  Future<NetworkResponse<List<FruitEntity>>> searchFruits(String query);
+  Future<NetworkResponse<List<FruitModel>>> searchFruits(String query);
 }

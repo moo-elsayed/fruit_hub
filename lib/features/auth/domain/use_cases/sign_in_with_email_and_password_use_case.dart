@@ -1,5 +1,7 @@
+import 'package:fruit_hub/core/errors/failures.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/save_user_session_use_case.dart';
-import '../../../../core/helpers/network_response.dart';
 import '../entities/user_entity.dart';
 import '../repo/auth_repo.dart';
 
@@ -26,10 +28,12 @@ class SignInWithEmailAndPasswordUseCase {
           await _saveUserSessionUseCase.call(networkResponse.data!);
           return NetworkSuccess(networkResponse.data);
         } catch (e) {
-          return NetworkFailure(Exception('error_occurred_please_try_again'));
+          return NetworkFailure(
+            ServerFailure(error: AppStrings.unexpectedError),
+          );
         }
       case NetworkFailure<UserEntity>():
-        return NetworkFailure(networkResponse.exception);
+        return NetworkFailure(networkResponse.failure);
     }
   }
 }

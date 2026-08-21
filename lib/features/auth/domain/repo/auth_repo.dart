@@ -1,6 +1,5 @@
-import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
-
-import '../../../../../core/helpers/network_response.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
+import '../entities/user_entity.dart';
 
 abstract class AuthRepo {
   Future<NetworkResponse<UserEntity>> signInWithEmailAndPassword({
@@ -17,6 +16,8 @@ abstract class AuthRepo {
   Future<NetworkResponse<UserEntity>> googleSignIn();
 
   Future<NetworkResponse<UserEntity>> facebookSignIn();
+
+  Future<NetworkResponse<UserEntity>> getUserInfo(String uid);
 
   Future<NetworkResponse<void>> forgetPassword(String email);
 

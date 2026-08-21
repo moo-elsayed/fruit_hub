@@ -2,12 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:gap/gap.dart';
+import '../helpers/extensions.dart';
+import '../theming/app_text_styles.dart';
 
 abstract class AppDialogs {
   static void showLoadingDialog(BuildContext context) {
-    showDialog(
+    showCupertinoDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => PopScope(
@@ -15,12 +16,12 @@ abstract class AppDialogs {
         child: Dialog(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          insetPadding: .symmetric(horizontal: 48.w),
+          insetPadding: EdgeInsets.symmetric(horizontal: 48.w),
           child: Container(
-            padding: .symmetric(vertical: 24.h, horizontal: 24.w),
+            padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 24.w),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: .circular(16.r),
+              color: context.colors.surface,
+              borderRadius: BorderRadius.circular(16.r),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.1),
@@ -31,17 +32,22 @@ abstract class AppDialogs {
               ],
             ),
             child: Column(
-              mainAxisSize: .min,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
                   height: 30.h,
                   width: 30.w,
-                  child: CupertinoActivityIndicator(radius: 14.r),
+                  child: CupertinoActivityIndicator(
+                    radius: 14.r,
+                    color: context.colors.mainText,
+                  ),
                 ),
                 Gap(16.h),
                 Text(
                   'loading'.tr(),
-                  style: AppTextStyles.font13color0C0D0DSemiBold,
+                  style: AppTextStyles.font14SemiBold.copyWith(
+                    color: context.colors.mainText,
+                  ),
                 ),
               ],
             ),

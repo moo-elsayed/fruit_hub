@@ -7,12 +7,10 @@ import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/helpers/validator.dart';
 import 'package:fruit_hub/core/widgets/app_toasts.dart';
-import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/custom_dialog.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/terms_and_conditions.dart';
 import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
-
 import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_material_button.dart';
@@ -54,8 +52,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) => BlocProvider(
-    create: (context) =>
-        SignupCubit(getIt.get<CreateUserWithEmailAndPasswordUseCase>()),
+    create: (context) => getIt.get<SignupCubit>(),
     child: Scaffold(
       appBar: CustomAppBar(
         title: 'new_account'.tr(),
@@ -103,7 +100,7 @@ class _RegisterViewState extends State<RegisterView> {
                 BlocConsumer<SignupCubit, SignupState>(
                   listener: (context, state) {
                     if (state is SignUpSuccess) {
-                      AppToast.showToast(
+                      AppToast.show(
                         context: context,
                         title: 'email_created'.tr(),
                         type: ToastificationType.success,
@@ -124,7 +121,7 @@ class _RegisterViewState extends State<RegisterView> {
                       );
                     }
                     if (state is SignUpFailure) {
-                      AppToast.showToast(
+                      AppToast.show(
                         context: context,
                         title: state.message,
                         type: ToastificationType.error,
@@ -135,7 +132,7 @@ class _RegisterViewState extends State<RegisterView> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         if (!_agreeToTerms) {
-                          AppToast.showToast(
+                          AppToast.show(
                             context: context,
                             title: 'you_should_accept_terms_and_conditions'
                                 .tr(),

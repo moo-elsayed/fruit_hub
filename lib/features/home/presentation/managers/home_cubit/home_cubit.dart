@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/functions.dart';
-import 'package:fruit_hub/core/helpers/network_response.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
 

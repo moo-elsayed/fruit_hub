@@ -1,32 +1,58 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'app_keys.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 
-abstract class Validator {
+class Validator {
+  Validator._();
+
   static String? validateEmail(String? val) {
-    final RegExp emailRegex = RegExp(AppKeys.emailRegex);
+    final RegExp emailRegex = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    );
     if (val == null || val.trim().isEmpty) {
-      return 'email_cannot_be_empty'.tr();
+      return AppStrings.emailCannotBeEmpty;
     } else if (!emailRegex.hasMatch(val)) {
-      return 'enter_a_valid_email_address'.tr();
+      return AppStrings.enterAValidEmailAddress;
+    }
+    return null;
+  }
+
+  // General use
+  static String? validateRequiredField(String? val) {
+    if (val == null || val.trim().isEmpty) {
+      return AppStrings.requiredField;
+    }
+    return null;
+  }
+
+  static String? validateOldPassword(String? val) {
+    if (val == null || val.isEmpty) {
+      return AppStrings.passwordCannotBeEmpty;
     }
     return null;
   }
 
   static String? validatePassword(String? val) {
     if (val == null || val.isEmpty) {
-      return 'password_cannot_be_empty'.tr();
+      return AppStrings.passwordCannotBeEmpty;
     }
 
-    if (!RegExp(r'^[A-Za-z\d]+$').hasMatch(val)) {
-      return 'password_must_contain_only_letters_and_numbers'.tr();
+    if (val.length < 8) {
+      return AppStrings.passwordMustBeAtLeast8CharactersLong;
     }
 
-    if (val.length < 6) {
-      return 'password_must_be_at_least_6_characters_long'.tr();
+    if (!RegExp(r'(?=.*[A-Z])').hasMatch(val)) {
+      return AppStrings.passwordMustContainUppercase;
     }
 
-    if (!RegExp(r'\d').hasMatch(val)) {
-      return 'password_must_contain_at_least_one_number'.tr();
+    if (!RegExp(r'(?=.*[a-z])').hasMatch(val)) {
+      return AppStrings.passwordMustContainLowercase;
+    }
+
+    if (!RegExp(r'(?=.*\d)').hasMatch(val)) {
+      return AppStrings.passwordMustContainNumber;
+    }
+
+    if (!RegExp(r'(?=.*[!@#$%^&*(),.?":{}|<>_])').hasMatch(val)) {
+      return AppStrings.passwordMustContainSpecialCharacter;
     }
 
     return null;
@@ -34,73 +60,132 @@ abstract class Validator {
 
   static String? validateConfirmPassword(String? val, String? password) {
     if (val == null || val.isEmpty) {
-      return 'Password cannot be empty';
+      return AppStrings.passwordCannotBeEmpty;
     } else if (val != password) {
-      return 'Confirm password must match the password';
+      return AppStrings.confirmPasswordMustMatchThePassword;
     }
     return null;
   }
 
   static String? validateName(String? val) {
     if (val == null || val.isEmpty) {
-      return 'name_cannot_be_empty'.tr();
+      return AppStrings.nameCannotBeEmpty;
+    }
+    return null;
+  }
+
+  static String? validateProfilePicture(String? val) {
+    if (val == null || val.isEmpty) {
+      return AppStrings.profilePictureIsRequired;
+    }
+    return null;
+  }
+
+  static String? validateNationalIdCardImage(String? val) {
+    if (val == null || val.isEmpty) {
+      return AppStrings.idCardImageIsRequired;
+    }
+    return null;
+  }
+
+  static String? validateUserName(String? val) {
+    if (val == null || val.isEmpty) {
+      return AppStrings.usernameCannotBeEmpty;
     }
     return null;
   }
 
   static String? validateStreetName(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return 'street_name_cannot_be_empty'.tr();
+      return AppStrings.streetNameCannotBeEmpty;
     }
     return null;
   }
 
   static String? validateCity(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return 'city_cannot_be_empty'.tr();
+      return AppStrings.cityCannotBeEmpty;
     }
     return null;
   }
 
   static String? validateBuildingNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return 'building_number_cannot_be_empty'.tr();
+      return AppStrings.buildingNumberCannotBeEmpty;
     }
     if (int.tryParse(val) == null) {
-      return 'it_must_be_a_number'.tr();
+      return AppStrings.itMustBeANumber;
     }
     return null;
   }
 
   static String? validateFloorNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return 'floor_number_cannot_be_empty'.tr();
+      return AppStrings.floorNumberCannotBeEmpty;
     }
     if (int.tryParse(val) == null) {
-      return 'it_must_be_a_number'.tr();
+      return AppStrings.itMustBeANumber;
     }
     return null;
   }
 
   static String? validateApartmentNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return 'apartment_number_cannot_be_empty'.tr();
+      return AppStrings.apartmentNumberCannotBeEmpty;
     }
     if (int.tryParse(val) == null) {
-      return 'it_must_be_a_number'.tr();
+      return AppStrings.itMustBeANumber;
+    }
+    return null;
+  }
+
+  static String? validateDescription(String? val) {
+    if (val == null || val.isEmpty) {
+      return AppStrings.pleaseEnterDescription;
+    }
+    return null;
+  }
+
+  static String? validateLocation(String? val) {
+    if (val == null || val.isEmpty) {
+      return AppStrings.pleaseSelectLocation;
+    }
+    return null;
+  }
+
+  static String? validateDate(String? val) {
+    if (val == null || val.isEmpty) {
+      return AppStrings.pleaseSelectDate;
+    }
+    return null;
+  }
+
+  static String? validateTime(String? val) {
+    if (val == null || val.isEmpty) {
+      return AppStrings.pleaseSelectTime;
+    }
+    return null;
+  }
+
+  static String? validateYearOfExperience(String? val) {
+    if (val == null || val.trim().isEmpty) {
+      return AppStrings.yearsOfExperienceCannotBeEmpty;
+    }
+    if (int.tryParse(val) == null) {
+      return AppStrings.itMustBeANumber;
     }
     return null;
   }
 
   static String? validatePhoneNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
-      return 'phone_number_cannot_be_empty'.tr();
+      return AppStrings.phoneNumberCannotBeEmpty;
     }
 
     final phone = val.trim();
     final isValid = RegExp(r'^\+?\d+$').hasMatch(phone);
     if (!isValid) {
-      return 'enter_a_valid_phone_number'.tr();
+      return AppStrings.enterAValidPhoneNumber;
     }
 
     return null;
@@ -108,9 +193,19 @@ abstract class Validator {
 
   static String? validateCode(String? val) {
     if (val == null || val.isEmpty) {
-      return 'Code cannot be empty';
+      return AppStrings.codeCannotBeEmpty;
     } else if (val.length < 6) {
-      return 'Code should be at least 6 digits';
+      return AppStrings.codeShouldBeAtLeast6Digits;
+    } else {
+      return null;
+    }
+  }
+
+  static String? validateNationalId(String? val) {
+    if (val == null || val.isEmpty) {
+      return AppStrings.nationalIdCannotBeEmpty;
+    } else if (val.length != 14) {
+      return AppStrings.nationalIdMustBe14Digits;
     } else {
       return null;
     }

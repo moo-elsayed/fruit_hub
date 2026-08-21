@@ -35,100 +35,100 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      body: BlocBuilder<ProductsCubit, ProductsState>(
-        builder: (context, state) {
-          FruitEntity? currentFruit = widget.fruitEntity;
+    body: BlocBuilder<ProductsCubit, ProductsState>(
+      builder: (context, state) {
+        FruitEntity? currentFruit = widget.fruitEntity;
 
-          if (state is GetProductDetailsSuccess) {
-            currentFruit = state.fruit;
-          }
+        if (state is GetProductDetailsSuccess) {
+          currentFruit = state.fruit;
+        }
 
-          if (currentFruit != null) {
-            return Column(
-              children: [
-                SizedBox(
-                  height: 350.h,
-                  child: CustomProductsDetailsHeader(
-                    imagePath: currentFruit.imagePath,
-                  ),
+        if (currentFruit != null) {
+          return Column(
+            children: [
+              SizedBox(
+                height: 350.h,
+                child: CustomProductsDetailsHeader(
+                  imagePath: currentFruit.imagePath,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          currentFruit.name,
-                          style: AppTextStyles.font16color0C0D0DBold,
-                        ),
-                        Gap(4.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            PricePerKilo(price: currentFruit.price),
-                            GestureDetector(
-                              onTap: () {
-                                log('Go to Reviews Page');
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    '${currentFruit.avgRating}',
-                                    style: AppTextStyles.font13color1B5E37Bold,
-                                  ),
-                                  Gap(4.w),
-                                  Icon(
-                                    Icons.star,
-                                    size: 18.sp,
-                                    color: Colors.amber,
-                                  ),
-                                  Gap(4.w),
-                                  Text(
-                                    'review'.tr(),
-                                    style: AppTextStyles.font13color1B5E37Bold
-                                        .copyWith(
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                  ),
-                                ],
-                              ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        currentFruit.name,
+                        style: AppTextStyles.font16color0C0D0DBold,
+                      ),
+                      Gap(4.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          PricePerKilo(price: currentFruit.price),
+                          GestureDetector(
+                            onTap: () {
+                              log('Go to Reviews Page');
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  '${currentFruit.avgRating}',
+                                  style: AppTextStyles.font13color1B5E37Bold,
+                                ),
+                                Gap(4.w),
+                                Icon(
+                                  Icons.star,
+                                  size: 18.sp,
+                                  color: Colors.amber,
+                                ),
+                                Gap(4.w),
+                                Text(
+                                  'review'.tr(),
+                                  style: AppTextStyles.font13color1B5E37Bold
+                                      .copyWith(
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        Gap(8.h),
-                        Text(
-                          currentFruit.description,
-                          style: AppTextStyles.font13color979899Regular,
-                        ),
-                        Expanded(
-                          child: ProductDetailsGridView(
-                            productDetails: getProductDetails(currentFruit),
                           ),
+                        ],
+                      ),
+                      Gap(8.h),
+                      Text(
+                        currentFruit.description,
+                        style: AppTextStyles.font13color979899Regular,
+                      ),
+                      Expanded(
+                        child: ProductDetailsGridView(
+                          productDetails: getProductDetails(currentFruit),
                         ),
-                        CustomMaterialButton(
-                          onPressed: () {
-                            final myCartService = context.read<CartCubit>();
-                            myCartService.addItemToCart(currentFruit!.code);
-                          },
-                          text: 'add_to_cart'.tr(),
-                          textStyle: AppTextStyles.font16WhiteBold,
-                          maxWidth: true,
-                        ),
-                        Gap(16.h),
-                      ],
-                    ),
+                      ),
+                      CustomMaterialButton(
+                        onPressed: () {
+                          final myCartService = context.read<CartCubit>();
+                          myCartService.addItemToCart(currentFruit!.code);
+                        },
+                        text: 'add_to_cart'.tr(),
+                        textStyle: AppTextStyles.font16WhiteBold,
+                        maxWidth: true,
+                      ),
+                      Gap(16.h),
+                    ],
                   ),
                 ),
-              ],
-            );
-          } else if (state is GetProductDetailsFailure) {
-            return Center(child: Text(state.error));
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-    );
+              ),
+            ],
+          );
+        } else if (state is GetProductDetailsFailure) {
+          return Center(child: Text(state.error));
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    ),
+  );
 }

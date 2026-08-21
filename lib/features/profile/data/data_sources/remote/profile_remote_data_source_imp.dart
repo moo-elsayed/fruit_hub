@@ -1,156 +1,84 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/errors/exceptions.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
-import 'package:fruit_hub/core/services/database/database_service.dart';
+import 'package:fruit_hub/core/network/api_helper.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/profile/data/data_sources/remote/profile_remote_data_source.dart';
 import 'package:fruit_hub/shared_data/models/fruit_model.dart';
-import '../../../../../core/helpers/failures.dart';
-import '../../../../../core/helpers/functions.dart';
-import '../../../../../core/helpers/network_response.dart';
-import '../../../../../core/services/database/query_parameters.dart';
 
 class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
-  ProfileRemoteDataSourceImp(this._databaseService, this._auth);
+  ProfileRemoteDataSourceImp({FirebaseFirestore? firestore, FirebaseAuth? auth})
+    : _firestore = firestore ?? FirebaseFirestore.instance,
+      _auth = auth ?? FirebaseAuth.instance;
 
-  final DatabaseService _databaseService;
+  final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
+  static const String _usersCollection = BackendEndpoints.usersCollection;
+  static const String _productsCollection = BackendEndpoints.productsCollection;
 
   @override
-  Future<NetworkResponse<void>> addItemToFavorites(String productId) async {
-    try {
-      final userId = _auth.currentUser?.uid;
-      if (userId == null) {
-        return NetworkFailure(Exception('user_not_logged_in'));
-      }
+  Future<NetworkResponse<void>> addItemToFavorites(String productId) async =>
+      ApiHelper.executeSafely(() async {
+        final userId = _auth.currentUser?.uid;
+        if (userId == null) {
+          throw BusinessException(AppStrings.userNotFound);
+        }
 
-      final Map<String, dynamic> dataToAdd = {
-        'favoriteIds': FieldValue.arrayUnion([productId]),
-      };
-
-      await _databaseService.updateData(
-        path: BackendEndpoints.updateUserData,
-        documentId: userId,
-        data: dataToAdd,
-      );
-      return const NetworkSuccess();
-    } on FirebaseException catch (e) {
-      _logError(
-        e: e,
-        functionName: 'ProfileRemoteDataSourceImp.addItemToFavorites',
-      );
-      return NetworkFailure(
-        Exception(ServerFailure.fromFirebaseException(e).errorMessage),
-      );
-    } catch (e) {
-      _logError(
-        e: e,
-        functionName: 'ProfileRemoteDataSourceImp.addItemToFavorites',
-      );
-      return NetworkFailure(Exception(e.toString()));
-    }
-  }
+        await _firestore.collection(_usersCollection).doc(userId).update({
+          BackendEndpoints.favoriteIdsField: FieldValue.arrayUnion([productId]),
+        });
+      }, functionName: 'addItemToFavorites');
 
   @override
   Future<NetworkResponse<void>> removeItemFromFavorites(
     String productId,
-  ) async {
-    try {
-      final userId = _auth.currentUser?.uid;
-      if (userId == null) {
-        return NetworkFailure(Exception('user_not_logged_in'));
-      }
-
-      final Map<String, dynamic> dataToRemove = {
-        'favoriteIds': FieldValue.arrayRemove([productId]),
-      };
-
-      await _databaseService.updateData(
-        path: BackendEndpoints.updateUserData,
-        documentId: userId,
-        data: dataToRemove,
-      );
-      return const NetworkSuccess();
-    } on FirebaseException catch (e) {
-      _logError(
-        e: e,
-        functionName: 'ProfileRemoteDataSourceImp.removeItemFromFavorites',
-      );
-      return NetworkFailure(
-        Exception(ServerFailure.fromFirebaseException(e).errorMessage),
-      );
-    } catch (e) {
-      _logError(
-        e: e,
-        functionName: 'ProfileRemoteDataSourceImp.removeItemFromFavorites',
-      );
-      return NetworkFailure(Exception(e.toString()));
+  ) async => ApiHelper.executeSafely(() async {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null) {
+      throw BusinessException(AppStrings.userNotFound);
     }
-  }
+
+    await _firestore.collection(_usersCollection).doc(userId).update({
+      BackendEndpoints.favoriteIdsField: FieldValue.arrayRemove([productId]),
+    });
+  }, functionName: 'removeItemFromFavorites');
 
   @override
-  Future<NetworkResponse<List<String>>> getFavoriteIds() async {
-    try {
-      final userId = _auth.currentUser?.uid;
-      if (userId == null) {
-        return NetworkFailure(Exception('user_not_logged_in'));
-      }
-      final userData = await _databaseService.getData(
-        path: BackendEndpoints.getUserData,
-        documentId: userId,
-      );
-      if (userData.containsKey(BackendEndpoints.favoritesIds)) {
-        return NetworkSuccess(
-          List<String>.from(userData[BackendEndpoints.favoritesIds]),
-        );
-      } else {
-        return const NetworkSuccess([]);
-      }
-    } on FirebaseException catch (e) {
-      _logError(
-        e: e,
-        functionName: 'ProfileRemoteDataSourceImp.getFavoriteIds',
-      );
-      return NetworkFailure(
-        Exception(ServerFailure.fromFirebaseException(e).errorMessage),
-      );
-    } catch (e) {
-      _logError(
-        e: e,
-        functionName: 'ProfileRemoteDataSourceImp.getFavoriteIds',
-      );
-      return NetworkFailure(Exception(e.toString()));
-    }
-  }
+  Future<NetworkResponse<List<String>>> getFavoriteIds() async =>
+      ApiHelper.executeSafely(() async {
+        final userId = _auth.currentUser?.uid;
+        if (userId == null) {
+          throw BusinessException(AppStrings.userNotFound);
+        }
+
+        final docSnapshot = await _firestore
+            .collection(_usersCollection)
+            .doc(userId)
+            .get();
+        final userData = docSnapshot.data() ?? {};
+        if (userData.containsKey(BackendEndpoints.favoriteIdsField)) {
+          return List<String>.from(userData[BackendEndpoints.favoriteIdsField]);
+        }
+        return <String>[];
+      }, functionName: 'getFavoriteIds');
 
   @override
-  Future<NetworkResponse<List<FruitEntity>>> getFavorites(
+  Future<NetworkResponse<List<FruitModel>>> getFavorites(
     List<String> ids,
-  ) async {
-    try {
-      if (ids.isEmpty) {
-        return const NetworkSuccess([]);
-      }
-      final dataList = await _databaseService.queryData(
-        path: BackendEndpoints.queryProducts,
-        query: QueryParameters(whereInIds: ids),
-      );
-      return NetworkSuccess(
-        dataList.map((e) => FruitModel.fromJson(e).toEntity()).toList(),
-      );
-    } on FirebaseException catch (e) {
-      _logError(e: e, functionName: 'ProfileRemoteDataSourceImp.getFavorites');
-      return NetworkFailure(
-        Exception(ServerFailure.fromFirebaseException(e).errorMessage),
-      );
-    } catch (e) {
-      _logError(e: e, functionName: 'ProfileRemoteDataSourceImp.getFavorites');
-      return NetworkFailure(Exception(e.toString()));
+  ) async => ApiHelper.executeSafely(() async {
+    if (ids.isEmpty) {
+      return <FruitModel>[];
     }
-  }
 
-  // -----------------------------------------------------------------
+    final querySnapshot = await _firestore
+        .collection(_productsCollection)
+        .where(FieldPath.documentId, whereIn: ids)
+        .get();
 
-  void _logError({required Object e, required String functionName}) =>
-      errorLogger(functionName: functionName, error: e.toString());
+    return querySnapshot.docs
+        .map((doc) => FruitModel.fromJson(doc.data()))
+        .toList();
+  }, functionName: 'getFavorites');
 }
