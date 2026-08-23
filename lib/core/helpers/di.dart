@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
+import 'package:fruit_hub/core/services/local_storage/app_preferences_service_imp.dart';
 import 'package:fruit_hub/core/services/payment/payment_service.dart';
 import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
 import 'package:fruit_hub/features/auth/data/data_sources/remote/auth_remote_data_source_imp.dart';
@@ -56,23 +57,22 @@ import 'package:fruit_hub/features/search/data/repo_imp/search_repo_imp.dart';
 import 'package:fruit_hub/features/search/domain/use_cases/search_fruits_use_case.dart';
 import 'package:fruit_hub/features/search/presentation/managers/search_cubit/search_cubit.dart';
 import 'package:fruit_hub/features/splash/presentation/managers/splash_cubit/splash_cubit.dart';
-import 'package:fruit_hub/shared_data/services/local_storage_service/shared_preferences_manager.dart';
 import 'package:fruit_hub/shared_data/services/payment/stripe_service.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
 
 void setupServiceLocator() {
   /// App Preferences Service
-  getIt.registerSingletonAsync<AppPreferencesManager>(() async {
-    final service = SharedPreferencesManager();
-    await service.init();
-    return service;
+  getIt.registerSingletonAsync<AppPreferencesService>(() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    return AppPreferencesServiceImpl(sharedPreferences);
   });
 
   /// Theming
   getIt.registerFactory<AppThemeCubit>(
-    () => AppThemeCubit(getIt<AppPreferencesManager>()),
+    () => AppThemeCubit(getIt<AppPreferencesService>()),
   );
 
   getIt.registerSingleton<PaymentService>(
@@ -82,11 +82,11 @@ void setupServiceLocator() {
   getIt.registerSingleton<AuthRepoImp>(AuthRepoImp(AuthRemoteDataSourceImp()));
 
   getIt.registerLazySingleton<SaveUserSessionUseCase>(
-    () => SaveUserSessionUseCase(getIt<AppPreferencesManager>()),
+    () => SaveUserSessionUseCase(getIt<AppPreferencesService>()),
   );
 
   getIt.registerLazySingleton<ClearUserSessionUseCase>(
-    () => ClearUserSessionUseCase(getIt<AppPreferencesManager>()),
+    () => ClearUserSessionUseCase(getIt<AppPreferencesService>()),
   );
 
   getIt.registerLazySingleton<SignInWithEmailAndPasswordUseCase>(
@@ -127,11 +127,11 @@ void setupServiceLocator() {
 
   /// Splash & Onboarding
   getIt.registerFactory<SplashCubit>(
-    () => SplashCubit(getIt<AppPreferencesManager>()),
+    () => SplashCubit(getIt<AppPreferencesService>()),
   );
 
   getIt.registerFactory<OnboardingCubit>(
-    () => OnboardingCubit(getIt<AppPreferencesManager>()),
+    () => OnboardingCubit(getIt<AppPreferencesService>()),
   );
 
   /// Auth Cubits
@@ -169,7 +169,7 @@ void setupServiceLocator() {
   getIt.registerFactory<HomeCubit>(
     () => HomeCubit(
       getIt<GetBestSellerProductsUseCase>(),
-      getIt<AppPreferencesManager>(),
+      getIt<AppPreferencesService>(),
     ),
   );
 
@@ -300,7 +300,7 @@ void setupServiceLocator() {
 
   getIt.registerFactory<CheckoutCubit>(
     () => CheckoutCubit(
-      getIt<AppPreferencesManager>(),
+      getIt<AppPreferencesService>(),
       getIt<FetchShippingConfigUseCase>(),
       getIt<AddOrderUseCase>(),
       getIt<MakePaymentUseCase>(),

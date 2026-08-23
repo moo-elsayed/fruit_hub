@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:gap/gap.dart';
-import '../../../../core/theming/app_colors.dart';
 import '../../../../core/theming/app_text_styles.dart';
 
 class ReviewItem extends StatelessWidget {
@@ -21,18 +21,23 @@ class ReviewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-    crossAxisAlignment: .start,
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Row(
-        mainAxisAlignment: .spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: AppTextStyles.font16color0C0D0DBold),
+          Text(
+            title,
+            style: AppTextStyles.font16Bold.copyWith(
+              color: context.colors.mainText,
+            ),
+          ),
           GestureDetector(
             onTap: onEditTap,
             child: Text(
               'edit'.tr(),
-              style: AppTextStyles.font13color1B5E37Bold.copyWith(
-                color: AppColors.color1B5E37,
+              style: AppTextStyles.font13Bold.copyWith(
+                color: context.colors.primary,
               ),
             ),
           ),
@@ -40,17 +45,22 @@ class ReviewItem extends StatelessWidget {
       ),
       Gap(8.h),
       Container(
-        padding: .symmetric(horizontal: 16.w, vertical: 14.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
         decoration: BoxDecoration(
-          color: AppColors.colorF7F7F7,
-          borderRadius: .circular(12.r),
+          color: context.colors.surface,
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: Row(
           children: [
             SizedBox(height: 24.h, width: 24.w, child: icon),
             Gap(12.w),
             Expanded(
-              child: Text(value, style: AppTextStyles.font13BlackSemiBold),
+              child: Text(
+                value,
+                style: AppTextStyles.font13SemiBold.copyWith(
+                  color: context.colors.mainText,
+                ),
+              ),
             ),
           ],
         ),

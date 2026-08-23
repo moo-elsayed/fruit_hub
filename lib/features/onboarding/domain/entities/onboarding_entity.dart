@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
-import '../../../../generated/assets.dart';
+import 'package:fruit_hub/core/helpers/app_assets.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 
 class OnboardingEntity {
-  OnboardingEntity({
+  const OnboardingEntity({
     required this.title,
     required this.description,
     required this.image,
@@ -17,15 +17,15 @@ class OnboardingEntity {
 
 List<OnboardingEntity> get onboardingSlides => [
   OnboardingEntity(
-    backgroundImage: Assets.svgsPageViewItem1BackgroundImage,
-    image: Assets.svgsPageViewItem1Image,
-    title: 'page_view_item1_title'.tr(),
-    description: 'page_view_item1_description'.tr(),
+    backgroundImage: AppAssets.svgsPageViewItem1BackgroundImage,
+    image: AppAssets.svgsPageViewItem1Image,
+    title: AppStrings.pageViewItem1Title,
+    description: AppStrings.pageViewItem1Description,
   ),
   OnboardingEntity(
-    backgroundImage: Assets.svgsPageViewItem2BackgroundImage,
-    image: Assets.svgsPageViewItem2Image,
-    title: 'page_view_item2_title'.tr(),
-    description: 'page_view_item2_description'.tr(),
+    backgroundImage: AppAssets.svgsPageViewItem2BackgroundImage,
+    image: AppAssets.svgsPageViewItem2Image,
+    title: AppStrings.pageViewItem2Title,
+    description: AppStrings.pageViewItem2Description,
   ),
 ];

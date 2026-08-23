@@ -152,7 +152,9 @@ class _RegisterViewState extends State<RegisterView> {
                     maxWidth: true,
                     isLoading: state is SignUpLoading,
                     text: 'register'.tr(),
-                    textStyle: AppTextStyles.font16WhiteBold,
+                    textStyle: AppTextStyles.font16Bold.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 Gap(33.h),

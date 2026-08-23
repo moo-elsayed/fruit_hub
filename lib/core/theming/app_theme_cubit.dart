@@ -7,7 +7,7 @@ class AppThemeCubit extends Cubit<ThemeMode> {
     _loadSavedTheme();
   }
 
-  final AppPreferencesManager _appPreferencesService;
+  final AppPreferencesService _appPreferencesService;
 
   void _loadSavedTheme() {
     final savedTheme = _appPreferencesService.getThemeMode();

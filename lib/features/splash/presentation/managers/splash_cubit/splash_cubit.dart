@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
@@ -5,26 +6,33 @@ import 'package:fruit_hub/core/services/local_storage/app_preferences_service.da
 part 'splash_state.dart';
 
 class SplashCubit extends Cubit<SplashState> {
-  SplashCubit(this._localStorageService) : super(SplashInitial());
+  SplashCubit(this._appPreferencesService, {FirebaseAuth? firebaseAuth})
+    : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+      super(const SplashInitial());
 
-  final AppPreferencesManager _localStorageService;
+  final AppPreferencesService _appPreferencesService;
+  final FirebaseAuth _firebaseAuth;
 
   Future<void> checkAppStatus() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(milliseconds: 1500));
 
-    if (_getFirstTime()) {
-      emit(SplashNavigateToOnboarding());
+    if (isClosed) return;
+
+    final isFirstTime = _appPreferencesService.isFirstTime();
+
+    if (isFirstTime) {
+      emit(
+        const SplashNavigationState(navigation: SplashNavigation.onboarding),
+      );
       return;
     }
 
-    if (_isLoggedIn()) {
-      emit(SplashNavigateToHome());
+    final isUserLoggedIn = _firebaseAuth.currentUser != null;
+
+    if (isUserLoggedIn) {
+      emit(const SplashNavigationState(navigation: SplashNavigation.home));
     } else {
-      emit(SplashNavigateToLogin());
+      emit(const SplashNavigationState(navigation: SplashNavigation.login));
     }
   }
-
-  bool _getFirstTime() => _localStorageService.getFirstTime();
-
-  bool _isLoggedIn() => _localStorageService.getLoggedIn();
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../../core/theming/app_colors.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../domain/entities/product_details_entity.dart';
 
@@ -27,7 +27,7 @@ class ProductDetailsGridView extends StatelessWidget {
         padding: const .symmetric(vertical: 12),
         decoration: BoxDecoration(
           borderRadius: .all(.circular(16.r)),
-          border: Border.all(color: AppColors.colorF1F1F5),
+          border: Border.all(color: context.colors.border),
         ),
         child: Row(
           mainAxisAlignment: .center,
@@ -43,23 +43,31 @@ class ProductDetailsGridView extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: productDetail.title.split(' ').first,
-                              style: AppTextStyles.font16color23AA49Bold,
+                              style: AppTextStyles.font16Bold.copyWith(
+                                color: context.colors.primary,
+                              ),
                             ),
                             const TextSpan(text: ' '),
                             TextSpan(
                               text: productDetail.title.split(' ').last,
-                              style: AppTextStyles.font14color979899Medium,
+                              style: AppTextStyles.font14Medium.copyWith(
+                                color: context.colors.subText,
+                              ),
                             ),
                           ],
                         ),
                       )
                     : Text(
                         productDetail.title,
-                        style: AppTextStyles.font16color23AA49Bold,
+                        style: AppTextStyles.font16Bold.copyWith(
+                          color: context.colors.primary,
+                        ),
                       ),
                 Text(
                   productDetail.subtitle,
-                  style: AppTextStyles.font14color979899Medium,
+                  style: AppTextStyles.font14Medium.copyWith(
+                    color: context.colors.subText,
+                  ),
                 ),
               ],
             ),

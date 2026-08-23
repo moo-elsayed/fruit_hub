@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:gap/gap.dart';
-import '../../../../core/theming/app_colors.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../domain/entities/bottom_navigation_bar_entity.dart';
 
@@ -36,21 +36,21 @@ class CustomBottomNavigationItem extends StatelessWidget {
                 entity.outlineIcon,
                 height: 20.h,
                 width: 20.w,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.color4E5556,
+                colorFilter: ColorFilter.mode(
+                  context.colors.subText,
                   BlendMode.srcIn,
                 ),
               )
             : DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: .circular(16.r),
-                  color: AppColors.colorF3F5F7,
+                  color: context.colors.surface,
                 ),
                 child: Row(
                   children: [
                     CircleAvatar(
                       radius: 15.r,
-                      backgroundColor: AppColors.color1B5E37,
+                      backgroundColor: context.colors.primary,
                       child: SvgPicture.asset(
                         entity.filledIcon,
                         fit: BoxFit.scaleDown,
@@ -59,7 +59,9 @@ class CustomBottomNavigationItem extends StatelessWidget {
                     Gap(4.w),
                     Text(
                       entity.label,
-                      style: AppTextStyles.font11color1B5E37semiBold,
+                      style: AppTextStyles.font11SemiBold.copyWith(
+                        color: context.colors.primary,
+                      ),
                     ),
                     Gap(7.w),
                   ],

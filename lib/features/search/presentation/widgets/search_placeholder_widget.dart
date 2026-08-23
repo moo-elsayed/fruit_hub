@@ -1,8 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/helpers/app_assets.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
-import 'package:fruit_hub/generated/assets.dart';
 import 'package:gap/gap.dart';
 
 class SearchPlaceholderWidget extends StatelessWidget {
@@ -16,12 +17,19 @@ class SearchPlaceholderWidget extends StatelessWidget {
     child: Column(
       children: [
         Gap(140.h),
-        Image.asset(Assets.imagesSearchImage),
-        Text('search'.tr(), style: AppTextStyles.font16color616A6BBold),
+        Image.asset(AppAssets.imagesSearchImage),
+        Text(
+          AppStrings.search,
+          style: AppTextStyles.font16Bold.copyWith(
+            color: context.colors.bodyText,
+          ),
+        ),
         Gap(10.h),
         Text(
-          text ?? 'no_results'.tr(),
-          style: AppTextStyles.font13color949D9ERegular,
+          text ?? AppStrings.noResults,
+          style: AppTextStyles.font13Regular.copyWith(
+            color: context.colors.subText,
+          ),
         ),
       ],
     ),

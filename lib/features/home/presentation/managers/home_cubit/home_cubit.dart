@@ -10,11 +10,11 @@ import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_product
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit(this._getBestSellerProductsUseCase, this._localStorageService)
+  HomeCubit(this._getBestSellerProductsUseCase, this._appPreferencesService)
     : super(HomeInitial());
 
   final GetBestSellerProductsUseCase _getBestSellerProductsUseCase;
-  final AppPreferencesManager _localStorageService;
+  final AppPreferencesService _appPreferencesService;
 
   Future<void> getBestSellerProducts() async {
     emit(GetBestSellerProductsLoading());
@@ -29,5 +29,5 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  String get getUserName => _localStorageService.getUsername();
+  String get getUserName => _appPreferencesService.getUser()?.name ?? '';
 }

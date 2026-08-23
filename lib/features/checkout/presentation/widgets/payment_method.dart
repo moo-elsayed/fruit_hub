@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/theming/app_colors.dart';
+import '../../../../core/helpers/extensions.dart';
 
 class PaymentMethod extends StatelessWidget {
   const PaymentMethod({super.key});
@@ -9,7 +9,7 @@ class PaymentMethod extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: .symmetric(horizontal: 16.w, vertical: 14.h),
     decoration: BoxDecoration(
-      color: AppColors.colorF7F7F7,
+      color: context.colors.surface,
       borderRadius: .circular(12.r),
     ),
   );

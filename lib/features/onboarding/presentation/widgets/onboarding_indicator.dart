@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../core/theming/app_colors.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 
 class OnboardingIndicator extends StatelessWidget {
   const OnboardingIndicator({
@@ -25,7 +24,9 @@ class OnboardingIndicator extends StatelessWidget {
         margin: EdgeInsetsDirectional.only(end: index == length - 1 ? 0 : 10.w),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: isActive ? AppColors.color1B5E37 : AppColors.colorEBF6EA,
+          color: isActive
+              ? context.colors.primary
+              : context.colors.tagConfirmedBg,
         ),
       );
     }),

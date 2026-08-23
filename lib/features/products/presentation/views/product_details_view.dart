@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/features/products/domain/entities/product_details_entity.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/widgets/custom_products_details_header.dart';
@@ -61,7 +62,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                     children: [
                       Text(
                         currentFruit.name,
-                        style: AppTextStyles.font16color0C0D0DBold,
+                        style: AppTextStyles.font16Bold.copyWith(
+                          color: context.colors.mainText,
+                        ),
                       ),
                       Gap(4.h),
                       Row(
@@ -76,7 +79,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               children: [
                                 Text(
                                   '${currentFruit.avgRating}',
-                                  style: AppTextStyles.font13color1B5E37Bold,
+                                  style: AppTextStyles.font13Bold.copyWith(
+                                    color: context.colors.primary,
+                                  ),
                                 ),
                                 Gap(4.w),
                                 Icon(
@@ -87,10 +92,10 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                 Gap(4.w),
                                 Text(
                                   'review'.tr(),
-                                  style: AppTextStyles.font13color1B5E37Bold
-                                      .copyWith(
-                                        decoration: TextDecoration.underline,
-                                      ),
+                                  style: AppTextStyles.font13Bold.copyWith(
+                                    color: context.colors.primary,
+                                    decoration: TextDecoration.underline,
+                                  ),
                                 ),
                               ],
                             ),
@@ -100,7 +105,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       Gap(8.h),
                       Text(
                         currentFruit.description,
-                        style: AppTextStyles.font13color979899Regular,
+                        style: AppTextStyles.font13Regular.copyWith(
+                          color: context.colors.subText,
+                        ),
                       ),
                       Expanded(
                         child: ProductDetailsGridView(
@@ -113,7 +120,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           myCartService.addItemToCart(currentFruit!.code);
                         },
                         text: 'add_to_cart'.tr(),
-                        textStyle: AppTextStyles.font16WhiteBold,
+                        textStyle: AppTextStyles.font16Bold.copyWith(
+                          color: Colors.white,
+                        ),
                         maxWidth: true,
                       ),
                       Gap(16.h),

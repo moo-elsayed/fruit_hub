@@ -92,7 +92,7 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
             }
           },
           text: buttonTexts[currentIndex].tr(),
-          textStyle: AppTextStyles.font16WhiteBold,
+          textStyle: AppTextStyles.font16Bold.copyWith(color: Colors.white),
           maxWidth: true,
           isLoading: state is AddOrderLoading || state is MakePaymentLoading,
         ),

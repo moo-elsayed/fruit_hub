@@ -1,10 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fruit_hub/core/theming/app_colors.dart';
+import 'package:fruit_hub/core/helpers/app_assets.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
-import 'package:fruit_hub/generated/assets.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/widgets/custom_material_button.dart';
 
@@ -22,7 +22,7 @@ class CustomDialog extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
         decoration: ShapeDecoration(
-          color: AppColors.white,
+          color: context.colors.surface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.r)),
           ),
@@ -30,19 +30,21 @@ class CustomDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SvgPicture.asset(Assets.svgsSuccess),
+            SvgPicture.asset(AppAssets.svgsSuccess),
             Gap(16.h),
             Text(
               text,
               textAlign: TextAlign.center,
-              style: AppTextStyles.font16color0C0D0DSemiBold,
+              style: AppTextStyles.font16SemiBold.copyWith(
+                color: context.colors.mainText,
+              ),
             ),
             Gap(16.h),
             CustomMaterialButton(
               onPressed: onPressed,
-              text: 'ok'.tr(),
+              text: AppStrings.ok,
               maxWidth: true,
-              textStyle: AppTextStyles.font16WhiteBold,
+              textStyle: AppTextStyles.font16Bold.copyWith(color: Colors.white),
             ),
           ],
         ),

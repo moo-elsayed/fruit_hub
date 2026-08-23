@@ -1,6 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import '../../../../core/theming/app_text_styles.dart';
 
 class CustomSectionHeader extends StatelessWidget {
@@ -19,12 +20,19 @@ class CustomSectionHeader extends StatelessWidget {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(sectionName, style: AppTextStyles.font16color0C0D0DBold),
+        Text(
+          sectionName,
+          style: AppTextStyles.font16Bold.copyWith(
+            color: context.colors.mainText,
+          ),
+        ),
         GestureDetector(
           onTap: onTap,
           child: Text(
-            'more'.tr(),
-            style: AppTextStyles.font13color949D9ERegular,
+            AppStrings.more,
+            style: AppTextStyles.font13Regular.copyWith(
+              color: context.colors.subText,
+            ),
           ),
         ),
       ],

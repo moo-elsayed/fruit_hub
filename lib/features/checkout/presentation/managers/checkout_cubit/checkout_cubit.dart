@@ -21,13 +21,13 @@ part 'checkout_state.dart';
 
 class CheckoutCubit extends Cubit<CheckoutState> {
   CheckoutCubit(
-    this._localStorageService,
+    this._appPreferencesService,
     this._fetchShippingConfigUseCase,
     this._addOrderUseCase,
     this._makePaymentUseCase,
   ) : super(CheckoutInitial());
 
-  final AppPreferencesManager _localStorageService;
+  final AppPreferencesService _appPreferencesService;
   final FetchShippingConfigUseCase _fetchShippingConfigUseCase;
   final AddOrderUseCase _addOrderUseCase;
   final MakePaymentUseCase _makePaymentUseCase;
@@ -37,7 +37,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   bool saveAddress = true;
   ShippingConfigEntity? shippingConfig;
   late OrderEntity orderEntity = OrderEntity(
-    uid: _localStorageService.getUid(),
+    uid: _appPreferencesService.getUser()?.uid ?? '',
     orderId: _generateOrderId(),
     products: products,
     address: address!,
@@ -90,7 +90,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   }
 
   void getAddressFromLocalStorage() {
-    final addressJson = _localStorageService.getAddress();
+    final addressJson = _appPreferencesService.getAddress();
     if (addressJson.isNotEmpty) {
       try {
         final myMap = jsonDecode(addressJson);
@@ -116,7 +116,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
   void _saveAddressToLocalStorage(AddressEntity address) {
     final AddressModel addressModel = AddressModel.fromEntity(address);
-    _localStorageService.saveAddress(addressModel.toJson());
+    _appPreferencesService.saveAddress(addressModel.toJson());
   }
 
   int _generateOrderId() {

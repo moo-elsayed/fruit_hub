@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fruit_hub/features/app_section/presentation/views/app_section.dart';
-import 'package:fruit_hub/features/auth/presentation/views/login_view.dart';
-import '../../../../generated/assets.dart';
-import '../../../onboarding/presentation/views/onboarding_view.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/routing/routes.dart';
+import '../../../../core/helpers/app_assets.dart';
 import '../managers/splash_cubit/splash_cubit.dart';
 
 class AnimatedSplashViewBody extends StatefulWidget {
@@ -17,16 +16,6 @@ class AnimatedSplashViewBody extends StatefulWidget {
 }
 
 class _AnimatedSplashViewBodyState extends State<AnimatedSplashViewBody> {
-  void navigate(Widget view) => Navigator.of(context).pushReplacement(
-    PageRouteBuilder(
-      pageBuilder: (_, _, _) => view,
-      transitionsBuilder: (_, animation, _, child) => FadeTransition(
-        opacity: CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-        child: child,
-      ),
-    ),
-  );
-
   @override
   void initState() {
     super.initState();
@@ -36,12 +25,15 @@ class _AnimatedSplashViewBodyState extends State<AnimatedSplashViewBody> {
   @override
   Widget build(BuildContext context) => BlocListener<SplashCubit, SplashState>(
     listener: (context, state) {
-      if (state is SplashNavigateToHome) {
-        navigate(const AppSection());
-      } else if (state is SplashNavigateToLogin) {
-        navigate(const LoginView());
-      } else if (state is SplashNavigateToOnboarding) {
-        navigate(const OnboardingView());
+      if (state is SplashNavigationState) {
+        switch (state.navigation) {
+          case SplashNavigation.home:
+            context.pushReplacementNamed(Routes.appSection);
+          case SplashNavigation.login:
+            context.pushReplacementNamed(Routes.loginView);
+          case SplashNavigation.onboarding:
+            context.pushReplacementNamed(Routes.onboardingView);
+        }
       }
     },
     child: Column(
@@ -51,19 +43,21 @@ class _AnimatedSplashViewBodyState extends State<AnimatedSplashViewBody> {
           duration: const Duration(milliseconds: 1000),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: SvgPicture.asset(Assets.svgsPlant),
+            child: SvgPicture.asset(AppAssets.svgsPlant),
           ),
         ),
         BounceInDown(
           duration: const Duration(milliseconds: 1200),
           child: Image.asset(
-            'assets/images/splash_android_12.png',
+            context.isDarkMode
+                ? AppAssets.imagesSplashAndroid12Dark
+                : AppAssets.imagesSplashAndroid12,
             height: 300.h,
           ),
         ),
         FadeInUp(
           duration: const Duration(milliseconds: 1000),
-          child: SvgPicture.asset(Assets.svgsSplashBottom),
+          child: SvgPicture.asset(AppAssets.svgsSplashBottom),
         ),
       ],
     ),

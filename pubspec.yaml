@@ -72,7 +72,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  removed_alpha_ios: true
+  remove_alpha_ios: true
   image_path: "assets/images/app-logo.png"
   min_sdk_android: 21
 
@@ -84,14 +84,3 @@ flutter:
     - assets/svgs/icons/
     - assets/translations/
     - assets/images/
-
-  fonts:
-    - family: Cairo
-      fonts:
-        - asset: assets/fonts/Cairo-Regular.ttf
-        - asset: assets/fonts/Cairo-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Cairo-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Cairo-Bold.ttf
-          weight: 700

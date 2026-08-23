@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 
-import '../../../../core/theming/app_colors.dart';
 import 'cart_item.dart';
 
 class CartItemsListView extends StatelessWidget {
@@ -20,7 +20,7 @@ class CartItemsListView extends StatelessWidget {
       itemCount: itemCount ?? cartItems!.length,
       itemBuilder: (context, index) => Column(
         children: [
-          if (index == 0) buildDivider(),
+          if (index == 0) buildDivider(context),
           CartItem(
             size: size,
             cartItemEntity: itemCount != null
@@ -29,12 +29,13 @@ class CartItemsListView extends StatelessWidget {
           ),
           if ((cartItems != null && index == cartItems!.length - 1) ||
               (itemCount != null && index == itemCount! - 1))
-            buildDivider(),
+            buildDivider(context),
         ],
       ),
-      separatorBuilder: (context, index) => buildDivider(),
+      separatorBuilder: (context, index) => buildDivider(context),
     );
   }
 
-  Divider buildDivider() => Divider(height: 10.h, color: AppColors.colorF1F1F5);
+  Divider buildDivider(BuildContext context) =>
+      Divider(height: 10.h, color: context.colors.border);
 }

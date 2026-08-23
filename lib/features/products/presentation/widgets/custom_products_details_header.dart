@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/helpers/extensions.dart';
-import '../../../../core/theming/app_colors.dart';
 import '../../../../core/widgets/custom_arrow_back.dart';
 import '../../../../core/widgets/custom_network_image.dart';
 
@@ -20,9 +19,9 @@ class CustomProductsDetailsHeader extends StatelessWidget {
           alignment: .bottomCenter,
           width: 700.w,
           height: 906.h,
-          decoration: const BoxDecoration(
-            color: AppColors.colorF3F5F7,
-            shape: .circle,
+          decoration: BoxDecoration(
+            color: context.colors.surface,
+            shape: BoxShape.circle,
           ),
         ),
       ),

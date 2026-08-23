@@ -3,17 +3,13 @@ import '../../../../core/services/local_storage/app_preferences_service.dart';
 import '../entities/user_entity.dart';
 
 class SaveUserSessionUseCase {
-  SaveUserSessionUseCase(this._appPreferencesManager);
+  SaveUserSessionUseCase(this._appPreferencesService);
 
-  final AppPreferencesManager _appPreferencesManager;
+  final AppPreferencesService _appPreferencesService;
 
   Future<void> call(UserEntity user) async {
     try {
-      await Future.wait([
-        _appPreferencesManager.setUid(user.uid),
-        _appPreferencesManager.setUsername(user.name),
-        _appPreferencesManager.setLoggedIn(true),
-      ]);
+      await _appPreferencesService.saveUser(user);
     } catch (e) {
       AppLogger.error('error in save user session', error: e.toString());
       throw Exception('Failed to save user session');

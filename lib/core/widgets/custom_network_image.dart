@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../../generated/assets.dart';
+import '../helpers/app_assets.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   const CustomNetworkImage({
@@ -16,6 +16,6 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => image == ''
-      ? Image.asset(Assets.imagesWatermelonTest)
+      ? Image.asset(AppAssets.imagesWatermelonTest)
       : CachedNetworkImage(imageUrl: image, height: height, width: width);
 }

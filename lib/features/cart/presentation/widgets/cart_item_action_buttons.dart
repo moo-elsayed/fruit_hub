@@ -4,11 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
-import '../../../../core/helpers/functions.dart';
-import '../../../../core/theming/app_colors.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
+import '../../../../core/helpers/app_assets.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/custom_action_button.dart';
-import '../../../../generated/assets.dart';
 import '../managers/cart_cubit/cart_cubit.dart';
 
 class CartItemActionButtons extends StatefulWidget {
@@ -53,7 +52,7 @@ class _CartItemActionButtonsState extends State<CartItemActionButtons> {
         opacity: _isEnable ? 1 : 0.5,
         radius: 12.r,
         child: SvgPicture.asset(
-          Assets.iconsPlus,
+          AppAssets.iconsPlus,
           height: 10.h,
           width: 10.w,
           fit: BoxFit.scaleDown,
@@ -61,19 +60,26 @@ class _CartItemActionButtonsState extends State<CartItemActionButtons> {
       ),
       Text(
         '${widget.cartItemEntity.quantity}',
-        style: AppTextStyles.font16color06140CBold,
+        style: AppTextStyles.font16Bold.copyWith(
+          color: context.colors.mainText,
+        ),
       ),
       CustomActionButton(
         onTap: () => _handleQuantityChange(false),
         opacity: _isEnable ? 1 : 0.5,
         radius: 12.r,
-        backgroundColor: AppColors.colorF3F5F7,
-        child: SvgPicture.asset(Assets.iconsIconsMinus, fit: BoxFit.scaleDown),
+        backgroundColor: context.colors.surface,
+        child: SvgPicture.asset(
+          AppAssets.iconsIconsMinus,
+          fit: BoxFit.scaleDown,
+        ),
       ),
       const Spacer(),
       Text(
-        "${getPrice(widget.cartItemEntity.totalPrice)} ${"pounds".tr()}",
-        style: AppTextStyles.font13colorF4A91FBold,
+        "${widget.cartItemEntity.totalPrice.formattedPrice} ${"pounds".tr()}",
+        style: AppTextStyles.font13Bold.copyWith(
+          color: context.colors.secondary,
+        ),
       ),
     ],
   );

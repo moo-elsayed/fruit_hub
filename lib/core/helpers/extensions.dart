@@ -1,9 +1,7 @@
 import 'dart:ui' as ui;
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
-
 import '../../features/checkout/domain/entities/address_entity.dart';
 import '../theming/colors_manager.dart';
 import 'app_strings.dart';
@@ -100,4 +98,8 @@ extension PaymentMethodTypeExtension on PaymentMethodType {
         return 'cash_on_delivery';
     }
   }
+}
+
+extension NumExtension on num {
+  num get formattedPrice => toInt() == this ? toInt() : this;
 }

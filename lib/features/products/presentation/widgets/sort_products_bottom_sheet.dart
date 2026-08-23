@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_text_styles.dart';
+import 'package:fruit_hub/core/widgets/custom_bottom_sheet_top_container.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/widgets/sort_option_item.dart';
 import 'package:gap/gap.dart';
-import '../../../../core/theming/app_colors.dart';
-import '../../../../core/theming/app_text_styles.dart';
-import '../../../../core/widgets/custom_bottom_sheet_top_container.dart';
 
 class SortProductsBottomSheet extends StatefulWidget {
   const SortProductsBottomSheet({super.key});
@@ -34,7 +33,7 @@ class _SortProductsBottomSheetState extends State<SortProductsBottomSheet> {
   @override
   Widget build(BuildContext context) => Container(
     decoration: BoxDecoration(
-      color: AppColors.white,
+      color: context.colors.surface,
       borderRadius: BorderRadius.only(
         topLeft: .circular(24.r),
         topRight: .circular(24.r),
@@ -46,9 +45,14 @@ class _SortProductsBottomSheetState extends State<SortProductsBottomSheet> {
       children: [
         const CustomBottomSheetTopContainer(),
         Row(
-          mainAxisAlignment: .spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('sort_by'.tr(), style: AppTextStyles.font19color0C0D0DBold),
+            Text(
+              'sort_by'.tr(),
+              style: AppTextStyles.font19Bold.copyWith(
+                color: context.colors.mainText,
+              ),
+            ),
             if (_selectedOption != -1)
               InkWell(
                 onTap: () {
@@ -64,11 +68,13 @@ class _SortProductsBottomSheetState extends State<SortProductsBottomSheet> {
                       Icon(
                         Icons.restart_alt_rounded,
                         size: 18.sp,
-                        color: AppColors.greyShade600,
+                        color: context.colors.subText,
                       ),
                       Text(
                         'reset'.tr(),
-                        style: AppTextStyles.font13GreyShade600SemiBold,
+                        style: AppTextStyles.font13SemiBold.copyWith(
+                          color: context.colors.subText,
+                        ),
                       ),
                     ],
                   ),
@@ -103,7 +109,7 @@ class _SortProductsBottomSheetState extends State<SortProductsBottomSheet> {
           },
           text: 'apply'.tr(),
           maxWidth: true,
-          textStyle: AppTextStyles.font16WhiteBold,
+          textStyle: AppTextStyles.font16Bold.copyWith(color: Colors.white),
         ),
       ],
     ),

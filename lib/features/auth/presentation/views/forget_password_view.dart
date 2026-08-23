@@ -62,7 +62,9 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 Gap(24.h),
                 Text(
                   'send_email_reset_link'.tr(),
-                  style: AppTextStyles.font16color616A6BSemiBold,
+                  style: AppTextStyles.font16SemiBold.copyWith(
+                    color: context.colors.bodyText,
+                  ),
                 ),
                 Gap(30.h),
                 TextFormFieldHelper(
@@ -114,7 +116,9 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                     },
                     maxWidth: true,
                     text: 'send_password_reset_link'.tr(),
-                    textStyle: AppTextStyles.font16WhiteBold,
+                    textStyle: AppTextStyles.font16Bold.copyWith(
+                      color: Colors.white,
+                    ),
                     isLoading: state is ForgetPasswordLoading,
                   ),
                 ),

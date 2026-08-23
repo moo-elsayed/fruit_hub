@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
-import 'package:fruit_hub/core/helpers/functions.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/cart_items_list_view.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/products_count.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
 import '../../../../core/routing/routes.dart';
-import '../../../../core/theming/app_colors.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../managers/cart_cubit/cart_cubit.dart';
@@ -42,8 +40,8 @@ class _CartState extends State<Cart> {
         snap: true,
         pinned: false,
         automaticallyImplyLeading: false,
-        backgroundColor: AppColors.white,
-        surfaceTintColor: AppColors.white,
+        backgroundColor: context.colors.background,
+        surfaceTintColor: context.colors.background,
         flexibleSpace: FlexibleSpaceBar(
           background: Padding(
             padding: EdgeInsetsGeometry.only(top: 10.h, bottom: 8.h),
@@ -56,8 +54,8 @@ class _CartState extends State<Cart> {
         floating: false,
         snap: false,
         automaticallyImplyLeading: false,
-        backgroundColor: AppColors.white,
-        surfaceTintColor: AppColors.white,
+        backgroundColor: context.colors.background,
+        surfaceTintColor: context.colors.background,
         toolbarHeight: 0,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(44.h),
@@ -114,7 +112,7 @@ class _CartState extends State<Cart> {
           child: BlocConsumer<CartCubit, CartState>(
             listener: (context, state) {
               if (state is CartSuccess && state.items.isNotEmpty) {
-                totalPrice = getPrice(state.totalPrice);
+                totalPrice = state.totalPrice.formattedPrice;
               }
             },
             builder: (context, state) {
@@ -125,7 +123,9 @@ class _CartState extends State<Cart> {
                     onPressed: () {},
                     maxWidth: true,
                     text: "${"checkout".tr()} 120 ${"pounds".tr()}",
-                    textStyle: AppTextStyles.font16WhiteBold,
+                    textStyle: AppTextStyles.font16Bold.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                 );
               }
@@ -144,7 +144,9 @@ class _CartState extends State<Cart> {
                   },
                   maxWidth: true,
                   text: "${"checkout".tr()} $totalPrice ${"pounds".tr()}",
-                  textStyle: AppTextStyles.font16WhiteBold,
+                  textStyle: AppTextStyles.font16Bold.copyWith(
+                    color: Colors.white,
+                  ),
                 );
               }
               return Container();

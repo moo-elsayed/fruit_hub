@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
-import 'package:fruit_hub/generated/assets.dart';
 import 'package:gap/gap.dart';
+
 import '../helpers/extensions.dart';
 import '../theming/app_text_styles.dart';
 import 'custom_material_button.dart';
@@ -45,7 +46,7 @@ class CustomConfirmationDialog extends StatelessWidget {
               onTap: () => context.pop(),
               behavior: HitTestBehavior.opaque,
               child: SvgPicture.asset(
-                Assets.iconsIconCancel,
+                AppAssets.iconsIconCancel,
                 colorFilter: ColorFilter.mode(
                   context.colors.subText,
                   BlendMode.srcIn,

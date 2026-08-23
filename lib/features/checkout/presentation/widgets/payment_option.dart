@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/payment_option_entity.dart';
 import 'package:gap/gap.dart';
-import '../../../../core/theming/app_colors.dart';
 import '../../../../core/theming/app_text_styles.dart';
 
 class PaymentOption extends StatelessWidget {
@@ -32,10 +32,10 @@ class PaymentOption extends StatelessWidget {
       curve: Curves.easeInOut,
       padding: .symmetric(horizontal: 16.w, vertical: 14.h),
       decoration: BoxDecoration(
-        color: AppColors.colorF7F7F7,
+        color: context.colors.surface,
         borderRadius: .circular(12.r),
         border: Border.all(
-          color: isSelected ? AppColors.color1B5E37 : AppColors.colorF7F7F7,
+          color: isSelected ? context.colors.primary : context.colors.border,
         ),
       ),
       child: Row(
@@ -47,17 +47,17 @@ class PaymentOption extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(
                 color: isSelected
-                    ? AppColors.color1B5E37
-                    : Colors.grey.shade400,
+                    ? context.colors.primary
+                    : context.colors.border,
                 width: 2,
               ),
             ),
             padding: const .all(3),
             child: isSelected
                 ? Container(
-                    decoration: const BoxDecoration(
-                      shape: .circle,
-                      color: AppColors.color1B5E37,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: context.colors.primary,
                     ),
                   )
                 : null,
@@ -65,12 +65,16 @@ class PaymentOption extends StatelessWidget {
           Gap(10.w),
           Text(
             paymentOptionEntity.title,
-            style: AppTextStyles.font13BlackSemiBold,
+            style: AppTextStyles.font13SemiBold.copyWith(
+              color: context.colors.mainText,
+            ),
           ),
           const Spacer(),
           Text(
             getTrailingText(paymentOptionEntity.shippingCost),
-            style: AppTextStyles.font13color3A8B33Bold,
+            style: AppTextStyles.font13Bold.copyWith(
+              color: context.colors.primary,
+            ),
           ),
         ],
       ),

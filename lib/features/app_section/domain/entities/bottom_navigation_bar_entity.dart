@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import '../../../../generated/assets.dart';
+import '../../../../core/helpers/app_assets.dart';
 
 class BottomNavigationBarEntity {
   BottomNavigationBarEntity({
@@ -16,22 +16,22 @@ class BottomNavigationBarEntity {
 List<BottomNavigationBarEntity> get bottomNavigationBarItems => [
   BottomNavigationBarEntity(
     label: 'home'.tr(),
-    outlineIcon: Assets.iconsHomeOutline,
-    filledIcon: Assets.iconsHomeFilled,
+    outlineIcon: AppAssets.iconsHomeOutline,
+    filledIcon: AppAssets.iconsHomeFilled,
   ),
   BottomNavigationBarEntity(
     label: 'products'.tr(),
-    outlineIcon: Assets.iconsProductsOutline,
-    filledIcon: Assets.iconsProductsFilled,
+    outlineIcon: AppAssets.iconsProductsOutline,
+    filledIcon: AppAssets.iconsProductsFilled,
   ),
   BottomNavigationBarEntity(
     label: 'shopping_cart'.tr(),
-    outlineIcon: Assets.iconsShoppingCartOutline,
-    filledIcon: Assets.iconsShoppingCartFilled,
+    outlineIcon: AppAssets.iconsShoppingCartOutline,
+    filledIcon: AppAssets.iconsShoppingCartFilled,
   ),
   BottomNavigationBarEntity(
     label: 'my_account'.tr(),
-    outlineIcon: Assets.iconsProfileOutline,
-    filledIcon: Assets.iconsProfileFilled,
+    outlineIcon: AppAssets.iconsProfileOutline,
+    filledIcon: AppAssets.iconsProfileFilled,
   ),
 ];

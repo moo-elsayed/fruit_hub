@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../../generated/assets.dart';
-import '../theming/app_colors.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
+import '../helpers/app_assets.dart';
 
 class CustomCheckBox extends StatefulWidget {
   const CustomCheckBox({
@@ -44,15 +43,15 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.r),
         border: Border.all(
-          color: !_myBool ? AppColors.colorDDDFDF : AppColors.color1B5E37,
+          color: !_myBool ? context.colors.border : context.colors.primary,
           width: 1.5,
         ),
-        color: _myBool ? AppColors.color1B5E37 : Colors.white,
+        color: _myBool ? context.colors.primary : context.colors.surface,
       ),
       child: _myBool
           ? Center(
               child: SvgPicture.asset(
-                Assets.iconsCheck,
+                AppAssets.iconsCheck,
                 width: 16.w,
                 height: 16.h,
               ),

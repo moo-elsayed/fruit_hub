@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../theming/app_colors.dart';
+import '../helpers/extensions.dart';
 
 class CustomBottomSheetTopContainer extends StatelessWidget {
   const CustomBottomSheetTopContainer({super.key});
@@ -11,7 +11,7 @@ class CustomBottomSheetTopContainer extends StatelessWidget {
     height: 4.h,
     margin: .only(bottom: 8.h),
     decoration: BoxDecoration(
-      color: AppColors.color131F46,
+      color: context.colors.subText.withValues(alpha: 0.3),
       borderRadius: BorderRadius.circular(16),
     ),
   );

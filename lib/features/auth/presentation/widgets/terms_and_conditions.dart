@@ -1,6 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import '../../../../core/widgets/custom_check_box.dart';
 
@@ -20,13 +21,17 @@ class TermsAndConditions extends StatelessWidget {
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'terms_and_conditions_p1'.tr(),
-                style: AppTextStyles.font13color949D9ESemiBold,
+                text: AppStrings.termsAndConditionsP1,
+                style: AppTextStyles.font13SemiBold.copyWith(
+                  color: context.colors.subText,
+                ),
               ),
               const TextSpan(text: ' '),
               TextSpan(
-                text: 'terms_and_conditions_p2'.tr(),
-                style: AppTextStyles.font13color2D9F5DSemiBold,
+                text: AppStrings.termsAndConditionsP2,
+                style: AppTextStyles.font13SemiBold.copyWith(
+                  color: context.colors.primary,
+                ),
               ),
             ],
           ),

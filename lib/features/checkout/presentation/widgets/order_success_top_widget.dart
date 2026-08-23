@@ -2,9 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:gap/gap.dart';
+import '../../../../core/helpers/app_assets.dart';
 import '../../../../core/theming/app_text_styles.dart';
-import '../../../../generated/assets.dart';
 
 class OrderSuccessTopWidget extends StatelessWidget {
   const OrderSuccessTopWidget({super.key, required this.orderId});
@@ -14,14 +15,21 @@ class OrderSuccessTopWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
     children: [
-      SvgPicture.asset(Assets.svgsSuccess),
+      SvgPicture.asset(AppAssets.svgsSuccess),
       Gap(33.h),
       Text(
         'It_was_done_successfully!'.tr(),
-        style: AppTextStyles.font16color0C0D0DBold,
+        style: AppTextStyles.font16Bold.copyWith(
+          color: context.colors.mainText,
+        ),
       ),
       Gap(9.h),
-      Text("${"order_number".tr()}: $orderId#"),
+      Text(
+        "${"order_number".tr()}: $orderId#",
+        style: AppTextStyles.font14Regular.copyWith(
+          color: context.colors.subText,
+        ),
+      ),
     ],
   );
 }

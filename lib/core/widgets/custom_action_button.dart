@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../theming/app_colors.dart';
+import '../helpers/extensions.dart';
 
 class CustomActionButton extends StatelessWidget {
   const CustomActionButton({
@@ -26,7 +25,7 @@ class CustomActionButton extends StatelessWidget {
       onTap: onTap,
       child: CircleAvatar(
         radius: radius ?? 18.r,
-        backgroundColor: backgroundColor ?? AppColors.color1B5E37,
+        backgroundColor: backgroundColor ?? context.colors.primary,
         child: child,
       ),
     ),

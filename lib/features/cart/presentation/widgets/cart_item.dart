@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/helpers/app_assets.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/cart_item_action_buttons.dart';
-import 'package:fruit_hub/generated/assets.dart';
 import 'package:gap/gap.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import '../../../../core/routing/routes.dart';
-import '../../../../core/theming/app_colors.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/custom_network_image.dart';
 import '../../../products/presentation/views/product_details_view.dart';
@@ -41,7 +41,7 @@ class CartItem extends StatelessWidget {
             width: size.width * 0.19466,
             height: size.height * 0.1133,
             padding: EdgeInsetsGeometry.symmetric(horizontal: 10.w),
-            color: AppColors.colorF3F5F7,
+            color: context.colors.surface,
             child: CustomNetworkImage(
               image: cartItemEntity.fruitEntity.imagePath,
             ),
@@ -64,11 +64,15 @@ class CartItem extends StatelessWidget {
                         children: [
                           Text(
                             cartItemEntity.fruitEntity.name,
-                            style: AppTextStyles.font13color06161CBold,
+                            style: AppTextStyles.font13Bold.copyWith(
+                              color: context.colors.mainText,
+                            ),
                           ),
                           Text(
                             "${cartItemEntity.quantity} ${"per_kilo".tr()}",
-                            style: AppTextStyles.font13colorF4A91FRegular,
+                            style: AppTextStyles.font13Regular.copyWith(
+                              color: context.colors.secondary,
+                            ),
                           ),
                         ],
                       ),
@@ -78,7 +82,7 @@ class CartItem extends StatelessWidget {
                             cartItemEntity.fruitEntity.code,
                           );
                         },
-                        child: SvgPicture.asset(Assets.iconsTrash),
+                        child: SvgPicture.asset(AppAssets.iconsTrash),
                       ),
                     ],
                   ),

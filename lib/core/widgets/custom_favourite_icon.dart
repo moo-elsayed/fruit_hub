@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fruit_hub/core/theming/app_colors.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 
 class CustomFavouriteIcon extends StatefulWidget {
   const CustomFavouriteIcon({
@@ -55,15 +55,15 @@ class _CustomFavouriteIconState extends State<CustomFavouriteIcon> {
           child: FadeTransition(opacity: anim, child: child),
         ),
         child: _isFavourite
-            ? const Icon(
+            ? Icon(
                 CupertinoIcons.heart_fill,
-                key: ValueKey('filled'),
-                color: AppColors.red,
+                key: const ValueKey('filled'),
+                color: context.colors.error,
               )
-            : const Icon(
+            : Icon(
                 CupertinoIcons.heart,
-                key: ValueKey('outlined'),
-                color: AppColors.color292D32,
+                key: const ValueKey('outlined'),
+                color: context.colors.mainText,
               ),
       ),
     ),

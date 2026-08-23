@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:toastification/toastification.dart';
 import '../../../../core/helpers/extensions.dart';
@@ -45,7 +46,7 @@ class SignOutButton extends StatelessWidget {
             );
           },
           text: 'sign_out'.tr(),
-          textStyle: AppTextStyles.font16WhiteBold,
+          textStyle: AppTextStyles.font16Bold.copyWith(color: Colors.white),
           maxWidth: true,
         ),
       );

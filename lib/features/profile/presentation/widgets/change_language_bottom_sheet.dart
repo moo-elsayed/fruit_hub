@@ -3,13 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_text_styles.dart';
+import 'package:fruit_hub/core/widgets/custom_bottom_sheet_top_container.dart';
+import 'package:fruit_hub/core/widgets/custom_confirmation_dialog.dart';
 import 'package:gap/gap.dart';
 import 'package:restart_app/restart_app.dart';
-import '../../../../core/helpers/functions.dart';
-import '../../../../core/theming/app_colors.dart';
-import '../../../../core/theming/app_text_styles.dart';
-import '../../../../core/widgets/custom_bottom_sheet_top_container.dart';
-import '../../../../core/widgets/custom_confirmation_dialog.dart';
 
 class ChangeLanguageBottomSheet extends StatelessWidget {
   const ChangeLanguageBottomSheet({super.key});
@@ -18,7 +16,7 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: .symmetric(vertical: 16.h),
     decoration: BoxDecoration(
-      color: AppColors.white,
+      color: context.colors.surface,
       borderRadius: BorderRadius.only(
         topLeft: .circular(16.r),
         topRight: .circular(16.r),
@@ -30,19 +28,21 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
         const CustomBottomSheetTopContainer(),
         Text(
           'select_language'.tr(),
-          style: AppTextStyles.font16color0C0D0DSemiBold,
+          style: AppTextStyles.font16SemiBold.copyWith(
+            color: context.colors.mainText,
+          ),
         ),
         Gap(16.h),
         buildListTile(
           context: context,
-          isChecked: isArabic(context),
+          isChecked: context.isArabic,
           title: 'العربية',
           langCode: 'ar',
         ),
-        Divider(endIndent: 16.w, indent: 16.w),
+        Divider(color: context.colors.border, endIndent: 16.w, indent: 16.w),
         buildListTile(
           context: context,
-          isChecked: !isArabic(context),
+          isChecked: !context.isArabic,
           title: 'English',
           langCode: 'en',
         ),
@@ -74,7 +74,12 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
       );
     },
     visualDensity: .compact,
-    title: Text(title, style: AppTextStyles.font13color0C0D0DSemiBold),
-    trailing: isChecked ? const Icon(Icons.check, color: Colors.green) : null,
+    title: Text(
+      title,
+      style: AppTextStyles.font13SemiBold.copyWith(
+        color: context.colors.mainText,
+      ),
+    ),
+    trailing: isChecked ? Icon(Icons.check, color: context.colors.primary) : null,
   );
 }

@@ -5,11 +5,11 @@ import 'package:fruit_hub/core/services/local_storage/app_preferences_service.da
 part 'onboarding_state.dart';
 
 class OnboardingCubit extends Cubit<OnboardingState> {
-  OnboardingCubit(this._localStorageService) : super(OnboardingInitial());
-  final AppPreferencesManager _localStorageService;
+  OnboardingCubit(this._appPreferencesService) : super(OnboardingInitial());
+  final AppPreferencesService _appPreferencesService;
 
   Future<void> setFirstTime(bool value) async {
-    await _localStorageService.setFirstTime(value);
+    await _appPreferencesService.saveFirstTime();
     emit(OnboardingNavigateToHome());
   }
 }

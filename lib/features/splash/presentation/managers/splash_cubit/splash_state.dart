@@ -1,12 +1,22 @@
 part of 'splash_cubit.dart';
 
+enum SplashNavigation {
+  onboarding,
+  login,
+  home,
+}
+
 @immutable
-abstract class SplashState {}
+abstract class SplashState {
+  const SplashState();
+}
 
-class SplashInitial extends SplashState {}
+class SplashInitial extends SplashState {
+  const SplashInitial();
+}
 
-class SplashNavigateToOnboarding extends SplashState {}
+class SplashNavigationState extends SplashState {
+  const SplashNavigationState({required this.navigation});
 
-class SplashNavigateToLogin extends SplashState {}
-
-class SplashNavigateToHome extends SplashState {}
+  final SplashNavigation navigation;
+}

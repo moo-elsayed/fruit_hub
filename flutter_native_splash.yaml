@@ -1,6 +1,16 @@
 flutter_native_splash:
+  # Light Mode
   color: "#FFFFFF"
   image: assets/images/splash_ios_android_11.png
+
+  # Dark Mode (Fruit Hub dark theme background #06140C)
+  color_dark: "#06140C"
+  image_dark: assets/images/splash_ios_android_11.png
+
+  # Android 12+ Configuration
   android_12:
     image: assets/images/splash_android_12.png
-    color: "#FFFFFF"
+    icon_background_color: "#FFFFFF"
+    image_dark: assets/images/splash_android_12_dark.png
+    icon_background_color_dark: "#06140C"
+

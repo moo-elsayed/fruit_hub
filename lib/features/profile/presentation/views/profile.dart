@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fruit_hub/core/theming/app_colors.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
 import 'package:fruit_hub/features/profile/presentation/widgets/custom_profile_item.dart';
@@ -20,7 +20,12 @@ class Profile extends StatelessWidget {
       children: [
         CustomAppBar(title: 'my_account'.tr()),
         Gap(16.h),
-        Text('general'.tr(), style: AppTextStyles.font13color0C0D0DSemiBold),
+        Text(
+          'general'.tr(),
+          style: AppTextStyles.font13SemiBold.copyWith(
+            color: context.colors.mainText,
+          ),
+        ),
         Gap(16.h),
         Expanded(
           child: ListView.separated(
@@ -30,7 +35,7 @@ class Profile extends StatelessWidget {
               return CustomProfileItem(entity: profileItemEntity);
             },
             separatorBuilder: (context, index) =>
-                const Divider(color: AppColors.colorF2F3F3),
+                Divider(color: context.colors.border),
           ),
         ),
         const Spacer(),

@@ -1,9 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../generated/assets.dart';
-import '../helpers/functions.dart';
-import '../theming/app_colors.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
+import '../helpers/app_assets.dart';
 
 class CustomArrowBack extends StatelessWidget {
   const CustomArrowBack({super.key, required this.onTap, this.padding});
@@ -18,12 +17,15 @@ class CustomArrowBack extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white,
-        border: Border.all(color: AppColors.colorF1F1F5),
+        color: context.colors.surface,
+        border: Border.all(color: context.colors.border),
       ),
       child: Transform.rotate(
-        angle: isArabic(context) ? 0 : pi,
-        child: SvgPicture.asset(Assets.iconsArrowBack, fit: BoxFit.scaleDown),
+        angle: context.isArabic ? 0 : pi,
+        child: SvgPicture.asset(
+          AppAssets.iconsArrowBack,
+          fit: BoxFit.scaleDown,
+        ),
       ),
     ),
   );

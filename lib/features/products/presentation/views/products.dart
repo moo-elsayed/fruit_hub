@@ -1,15 +1,16 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
-import 'package:fruit_hub/core/theming/app_colors.dart';
+import 'package:fruit_hub/core/helpers/app_assets.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
-import 'package:fruit_hub/generated/assets.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+
 import '../../../../core/widgets/fruits_grid_view.dart';
 import '../widgets/sort_products_bottom_sheet.dart';
 
@@ -37,12 +38,12 @@ class _ProductsState extends State<Products> {
         snap: true,
         pinned: false,
         automaticallyImplyLeading: false,
-        backgroundColor: AppColors.white,
-        surfaceTintColor: AppColors.white,
+        backgroundColor: context.colors.background,
+        surfaceTintColor: context.colors.background,
         flexibleSpace: FlexibleSpaceBar(
           background: Padding(
             padding: EdgeInsetsGeometry.only(top: 10.h),
-            child: CustomAppBar(title: 'products'.tr()),
+            child: CustomAppBar(title: AppStrings.products),
           ),
         ),
       ),
@@ -51,8 +52,8 @@ class _ProductsState extends State<Products> {
         floating: false,
         snap: false,
         automaticallyImplyLeading: false,
-        backgroundColor: AppColors.white,
-        surfaceTintColor: AppColors.white,
+        backgroundColor: context.colors.background,
+        surfaceTintColor: context.colors.background,
         toolbarHeight: 0,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(52.h),
@@ -65,8 +66,10 @@ class _ProductsState extends State<Products> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'our_products'.tr(),
-                  style: AppTextStyles.font16color0C0D0DBold,
+                  AppStrings.ourProducts,
+                  style: AppTextStyles.font16Bold.copyWith(
+                    color: context.colors.mainText,
+                  ),
                 ),
                 BlocBuilder<ProductsCubit, ProductsState>(
                   builder: (context, state) {
@@ -81,12 +84,12 @@ class _ProductsState extends State<Products> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(4.r)),
                         color: isFilterActive
-                            ? AppColors.color1B5E37.withValues(alpha: 0.1)
+                            ? context.colors.primary.withValues(alpha: 0.1)
                             : Colors.transparent,
                         border: Border.all(
                           color: isFilterActive
-                              ? AppColors.color1B5E37
-                              : AppColors.colorEAEBEB,
+                              ? context.colors.primary
+                              : context.colors.border,
                         ),
                       ),
                       child: GestureDetector(
@@ -99,7 +102,7 @@ class _ProductsState extends State<Products> {
                             ),
                           );
                         },
-                        child: SvgPicture.asset(Assets.iconsFilter),
+                        child: SvgPicture.asset(AppAssets.iconsFilter),
                       ),
                     );
                   },

@@ -9,7 +9,7 @@ import 'package:fruit_hub/features/checkout/domain/entities/address_entity.dart'
 import 'package:fruit_hub/features/checkout/domain/entities/payment_option_entity.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/review_item.dart';
 import 'package:gap/gap.dart';
-import '../../../../generated/assets.dart';
+import '../../../../core/helpers/app_assets.dart';
 import '../managers/checkout_cubit/checkout_cubit.dart';
 import 'order_summary.dart';
 
@@ -48,7 +48,12 @@ class _ReviewBodyState extends State<ReviewBody> {
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: .start,
     children: [
-      Text('order_summary'.tr(), style: AppTextStyles.font16color0C0D0DBold),
+      Text(
+        'order_summary'.tr(),
+        style: AppTextStyles.font16Bold.copyWith(
+          color: context.colors.mainText,
+        ),
+      ),
       Gap(12.h),
       OrderSummary(
         shippingCost: paymentOption.shippingCost,
@@ -65,7 +70,7 @@ class _ReviewBodyState extends State<ReviewBody> {
       ReviewItem(
         title: 'delivery_address'.tr(),
         value: address.formattedLocation,
-        icon: SvgPicture.asset(Assets.iconsLocation),
+        icon: SvgPicture.asset(AppAssets.iconsLocation),
         onEditTap: () => _navigateToPage(0),
       ),
     ],
@@ -73,8 +78,8 @@ class _ReviewBodyState extends State<ReviewBody> {
 
   Widget _getPaymentIcon(PaymentOptionEntity paymentOption) =>
       paymentOption.type == .paypal
-      ? Image.asset(Assets.imagesPaypalIcon)
+      ? Image.asset(AppAssets.imagesPaypalIcon)
       : paymentOption.type == .card
-      ? SvgPicture.asset(Assets.svgsCard)
-      : Image.asset(Assets.imagesCash);
+      ? SvgPicture.asset(AppAssets.svgsCard)
+      : Image.asset(AppAssets.imagesCash);
 }

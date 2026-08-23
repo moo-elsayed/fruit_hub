@@ -2,17 +2,15 @@ import 'package:fruit_hub/core/services/local_storage/app_preferences_service.da
 import '../../../../core/helpers/app_logger.dart';
 
 class ClearUserSessionUseCase {
-  ClearUserSessionUseCase(this._appPreferencesManager);
+  ClearUserSessionUseCase(this._appPreferencesService);
 
-  final AppPreferencesManager _appPreferencesManager;
+  final AppPreferencesService _appPreferencesService;
 
   Future<void> call() async {
     try {
       await Future.wait([
-        _appPreferencesManager.deleteUid(),
-        _appPreferencesManager.deleteUseName(),
-        _appPreferencesManager.setLoggedIn(false),
-        _appPreferencesManager.deleteAddress(),
+        _appPreferencesService.clearUser(),
+        _appPreferencesService.deleteAddress(),
       ]);
     } catch (e) {
       AppLogger.error('error in clear user session', error: e.toString());

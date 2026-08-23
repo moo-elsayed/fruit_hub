@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
-import '../../../../generated/assets.dart';
+import '../../../../core/helpers/app_assets.dart';
 
 class ProductDetailsEntity {
   ProductDetailsEntity({
@@ -18,21 +18,21 @@ List<ProductDetailsEntity> getProductDetails(FruitEntity fruitEntity) => [
   ProductDetailsEntity(
     title: "${fruitEntity.daysUntilExpiration} ${"days".tr()}",
     subtitle: 'validity'.tr(),
-    trailingAsset: Assets.iconsCalendar,
+    trailingAsset: AppAssets.iconsCalendar,
   ),
   ProductDetailsEntity(
     title: '100%',
     subtitle: 'organic'.tr(),
-    trailingAsset: Assets.iconsOrganic,
+    trailingAsset: AppAssets.iconsOrganic,
   ),
   ProductDetailsEntity(
     title: "${fruitEntity.numberOfCalories} ${"calories".tr()}",
     subtitle: "${fruitEntity.unitAmount} ${"gram".tr()}",
-    trailingAsset: Assets.iconsCalory,
+    trailingAsset: AppAssets.iconsCalory,
   ),
   ProductDetailsEntity(
     title: '${fruitEntity.avgRating} (${fruitEntity.reviews.length})',
     subtitle: 'reviews'.tr(),
-    trailingAsset: Assets.iconsFavourites,
+    trailingAsset: AppAssets.iconsFavourites,
   ),
 ];

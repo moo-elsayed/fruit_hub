@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/helpers/validator.dart';
@@ -16,7 +16,6 @@ import 'package:fruit_hub/features/auth/presentation/managers/social_sign_in_cub
 import 'package:fruit_hub/features/auth/presentation/widgets/auth_redirect_text.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/forget_password.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/or_divider.dart';
-import 'package:fruit_hub/generated/assets.dart';
 import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
 import '../../../../core/routing/routes.dart';
@@ -146,7 +145,9 @@ class _LoginViewState extends State<LoginView> {
                     },
                     maxWidth: true,
                     text: 'login'.tr(),
-                    textStyle: AppTextStyles.font16WhiteBold,
+                    textStyle: AppTextStyles.font16Bold.copyWith(
+                      color: Colors.white,
+                    ),
                     isLoading: state is SignInLoading,
                   ),
                 ),
@@ -189,7 +190,7 @@ class _LoginViewState extends State<LoginView> {
                         context.read<SocialSignInCubit>().googleSignIn(),
                     isLoading: state is GoogleLoading,
                     text: 'sign_in_with_google'.tr(),
-                    socialIcon: SvgPicture.asset(Assets.iconsGoogleIcon),
+                    socialIcon: SvgPicture.asset(AppAssets.iconsGoogleIcon),
                   ),
                 ),
                 Gap(16.h),
@@ -199,7 +200,7 @@ class _LoginViewState extends State<LoginView> {
                       SocialLoginButton(
                         onPressed: () {},
                         text: 'sign_in_with_apple'.tr(),
-                        socialIcon: SvgPicture.asset(Assets.iconsAppleIcon),
+                        socialIcon: SvgPicture.asset(AppAssets.iconsAppleIcon),
                       ),
                       Gap(16.h),
                     ],
@@ -231,7 +232,7 @@ class _LoginViewState extends State<LoginView> {
                         context.read<SocialSignInCubit>().facebookSignIn(),
                     isLoading: state is FacebookLoading,
                     text: 'sign_in_with_facebook'.tr(),
-                    socialIcon: SvgPicture.asset(Assets.iconsFacebookIcon),
+                    socialIcon: SvgPicture.asset(AppAssets.iconsFacebookIcon),
                   ),
                 ),
               ],

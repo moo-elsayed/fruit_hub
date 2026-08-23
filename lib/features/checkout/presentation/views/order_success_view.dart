@@ -29,14 +29,17 @@ class OrderSuccessView extends StatelessWidget {
                 onPressed: () {},
                 text: 'track_order'.tr(),
                 maxWidth: true,
-                textStyle: AppTextStyles.font16WhiteBold,
+                textStyle: AppTextStyles.font16Bold.copyWith(
+                  color: Colors.white,
+                ),
               ),
               GestureDetector(
                 onTap: () => context.pushReplacementNamed(Routes.appSection),
                 child: Text(
                   'home'.tr(),
-                  style: AppTextStyles.font16color1B5E37EBold.copyWith(
-                    decoration: .underline,
+                  style: AppTextStyles.font16Bold.copyWith(
+                    color: context.colors.primary,
+                    decoration: TextDecoration.underline,
                   ),
                 ),
               ),

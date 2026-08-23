@@ -4,14 +4,9 @@ import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/features/onboarding/presentation/widgets/onboarding_view_body.dart';
 import '../managers/onboarding_cubit/onboarding_cubit.dart';
 
-class OnboardingView extends StatefulWidget {
+class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});
 
-  @override
-  State<OnboardingView> createState() => _OnboardingViewState();
-}
-
-class _OnboardingViewState extends State<OnboardingView> {
   @override
   Widget build(BuildContext context) => Scaffold(
     body: BlocProvider(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/helpers/functions.dart';
+import '../../../../core/helpers/extensions.dart';
 import '../../../../core/theming/app_colors.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/custom_material_button.dart';
@@ -28,17 +28,19 @@ class SocialLoginButton extends StatelessWidget {
       CustomMaterialButton(
         onPressed: onPressed,
         maxWidth: true,
-        backgroundColor: AppColors.white,
-        side: const BorderSide(color: AppColors.colorDDDFDF),
+        backgroundColor: context.colors.surface,
+        side: BorderSide(color: context.colors.border),
         isLoading: isLoading,
         loadingIndicatorColor: loadingIndicatorColor,
         text: text,
-        textStyle: AppTextStyles.font16color0C0D0DSemiBold,
+        textStyle: AppTextStyles.font16SemiBold.copyWith(
+          color: context.colors.mainText,
+        ),
       ),
       if (!isLoading)
         Positioned(
-          right: isArabic(context) ? 16.w : null,
-          left: !isArabic(context) ? 16.w : null,
+          right: context.isArabic ? 16.w : null,
+          left: !context.isArabic ? 16.w : null,
           child: socialIcon,
         ),
     ],

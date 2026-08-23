@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/theming/app_colors.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import '../../../../core/theming/app_text_styles.dart';
 
 class SortOptionItem extends StatelessWidget {
@@ -24,11 +24,11 @@ class SortOptionItem extends StatelessWidget {
       padding: .symmetric(horizontal: 16.w, vertical: 14.h),
       decoration: BoxDecoration(
         color: isSelected
-            ? AppColors.color1B5E37.withValues(alpha: 0.05)
+            ? context.colors.primary.withValues(alpha: 0.08)
             : Colors.transparent,
         borderRadius: .circular(12.r),
         border: Border.all(
-          color: isSelected ? AppColors.color1B5E37 : AppColors.colorF3F5F7,
+          color: isSelected ? context.colors.primary : context.colors.border,
           width: isSelected ? 1.5 : 1,
         ),
       ),
@@ -38,8 +38,12 @@ class SortOptionItem extends StatelessWidget {
             child: Text(
               title,
               style: isSelected
-                  ? AppTextStyles.font13color1B5E37Bold
-                  : AppTextStyles.font13GreyShade700Medium,
+                  ? AppTextStyles.font13Bold.copyWith(
+                      color: context.colors.primary,
+                    )
+                  : AppTextStyles.font13Medium.copyWith(
+                      color: context.colors.bodyText,
+                    ),
             ),
           ),
           Container(
@@ -49,17 +53,17 @@ class SortOptionItem extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(
                 color: isSelected
-                    ? AppColors.color1B5E37
-                    : Colors.grey.shade400,
+                    ? context.colors.primary
+                    : context.colors.border,
                 width: 2,
               ),
             ),
             padding: const EdgeInsets.all(3),
             child: isSelected
                 ? Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: AppColors.color1B5E37,
+                      color: context.colors.primary,
                     ),
                   )
                 : null,

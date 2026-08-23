@@ -1,33 +1,27 @@
-abstract class AppPreferencesManager {
-  Future<void> init();
+import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
 
-  Future<void> setFirstTime(bool isFirstTime);
+abstract class AppPreferencesService {
+  Future<void> saveFirstTime();
 
-  bool getFirstTime();
+  bool isFirstTime();
 
-  Future<void> setUid(String uid);
+  Future<void> saveThemeMode(String theme);
 
-  String getUid();
+  String getThemeMode();
 
-  Future<void> deleteUid();
+  String getLanguage();
 
-  Future<void> setUsername(String username);
+  Future<void> saveLanguage(String lang);
 
-  String getUsername();
+  Future<void> saveUser(UserEntity user);
 
-  Future<void> deleteUseName();
+  UserEntity? getUser();
 
-  Future<void> setLoggedIn(bool isLoggedIn);
-
-  bool getLoggedIn();
+  Future<void> clearUser();
 
   Future<void> saveAddress(Map<String, dynamic> address);
 
   String getAddress();
 
   Future<void> deleteAddress();
-
-  Future<void> saveThemeMode(String themeMode);
-
-  String getThemeMode();
 }

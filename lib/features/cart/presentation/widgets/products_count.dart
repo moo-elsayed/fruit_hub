@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/theming/app_colors.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import '../../../../core/theming/app_text_styles.dart';
 
 class ProductsCount extends StatelessWidget {
@@ -14,21 +14,27 @@ class ProductsCount extends StatelessWidget {
     padding: EdgeInsetsGeometry.symmetric(vertical: 10.h),
     width: double.infinity,
     alignment: Alignment.center,
-    color: AppColors.colorEBF9F1,
+    color: context.colors.primary.withValues(alpha: 0.1),
     child: RichText(
       text: TextSpan(
         children: [
           TextSpan(
             text: 'you_have'.tr(),
-            style: AppTextStyles.font13color1B5E37Regular,
+            style: AppTextStyles.font13Regular.copyWith(
+              color: context.colors.primary,
+            ),
           ),
           TextSpan(
             text: ' $count ',
-            style: AppTextStyles.font13color1B5E37Regular,
+            style: AppTextStyles.font13Regular.copyWith(
+              color: context.colors.primary,
+            ),
           ),
           TextSpan(
             text: 'products_in_the_shopping_cart'.tr(),
-            style: AppTextStyles.font13color1B5E37Regular,
+            style: AppTextStyles.font13Regular.copyWith(
+              color: context.colors.primary,
+            ),
           ),
         ],
       ),

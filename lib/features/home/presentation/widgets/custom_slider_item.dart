@@ -1,13 +1,14 @@
 import 'dart:math';
-import 'package:easy_localization/easy_localization.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fruit_hub/core/helpers/app_assets.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_text_styles.dart';
+import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:gap/gap.dart';
-import '../../../../core/helpers/functions.dart';
-import '../../../../core/theming/app_text_styles.dart';
-import '../../../../core/widgets/custom_material_button.dart';
-import '../../../../generated/assets.dart';
 
 class CustomSliderItem extends StatelessWidget {
   const CustomSliderItem({super.key});
@@ -24,13 +25,13 @@ class CustomSliderItem extends StatelessWidget {
           end: 5.w,
           top: 0,
           start: MediaQuery.sizeOf(context).width * 0.35,
-          child: Image.asset(Assets.imagesFruitsImage, fit: BoxFit.fill),
+          child: Image.asset(AppAssets.imagesFruitsImage, fit: BoxFit.fill),
         ),
         Transform.rotate(
-          angle: isArabic(context) ? 0 : pi,
+          angle: context.isArabic ? 0 : pi,
           child: ClipRRect(
             borderRadius: _buildBorderRadiusGeometry(context),
-            child: SvgPicture.asset(Assets.svgsFeaturedItemBackground),
+            child: SvgPicture.asset(AppAssets.svgsFeaturedItemBackground),
           ),
         ),
         PositionedDirectional(
@@ -39,17 +40,22 @@ class CustomSliderItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('eid_offers'.tr(), style: AppTextStyles.font13WhiteRegular),
+              Text(
+                AppStrings.eidOffers,
+                style: AppTextStyles.font13Regular.copyWith(color: Colors.white),
+              ),
               Gap(10.h),
               Text(
-                "${"discount".tr()} 25%",
-                style: AppTextStyles.font19WhiteDBold,
+                '${AppStrings.discount} 25%',
+                style: AppTextStyles.font19Bold.copyWith(color: Colors.white),
               ),
               Gap(7.h),
               CustomMaterialButton(
                 onPressed: () {},
-                text: 'shop_now'.tr(),
-                textStyle: AppTextStyles.font13color1B5E37Bold,
+                text: AppStrings.shopNow,
+                textStyle: AppTextStyles.font13Bold.copyWith(
+                  color: context.colors.primary,
+                ),
                 padding: EdgeInsetsGeometry.symmetric(
                   vertical: 4.h,
                   horizontal: 28.w,
@@ -66,7 +72,7 @@ class CustomSliderItem extends StatelessWidget {
   );
 
   BorderRadiusGeometry _buildBorderRadiusGeometry(BuildContext context) {
-    final arabic = isArabic(context);
+    final arabic = context.isArabic;
     return BorderRadiusGeometry.directional(
       topStart: Radius.circular(arabic ? 4.r : 0),
       topEnd: Radius.circular(arabic ? 0.r : 4.r),

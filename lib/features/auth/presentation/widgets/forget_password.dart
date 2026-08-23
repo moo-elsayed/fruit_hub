@@ -1,5 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import '../../../../core/theming/app_text_styles.dart';
 
 class ForgetPassword extends StatelessWidget {
@@ -13,8 +14,10 @@ class ForgetPassword extends StatelessWidget {
     child: GestureDetector(
       onTap: onTap,
       child: Text(
-        'forgot_password'.tr(),
-        style: AppTextStyles.font13color2D9F5DSemiBold,
+        AppStrings.forgotPassword,
+        style: AppTextStyles.font13SemiBold.copyWith(
+          color: context.colors.primary,
+        ),
       ),
     ),
   );

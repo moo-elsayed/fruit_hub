@@ -1,9 +1,9 @@
 import 'dart:async';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/features/search/presentation/widgets/search_placeholder_widget.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -91,8 +91,10 @@ class _SearchViewBodyState extends State<SearchViewBody> {
                               bottom: 16.h,
                             ),
                             child: Text(
-                              'search_results'.tr(),
-                              style: AppTextStyles.font13color949D9ERegular,
+                              AppStrings.searchResults,
+                              style: AppTextStyles.font13Regular.copyWith(
+                                color: context.colors.subText,
+                              ),
                             ),
                           ),
                           Expanded(child: FruitsGridView(fruits: state.fruits)),
