@@ -1,10 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
-
 import '../../../../../core/entities/fruit_entity.dart';
 import '../../../domain/use_cases/get_product_details_use_case.dart';
 
@@ -22,7 +20,7 @@ class ProductsCubit extends Cubit<ProductsState> {
   List<FruitEntity> _originalFruits = [];
   List<FruitEntity> fruits = [];
   int selectedSortOption = -1;
-  List<String> sortOptions = [
+  final List<String> sortOptions = [
     'price_lowest_to_highest'.tr(),
     'price_highest_to_lowest'.tr(),
     'alphabetical'.tr(),
@@ -37,7 +35,7 @@ class ProductsCubit extends Cubit<ProductsState> {
         fruits = List.from(_originalFruits);
         emit(GetAllProductsSuccess(_originalFruits));
       case NetworkFailure<List<FruitEntity>>():
-        emit(GetAllProductsFailure(getErrorMessage(networkResponse).tr()));
+        emit(GetAllProductsFailure(networkResponse.error));
     }
   }
 
@@ -48,7 +46,7 @@ class ProductsCubit extends Cubit<ProductsState> {
       case NetworkSuccess<FruitEntity>():
         emit(GetProductDetailsSuccess(networkResponse.data!));
       case NetworkFailure<FruitEntity>():
-        emit(GetProductDetailsFailure(getErrorMessage(networkResponse).tr()));
+        emit(GetProductDetailsFailure(networkResponse.error));
     }
   }
 

@@ -12,10 +12,14 @@
 
 ## Code Quality & Formatting
 - **Prefer Expression Bodies**: Use expression function syntax `=>` for concise single-statement `build()` methods, handlers, and getters.
-- **No Hardcoded Strings**: Always use localized strings (`AppStrings` / `easy_localization`) for all user-facing UI text.
+- **Strict `AppStrings` Usage (No Hardcoded Strings)**: Always use `AppStrings` for all user-facing UI text, titles, hints, labels, error messages, and buttons. Hardcoded strings are strictly prohibited across UI code, except when defining mock / dummy data.
 
 ## Form & Keyboard Interactions
 - **Keyboard Unfocus**: Always wrap screens, cards, or forms containing text input fields with `CustomKeyboardUnfocus` widget so the user can easily dismiss the keyboard by tapping outside.
 
+## Theming & Color Management
+- **Strict Color System Usage**: Never use hardcoded colors (e.g., `Colors.white`, `Colors.black`, raw hex `Color(0xFF...)`) outside the theme definition. Always access colors via `context.colors` (`ColorsManager`) or directly through `AppPalette`.
+
 ## Performance Best Practices
 - Always enforce performance best practices (e.g., using `const` constructors where possible, avoiding heavy work inside `build` methods, optimizing list view builders and animations).
+

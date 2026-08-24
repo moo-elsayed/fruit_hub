@@ -1,12 +1,10 @@
 class AppAssets {
   AppAssets._();
 
-  static const String iconsAppleIcon = 'assets/svgs/icons/apple_icon.svg';
   static const String iconsArrowBack = 'assets/svgs/icons/arrow_back.svg';
   static const String iconsCalendar = 'assets/svgs/icons/calendar.svg';
   static const String iconsCalory = 'assets/svgs/icons/calory.svg';
   static const String iconsCheck = 'assets/svgs/icons/Check.svg';
-  static const String iconsEdit = 'assets/svgs/icons/edit.svg';
   static const String iconsFacebookIcon = 'assets/svgs/icons/facebook_icon.svg';
   static const String iconsFavourites = 'assets/svgs/icons/favourites.svg';
   static const String iconsFilter = 'assets/svgs/icons/filter.svg';
@@ -61,7 +59,6 @@ class AppAssets {
       'assets/svgs/page_view_item2_background_image.svg';
   static const String svgsPageViewItem2Image =
       'assets/svgs/page_view_item2_image.svg';
-  static const String svgsPaypal = 'assets/svgs/paypal.svg';
   static const String svgsPlant = 'assets/svgs/plant.svg';
   static const String svgsSplashBottom = 'assets/svgs/splash-bottom.svg';
   static const String svgsSuccess = 'assets/svgs/success.svg';

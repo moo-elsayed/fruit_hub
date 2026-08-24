@@ -199,6 +199,8 @@ abstract class AppStrings {
   static String get wrongPassword => 'wrongPassword'.tr();
   static String get invalidCredential => 'invalidCredential'.tr();
   static String get emailAlreadyInUse => 'emailAlreadyInUse'.tr();
+  static String get accountExistsWithDifferentCredential =>
+      'accountExistsWithDifferentCredential'.tr();
   static String get invalidEmail2 => 'invalidEmail'.tr();
   static String get tooManyRequests2 => 'tooManyRequests'.tr();
   static String get permissionDenied2 => 'permissionDenied'.tr();

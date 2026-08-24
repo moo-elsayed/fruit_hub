@@ -9,17 +9,35 @@ import 'package:fruit_hub/features/auth/presentation/args/login_args.dart';
 import 'package:fruit_hub/features/auth/presentation/views/forget_password_view.dart';
 import 'package:fruit_hub/features/auth/presentation/views/login_view.dart';
 import 'package:fruit_hub/features/auth/presentation/views/register_view.dart';
+import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/order_success_view.dart';
 import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/views/product_details_view.dart';
+import 'package:fruit_hub/features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
 import 'package:fruit_hub/features/search/presentation/views/search_view.dart';
 import 'package:fruit_hub/features/splash/presentation/views/animated_splash_view.dart';
 
 class AppRouter {
   RouteSettings? _currentSettings;
+
+  CartCubit? _cartCubit;
+  FavoriteCubit? _favoriteCubit;
+
+  CartCubit get _getCartCubit =>
+      _cartCubit ??= getIt.get<CartCubit>()..getCartItems();
+
+  FavoriteCubit get _getFavoriteCubit =>
+      _favoriteCubit ??= getIt.get<FavoriteCubit>()..getFavoriteIds();
+
+  void _resetAuthenticatedCubits() {
+    _cartCubit?.close();
+    _cartCubit = null;
+    _favoriteCubit?.close();
+    _favoriteCubit = null;
+  }
 
   Route? generateRoute(RouteSettings settings) {
     _currentSettings = settings;
@@ -30,6 +48,7 @@ class AppRouter {
       case Routes.onboardingView:
         return _route(const OnboardingView());
       case Routes.loginView:
+        _resetAuthenticatedCubits();
         final args = settings.arguments as LoginArgs?;
         return _route(LoginView(loginArgs: args));
       case Routes.registerView:
@@ -37,9 +56,25 @@ class AppRouter {
       case Routes.forgetPasswordView:
         return _route(const ForgetPasswordView());
       case Routes.appSection:
-        return _route(const AppSection());
+        return _route(
+          MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: _getCartCubit),
+              BlocProvider.value(value: _getFavoriteCubit),
+            ],
+            child: const AppSection(),
+          ),
+        );
       case Routes.searchView:
-        return _route(const SearchView());
+        return _route(
+          MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: _getCartCubit),
+              BlocProvider.value(value: _getFavoriteCubit),
+            ],
+            child: const SearchView(),
+          ),
+        );
       case Routes.productDetailsView:
         FruitEntity? fruitArg;
         String? codeArg;
@@ -50,8 +85,12 @@ class AppRouter {
         }
 
         return _route(
-          BlocProvider(
-            create: (context) => getIt.get<ProductsCubit>(),
+          MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: _getCartCubit),
+              BlocProvider.value(value: _getFavoriteCubit),
+              BlocProvider(create: (context) => getIt.get<ProductsCubit>()),
+            ],
             child: ProductDetailsView(
               fruitEntity: fruitArg,
               fruitCode: codeArg,
@@ -60,7 +99,12 @@ class AppRouter {
         );
       case Routes.checkoutView:
         final args = settings.arguments as List<CartItemEntity>;
-        return _route(CheckoutView(cartItems: args));
+        return _route(
+          BlocProvider.value(
+            value: _getCartCubit,
+            child: CheckoutView(cartItems: args),
+          ),
+        );
       case Routes.orderSuccessView:
         final args = settings.arguments as OrderEntity;
         return _route(OrderSuccessView(orderEntity: args));

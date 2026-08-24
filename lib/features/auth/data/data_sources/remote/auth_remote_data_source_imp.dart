@@ -109,7 +109,11 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
           throw BusinessException(AppStrings.unexpectedError);
         }
 
-        final userModel = UserModel.fromFirebaseUser(user);
+        final profile = userCredential.additionalUserInfo?.profile;
+        final userModel = UserModel.fromFirebaseUser(
+          user,
+          additionalProfile: profile,
+        );
         return await _getOrUpdateUserFromDB(userModel);
       }, functionName: 'googleSignIn');
 
@@ -135,7 +139,18 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
           throw BusinessException(AppStrings.unexpectedError);
         }
 
-        final userModel = UserModel.fromFirebaseUser(user);
+        Map<String, dynamic>? fbProfile =
+            signInWithCredential.additionalUserInfo?.profile;
+        if (fbProfile == null || fbProfile['name'] == null) {
+          try {
+            fbProfile = await _facebookAuth.getUserData();
+          } catch (_) {}
+        }
+
+        final userModel = UserModel.fromFirebaseUser(
+          user,
+          additionalProfile: fbProfile,
+        );
         return await _getOrUpdateUserFromDB(userModel);
       }, functionName: 'facebookSignIn');
 
@@ -191,8 +206,16 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
       final bool firestoreVerified = storedUserData['isVerified'] == true;
       final bool isVerifiedNow = firestoreVerified || userModel.isVerified;
       storedUserData['isVerified'] = isVerifiedNow;
+
+      final String storedName =
+          (storedUserData['name'] ?? '').toString().trim();
+      final String resolvedName =
+          storedName.isNotEmpty ? storedName : userModel.name;
+      storedUserData['name'] = resolvedName;
+
       await _firestore.collection(_usersCollection).doc(userModel.uid).update({
         'isVerified': isVerifiedNow,
+        if (resolvedName.isNotEmpty) 'name': resolvedName,
       });
       return UserModel.fromJson(storedUserData);
     } else {

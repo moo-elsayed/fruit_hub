@@ -49,47 +49,47 @@ class AppToast {
             onTap?.call();
           },
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
             decoration: BoxDecoration(
               color: context.colors.surface,
-              borderRadius: BorderRadius.circular(16.r),
+              borderRadius: BorderRadius.circular(14.r),
               border: Border.all(
                 color: statusColor.withValues(alpha: 0.25),
                 width: 1,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.08),
-                  blurRadius: 20,
-                  offset: const Offset(0, 8),
-                  spreadRadius: 0,
+                  color: Colors.black.withValues(alpha: 0.07),
+                  blurRadius: 16,
+                  offset: const Offset(0, 5),
                 ),
                 BoxShadow(
-                  color: statusColor.withValues(alpha: 0.06),
-                  blurRadius: 10,
+                  color: statusColor.withValues(alpha: 0.05),
+                  blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
               ],
             ),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                // Modern Badge Icon Container
+                // Balanced Icon Badge
                 Container(
-                  padding: EdgeInsets.all(8.w),
+                  padding: EdgeInsets.all(7.r),
                   decoration: BoxDecoration(
                     color: statusColor.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(12.r),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Icon(
                     icon ?? type.stateIcon,
                     color: statusColor,
-                    size: 22.sp,
+                    size: 20.sp,
                   ),
                 ),
                 Gap(12.w),
 
-                // Title & Description
+                // Title & Optional Description
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,11 +99,11 @@ class AppToast {
                         title,
                         style: AppTextStyles.font14Bold.copyWith(
                           color: context.colors.mainText,
-                          height: 1.2,
+                          height: 1.25,
                         ),
                       ),
                       if (description != null && description.isNotEmpty) ...[
-                        Gap(4.h),
+                        Gap(3.h),
                         Text(
                           description,
                           style: AppTextStyles.font13Regular.copyWith(
@@ -122,9 +122,9 @@ class AppToast {
                 // Close Button
                 InkWell(
                   onTap: () => toastification.dismiss(holder),
-                  borderRadius: BorderRadius.circular(20.r),
+                  borderRadius: BorderRadius.circular(18.r),
                   child: Padding(
-                    padding: EdgeInsets.all(4.w),
+                    padding: EdgeInsets.all(4.r),
                     child: Icon(
                       Icons.close_rounded,
                       color: context.colors.subText,

@@ -1,11 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fruit_hub/core/helpers/app_assets.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/features/profile/presentation/views/favorites_view.dart';
+import 'package:fruit_hub/features/profile/presentation/widgets/change_language_bottom_sheet.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-
-import '../../../../core/helpers/app_assets.dart';
-import '../../../../core/routing/routes.dart';
-import '../../presentation/widgets/change_language_bottom_sheet.dart';
 
 class ProfileItemEntity {
   ProfileItemEntity({
@@ -24,7 +23,7 @@ class ProfileItemEntity {
 List<ProfileItemEntity> getProfileItems(BuildContext context) => [
   ProfileItemEntity(
     leadingAsset: AppAssets.iconsHeart,
-    titleText: 'favorites'.tr(),
+    titleText: AppStrings.favorites,
     onTap: () {
       PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
         context,
@@ -37,8 +36,8 @@ List<ProfileItemEntity> getProfileItems(BuildContext context) => [
   ),
   ProfileItemEntity(
     leadingAsset: AppAssets.iconsLanguageIcon,
-    titleText: 'language'.tr(),
-    trailingText: 'app_language'.tr(),
+    titleText: AppStrings.language,
+    trailingText: AppStrings.appLanguage,
     onTap: () {
       showModalBottomSheet(
         context: context,

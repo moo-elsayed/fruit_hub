@@ -1,7 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:fruit_hub/core/enums/payment_method_type.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/shipping_config_entity.dart';
-
-import '../../../../core/helpers/enums.dart';
 
 class PaymentOptionEntity {
   const PaymentOptionEntity({
@@ -18,10 +17,10 @@ class PaymentOptionEntity {
 List<PaymentOptionEntity> getPaymentOptions(
   ShippingConfigEntity shippingConfig,
 ) => [
-  PaymentOptionEntity(title: 'pay_by_paypal'.tr(), type: .paypal),
-  PaymentOptionEntity(title: 'pay_by_credit_card'.tr(), type: .card),
+  PaymentOptionEntity(title: AppStrings.payByPaypal, type: .paypal),
+  PaymentOptionEntity(title: AppStrings.payByCreditCard, type: .card),
   PaymentOptionEntity(
-    title: 'cash_on_delivery'.tr(),
+    title: AppStrings.cashOnDelivery,
     type: .cash,
     shippingCost: shippingConfig.shippingCost,
   ),

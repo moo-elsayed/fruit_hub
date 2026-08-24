@@ -67,8 +67,7 @@ class AppPreferencesServiceImpl implements AppPreferencesService {
   }
 
   @override
-  String getAddress() =>
-      _sharedPreferences.getString(_keyUserAddress) ?? '';
+  String getAddress() => _sharedPreferences.getString(_keyUserAddress) ?? '';
 
   @override
   Future<void> deleteAddress() async =>

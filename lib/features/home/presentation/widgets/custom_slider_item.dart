@@ -42,7 +42,9 @@ class CustomSliderItem extends StatelessWidget {
             children: [
               Text(
                 AppStrings.eidOffers,
-                style: AppTextStyles.font13Regular.copyWith(color: Colors.white),
+                style: AppTextStyles.font13Regular.copyWith(
+                  color: Colors.white,
+                ),
               ),
               Gap(10.h),
               Text(

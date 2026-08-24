@@ -37,10 +37,6 @@ class OnboardingItemTitle extends StatelessWidget {
       );
     }
 
-    return Text(
-      title,
-      textAlign: TextAlign.center,
-      style: baseStyle,
-    );
+    return Text(title, textAlign: TextAlign.center, style: baseStyle);
   }
 }

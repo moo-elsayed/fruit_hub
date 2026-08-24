@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/helpers/extensions.dart';
-import '../../../../core/theming/app_colors.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/custom_material_button.dart';
 
@@ -11,14 +10,14 @@ class SocialLoginButton extends StatelessWidget {
     required this.socialIcon,
     this.isLoading = false,
     required this.onPressed,
-    this.loadingIndicatorColor = AppColors.black,
+    this.loadingIndicatorColor,
     required this.text,
   });
 
   final Widget socialIcon;
   final bool isLoading;
-  final void Function() onPressed;
-  final Color loadingIndicatorColor;
+  final VoidCallback onPressed;
+  final Color? loadingIndicatorColor;
   final String text;
 
   @override
@@ -31,7 +30,7 @@ class SocialLoginButton extends StatelessWidget {
         backgroundColor: context.colors.surface,
         side: BorderSide(color: context.colors.border),
         isLoading: isLoading,
-        loadingIndicatorColor: loadingIndicatorColor,
+        loadingIndicatorColor: loadingIndicatorColor ?? context.colors.primary,
         text: text,
         textStyle: AppTextStyles.font16SemiBold.copyWith(
           color: context.colors.mainText,

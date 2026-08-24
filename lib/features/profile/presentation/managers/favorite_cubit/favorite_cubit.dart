@@ -1,8 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
-import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/profile/domain/use_cases/add_item_to_favorites_use_case.dart';
 import 'package:fruit_hub/features/profile/domain/use_cases/get_favorite_ids_use_case.dart';
@@ -35,7 +33,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
         _setFavorites(result.data!);
         emit(GetFavoriteIdsSuccess());
       case NetworkFailure<List<String>>():
-        emit(GetFavoriteIdsFailure(getErrorMessage(result).tr()));
+        emit(GetFavoriteIdsFailure(result.error));
     }
   }
 
@@ -46,7 +44,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
       case NetworkSuccess<List<FruitEntity>>():
         emit(GetFavoritesSuccess(result.data!));
       case NetworkFailure<List<FruitEntity>>():
-        emit(GetFavoritesFailure(getErrorMessage(result).tr()));
+        emit(GetFavoritesFailure(result.error));
     }
   }
 
@@ -63,7 +61,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
         favorite ? _favoriteIds.remove(productId) : _favoriteIds.add(productId);
         emit(ToggleFavoriteSuccess(_favoriteIds));
       case NetworkFailure<void>():
-        emit(ToggleFavoriteFailure(getErrorMessage(result).tr()));
+        emit(ToggleFavoriteFailure(result.error));
     }
   }
 

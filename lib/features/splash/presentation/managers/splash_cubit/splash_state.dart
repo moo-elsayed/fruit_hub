@@ -1,10 +1,6 @@
 part of 'splash_cubit.dart';
 
-enum SplashNavigation {
-  onboarding,
-  login,
-  home,
-}
+enum SplashNavigation { onboarding, login, home }
 
 @immutable
 abstract class SplashState {

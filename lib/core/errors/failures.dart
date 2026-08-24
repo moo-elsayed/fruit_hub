@@ -24,6 +24,11 @@ class ServerFailure extends Failure {
       return ServerFailure(error: AppStrings.invalidCredential);
     } else if (errorStr.contains('email-already-in-use')) {
       return ServerFailure(error: AppStrings.emailAlreadyInUse);
+    } else if (errorStr.contains('account-exists-with-different-credential') ||
+        errorStr.contains('account_exists_with_different_credential')) {
+      return ServerFailure(
+        error: AppStrings.accountExistsWithDifferentCredential,
+      );
     } else if (errorStr.contains('invalid-email')) {
       return ServerFailure(error: AppStrings.invalidEmail);
     } else if (errorStr.contains('too-many-requests')) {

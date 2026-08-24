@@ -80,6 +80,8 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
         color: context.colors.mainText,
       ),
     ),
-    trailing: isChecked ? Icon(Icons.check, color: context.colors.primary) : null,
+    trailing: isChecked
+        ? Icon(Icons.check, color: context.colors.primary)
+        : null,
   );
 }

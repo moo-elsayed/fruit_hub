@@ -1,11 +1,11 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fruit_hub/core/helpers/functions.dart';
+import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
-import '../../../domain/entities/user_entity.dart';
-import '../../../domain/use_cases/facebook_sign_in_use_case.dart';
-import '../../../domain/use_cases/google_sign_in_use_case.dart';
+import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
+import 'package:fruit_hub/features/auth/domain/use_cases/facebook_sign_in_use_case.dart';
+import 'package:fruit_hub/features/auth/domain/use_cases/google_sign_in_use_case.dart';
+import 'package:fruit_hub/features/auth/presentation/managers/user_info_cubit/user_info_cubit.dart';
 
 part 'social_sign_in_state.dart';
 
@@ -21,9 +21,12 @@ class SocialSignInCubit extends Cubit<SocialSignInState> {
     final result = await _googleSignInUseCase.call();
     switch (result) {
       case NetworkSuccess<UserEntity>():
+        if (result.data != null) {
+          await getIt<UserInfoCubit>().saveUserLocally(result.data!);
+        }
         emit(GoogleSuccess());
       case NetworkFailure<UserEntity>():
-        emit(GoogleFailure(getErrorMessage(result).tr()));
+        emit(GoogleFailure(result.error));
     }
   }
 
@@ -33,9 +36,12 @@ class SocialSignInCubit extends Cubit<SocialSignInState> {
 
     switch (result) {
       case NetworkSuccess<UserEntity>():
+        if (result.data != null) {
+          await getIt<UserInfoCubit>().saveUserLocally(result.data!);
+        }
         emit(FacebookSuccess());
       case NetworkFailure<UserEntity>():
-        emit(FacebookFailure(getErrorMessage(result).tr()));
+        emit(FacebookFailure(result.error));
     }
   }
 }

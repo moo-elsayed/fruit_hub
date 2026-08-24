@@ -1,8 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
-import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/clear_cart_use_case.dart';
@@ -44,7 +42,7 @@ class CartCubit extends Cubit<CartState> {
         _addToCartItemsLocal(productId);
         await getProductsInCart(needLoading: false, newItemAdded: true);
       case NetworkFailure<void>():
-        emit(CartFailure(getErrorMessage(result).tr()));
+        emit(CartFailure(result.error));
     }
   }
 
@@ -56,7 +54,7 @@ class CartCubit extends Cubit<CartState> {
         _removeFromCartItemsLocal(productId);
         await getProductsInCart(needLoading: false, itemRemoved: true);
       case NetworkFailure<void>():
-        emit(CartFailure(getErrorMessage(result).tr()));
+        emit(CartFailure(result.error));
     }
   }
 
@@ -68,7 +66,7 @@ class CartCubit extends Cubit<CartState> {
         _cartItems = result.data!;
         emit(GetCartItemsSuccess());
       case NetworkFailure<List<Map<String, dynamic>>>():
-        emit(GetCartItemsFailure(getErrorMessage(result).tr()));
+        emit(GetCartItemsFailure(result.error));
     }
   }
 
@@ -81,7 +79,7 @@ class CartCubit extends Cubit<CartState> {
         _productsInCart.clear();
         _emitCartSuccess();
       case NetworkFailure<void>():
-        emit(CartFailure(getErrorMessage(result).tr()));
+        emit(CartFailure(result.error));
     }
   }
 
@@ -100,7 +98,7 @@ class CartCubit extends Cubit<CartState> {
         _productsInCart = items;
         _emitCartSuccess(newItemAdded: newItemAdded, itemRemoved: itemRemoved);
       case NetworkFailure<List<CartItemEntity>>():
-        emit(CartFailure(getErrorMessage(result).tr()));
+        emit(CartFailure(result.error));
     }
   }
 
@@ -151,7 +149,7 @@ class CartCubit extends Cubit<CartState> {
       case NetworkFailure<void>():
         _updateLocalListQuantity(productId, oldQuantity);
         _emitCartSuccess();
-      // emit(CartFailure(getErrorMessage(result).tr()));
+      // emit(CartFailure(result.error));
     }
   }
 

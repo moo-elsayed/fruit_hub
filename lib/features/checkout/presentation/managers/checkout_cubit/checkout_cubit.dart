@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/helpers/app_logger.dart';
-import 'package:fruit_hub/core/helpers/functions.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/services/payment/payment_input_entity.dart';
@@ -51,7 +49,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
       case NetworkSuccess<void>():
         emit(AddOrderSuccess());
       case NetworkFailure<void>():
-        emit(AddOrderFailure(getErrorMessage(result)));
+        emit(AddOrderFailure(result.error));
     }
   }
 
@@ -63,10 +61,10 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     );
     final result = await _makePaymentUseCase.call(paymentInputEntity);
     switch (result) {
-      case NetworkSuccess<void>():
+      case NetworkSuccess():
         await addOrder();
-      case NetworkFailure<void>():
-        emit(MakePaymentFailure(getErrorMessage(result).tr()));
+      case NetworkFailure():
+        emit(MakePaymentFailure(result.error));
     }
   }
 
@@ -76,7 +74,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
       case NetworkSuccess<ShippingConfigEntity>():
         shippingConfig = result.data;
       case NetworkFailure<ShippingConfigEntity>():
-        AppLogger.error(getErrorMessage(result).tr());
+        AppLogger.error(result.error);
     }
   }
 

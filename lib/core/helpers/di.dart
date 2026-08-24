@@ -6,12 +6,11 @@ import 'package:fruit_hub/core/services/payment/payment_service.dart';
 import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
 import 'package:fruit_hub/features/auth/data/data_sources/remote/auth_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/auth_repo_imp.dart';
-import 'package:fruit_hub/features/auth/domain/use_cases/clear_user_session_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/facebook_sign_in_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/forget_password_use_case.dart';
+import 'package:fruit_hub/features/auth/domain/use_cases/get_user_info_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/google_sign_in_use_case.dart';
-import 'package:fruit_hub/features/auth/domain/use_cases/save_user_session_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_out_use_case.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/forget_password_cubit/forget_password_cubit.dart';
@@ -19,6 +18,7 @@ import 'package:fruit_hub/features/auth/presentation/managers/signin_cubit/sign_
 import 'package:fruit_hub/features/auth/presentation/managers/signout_cubit/sign_out_cubit.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/signup_cubit/sign_up_cubit.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/social_sign_in_cubit/social_sign_in_cubit.dart';
+import 'package:fruit_hub/features/auth/presentation/managers/user_info_cubit/user_info_cubit.dart';
 import 'package:fruit_hub/features/cart/data/data_sources/remote/cart_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/cart/data/repo_imp/cart_repo_imp.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
@@ -71,7 +71,7 @@ void setupServiceLocator() {
   });
 
   /// Theming
-  getIt.registerFactory<AppThemeCubit>(
+  getIt.registerLazySingleton<AppThemeCubit>(
     () => AppThemeCubit(getIt<AppPreferencesService>()),
   );
 
@@ -81,49 +81,31 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<AuthRepoImp>(AuthRepoImp(AuthRemoteDataSourceImp()));
 
-  getIt.registerLazySingleton<SaveUserSessionUseCase>(
-    () => SaveUserSessionUseCase(getIt<AppPreferencesService>()),
-  );
-
-  getIt.registerLazySingleton<ClearUserSessionUseCase>(
-    () => ClearUserSessionUseCase(getIt<AppPreferencesService>()),
-  );
-
-  getIt.registerLazySingleton<SignInWithEmailAndPasswordUseCase>(
-    () => SignInWithEmailAndPasswordUseCase(
-      getIt<AuthRepoImp>(),
-      getIt.get<SaveUserSessionUseCase>(),
-    ),
+  getIt.registerSingleton<SignInWithEmailAndPasswordUseCase>(
+    SignInWithEmailAndPasswordUseCase(getIt<AuthRepoImp>()),
   );
 
   getIt.registerSingleton<CreateUserWithEmailAndPasswordUseCase>(
     CreateUserWithEmailAndPasswordUseCase(getIt<AuthRepoImp>()),
   );
 
-  getIt.registerLazySingleton<GoogleSignInUseCase>(
-    () => GoogleSignInUseCase(
-      getIt<AuthRepoImp>(),
-      getIt.get<SaveUserSessionUseCase>(),
-    ),
+  getIt.registerSingleton<GoogleSignInUseCase>(
+    GoogleSignInUseCase(getIt<AuthRepoImp>()),
   );
 
-  getIt.registerLazySingleton<FacebookSignInUseCase>(
-    () => FacebookSignInUseCase(
-      getIt<AuthRepoImp>(),
-      getIt.get<SaveUserSessionUseCase>(),
-    ),
+  getIt.registerSingleton<FacebookSignInUseCase>(
+    FacebookSignInUseCase(getIt<AuthRepoImp>()),
   );
 
   getIt.registerSingleton<ForgetPasswordUseCase>(
     ForgetPasswordUseCase(getIt<AuthRepoImp>()),
   );
 
-  getIt.registerLazySingleton<SignOutUseCase>(
-    () => SignOutUseCase(
-      getIt<AuthRepoImp>(),
-      getIt.get<ClearUserSessionUseCase>(),
-    ),
+  getIt.registerSingleton<GetUserInfoUseCase>(
+    GetUserInfoUseCase(getIt<AuthRepoImp>()),
   );
+
+  getIt.registerSingleton<SignOutUseCase>(SignOutUseCase(getIt<AuthRepoImp>()));
 
   /// Splash & Onboarding
   getIt.registerFactory<SplashCubit>(
@@ -135,6 +117,13 @@ void setupServiceLocator() {
   );
 
   /// Auth Cubits
+  getIt.registerLazySingleton<UserInfoCubit>(
+    () => UserInfoCubit(
+      getIt<AppPreferencesService>(),
+      getIt<GetUserInfoUseCase>(),
+    ),
+  );
+
   getIt.registerFactory<SignInCubit>(
     () => SignInCubit(getIt<SignInWithEmailAndPasswordUseCase>()),
   );
