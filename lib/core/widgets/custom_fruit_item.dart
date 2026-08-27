@@ -4,19 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/app_assets.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
+import 'package:fruit_hub/core/widgets/custom_action_button.dart';
 import 'package:fruit_hub/core/widgets/custom_favourite_icon.dart';
+import 'package:fruit_hub/core/widgets/custom_network_image.dart';
 import 'package:fruit_hub/core/widgets/price_per_kilo.dart';
-import 'package:fruit_hub/features/products/presentation/views/product_details_view.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import '../../features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
-import '../../features/products/presentation/managers/products_cubit/products_cubit.dart';
-import '../../features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
-import '../helpers/di.dart';
-import 'custom_action_button.dart';
-import 'custom_network_image.dart';
+import 'package:fruit_hub/core/widgets/product_badge.dart';
+import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
+import 'package:fruit_hub/features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
+import 'package:gap/gap.dart';
 
 class CustomFruitItem extends StatelessWidget {
   const CustomFruitItem({super.key, required this.fruitEntity});
@@ -27,70 +26,103 @@ class CustomFruitItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final myFavoriteService = context.read<FavoriteCubit>();
     final myCartService = context.read<CartCubit>();
+
     return GestureDetector(
-      onTap: () {
-        PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-          context,
-          settings: const RouteSettings(name: Routes.productDetailsView),
-          screen: BlocProvider(
-            create: (context) => getIt.get<ProductsCubit>(),
-            child: ProductDetailsView(fruitEntity: fruitEntity),
-          ),
-          withNavBar: false,
-          pageTransitionAnimation: PageTransitionAnimation.cupertino,
-        );
-      },
+      onTap: () =>
+          context.pushNamed(Routes.productDetailsView, arguments: fruitEntity),
+      behavior: HitTestBehavior.opaque,
       child: Stack(
         children: [
-          Container(
-            padding: .symmetric(vertical: 20.h, horizontal: 10.w),
+          DecoratedBox(
             decoration: BoxDecoration(
-              borderRadius: .circular(4.r),
+              borderRadius: BorderRadius.circular(16.r),
               color: context.colors.surface,
+              border: Border.all(color: context.colors.border, width: 1),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
+              ],
             ),
-            child: Column(
-              mainAxisAlignment: .spaceBetween,
-              spacing: 8.h,
+            child: Padding(
+              padding: EdgeInsets.all(10.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12.r),
+                        child: fruitEntity.imagePath.isNotEmpty
+                            ? Hero(
+                                tag:
+                                    'fruit_hero_${fruitEntity.code}_${fruitEntity.imagePath}',
+                                child: CustomNetworkImage(
+                                  image: fruitEntity.imagePath,
+                                ),
+                              )
+                            : CustomNetworkImage(image: fruitEntity.imagePath),
+                      ),
+                    ),
+                  ),
+                  Gap(8.h),
+                  Text(
+                    fruitEntity.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.font14Bold.copyWith(
+                      color: context.colors.mainText,
+                    ),
+                  ),
+                  Gap(2.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(child: PricePerKilo(price: fruitEntity.price)),
+                      CustomActionButton(
+                        onTap: () {
+                          myCartService.addItemToCart(fruitEntity.code);
+                        },
+                        child: SvgPicture.asset(AppAssets.iconsPlus),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          PositionedDirectional(
+            top: 8.h,
+            start: 8.w,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Flexible(
-                  child: CustomNetworkImage(image: fruitEntity.imagePath),
-                ),
-                Row(
-                  mainAxisAlignment: .spaceBetween,
-                  crossAxisAlignment: .end,
-                  children: [
-                    Column(
-                      crossAxisAlignment: .start,
-                      spacing: 4.h,
-                      children: [
-                        Text(
-                          fruitEntity.name,
-                          style: AppTextStyles.font13SemiBold.copyWith(
-                            color: context.colors.mainText,
-                          ),
-                        ),
-                        PricePerKilo(price: fruitEntity.price),
-                      ],
-                    ),
-                    CustomActionButton(
-                      onTap: () {
-                        myCartService.addItemToCart(fruitEntity.code);
-                      },
-                      child: SvgPicture.asset(AppAssets.iconsPlus),
-                    ),
-                  ],
-                ),
+                if (fruitEntity.isOrganic)
+                  ProductBadge(
+                    icon: Icons.eco_rounded,
+                    color: context.colors.primary,
+                    tooltip: AppStrings.organic,
+                  ),
+                if (fruitEntity.isOrganic && fruitEntity.isFeatured) Gap(4.w),
+                if (fruitEntity.isFeatured)
+                  ProductBadge(
+                    icon: Icons.star_rounded,
+                    color: Colors.amber,
+                    tooltip: AppStrings.featured,
+                  ),
               ],
             ),
           ),
           BlocBuilder<FavoriteCubit, FavoriteState>(
             buildWhen: (previous, current) => current is ToggleFavoriteSuccess,
             builder: (context, state) => PositionedDirectional(
-              start: 4.w,
-              top: 4.h,
+              end: 6.w,
+              top: 6.h,
               child: CustomFavouriteIcon(
-                onChanged: () =>
-                    myFavoriteService.toggleFavorite(fruitEntity.code),
+                onChanged: () => myFavoriteService.toggleFavorite(fruitEntity),
                 isFavourite: myFavoriteService.isFavorite(fruitEntity.code),
               ),
             ),

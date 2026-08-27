@@ -23,8 +23,11 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   final GetFavoritesUseCase _getFavoritesUseCase;
 
   Set<String> _favoriteIds = {};
+  List<FruitEntity> _favorites = [];
 
   bool isFavorite(String productId) => _favoriteIds.contains(productId);
+  List<FruitEntity> get favoriteFruits => _favorites;
+  Set<String> get favoriteIds => _favoriteIds;
 
   Future<void> getFavoriteIds() async {
     final result = await _getFavoriteIdsUseCase.call();
@@ -38,29 +41,65 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   }
 
   Future<void> getFavorites() async {
+    if (_favorites.isNotEmpty) {
+      emit(GetFavoritesSuccess(_favorites));
+      return;
+    }
     emit(GetFavoritesLoading());
+    if (_favoriteIds.isEmpty) {
+      final idsResult = await _getFavoriteIdsUseCase.call();
+      if (idsResult is NetworkSuccess<List<String>>) {
+        _setFavorites(idsResult.data!);
+      }
+    }
+    if (_favoriteIds.isEmpty) {
+      _favorites = [];
+      emit(GetFavoritesSuccess(_favorites));
+      return;
+    }
     final result = await _getFavoritesUseCase.call(_favoriteIds.toList());
     switch (result) {
       case NetworkSuccess<List<FruitEntity>>():
-        emit(GetFavoritesSuccess(result.data!));
+        _favorites = List.from(result.data!);
+        _favoriteIds = _favorites.map((e) => e.code).toSet();
+        emit(GetFavoritesSuccess(_favorites));
       case NetworkFailure<List<FruitEntity>>():
         emit(GetFavoritesFailure(result.error));
     }
   }
 
-  Future<void> toggleFavorite(String productId) async {
-    NetworkResponse result;
+  Future<void> toggleFavorite(FruitEntity fruit) async {
+    final productId = fruit.code;
     final bool favorite = isFavorite(productId);
+
+    // Optimistic local update (Instant 0ms)
     if (favorite) {
-      result = await _removeItemFromFavoritesUseCase.call(productId);
+      _favoriteIds.remove(productId);
+      _favorites.removeWhere((element) => element.code == productId);
     } else {
-      result = await _addItemToFavoritesUseCase.call(productId);
+      _favoriteIds.add(productId);
+      _favorites.insert(0, fruit);
     }
+    emit(ToggleFavoriteSuccess(_favoriteIds, _favorites));
+
+    // Background server call
+    final NetworkResponse result = favorite
+        ? await _removeItemFromFavoritesUseCase.call(productId)
+        : await _addItemToFavoritesUseCase.call(productId);
+
     switch (result) {
       case NetworkSuccess<void>():
-        favorite ? _favoriteIds.remove(productId) : _favoriteIds.add(productId);
-        emit(ToggleFavoriteSuccess(_favoriteIds));
+        break;
       case NetworkFailure<void>():
+        // Revert on failure
+        if (favorite) {
+          _favoriteIds.add(productId);
+          _favorites.insert(0, fruit);
+        } else {
+          _favoriteIds.remove(productId);
+          _favorites.removeWhere((element) => element.code == productId);
+        }
+        emit(ToggleFavoriteSuccess(_favoriteIds, _favorites));
         emit(ToggleFavoriteFailure(result.error));
     }
   }

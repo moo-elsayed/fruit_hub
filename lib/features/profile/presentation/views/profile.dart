@@ -43,7 +43,7 @@ class Profile extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(bottom: 16.h),
+            padding: EdgeInsets.only(bottom: 85.h),
             child: const SignOutButton(),
           ),
         ],

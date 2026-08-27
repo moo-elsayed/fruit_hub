@@ -1,19 +1,17 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/helpers/app_assets.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/theming/app_text_styles.dart';
+import 'package:fruit_hub/core/widgets/custom_network_image.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/cart_item_action_buttons.dart';
 import 'package:gap/gap.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import '../../../../core/routing/routes.dart';
-import '../../../../core/theming/app_text_styles.dart';
-import '../../../../core/widgets/custom_network_image.dart';
-import '../../../products/presentation/views/product_details_view.dart';
 
 class CartItem extends StatelessWidget {
   const CartItem({super.key, required this.size, required this.cartItemEntity});
@@ -23,15 +21,10 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-    onTap: () {
-      PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-        context,
-        settings: const RouteSettings(name: Routes.productDetailsView),
-        screen: ProductDetailsView(fruitEntity: cartItemEntity.fruitEntity),
-        withNavBar: false,
-        pageTransitionAnimation: PageTransitionAnimation.cupertino,
-      );
-    },
+    onTap: () => context.pushNamed(
+      Routes.productDetailsView,
+      arguments: cartItemEntity.fruitEntity,
+    ),
     child: Container(
       padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
       height: size.height * 0.11699,
@@ -69,7 +62,7 @@ class CartItem extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${cartItemEntity.quantity} ${"per_kilo".tr()}",
+                            '${cartItemEntity.quantity} ${AppStrings.perKilo}',
                             style: AppTextStyles.font13Regular.copyWith(
                               color: context.colors.secondary,
                             ),

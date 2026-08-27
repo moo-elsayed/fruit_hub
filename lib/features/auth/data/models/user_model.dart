@@ -36,7 +36,9 @@ class UserModel {
       }
     }
 
-    if (resolvedName.isEmpty && user.email != null && user.email!.contains('@')) {
+    if (resolvedName.isEmpty &&
+        user.email != null &&
+        user.email!.contains('@')) {
       final emailPrefix = user.email!.split('@').first.trim();
       if (emailPrefix.isNotEmpty) {
         resolvedName = emailPrefix;

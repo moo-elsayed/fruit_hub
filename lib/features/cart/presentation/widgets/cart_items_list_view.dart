@@ -16,7 +16,7 @@ class CartItemsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return ListView.separated(
-      padding: EdgeInsetsGeometry.only(top: 14.h, bottom: 80.h),
+      padding: EdgeInsets.only(top: 14.h, bottom: 120.h),
       itemCount: itemCount ?? cartItems!.length,
       itemBuilder: (context, index) => Column(
         children: [

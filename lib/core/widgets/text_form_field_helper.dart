@@ -40,10 +40,14 @@ class TextFormFieldHelper extends StatefulWidget {
     this.suffixText,
     this.suffixStyle,
     this.readOnly = false,
+    this.canRequestFocus,
+    this.enableInteractiveSelection,
     this.textAlign = TextAlign.start,
   });
 
   final TextAlign textAlign;
+  final bool? canRequestFocus;
+  final bool? enableInteractiveSelection;
 
   final TextEditingController? controller;
   final bool isPassword;
@@ -117,6 +121,9 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
     ),
     child: TextFormField(
       readOnly: widget.readOnly,
+      canRequestFocus: widget.canRequestFocus ?? !widget.readOnly,
+      enableInteractiveSelection:
+          widget.enableInteractiveSelection ?? !widget.readOnly,
       controller: widget.controller,
       validator: widget.onValidate,
       onChanged: (text) {
@@ -159,7 +166,9 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
           color: context.colors.error,
         ),
         labelText: widget.labelText,
-        labelStyle: widget.labelStyle,
+        labelStyle:
+            widget.labelStyle ??
+            AppTextStyles.font13Medium.copyWith(color: context.colors.subText),
         prefixIcon: widget.prefixIcon,
         prefixIconConstraints: BoxConstraints(minWidth: 36.w, minHeight: 36.h),
         prefix: widget.prefix,
@@ -199,8 +208,10 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
           width: 1,
         ),
         focusedBorder: outlineInputBorder(
-          color: widget.borderColor ?? context.colors.primary,
-          width: 1.3,
+          color: widget.readOnly
+              ? (widget.borderColor ?? context.colors.border)
+              : (widget.borderColor ?? context.colors.primary),
+          width: widget.readOnly ? 1 : 1.3,
         ),
         errorBorder: outlineInputBorder(color: context.colors.error, width: 1),
         focusedErrorBorder: outlineInputBorder(

@@ -184,7 +184,7 @@ class _LoginViewState extends State<LoginView> {
                               title: AppStrings.welcome,
                               type: ToastificationType.success,
                             );
-                            context.pushReplacementNamed(Routes.appSection);
+                            context.pushReplacementNamed(Routes.mainView);
                           }
                           if (state is SignInFailure) {
                             AppToast.show(

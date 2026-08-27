@@ -1,19 +1,17 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/theming/app_text_styles.dart';
+import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
+import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/cart_items_list_view.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/products_count.dart';
-import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import '../../../../core/routing/routes.dart';
-import '../../../../core/theming/app_text_styles.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
-import '../managers/cart_cubit/cart_cubit.dart';
 
 class Cart extends StatefulWidget {
   const Cart({super.key});
@@ -45,7 +43,7 @@ class _CartState extends State<Cart> {
         flexibleSpace: FlexibleSpaceBar(
           background: Padding(
             padding: EdgeInsetsGeometry.only(top: 10.h, bottom: 8.h),
-            child: CustomAppBar(title: 'cart_app_bar'.tr()),
+            child: CustomAppBar(title: AppStrings.cartAppBar),
           ),
         ),
       ),
@@ -106,7 +104,7 @@ class _CartState extends State<Cart> {
           },
         ),
         Positioned(
-          bottom: 16.h,
+          bottom: 85.h,
           right: 16.w,
           left: 16.w,
           child: BlocConsumer<CartCubit, CartState>(
@@ -122,7 +120,7 @@ class _CartState extends State<Cart> {
                   child: CustomMaterialButton(
                     onPressed: () {},
                     maxWidth: true,
-                    text: "${"checkout".tr()} 120 ${"pounds".tr()}",
+                    text: '${AppStrings.checkout} 120 ${AppStrings.pounds}',
                     textStyle: AppTextStyles.font16Bold.copyWith(
                       color: Colors.white,
                     ),
@@ -132,18 +130,13 @@ class _CartState extends State<Cart> {
               if ((state is CartSuccess && state.items.isNotEmpty) ||
                   (state is CartLoading && state.itemRemoved)) {
                 return CustomMaterialButton(
-                  onPressed: () {
-                    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-                      context,
-                      settings: const RouteSettings(name: Routes.checkoutView),
-                      screen: CheckoutView(cartItems: cartItemsList),
-                      withNavBar: false,
-                      pageTransitionAnimation:
-                          PageTransitionAnimation.cupertino,
-                    );
-                  },
+                  onPressed: () => context.pushNamed(
+                    Routes.checkoutView,
+                    arguments: cartItemsList,
+                  ),
                   maxWidth: true,
-                  text: "${"checkout".tr()} $totalPrice ${"pounds".tr()}",
+                  text:
+                      '${AppStrings.checkout} $totalPrice ${AppStrings.pounds}',
                   textStyle: AppTextStyles.font16Bold.copyWith(
                     color: Colors.white,
                   ),

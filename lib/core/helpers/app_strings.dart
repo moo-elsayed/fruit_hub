@@ -110,6 +110,7 @@ abstract class AppStrings {
   static String get confirmLanguageChange => 'confirm_language_change'.tr();
   static String get appWillRestart => 'app_will_restart'.tr();
   static String get favorites => 'favorites'.tr();
+  static String get noFavorites => 'no_favorites'.tr();
   static String get general => 'general'.tr();
   static String get itemAddedToCart => 'item_added_to_cart'.tr();
   static String get itemRemovedFromCart => 'item_removed_from_cart'.tr();
@@ -126,6 +127,7 @@ abstract class AppStrings {
   static String get validity => 'validity'.tr();
   static String get days => 'days'.tr();
   static String get organic => 'organic'.tr();
+  static String get featured => 'featured'.tr();
   static String get calories => 'calories'.tr();
   static String get gram => 'gram'.tr();
   static String get reviews => 'reviews'.tr();

@@ -51,6 +51,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                 height: 350.h,
                 child: CustomProductsDetailsHeader(
                   imagePath: currentFruit.imagePath,
+                  fruitCode: currentFruit.code,
                 ),
               ),
               Expanded(

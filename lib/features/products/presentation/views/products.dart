@@ -8,20 +8,18 @@ import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
+import 'package:fruit_hub/core/widgets/fruits_grid_view.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:fruit_hub/features/products/presentation/widgets/sort_products_bottom_sheet.dart';
 
-import '../../../../core/widgets/fruits_grid_view.dart';
-import '../widgets/sort_products_bottom_sheet.dart';
-
-class Products extends StatefulWidget {
-  const Products({super.key});
+class ProductsView extends StatefulWidget {
+  const ProductsView({super.key});
 
   @override
-  State<Products> createState() => _ProductsState();
+  State<ProductsView> createState() => _ProductsViewState();
 }
 
-class _ProductsState extends State<Products> {
+class _ProductsViewState extends State<ProductsView> {
   List<FruitEntity> fruits = [];
 
   @override
@@ -31,102 +29,85 @@ class _ProductsState extends State<Products> {
   }
 
   @override
-  Widget build(BuildContext context) => NestedScrollView(
-    headerSliverBuilder: (context, innerBoxIsScrolled) => [
-      SliverAppBar(
-        floating: true,
-        snap: true,
-        pinned: false,
-        automaticallyImplyLeading: false,
-        backgroundColor: context.colors.background,
-        surfaceTintColor: context.colors.background,
-        flexibleSpace: FlexibleSpaceBar(
-          background: Padding(
-            padding: EdgeInsetsGeometry.only(top: 10.h),
-            child: CustomAppBar(title: AppStrings.products),
-          ),
-        ),
-      ),
-      SliverAppBar(
-        pinned: true,
-        floating: false,
-        snap: false,
-        automaticallyImplyLeading: false,
-        backgroundColor: context.colors.background,
-        surfaceTintColor: context.colors.background,
-        toolbarHeight: 0,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(52.h),
-          child: Padding(
-            padding: EdgeInsetsGeometry.symmetric(
-              horizontal: 16.w,
-              vertical: 8.h,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  AppStrings.ourProducts,
-                  style: AppTextStyles.font16Bold.copyWith(
-                    color: context.colors.mainText,
-                  ),
+  Widget build(BuildContext context) => Scaffold(
+    appBar: CustomAppBar(
+      title: AppStrings.ourProducts,
+      showArrowBack: true,
+      showNotification: true,
+      onTap: () => context.pop(),
+    ),
+    body: Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppStrings.products,
+                style: AppTextStyles.font16Bold.copyWith(
+                  color: context.colors.mainText,
                 ),
-                BlocBuilder<ProductsCubit, ProductsState>(
-                  builder: (context, state) {
-                    final cubit = context.read<ProductsCubit>();
-                    final bool isFilterActive = cubit.selectedSortOption != -1;
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 12.w,
-                        vertical: 6.h,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(4.r)),
+              ),
+              BlocBuilder<ProductsCubit, ProductsState>(
+                builder: (context, state) {
+                  final cubit = context.read<ProductsCubit>();
+                  final bool isFilterActive = cubit.selectedSortOption != -1;
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 6.h,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(8.r)),
+                      color: isFilterActive
+                          ? context.colors.primary.withValues(alpha: 0.1)
+                          : Colors.transparent,
+                      border: Border.all(
                         color: isFilterActive
-                            ? context.colors.primary.withValues(alpha: 0.1)
-                            : Colors.transparent,
-                        border: Border.all(
-                          color: isFilterActive
-                              ? context.colors.primary
-                              : context.colors.border,
-                        ),
+                            ? context.colors.primary
+                            : context.colors.border,
                       ),
-                      child: GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (_) => BlocProvider.value(
-                              value: context.read<ProductsCubit>(),
-                              child: const SortProductsBottomSheet(),
-                            ),
-                          );
-                        },
-                        child: SvgPicture.asset(AppAssets.iconsFilter),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (_) => BlocProvider.value(
+                            value: context.read<ProductsCubit>(),
+                            child: const SortProductsBottomSheet(),
+                          ),
+                        );
+                      },
+                      child: SvgPicture.asset(AppAssets.iconsFilter),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
-      ),
-    ],
-    body: BlocBuilder<ProductsCubit, ProductsState>(
-      builder: (context, state) {
-        if (state is GetAllProductsSuccess) {
-          fruits = state.fruits;
-          return FruitsGridView(fruits: fruits);
-        } else if (state is GetAllProductsLoading) {
-          return const Skeletonizer(
-            enabled: true,
-            child: FruitsGridView(itemCount: 6),
-          );
-        } else {
-          return const Text('error');
-        }
-      },
+        Expanded(
+          child: BlocBuilder<ProductsCubit, ProductsState>(
+            builder: (context, state) {
+              if (state is GetAllProductsSuccess) {
+                fruits = state.fruits;
+                return FruitsGridView(fruits: fruits);
+              } else if (state is GetAllProductsLoading) {
+                return const FruitsGridView(itemCount: 6);
+              } else {
+                return Center(
+                  child: Text(
+                    AppStrings.tryAgainLater,
+                    style: TextStyle(color: context.colors.subText),
+                  ),
+                );
+              }
+            },
+          ),
+        ),
+      ],
     ),
   );
 }

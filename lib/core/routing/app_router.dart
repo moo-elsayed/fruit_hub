@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
-import 'package:fruit_hub/features/app_section/presentation/views/app_section.dart';
 import 'package:fruit_hub/features/auth/presentation/args/login_args.dart';
 import 'package:fruit_hub/features/auth/presentation/views/forget_password_view.dart';
 import 'package:fruit_hub/features/auth/presentation/views/login_view.dart';
@@ -13,9 +12,11 @@ import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cu
 import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/order_success_view.dart';
+import 'package:fruit_hub/features/main/presentation/views/main_view.dart';
 import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/views/product_details_view.dart';
+import 'package:fruit_hub/features/products/presentation/views/products.dart';
 import 'package:fruit_hub/features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
 import 'package:fruit_hub/features/search/presentation/views/search_view.dart';
 import 'package:fruit_hub/features/splash/presentation/views/animated_splash_view.dart';
@@ -30,7 +31,7 @@ class AppRouter {
       _cartCubit ??= getIt.get<CartCubit>()..getCartItems();
 
   FavoriteCubit get _getFavoriteCubit =>
-      _favoriteCubit ??= getIt.get<FavoriteCubit>()..getFavoriteIds();
+      _favoriteCubit ??= getIt.get<FavoriteCubit>()..getFavorites();
 
   void _resetAuthenticatedCubits() {
     _cartCubit?.close();
@@ -55,14 +56,28 @@ class AppRouter {
         return _route(const RegisterView());
       case Routes.forgetPasswordView:
         return _route(const ForgetPasswordView());
-      case Routes.appSection:
+      case Routes.mainView:
+        return _route(
+          MultiBlocProvider(
+            providers: [
+
+              BlocProvider.value(value: _getCartCubit),
+              BlocProvider.value(value: _getFavoriteCubit),
+            ],
+            child: const MainView(),
+          ),
+        );
+      case Routes.productsView:
         return _route(
           MultiBlocProvider(
             providers: [
               BlocProvider.value(value: _getCartCubit),
               BlocProvider.value(value: _getFavoriteCubit),
+              BlocProvider(
+                create: (context) => getIt.get<ProductsCubit>(),
+              ),
             ],
-            child: const AppSection(),
+            child: const ProductsView(),
           ),
         );
       case Routes.searchView:

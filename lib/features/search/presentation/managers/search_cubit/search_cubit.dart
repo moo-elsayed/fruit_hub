@@ -11,6 +11,8 @@ class SearchCubit extends Cubit<SearchState> {
 
   final SearchFruitsUseCase _searchFruitsUseCase;
 
+  void resetSearch() => emit(SearchInitial());
+
   Future<void> searchProducts(String query) async {
     emit(SearchLoading());
     final result = await _searchFruitsUseCase.call(query);

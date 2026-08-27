@@ -5,6 +5,7 @@ import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
+import 'package:fruit_hub/core/widgets/notification_widget.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/user_info_cubit/user_info_cubit.dart';
 import 'package:gap/gap.dart';
 
@@ -51,6 +52,7 @@ class CustomHomeAppBar extends StatelessWidget {
             ],
           ),
         ),
+        const NotificationWidget(),
       ],
     ),
   );

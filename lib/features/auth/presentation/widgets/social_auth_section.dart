@@ -29,7 +29,7 @@ class SocialAuthSection extends StatelessWidget {
               title: AppStrings.welcome,
               type: ToastificationType.success,
             );
-            context.pushReplacementNamed(Routes.appSection);
+            context.pushReplacementNamed(Routes.mainView);
           }
           if (state is GoogleFailure) {
             AppToast.show(
@@ -59,7 +59,7 @@ class SocialAuthSection extends StatelessWidget {
               title: AppStrings.welcome,
               type: ToastificationType.success,
             );
-            context.pushReplacementNamed(Routes.appSection);
+            context.pushReplacementNamed(Routes.mainView);
           }
           if (state is FacebookFailure) {
             AppToast.show(

@@ -207,10 +207,12 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
       final bool isVerifiedNow = firestoreVerified || userModel.isVerified;
       storedUserData['isVerified'] = isVerifiedNow;
 
-      final String storedName =
-          (storedUserData['name'] ?? '').toString().trim();
-      final String resolvedName =
-          storedName.isNotEmpty ? storedName : userModel.name;
+      final String storedName = (storedUserData['name'] ?? '')
+          .toString()
+          .trim();
+      final String resolvedName = storedName.isNotEmpty
+          ? storedName
+          : userModel.name;
       storedUserData['name'] = resolvedName;
 
       await _firestore.collection(_usersCollection).doc(userModel.uid).update({

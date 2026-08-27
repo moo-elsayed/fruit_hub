@@ -12,26 +12,38 @@ class SearchPlaceholderWidget extends StatelessWidget {
   final String? text;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: 70.w),
-    child: Column(
-      children: [
-        Gap(140.h),
-        Image.asset(AppAssets.imagesSearchImage),
-        Text(
-          AppStrings.search,
-          style: AppTextStyles.font16Bold.copyWith(
-            color: context.colors.bodyText,
-          ),
+  Widget build(BuildContext context) => Expanded(
+    child: Center(
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              AppAssets.imagesSearchImage,
+              height: 140.h,
+              width: 140.w,
+              fit: BoxFit.contain,
+            ),
+            Gap(16.h),
+            Text(
+              AppStrings.search,
+              style: AppTextStyles.font16Bold.copyWith(
+                color: context.colors.bodyText,
+              ),
+            ),
+            Gap(8.h),
+            Text(
+              text ?? AppStrings.noResults,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.font13Regular.copyWith(
+                color: context.colors.subText,
+              ),
+            ),
+          ],
         ),
-        Gap(10.h),
-        Text(
-          text ?? AppStrings.noResults,
-          style: AppTextStyles.font13Regular.copyWith(
-            color: context.colors.subText,
-          ),
-        ),
-      ],
+      ),
     ),
   );
 }

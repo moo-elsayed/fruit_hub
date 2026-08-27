@@ -34,7 +34,7 @@ class OrderSuccessView extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () => context.pushReplacementNamed(Routes.appSection),
+                onTap: () => context.pushReplacementNamed(Routes.mainView),
                 child: Text(
                   'home'.tr(),
                   style: AppTextStyles.font16Bold.copyWith(

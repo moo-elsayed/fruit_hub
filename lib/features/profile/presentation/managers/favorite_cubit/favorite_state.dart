@@ -28,9 +28,10 @@ final class GetFavoritesFailure extends FavoriteState {
 }
 
 final class ToggleFavoriteSuccess extends FavoriteState {
-  ToggleFavoriteSuccess(this.favoriteIds);
+  ToggleFavoriteSuccess(this.favoriteIds, [this.favorites = const []]);
 
   final Set<String> favoriteIds;
+  final List<FruitEntity> favorites;
 }
 
 final class ToggleFavoriteFailure extends FavoriteState {

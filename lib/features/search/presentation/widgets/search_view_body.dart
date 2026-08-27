@@ -6,7 +6,6 @@ import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/features/search/presentation/widgets/search_placeholder_widget.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../core/widgets/fruits_grid_view.dart';
 import '../../../../core/widgets/search_text_field.dart';
 import '../managers/search_cubit/search_cubit.dart';
@@ -24,11 +23,14 @@ class _SearchViewBodyState extends State<SearchViewBody> {
   final _focusNode = FocusNode();
 
   void _buildOnChanged(String? text) {
-    if (text != null && text.trim().isNotEmpty) {
-      _search(text);
-    } else {
+    if (text == null || text.trim().isEmpty) {
+      if (_debounce?.isActive ?? false) _debounce?.cancel();
+      context.read<SearchCubit>().resetSearch();
       setState(() {});
+      return;
     }
+    setState(() {});
+    _search(text.trim());
   }
 
   void _search(String query) {
@@ -39,6 +41,13 @@ class _SearchViewBodyState extends State<SearchViewBody> {
         await context.read<SearchCubit>().searchProducts(query);
       }
     });
+  }
+
+  void _onClear() {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _searchController.clear();
+    context.read<SearchCubit>().resetSearch();
+    setState(() {});
   }
 
   @override
@@ -52,6 +61,7 @@ class _SearchViewBodyState extends State<SearchViewBody> {
   void dispose() {
     _debounce?.cancel();
     _searchController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -65,10 +75,11 @@ class _SearchViewBodyState extends State<SearchViewBody> {
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w),
-            child: SearchTextFiled(
+            child: SearchTextField(
               focusNode: _focusNode,
               onChanged: _buildOnChanged,
               controller: _searchController,
+              onClear: _onClear,
             ),
           ),
           BlocBuilder<SearchCubit, SearchState>(
@@ -103,12 +114,7 @@ class _SearchViewBodyState extends State<SearchViewBody> {
                     );
                   }
                 } else if (state is SearchLoading) {
-                  return const Expanded(
-                    child: Skeletonizer(
-                      enabled: true,
-                      child: FruitsGridView(itemCount: 3),
-                    ),
-                  );
+                  return const Expanded(child: FruitsGridView(itemCount: 4));
                 } else if (state is SearchFailure) {
                   return const SearchPlaceholderWidget();
                 } else {

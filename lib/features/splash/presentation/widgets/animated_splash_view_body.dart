@@ -28,7 +28,7 @@ class _AnimatedSplashViewBodyState extends State<AnimatedSplashViewBody> {
       if (state is SplashNavigationState) {
         switch (state.navigation) {
           case SplashNavigation.home:
-            context.pushReplacementNamed(Routes.appSection);
+            context.pushReplacementNamed(Routes.mainView);
           case SplashNavigation.login:
             context.pushReplacementNamed(Routes.loginView);
           case SplashNavigation.onboarding:
