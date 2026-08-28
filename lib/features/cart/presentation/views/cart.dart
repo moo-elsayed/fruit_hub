@@ -5,12 +5,15 @@ import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
-import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
+import 'package:fruit_hub/core/widgets/custom_empty_state_widget.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
+import 'package:fruit_hub/core/widgets/main_screen_header.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/cart_items_list_view.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/products_count.dart';
+import 'package:gap/gap.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class Cart extends StatefulWidget {
@@ -31,119 +34,99 @@ class _CartState extends State<Cart> {
   }
 
   @override
-  Widget build(BuildContext context) => NestedScrollView(
-    headerSliverBuilder: (context, innerBoxIsScrolled) => [
-      SliverAppBar(
-        floating: true,
-        snap: true,
-        pinned: false,
-        automaticallyImplyLeading: false,
-        backgroundColor: context.colors.background,
-        surfaceTintColor: context.colors.background,
-        flexibleSpace: FlexibleSpaceBar(
-          background: Padding(
-            padding: EdgeInsetsGeometry.only(top: 10.h, bottom: 8.h),
-            child: CustomAppBar(title: AppStrings.cartAppBar),
-          ),
-        ),
-      ),
-      SliverAppBar(
-        pinned: true,
-        floating: false,
-        snap: false,
-        automaticallyImplyLeading: false,
-        backgroundColor: context.colors.background,
-        surfaceTintColor: context.colors.background,
-        toolbarHeight: 0,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(44.h),
-          child: BlocConsumer<CartCubit, CartState>(
-            listener: (context, state) {
-              if (state is CartSuccess) {
-                cartItemsList = state.items;
-              }
-            },
-            builder: (context, state) {
-              if (state is CartLoading && !state.itemRemoved) {
-                return Skeletonizer(
-                  enabled: true,
-                  child: ProductsCount(count: cartItemsList.length),
-                );
-              }
-              if (state is CartSuccess ||
-                  (state is CartLoading && state.itemRemoved)) {
-                return ProductsCount(count: cartItemsList.length);
-              }
-              return Container();
-            },
-          ),
-        ),
-      ),
-    ],
-    body: Stack(
-      alignment: Alignment.bottomCenter,
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.symmetric(horizontal: 16.w),
+    child: Column(
       children: [
+        Gap(12.h),
+        MainScreenHeader(title: AppStrings.cartAppBar),
+        Gap(12.h),
         BlocConsumer<CartCubit, CartState>(
           listener: (context, state) {
             if (state is CartSuccess) {
               cartItemsList = state.items;
+              totalPrice = state.totalPrice.formattedPrice;
             }
           },
           builder: (context, state) {
             if (state is CartLoading && !state.itemRemoved) {
-              return const Skeletonizer(
+              return Skeletonizer(
                 enabled: true,
-                child: CartItemsListView(itemCount: 6),
+                child: ProductsCount(count: cartItemsList.length),
               );
             }
-            if (state is CartSuccess ||
-                (state is CartLoading && state.itemRemoved)) {
-              return CartItemsListView(cartItems: cartItemsList);
+            if (cartItemsList.isNotEmpty) {
+              return ProductsCount(count: cartItemsList.length);
             }
-            return Container();
+            return const SizedBox.shrink();
           },
         ),
-        Positioned(
-          bottom: 85.h,
-          right: 16.w,
-          left: 16.w,
-          child: BlocConsumer<CartCubit, CartState>(
-            listener: (context, state) {
-              if (state is CartSuccess && state.items.isNotEmpty) {
-                totalPrice = state.totalPrice.formattedPrice;
-              }
-            },
-            builder: (context, state) {
-              if (state is CartLoading && !state.itemRemoved) {
-                return Skeletonizer(
-                  enabled: true,
-                  child: CustomMaterialButton(
-                    onPressed: () {},
-                    maxWidth: true,
-                    text: '${AppStrings.checkout} 120 ${AppStrings.pounds}',
-                    textStyle: AppTextStyles.font16Bold.copyWith(
-                      color: Colors.white,
+        Expanded(
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              BlocBuilder<CartCubit, CartState>(
+                builder: (context, state) {
+                  if (state is CartLoading && !state.itemRemoved) {
+                    return const Skeletonizer(
+                      enabled: true,
+                      child: CartItemsListView(itemCount: 6),
+                    );
+                  }
+                  if (cartItemsList.isEmpty) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 85.h),
+                      child: CustomEmptyStateWidget(
+                        customIcon: Container(
+                          width: 100.w,
+                          height: 100.h,
+                          decoration: BoxDecoration(
+                            color: context.colors.primary.withValues(
+                              alpha: 0.1,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.shopping_cart_outlined,
+                              size: 48.r,
+                              color: context.colors.primary,
+                            ),
+                          ),
+                        ),
+                        title: AppStrings.shoppingCart,
+                        text: AppStrings.emptyCartSubtitle,
+                      ),
+                    );
+                  }
+                  return CartItemsListView(cartItems: cartItemsList);
+                },
+              ),
+              BlocBuilder<CartCubit, CartState>(
+                builder: (context, state) {
+                  if (cartItemsList.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  return Positioned(
+                    bottom: 85.h,
+                    right: 0,
+                    left: 0,
+                    child: CustomMaterialButton(
+                      onPressed: () => context.pushNamed(
+                        Routes.checkoutView,
+                        arguments: cartItemsList,
+                      ),
+                      maxWidth: true,
+                      text:
+                          '${AppStrings.checkout} $totalPrice ${AppStrings.pounds}',
+                      textStyle: AppTextStyles.font16Bold.copyWith(
+                        color: AppPalette.white,
+                      ),
                     ),
-                  ),
-                );
-              }
-              if ((state is CartSuccess && state.items.isNotEmpty) ||
-                  (state is CartLoading && state.itemRemoved)) {
-                return CustomMaterialButton(
-                  onPressed: () => context.pushNamed(
-                    Routes.checkoutView,
-                    arguments: cartItemsList,
-                  ),
-                  maxWidth: true,
-                  text:
-                      '${AppStrings.checkout} $totalPrice ${AppStrings.pounds}',
-                  textStyle: AppTextStyles.font16Bold.copyWith(
-                    color: Colors.white,
-                  ),
-                );
-              }
-              return Container();
-            },
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ],

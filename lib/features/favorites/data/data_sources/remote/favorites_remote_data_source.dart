@@ -1,12 +1,12 @@
-import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
+import 'package:fruit_hub/shared_data/models/fruit_model.dart';
 
-abstract class ProfileRepo {
+abstract class FavoritesRemoteDataSource {
   Future<NetworkResponse<void>> addItemToFavorites(String productId);
 
   Future<NetworkResponse<void>> removeItemFromFavorites(String productId);
 
   Future<NetworkResponse<List<String>>> getFavoriteIds();
 
-  Future<NetworkResponse<List<FruitEntity>>> getFavorites(List<String> ids);
+  Future<NetworkResponse<List<FruitModel>>> getFavorites(List<String> ids);
 }

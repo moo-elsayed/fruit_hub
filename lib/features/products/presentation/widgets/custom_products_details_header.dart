@@ -32,12 +32,7 @@ class CustomProductsDetailsHeader extends StatelessWidget {
       ),
       Positioned(
         top: 120.h,
-        child: imagePath.isNotEmpty
-            ? Hero(
-                tag: 'fruit_hero_${fruitCode ?? ''}_$imagePath',
-                child: CustomNetworkImage(image: imagePath, height: 180.h),
-              )
-            : CustomNetworkImage(image: imagePath, height: 180.h),
+        child: CustomNetworkImage(image: imagePath, height: 180.h),
       ),
       PositionedDirectional(
         top: 45.h,

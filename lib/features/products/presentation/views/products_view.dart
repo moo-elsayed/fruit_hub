@@ -33,7 +33,6 @@ class _ProductsViewState extends State<ProductsView> {
     appBar: CustomAppBar(
       title: AppStrings.ourProducts,
       showArrowBack: true,
-      showNotification: true,
       onTap: () => context.pop(),
     ),
     body: Column(
@@ -93,9 +92,9 @@ class _ProductsViewState extends State<ProductsView> {
             builder: (context, state) {
               if (state is GetAllProductsSuccess) {
                 fruits = state.fruits;
-                return FruitsGridView(fruits: fruits);
+                return FruitsGridView(fruits: fruits, bottomPadding: 24.h);
               } else if (state is GetAllProductsLoading) {
-                return const FruitsGridView(itemCount: 6);
+                return FruitsGridView(itemCount: 6, bottomPadding: 24.h);
               } else {
                 return Center(
                   child: Text(

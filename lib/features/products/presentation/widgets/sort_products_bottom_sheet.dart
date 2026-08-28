@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
-import 'package:fruit_hub/core/widgets/custom_bottom_sheet_top_container.dart';
+import 'package:fruit_hub/core/widgets/custom_bottom_sheet_handle.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/widgets/sort_option_item.dart';
@@ -43,7 +43,7 @@ class _SortProductsBottomSheetState extends State<SortProductsBottomSheet> {
     child: Column(
       mainAxisSize: .min,
       children: [
-        const CustomBottomSheetTopContainer(),
+        const BottomSheetHandle(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

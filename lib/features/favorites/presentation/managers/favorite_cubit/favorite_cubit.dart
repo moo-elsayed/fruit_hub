@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
-import 'package:fruit_hub/features/profile/domain/use_cases/add_item_to_favorites_use_case.dart';
-import 'package:fruit_hub/features/profile/domain/use_cases/get_favorite_ids_use_case.dart';
-import 'package:fruit_hub/features/profile/domain/use_cases/get_favorites_use_case.dart';
-import 'package:fruit_hub/features/profile/domain/use_cases/remove_item_from_favorites_use_case.dart';
+import 'package:fruit_hub/features/favorites/domain/use_cases/add_item_to_favorites_use_case.dart';
+import 'package:fruit_hub/features/favorites/domain/use_cases/get_favorite_ids_use_case.dart';
+import 'package:fruit_hub/features/favorites/domain/use_cases/get_favorites_use_case.dart';
+import 'package:fruit_hub/features/favorites/domain/use_cases/remove_item_from_favorites_use_case.dart';
 
 part 'favorite_state.dart';
 

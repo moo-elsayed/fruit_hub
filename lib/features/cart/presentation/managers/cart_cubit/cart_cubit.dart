@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/clear_cart_use_case.dart';
@@ -32,28 +33,73 @@ class CartCubit extends Cubit<CartState> {
   List<CartItemEntity> _productsInCart = [];
 
   bool isInCart(String productId) =>
-      _cartItems.any((item) => item['productId'] == productId);
+      _cartItems.any((item) => item['fruitCode'] == productId || item['productId'] == productId) ||
+      _productsInCart.any((item) => item.fruitEntity.code == productId);
 
-  Future<void> addItemToCart(String productId) async {
-    emit(CartLoading(newItemAdded: true));
+  List<CartItemEntity> get productsInCart => _productsInCart;
+  List<Map<String, dynamic>> get cartItems => _cartItems;
+
+  Future<void> addItemToCart(FruitEntity fruit) async {
+    final productId = fruit.code;
+
+    // Check if the item is already in the cart
+    if (isInCart(productId)) {
+      _emitCartSuccess(itemAlreadyExists: true);
+      return;
+    }
+
+    // 1. Optimistic Local Update (0ms)
+    _productsInCart.add(CartItemEntity(fruitEntity: fruit, quantity: 1));
+    _addToCartItemsLocal(productId);
+    _emitCartSuccess(newItemAdded: true);
+
+    // 2. Background server call
     final result = await _addItemToCartUseCase.call(productId);
     switch (result) {
       case NetworkSuccess<void>():
-        _addToCartItemsLocal(productId);
-        await getProductsInCart(needLoading: false, newItemAdded: true);
+        break;
       case NetworkFailure<void>():
+        // Revert on failure
+        _productsInCart.removeWhere(
+          (item) => item.fruitEntity.code == productId,
+        );
+        _removeFromCartItemsLocal(productId);
+        _emitCartSuccess();
         emit(CartFailure(result.error));
     }
   }
 
   Future<void> removeItemFromCart(String productId) async {
-    emit(CartLoading(itemRemoved: true));
+    final int index = _productsInCart.indexWhere(
+      (item) => item.fruitEntity.code == productId,
+    );
+    if (index == -1) return;
+
+    final removedItem = _productsInCart[index];
+    final cartItemIndex = _cartItems.indexWhere(
+      (item) => item['fruitCode'] == productId,
+    );
+    final removedCartItem = cartItemIndex != -1
+        ? Map<String, dynamic>.from(_cartItems[cartItemIndex])
+        : null;
+
+    // 1. Optimistic Local Removal (0ms)
+    _productsInCart.removeAt(index);
+    _removeFromCartItemsLocal(productId);
+    _emitCartSuccess(itemRemoved: true);
+
+    // 2. Background server call
     final result = await _removeItemFromCartUseCase.call(productId);
     switch (result) {
       case NetworkSuccess<void>():
-        _removeFromCartItemsLocal(productId);
-        await getProductsInCart(needLoading: false, itemRemoved: true);
+        break;
       case NetworkFailure<void>():
+        // Revert on failure
+        _productsInCart.insert(index, removedItem);
+        if (removedCartItem != null) {
+          _cartItems.add(removedCartItem);
+        }
+        _emitCartSuccess();
         emit(CartFailure(result.error));
     }
   }
@@ -83,20 +129,30 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<void> getProductsInCart({
-    bool needLoading = true,
-    bool newItemAdded = false,
-    bool itemRemoved = false,
-  }) async {
+  Future<void> getProductsInCart({bool needLoading = true}) async {
+    if (_productsInCart.isNotEmpty) {
+      _emitCartSuccess();
+      return;
+    }
     if (needLoading) {
       emit(CartLoading());
+    }
+    if (_cartItems.isEmpty) {
+      final cartItemsResult = await _getCartItemsUseCase.call();
+      if (cartItemsResult is NetworkSuccess<List<Map<String, dynamic>>>) {
+        _cartItems = cartItemsResult.data!;
+      }
+    }
+    if (_cartItems.isEmpty) {
+      _productsInCart = [];
+      _emitCartSuccess();
+      return;
     }
     final result = await _getProductsInCart.call(_cartItems);
     switch (result) {
       case NetworkSuccess<List<CartItemEntity>>():
-        final items = result.data!;
-        _productsInCart = items;
-        _emitCartSuccess(newItemAdded: newItemAdded, itemRemoved: itemRemoved);
+        _productsInCart = result.data!;
+        _emitCartSuccess();
       case NetworkFailure<List<CartItemEntity>>():
         emit(CartFailure(result.error));
     }
@@ -162,7 +218,11 @@ class CartCubit extends Cubit<CartState> {
       .map((e) => e.totalPrice)
       .fold(0, (value, element) => value + element);
 
-  void _emitCartSuccess({bool newItemAdded = false, bool itemRemoved = false}) {
+  void _emitCartSuccess({
+    bool newItemAdded = false,
+    bool itemRemoved = false,
+    bool itemAlreadyExists = false,
+  }) {
     emit(
       CartSuccess(
         items: List.from(_productsInCart),
@@ -170,6 +230,7 @@ class CartCubit extends Cubit<CartState> {
         totalPrice: _calculateTotalPrice(_productsInCart),
         newItemAdded: newItemAdded,
         itemRemoved: itemRemoved,
+        itemAlreadyExists: itemAlreadyExists,
       ),
     );
   }

@@ -24,7 +24,7 @@ class CustomActionButton extends StatelessWidget {
     child: GestureDetector(
       onTap: onTap,
       child: CircleAvatar(
-        radius: radius ?? 18.r,
+        radius: radius ?? 16.r,
         backgroundColor: backgroundColor ?? context.colors.primary,
         child: child,
       ),

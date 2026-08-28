@@ -17,7 +17,7 @@ class HomeRemoteDataSourceImp implements HomeRemoteDataSource {
         final querySnapshot = await _firestore
             .collection(BackendEndpoints.productsCollection)
             .orderBy('sellingCount', descending: true)
-            .limit(10)
+            .limit(6)
             .get();
 
         return querySnapshot.docs

@@ -35,6 +35,13 @@ import 'package:fruit_hub/features/checkout/domain/use_cases/add_order_use_case.
 import 'package:fruit_hub/features/checkout/domain/use_cases/fetch_shipping_config_use_case.dart';
 import 'package:fruit_hub/features/checkout/domain/use_cases/make_payment_use_case.dart';
 import 'package:fruit_hub/features/checkout/presentation/managers/checkout_cubit/checkout_cubit.dart';
+import 'package:fruit_hub/features/favorites/data/data_sources/remote/favorites_remote_data_source_imp.dart';
+import 'package:fruit_hub/features/favorites/data/repo_imp/favorites_repo_imp.dart';
+import 'package:fruit_hub/features/favorites/domain/use_cases/add_item_to_favorites_use_case.dart';
+import 'package:fruit_hub/features/favorites/domain/use_cases/get_favorite_ids_use_case.dart';
+import 'package:fruit_hub/features/favorites/domain/use_cases/get_favorites_use_case.dart';
+import 'package:fruit_hub/features/favorites/domain/use_cases/remove_item_from_favorites_use_case.dart';
+import 'package:fruit_hub/features/favorites/presentation/managers/favorite_cubit/favorite_cubit.dart';
 import 'package:fruit_hub/features/home/data/data_sources/remote/home_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/home/data/repo_imp/home_repo_imp.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
@@ -45,13 +52,6 @@ import 'package:fruit_hub/features/products/data/repo_imp/products_repo_imp.dart
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_product_details_use_case.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
-import 'package:fruit_hub/features/profile/data/data_sources/remote/profile_remote_data_source_imp.dart';
-import 'package:fruit_hub/features/profile/data/repo_imp/profile_repo_imp.dart';
-import 'package:fruit_hub/features/profile/domain/use_cases/add_item_to_favorites_use_case.dart';
-import 'package:fruit_hub/features/profile/domain/use_cases/get_favorite_ids_use_case.dart';
-import 'package:fruit_hub/features/profile/domain/use_cases/get_favorites_use_case.dart';
-import 'package:fruit_hub/features/profile/domain/use_cases/remove_item_from_favorites_use_case.dart';
-import 'package:fruit_hub/features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
 import 'package:fruit_hub/features/search/data/data_sources/remote/search_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/search/data/repo_imp/search_repo_imp.dart';
 import 'package:fruit_hub/features/search/domain/use_cases/search_fruits_use_case.dart';
@@ -238,24 +238,24 @@ void setupServiceLocator() {
 
   /// Favorites
   ////////////////////////////
-  getIt.registerSingleton<ProfileRepoImp>(
-    ProfileRepoImp(ProfileRemoteDataSourceImp()),
+  getIt.registerSingleton<FavoritesRepoImp>(
+    FavoritesRepoImp(FavoritesRemoteDataSourceImp()),
   );
 
   getIt.registerSingleton<GetFavoritesUseCase>(
-    GetFavoritesUseCase(getIt<ProfileRepoImp>()),
+    GetFavoritesUseCase(getIt<FavoritesRepoImp>()),
   );
 
   getIt.registerSingleton<GetFavoriteIdsUseCase>(
-    GetFavoriteIdsUseCase(getIt<ProfileRepoImp>()),
+    GetFavoriteIdsUseCase(getIt<FavoritesRepoImp>()),
   );
 
   getIt.registerSingleton<AddItemToFavoritesUseCase>(
-    AddItemToFavoritesUseCase(getIt<ProfileRepoImp>()),
+    AddItemToFavoritesUseCase(getIt<FavoritesRepoImp>()),
   );
 
   getIt.registerSingleton<RemoveItemFromFavoritesUseCase>(
-    RemoveItemFromFavoritesUseCase(getIt<ProfileRepoImp>()),
+    RemoveItemFromFavoritesUseCase(getIt<FavoritesRepoImp>()),
   );
 
   getIt.registerFactory<FavoriteCubit>(

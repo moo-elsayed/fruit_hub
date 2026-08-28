@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
-import 'package:fruit_hub/features/search/presentation/widgets/search_placeholder_widget.dart';
+import 'package:fruit_hub/core/widgets/custom_empty_state_widget.dart';
+import 'package:fruit_hub/core/widgets/custom_keyboard_unfocus.dart';
 import '../../../../core/widgets/fruits_grid_view.dart';
 import '../../../../core/widgets/search_text_field.dart';
 import '../managers/search_cubit/search_cubit.dart';
@@ -66,9 +67,7 @@ class _SearchViewBodyState extends State<SearchViewBody> {
   }
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
-    onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-    behavior: HitTestBehavior.opaque,
+  Widget build(BuildContext context) => CustomKeyboardUnfocus(
     child: Padding(
       padding: EdgeInsets.symmetric(horizontal: 4.w),
       child: Column(
@@ -89,7 +88,7 @@ class _SearchViewBodyState extends State<SearchViewBody> {
               } else {
                 if (state is SearchSuccess) {
                   if (state.fruits.isEmpty) {
-                    return const SearchPlaceholderWidget();
+                    return const Expanded(child: CustomEmptyStateWidget());
                   } else {
                     return Expanded(
                       child: Column(
@@ -108,15 +107,22 @@ class _SearchViewBodyState extends State<SearchViewBody> {
                               ),
                             ),
                           ),
-                          Expanded(child: FruitsGridView(fruits: state.fruits)),
+                          Expanded(
+                            child: FruitsGridView(
+                              fruits: state.fruits,
+                              bottomPadding: 24.h,
+                            ),
+                          ),
                         ],
                       ),
                     );
                   }
                 } else if (state is SearchLoading) {
-                  return const Expanded(child: FruitsGridView(itemCount: 4));
+                  return Expanded(
+                    child: FruitsGridView(itemCount: 4, bottomPadding: 24.h),
+                  );
                 } else if (state is SearchFailure) {
-                  return const SearchPlaceholderWidget();
+                  return const Expanded(child: CustomEmptyStateWidget());
                 } else {
                   return const SizedBox.shrink();
                 }

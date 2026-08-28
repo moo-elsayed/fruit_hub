@@ -113,6 +113,8 @@ abstract class AppStrings {
   static String get noFavorites => 'no_favorites'.tr();
   static String get general => 'general'.tr();
   static String get itemAddedToCart => 'item_added_to_cart'.tr();
+  static String get itemAlreadyInCart => 'item_already_in_cart'.tr();
+  static String get emptyCartSubtitle => 'empty_cart_subtitle'.tr();
   static String get itemRemovedFromCart => 'item_removed_from_cart'.tr();
   static String get loading => 'loading'.tr();
   static String get logOutConfirmation => 'log_out_confirmation'.tr();

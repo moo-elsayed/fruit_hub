@@ -95,6 +95,8 @@
   "no_favorites": "لا توجد منتجات في المفضلة حالياً",
   "general": "عام",
   "item_added_to_cart": "تمت الإضافة للسلة بنجاح",
+  "item_already_in_cart": "هذا المنتج موجود بالفعل في السلة",
+  "empty_cart_subtitle": "لا توجد منتجات في سلة التسوق حالياً",
   "item_removed_from_cart": "تم حذف المنتج من السلة بنجاح",
   "loading": "تحميل",
   "log_out_confirmation": "هل ترغب في تسجيل الخروج ؟",

@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/widgets/app_toasts.dart';
 import 'package:fruit_hub/features/products/domain/entities/product_details_entity.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/widgets/custom_products_details_header.dart';
 import 'package:fruit_hub/features/products/presentation/widgets/product_details_grid_view.dart';
 import 'package:gap/gap.dart';
+import 'package:toastification/toastification.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/custom_material_button.dart';
 import '../../../../core/widgets/price_per_kilo.dart';
@@ -36,7 +39,31 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: BlocBuilder<ProductsCubit, ProductsState>(
+    body: BlocListener<CartCubit, CartState>(
+      listenWhen: (previous, current) =>
+          current is CartSuccess || current is CartFailure,
+      listener: (context, state) {
+        if (state is CartSuccess && state.newItemAdded) {
+          AppToast.show(
+            context: context,
+            title: AppStrings.itemAddedToCart,
+            type: ToastificationType.success,
+          );
+        } else if (state is CartSuccess && state.itemAlreadyExists) {
+          AppToast.show(
+            context: context,
+            title: AppStrings.itemAlreadyInCart,
+            type: ToastificationType.warning,
+          );
+        } else if (state is CartFailure) {
+          AppToast.show(
+            context: context,
+            title: state.errorMessage,
+            type: ToastificationType.error,
+          );
+        }
+      },
+      child: BlocBuilder<ProductsCubit, ProductsState>(
       builder: (context, state) {
         FruitEntity? currentFruit = widget.fruitEntity;
 
@@ -117,8 +144,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       ),
                       CustomMaterialButton(
                         onPressed: () {
-                          final myCartService = context.read<CartCubit>();
-                          myCartService.addItemToCart(currentFruit!.code);
+                          context.read<CartCubit>().addItemToCart(currentFruit!);
                         },
                         text: 'add_to_cart'.tr(),
                         textStyle: AppTextStyles.font16Bold.copyWith(
@@ -140,5 +166,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         }
       },
     ),
-  );
+  ),
+);
 }

@@ -12,12 +12,12 @@ import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cu
 import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/order_success_view.dart';
+import 'package:fruit_hub/features/favorites/presentation/managers/favorite_cubit/favorite_cubit.dart';
 import 'package:fruit_hub/features/main/presentation/views/main_view.dart';
 import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/views/product_details_view.dart';
-import 'package:fruit_hub/features/products/presentation/views/products.dart';
-import 'package:fruit_hub/features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
+import 'package:fruit_hub/features/products/presentation/views/products_view.dart';
 import 'package:fruit_hub/features/search/presentation/views/search_view.dart';
 import 'package:fruit_hub/features/splash/presentation/views/animated_splash_view.dart';
 

@@ -14,7 +14,7 @@ import 'package:fruit_hub/core/widgets/custom_network_image.dart';
 import 'package:fruit_hub/core/widgets/price_per_kilo.dart';
 import 'package:fruit_hub/core/widgets/product_badge.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
-import 'package:fruit_hub/features/profile/presentation/managers/favorite_cubit/favorite_cubit.dart';
+import 'package:fruit_hub/features/favorites/presentation/managers/favorite_cubit/favorite_cubit.dart';
 import 'package:gap/gap.dart';
 
 class CustomFruitItem extends StatelessWidget {
@@ -24,8 +24,7 @@ class CustomFruitItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final myFavoriteService = context.read<FavoriteCubit>();
-    final myCartService = context.read<CartCubit>();
+    final myFavoriteCubit = context.read<FavoriteCubit>();
 
     return GestureDetector(
       onTap: () =>
@@ -55,15 +54,9 @@ class CustomFruitItem extends StatelessWidget {
                     child: Center(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12.r),
-                        child: fruitEntity.imagePath.isNotEmpty
-                            ? Hero(
-                                tag:
-                                    'fruit_hero_${fruitEntity.code}_${fruitEntity.imagePath}',
-                                child: CustomNetworkImage(
-                                  image: fruitEntity.imagePath,
-                                ),
-                              )
-                            : CustomNetworkImage(image: fruitEntity.imagePath),
+                        child: CustomNetworkImage(
+                          image: fruitEntity.imagePath,
+                        ),
                       ),
                     ),
                   ),
@@ -83,10 +76,14 @@ class CustomFruitItem extends StatelessWidget {
                     children: [
                       Expanded(child: PricePerKilo(price: fruitEntity.price)),
                       CustomActionButton(
-                        onTap: () {
-                          myCartService.addItemToCart(fruitEntity.code);
-                        },
-                        child: SvgPicture.asset(AppAssets.iconsPlus),
+                        onTap: () => context.read<CartCubit>().addItemToCart(
+                          fruitEntity,
+                        ),
+                        child: SvgPicture.asset(
+                          AppAssets.iconsPlus,
+                          width: 14.w,
+                          height: 14.h,
+                        ),
                       ),
                     ],
                   ),
@@ -122,8 +119,8 @@ class CustomFruitItem extends StatelessWidget {
               end: 6.w,
               top: 6.h,
               child: CustomFavouriteIcon(
-                onChanged: () => myFavoriteService.toggleFavorite(fruitEntity),
-                isFavourite: myFavoriteService.isFavorite(fruitEntity.code),
+                onChanged: () => myFavoriteCubit.toggleFavorite(fruitEntity),
+                isFavourite: myFavoriteCubit.isFavorite(fruitEntity.code),
               ),
             ),
           ),

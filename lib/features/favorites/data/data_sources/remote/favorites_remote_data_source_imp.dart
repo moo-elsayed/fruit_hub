@@ -5,13 +5,15 @@ import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
 import 'package:fruit_hub/core/network/api_helper.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
-import 'package:fruit_hub/features/profile/data/data_sources/remote/profile_remote_data_source.dart';
+import 'package:fruit_hub/features/favorites/data/data_sources/remote/favorites_remote_data_source.dart';
 import 'package:fruit_hub/shared_data/models/fruit_model.dart';
 
-class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
-  ProfileRemoteDataSourceImp({FirebaseFirestore? firestore, FirebaseAuth? auth})
-    : _firestore = firestore ?? FirebaseFirestore.instance,
-      _auth = auth ?? FirebaseAuth.instance;
+class FavoritesRemoteDataSourceImp implements FavoritesRemoteDataSource {
+  FavoritesRemoteDataSourceImp({
+    FirebaseFirestore? firestore,
+    FirebaseAuth? auth,
+  })  : _firestore = firestore ?? FirebaseFirestore.instance,
+        _auth = auth ?? FirebaseAuth.instance;
 
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;

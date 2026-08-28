@@ -95,6 +95,8 @@
   "no_favorites": "No favorites yet",
   "general": "General",
   "item_added_to_cart": "Added to cart successfully",
+  "item_already_in_cart": "This item is already in your cart",
+  "empty_cart_subtitle": "No products in the shopping cart yet",
   "item_removed_from_cart": "Removed from cart successfully",
   "loading": "Loading",
   "log_out_confirmation": "Do you want to log out?",

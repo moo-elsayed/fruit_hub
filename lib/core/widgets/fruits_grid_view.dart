@@ -12,6 +12,7 @@ class FruitsGridView extends StatelessWidget {
     this.fromFavorite = false,
     this.physics = const AlwaysScrollableScrollPhysics(),
     this.shrinkWrap = false,
+    this.bottomPadding,
   });
 
   final List<FruitEntity>? fruits;
@@ -19,12 +20,18 @@ class FruitsGridView extends StatelessWidget {
   final bool fromFavorite;
   final ScrollPhysics? physics;
   final bool shrinkWrap;
+  final double? bottomPadding;
 
   @override
   Widget build(BuildContext context) => Skeletonizer(
     enabled: itemCount != null,
     child: GridView.builder(
-      padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 8.h, bottom: 75.h),
+      padding: EdgeInsets.only(
+        left: 16.w,
+        right: 16.w,
+        top: 8.h,
+        bottom: bottomPadding ?? 85.h,
+      ),
       physics: physics,
       shrinkWrap: shrinkWrap,
       itemCount: itemCount ?? fruits?.length ?? 0,
