@@ -9,7 +9,7 @@ class FruitModel {
     required this.ratingCount,
     required this.isOrganic,
     required this.daysUntilExpiration,
-    required this.unitAmount,
+    required this.weightInGrams,
     required this.numberOfCalories,
     required this.imagePath,
     required this.code,
@@ -20,22 +20,23 @@ class FruitModel {
   });
 
   factory FruitModel.fromJson(Map<String, dynamic> json) => FruitModel(
-    name: json['name'],
-    description: json['description'],
-    price: json['price'],
-    imagePath: json['imagePath'],
-    code: json['code'],
-    isFeatured: json['isFeatured'],
-    avgRating: json['avgRating'],
-    ratingCount: json['ratingCount'],
-    isOrganic: json['isOrganic'],
-    daysUntilExpiration: json['daysUntilExpiration'],
-    unitAmount: json['unitAmount'],
-    numberOfCalories: json['numberOfCalories'],
-    reviews: json['reviews']
+    name: json['name'] ?? '',
+    description: json['description'] ?? '',
+    price: (json['price'] as num?)?.toDouble() ?? 0.0,
+    imagePath: json['imagePath'] ?? '',
+    code: json['code'] ?? '',
+    isFeatured: json['isFeatured'] as bool? ?? false,
+    avgRating: (json['avgRating'] as num?) ?? 0,
+    ratingCount: (json['ratingCount'] as num?)?.toInt() ?? 0,
+    isOrganic: json['isOrganic'] as bool? ?? false,
+    daysUntilExpiration: (json['daysUntilExpiration'] as num?)?.toInt() ?? 0,
+    weightInGrams:
+        ((json['weightInGrams'] ?? json['unitAmount']) as num?)?.toInt() ?? 0,
+    numberOfCalories: (json['numberOfCalories'] as num?)?.toInt() ?? 0,
+    reviews: (json['reviews'] as List<dynamic>? ?? [])
         .map<ReviewModel>((reviewJson) => ReviewModel.fromJson(reviewJson))
         .toList(),
-    sellingCount: json['sellingCount'],
+    sellingCount: (json['sellingCount'] as num?)?.toInt() ?? 0,
   );
 
   final String imagePath;
@@ -47,7 +48,7 @@ class FruitModel {
   final bool isOrganic;
   final int daysUntilExpiration;
   final int numberOfCalories;
-  final int unitAmount;
+  final int weightInGrams;
   final int ratingCount;
   final int sellingCount;
   final num avgRating;
@@ -64,7 +65,7 @@ class FruitModel {
     ratingCount: ratingCount,
     isOrganic: isOrganic,
     daysUntilExpiration: daysUntilExpiration,
-    unitAmount: unitAmount,
+    weightInGrams: weightInGrams,
     numberOfCalories: numberOfCalories,
     reviews: reviews.map((review) => review.toEntity()).toList(),
   );

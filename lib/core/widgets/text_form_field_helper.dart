@@ -207,6 +207,10 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
           color: widget.borderColor ?? context.colors.border,
           width: 1,
         ),
+        disabledBorder: outlineInputBorder(
+          color: widget.borderColor ?? context.colors.border,
+          width: 1,
+        ),
         focusedBorder: outlineInputBorder(
           color: widget.readOnly
               ? (widget.borderColor ?? context.colors.border)

@@ -15,6 +15,7 @@ class SearchTextField extends StatelessWidget {
     this.onTap,
     this.onClear,
     this.enabled = true,
+    this.readOnly = false,
     this.focusNode,
     this.suffixWidget,
   });
@@ -24,6 +25,7 @@ class SearchTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onClear;
   final bool enabled;
+  final bool readOnly;
   final FocusNode? focusNode;
   final Widget? suffixWidget;
 
@@ -45,6 +47,8 @@ class SearchTextField extends StatelessWidget {
       child: TextFormFieldHelper(
         focusNode: focusNode,
         enabled: enabled,
+        readOnly: readOnly,
+        onTap: onTap,
         controller: controller,
         onChanged: onChanged,
         contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),

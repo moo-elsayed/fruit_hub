@@ -8,6 +8,7 @@ class CustomActionButton extends StatelessWidget {
     required this.onTap,
     this.radius,
     this.backgroundColor,
+    this.border,
     required this.child,
     this.opacity,
   });
@@ -16,18 +17,28 @@ class CustomActionButton extends StatelessWidget {
   final double? radius;
   final double? opacity;
   final Color? backgroundColor;
+  final BoxBorder? border;
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => Opacity(
-    opacity: opacity ?? 1,
-    child: GestureDetector(
-      onTap: onTap,
-      child: CircleAvatar(
-        radius: radius ?? 16.r,
-        backgroundColor: backgroundColor ?? context.colors.primary,
-        child: child,
+  Widget build(BuildContext context) {
+    final size = (radius ?? 16.r) * 2;
+    return Opacity(
+      opacity: opacity ?? 1,
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: backgroundColor ?? context.colors.primary,
+            border: border,
+          ),
+          child: Center(child: child),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

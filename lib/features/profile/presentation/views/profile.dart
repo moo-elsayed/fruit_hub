@@ -23,7 +23,7 @@ class Profile extends StatelessWidget {
       child: Column(
         children: [
           MainScreenHeader(title: AppStrings.myAccount),
-          Gap(16.h),
+          Gap(12.h),
           const UserProfileCard(),
           Gap(24.h),
           ProfileSectionTitle(title: AppStrings.general),

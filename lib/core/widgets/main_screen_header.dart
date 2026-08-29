@@ -4,11 +4,7 @@ import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 
 class MainScreenHeader extends StatelessWidget {
-  const MainScreenHeader({
-    super.key,
-    required this.title,
-    this.action,
-  });
+  const MainScreenHeader({super.key, required this.title, this.action});
 
   final String title;
   final Widget? action;

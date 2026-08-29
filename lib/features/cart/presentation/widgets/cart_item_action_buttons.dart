@@ -1,13 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
-import 'package:fruit_hub/core/helpers/extensions.dart';
-import '../../../../core/helpers/app_assets.dart';
-import '../../../../core/theming/app_text_styles.dart';
-import '../../../../core/widgets/custom_action_button.dart';
+import 'package:fruit_hub/core/widgets/custom_price_text.dart';
+import 'package:fruit_hub/core/widgets/custom_quantity_selector.dart';
 import '../managers/cart_cubit/cart_cubit.dart';
 
 class CartItemActionButtons extends StatefulWidget {
@@ -22,7 +17,7 @@ class CartItemActionButtons extends StatefulWidget {
 class _CartItemActionButtonsState extends State<CartItemActionButtons> {
   bool _isEnable = true;
 
-  void _handleQuantityChange(bool isIncrement) async {
+  Future<void> _handleQuantityChange(bool isIncrement) async {
     if (!_isEnable) return;
 
     setState(() => _isEnable = false);
@@ -37,7 +32,7 @@ class _CartItemActionButtonsState extends State<CartItemActionButtons> {
       );
     }
 
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 250));
     if (mounted) {
       setState(() => _isEnable = true);
     }
@@ -45,42 +40,15 @@ class _CartItemActionButtonsState extends State<CartItemActionButtons> {
 
   @override
   Widget build(BuildContext context) => Row(
-    spacing: 16.w,
     children: [
-      CustomActionButton(
-        onTap: () => _handleQuantityChange(true),
-        opacity: _isEnable ? 1 : 0.5,
-        radius: 12.r,
-        child: SvgPicture.asset(
-          AppAssets.iconsPlus,
-          height: 10.h,
-          width: 10.w,
-          fit: BoxFit.scaleDown,
-        ),
-      ),
-      Text(
-        '${widget.cartItemEntity.quantity}',
-        style: AppTextStyles.font16Bold.copyWith(
-          color: context.colors.mainText,
-        ),
-      ),
-      CustomActionButton(
-        onTap: () => _handleQuantityChange(false),
-        opacity: _isEnable ? 1 : 0.5,
-        radius: 12.r,
-        backgroundColor: context.colors.surface,
-        child: SvgPicture.asset(
-          AppAssets.iconsIconsMinus,
-          fit: BoxFit.scaleDown,
-        ),
+      CustomQuantitySelector(
+        quantity: widget.cartItemEntity.quantity,
+        isEnabled: _isEnable,
+        onIncrement: () => _handleQuantityChange(true),
+        onDecrement: () => _handleQuantityChange(false),
       ),
       const Spacer(),
-      Text(
-        "${widget.cartItemEntity.totalPrice.formattedPrice} ${"pounds".tr()}",
-        style: AppTextStyles.font13Bold.copyWith(
-          color: context.colors.secondary,
-        ),
-      ),
+      CustomPriceText(price: widget.cartItemEntity.totalPrice),
     ],
   );
 }

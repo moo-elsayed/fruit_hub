@@ -28,6 +28,7 @@ class AppAssets {
       'assets/svgs/icons/profile-filled.svg';
   static const String iconsProfileOutline =
       'assets/svgs/icons/profile-outline.svg';
+  static const String iconsScale = 'assets/svgs/icons/scale.svg';
   static const String iconsSearchIcon = 'assets/svgs/icons/search_icon.svg';
   static const String iconsShoppingCartFilled =
       'assets/svgs/icons/shopping-cart-filled.svg';

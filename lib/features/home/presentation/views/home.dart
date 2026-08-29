@@ -34,9 +34,15 @@ class _HomeState extends State<Home> {
       const CustomHomeAppBar(),
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: SearchTextField(
-          enabled: false,
-          onTap: () => context.pushNamed(Routes.searchView),
+        child: Hero(
+          tag: 'search_bar_hero_tag',
+          child: Material(
+            color: Colors.transparent,
+            child: SearchTextField(
+              readOnly: true,
+              onTap: () => context.pushNamed(Routes.searchView),
+            ),
+          ),
         ),
       ),
       Gap(16.h),

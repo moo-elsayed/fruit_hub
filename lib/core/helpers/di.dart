@@ -23,7 +23,6 @@ import 'package:fruit_hub/features/cart/data/data_sources/remote/cart_remote_dat
 import 'package:fruit_hub/features/cart/data/repo_imp/cart_repo_imp.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/clear_cart_use_case.dart';
-import 'package:fruit_hub/features/cart/domain/use_cases/get_cart_items_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/update_item_quantity_use_case.dart';
@@ -217,10 +216,6 @@ void setupServiceLocator() {
     UpdateItemQuantityUseCase(getIt<CartRepoImp>()),
   );
 
-  getIt.registerSingleton<GetCartItemsUseCase>(
-    GetCartItemsUseCase(getIt<CartRepoImp>()),
-  );
-
   getIt.registerSingleton<ClearCartUseCase>(
     ClearCartUseCase(getIt<CartRepoImp>()),
   );
@@ -231,7 +226,6 @@ void setupServiceLocator() {
       getIt<RemoveItemFromCartUseCase>(),
       getIt<GetProductsInCartUseCase>(),
       getIt<UpdateItemQuantityUseCase>(),
-      getIt<GetCartItemsUseCase>(),
       getIt<ClearCartUseCase>(),
     ),
   );

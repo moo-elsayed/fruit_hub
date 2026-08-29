@@ -55,7 +55,11 @@ class _SearchViewBodyState extends State<SearchViewBody> {
   void initState() {
     super.initState();
     _searchController = TextEditingController();
-    Future.delayed(Duration.zero, () => _focusNode.requestFocus());
+    Future.delayed(const Duration(milliseconds: 350), () {
+      if (mounted) {
+        _focusNode.requestFocus();
+      }
+    });
   }
 
   @override
@@ -74,11 +78,17 @@ class _SearchViewBodyState extends State<SearchViewBody> {
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w),
-            child: SearchTextField(
-              focusNode: _focusNode,
-              onChanged: _buildOnChanged,
-              controller: _searchController,
-              onClear: _onClear,
+            child: Hero(
+              tag: 'search_bar_hero_tag',
+              child: Material(
+                color: Colors.transparent,
+                child: SearchTextField(
+                  focusNode: _focusNode,
+                  onChanged: _buildOnChanged,
+                  controller: _searchController,
+                  onClear: _onClear,
+                ),
+              ),
             ),
           ),
           BlocBuilder<SearchCubit, SearchState>(

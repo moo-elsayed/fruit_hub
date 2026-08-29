@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
-import 'package:fruit_hub/core/helpers/extensions.dart';
-
+import 'package:gap/gap.dart';
 import 'cart_item.dart';
 
 class CartItemsListView extends StatelessWidget {
@@ -13,29 +12,14 @@ class CartItemsListView extends StatelessWidget {
   final int? itemCount;
 
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    return ListView.separated(
-      padding: EdgeInsets.only(top: 14.h, bottom: 120.h),
-      itemCount: itemCount ?? cartItems!.length,
-      itemBuilder: (context, index) => Column(
-        children: [
-          if (index == 0) buildDivider(context),
-          CartItem(
-            size: size,
-            cartItemEntity: itemCount != null
-                ? const CartItemEntity(fruitEntity: FruitEntity())
-                : cartItems![index],
-          ),
-          if ((cartItems != null && index == cartItems!.length - 1) ||
-              (itemCount != null && index == itemCount! - 1))
-            buildDivider(context),
-        ],
-      ),
-      separatorBuilder: (context, index) => buildDivider(context),
-    );
-  }
-
-  Divider buildDivider(BuildContext context) =>
-      Divider(height: 10.h, color: context.colors.border);
+  Widget build(BuildContext context) => ListView.separated(
+    padding: EdgeInsets.only(top: 8.h, bottom: 200.h),
+    itemCount: itemCount ?? cartItems!.length,
+    separatorBuilder: (context, index) => Gap(8.h),
+    itemBuilder: (context, index) => CartItem(
+      cartItemEntity: itemCount != null
+          ? const CartItemEntity(fruitEntity: FruitEntity())
+          : cartItems![index],
+    ),
+  );
 }

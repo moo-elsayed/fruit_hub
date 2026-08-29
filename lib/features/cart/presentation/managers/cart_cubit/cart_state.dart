@@ -5,16 +5,6 @@ sealed class CartState {}
 
 final class CartInitial extends CartState {}
 
-final class GetCartItemsLoading extends CartState {}
-
-final class GetCartItemsSuccess extends CartState {}
-
-final class GetCartItemsFailure extends CartState {
-  GetCartItemsFailure(this.errorMessage);
-
-  final String errorMessage;
-}
-
 final class CartLoading extends CartState {
   CartLoading({this.itemRemoved = false, this.newItemAdded = false});
 

@@ -5,7 +5,6 @@ import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/add_item_to_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/clear_cart_use_case.dart';
-import 'package:fruit_hub/features/cart/domain/use_cases/get_cart_items_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/update_item_quantity_use_case.dart';
@@ -18,7 +17,6 @@ class CartCubit extends Cubit<CartState> {
     this._removeItemFromCartUseCase,
     this._getProductsInCart,
     this._updateItemQuantityUseCase,
-    this._getCartItemsUseCase,
     this._clearCartUseCase,
   ) : super(CartInitial());
 
@@ -26,20 +24,16 @@ class CartCubit extends Cubit<CartState> {
   final RemoveItemFromCartUseCase _removeItemFromCartUseCase;
   final GetProductsInCartUseCase _getProductsInCart;
   final UpdateItemQuantityUseCase _updateItemQuantityUseCase;
-  final GetCartItemsUseCase _getCartItemsUseCase;
   final ClearCartUseCase _clearCartUseCase;
 
-  List<Map<String, dynamic>> _cartItems = [];
   List<CartItemEntity> _productsInCart = [];
 
   bool isInCart(String productId) =>
-      _cartItems.any((item) => item['fruitCode'] == productId || item['productId'] == productId) ||
       _productsInCart.any((item) => item.fruitEntity.code == productId);
 
   List<CartItemEntity> get productsInCart => _productsInCart;
-  List<Map<String, dynamic>> get cartItems => _cartItems;
 
-  Future<void> addItemToCart(FruitEntity fruit) async {
+  Future<void> addItemToCart(FruitEntity fruit, {int quantity = 1}) async {
     final productId = fruit.code;
 
     // Check if the item is already in the cart
@@ -49,12 +43,14 @@ class CartCubit extends Cubit<CartState> {
     }
 
     // 1. Optimistic Local Update (0ms)
-    _productsInCart.add(CartItemEntity(fruitEntity: fruit, quantity: 1));
-    _addToCartItemsLocal(productId);
+    _productsInCart.add(CartItemEntity(fruitEntity: fruit, quantity: quantity));
     _emitCartSuccess(newItemAdded: true);
 
     // 2. Background server call
-    final result = await _addItemToCartUseCase.call(productId);
+    final result = await _addItemToCartUseCase.call(
+      productId,
+      quantity: quantity,
+    );
     switch (result) {
       case NetworkSuccess<void>():
         break;
@@ -63,7 +59,6 @@ class CartCubit extends Cubit<CartState> {
         _productsInCart.removeWhere(
           (item) => item.fruitEntity.code == productId,
         );
-        _removeFromCartItemsLocal(productId);
         _emitCartSuccess();
         emit(CartFailure(result.error));
     }
@@ -76,16 +71,9 @@ class CartCubit extends Cubit<CartState> {
     if (index == -1) return;
 
     final removedItem = _productsInCart[index];
-    final cartItemIndex = _cartItems.indexWhere(
-      (item) => item['fruitCode'] == productId,
-    );
-    final removedCartItem = cartItemIndex != -1
-        ? Map<String, dynamic>.from(_cartItems[cartItemIndex])
-        : null;
 
     // 1. Optimistic Local Removal (0ms)
     _productsInCart.removeAt(index);
-    _removeFromCartItemsLocal(productId);
     _emitCartSuccess(itemRemoved: true);
 
     // 2. Background server call
@@ -96,23 +84,8 @@ class CartCubit extends Cubit<CartState> {
       case NetworkFailure<void>():
         // Revert on failure
         _productsInCart.insert(index, removedItem);
-        if (removedCartItem != null) {
-          _cartItems.add(removedCartItem);
-        }
         _emitCartSuccess();
         emit(CartFailure(result.error));
-    }
-  }
-
-  Future<void> getCartItems() async {
-    emit(GetCartItemsLoading());
-    final result = await _getCartItemsUseCase.call();
-    switch (result) {
-      case NetworkSuccess<List<Map<String, dynamic>>>():
-        _cartItems = result.data!;
-        emit(GetCartItemsSuccess());
-      case NetworkFailure<List<Map<String, dynamic>>>():
-        emit(GetCartItemsFailure(result.error));
     }
   }
 
@@ -121,7 +94,6 @@ class CartCubit extends Cubit<CartState> {
     final result = await _clearCartUseCase.call();
     switch (result) {
       case NetworkSuccess<void>():
-        _cartItems.clear();
         _productsInCart.clear();
         _emitCartSuccess();
       case NetworkFailure<void>():
@@ -137,18 +109,7 @@ class CartCubit extends Cubit<CartState> {
     if (needLoading) {
       emit(CartLoading());
     }
-    if (_cartItems.isEmpty) {
-      final cartItemsResult = await _getCartItemsUseCase.call();
-      if (cartItemsResult is NetworkSuccess<List<Map<String, dynamic>>>) {
-        _cartItems = cartItemsResult.data!;
-      }
-    }
-    if (_cartItems.isEmpty) {
-      _productsInCart = [];
-      _emitCartSuccess();
-      return;
-    }
-    final result = await _getProductsInCart.call(_cartItems);
+    final result = await _getProductsInCart.call();
     switch (result) {
       case NetworkSuccess<List<CartItemEntity>>():
         _productsInCart = result.data!;
@@ -205,14 +166,10 @@ class CartCubit extends Cubit<CartState> {
       case NetworkFailure<void>():
         _updateLocalListQuantity(productId, oldQuantity);
         _emitCartSuccess();
-      // emit(CartFailure(result.error));
     }
   }
 
   // -----------------------------------------------
-
-  void _removeFromCartItemsLocal(String productId) =>
-      _cartItems.removeWhere((item) => item['fruitCode'] == productId);
 
   double _calculateTotalPrice(List<CartItemEntity> items) => items
       .map((e) => e.totalPrice)
@@ -241,26 +198,7 @@ class CartCubit extends Cubit<CartState> {
     );
     if (productIndex != -1) {
       final oldItem = _productsInCart[productIndex];
-      _productsInCart[productIndex] = CartItemEntity(
-        fruitEntity: oldItem.fruitEntity,
-        quantity: quantity,
-      );
       _productsInCart[productIndex] = oldItem.copyWith(quantity: quantity);
-    }
-    final cartIndex = _cartItems.indexWhere((e) => e['fruitCode'] == productId);
-    if (cartIndex != -1) {
-      _cartItems[cartIndex]['quantity'] = quantity;
-    }
-  }
-
-  void _addToCartItemsLocal(String productId) {
-    final int index = _cartItems.indexWhere(
-      (element) => element['fruitCode'] == productId,
-    );
-    if (index != -1) {
-      _cartItems[index]['quantity']++;
-    } else {
-      _cartItems.add({'fruitCode': productId, 'quantity': 1});
     }
   }
 }

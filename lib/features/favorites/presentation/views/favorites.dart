@@ -31,7 +31,12 @@ class _FavoritesState extends State<Favorites> {
   Widget build(BuildContext context) => Column(
     children: [
       Padding(
-        padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w, vertical: 12.h),
+        padding: EdgeInsetsGeometry.only(
+          left: 16.w,
+          right: 16.w,
+          top: 12.h,
+          bottom: 12.h,
+        ),
         child: MainScreenHeader(title: AppStrings.favorites),
       ),
       Expanded(
@@ -52,7 +57,7 @@ class _FavoritesState extends State<Favorites> {
           builder: (context, state) {
             final cubit = context.read<FavoriteCubit>();
             if (state is GetFavoritesLoading && cubit.favoriteFruits.isEmpty) {
-              return const FruitsGridView(itemCount: 4);
+              return const FruitsGridView(itemCount: 4, needTopPadding: false);
             }
             final favorites = cubit.favoriteFruits;
             if (favorites.isEmpty) {
@@ -79,7 +84,11 @@ class _FavoritesState extends State<Favorites> {
                 ),
               );
             }
-            return FruitsGridView(fruits: favorites, fromFavorite: true);
+            return FruitsGridView(
+              fruits: favorites,
+              fromFavorite: true,
+              needTopPadding: false,
+            );
           },
         ),
       ),

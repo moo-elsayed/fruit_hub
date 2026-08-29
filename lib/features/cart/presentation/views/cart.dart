@@ -4,13 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
-import 'package:fruit_hub/core/routing/routes.dart';
-import 'package:fruit_hub/core/theming/app_palette.dart';
-import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_empty_state_widget.dart';
-import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:fruit_hub/core/widgets/main_screen_header.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
+import 'package:fruit_hub/features/cart/presentation/widgets/cart_checkout_bottom_bar.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/cart_items_list_view.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/products_count.dart';
 import 'package:gap/gap.dart';
@@ -70,7 +67,7 @@ class _CartState extends State<Cart> {
                   if (state is CartLoading && !state.itemRemoved) {
                     return const Skeletonizer(
                       enabled: true,
-                      child: CartItemsListView(itemCount: 6),
+                      child: CartItemsListView(itemCount: 3),
                     );
                   }
                   if (cartItemsList.isEmpty) {
@@ -104,24 +101,14 @@ class _CartState extends State<Cart> {
               ),
               BlocBuilder<CartCubit, CartState>(
                 builder: (context, state) {
-                  if (cartItemsList.isEmpty) {
-                    return const SizedBox.shrink();
-                  }
+                  if (cartItemsList.isEmpty) return const SizedBox.shrink();
                   return Positioned(
                     bottom: 85.h,
-                    right: 0,
                     left: 0,
-                    child: CustomMaterialButton(
-                      onPressed: () => context.pushNamed(
-                        Routes.checkoutView,
-                        arguments: cartItemsList,
-                      ),
-                      maxWidth: true,
-                      text:
-                          '${AppStrings.checkout} $totalPrice ${AppStrings.pounds}',
-                      textStyle: AppTextStyles.font16Bold.copyWith(
-                        color: AppPalette.white,
-                      ),
+                    right: 0,
+                    child: CartCheckoutBottomBar(
+                      cartItems: cartItemsList,
+                      totalPrice: totalPrice,
                     ),
                   );
                 },

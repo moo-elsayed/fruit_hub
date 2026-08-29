@@ -51,12 +51,13 @@ class CustomFruitItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12.r),
-                        child: CustomNetworkImage(
-                          image: fruitEntity.imagePath,
-                        ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12.r),
+                      child: CustomNetworkImage(
+                        image: fruitEntity.imagePath,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.fill,
                       ),
                     ),
                   ),

@@ -14,74 +14,105 @@ import 'package:fruit_hub/features/cart/presentation/widgets/cart_item_action_bu
 import 'package:gap/gap.dart';
 
 class CartItem extends StatelessWidget {
-  const CartItem({super.key, required this.size, required this.cartItemEntity});
+  const CartItem({super.key, required this.cartItemEntity});
 
-  final Size size;
   final CartItemEntity cartItemEntity;
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
+  Widget build(BuildContext context) => InkWell(
+    borderRadius: BorderRadius.circular(16.r),
     onTap: () => context.pushNamed(
       Routes.productDetailsView,
       arguments: cartItemEntity.fruitEntity,
     ),
     child: Container(
-      padding: EdgeInsetsGeometry.symmetric(horizontal: 16.w),
-      height: size.height * 0.11699,
+      padding: EdgeInsets.all(12.r),
+      decoration: BoxDecoration(
+        color: context.colors.surface,
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: context.colors.border, width: 1.w),
+        boxShadow: [
+          BoxShadow(
+            color: context.colors.mainText.withValues(alpha: 0.02),
+            blurRadius: 8.r,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            width: size.width * 0.19466,
-            height: size.height * 0.1133,
-            padding: EdgeInsetsGeometry.symmetric(horizontal: 10.w),
-            color: context.colors.surface,
-            child: CustomNetworkImage(
-              image: cartItemEntity.fruitEntity.imagePath,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12.r),
+            child: SizedBox.square(
+              dimension: 76.r,
+              child: CustomNetworkImage(
+                image: cartItemEntity.fruitEntity.imagePath,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
-          Gap(17.w),
+          Gap(12.w),
           Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 5.h),
-              child: Column(
-                crossAxisAlignment: .start,
-                mainAxisAlignment: .spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: .spaceBetween,
-                    crossAxisAlignment: .start,
-                    children: [
-                      Column(
-                        spacing: 3.h,
-                        crossAxisAlignment: .start,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             cartItemEntity.fruitEntity.name,
-                            style: AppTextStyles.font13Bold.copyWith(
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.font14Bold.copyWith(
                               color: context.colors.mainText,
                             ),
                           ),
+                          Gap(2.h),
                           Text(
-                            '${cartItemEntity.quantity} ${AppStrings.perKilo}',
-                            style: AppTextStyles.font13Regular.copyWith(
-                              color: context.colors.secondary,
+                            '${cartItemEntity.fruitEntity.price.formattedPrice} ${AppStrings.pounds} / ${AppStrings.kilo}',
+                            style: AppTextStyles.font12Medium.copyWith(
+                              color: context.colors.subText,
                             ),
                           ),
                         ],
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          context.read<CartCubit>().removeItemFromCart(
-                            cartItemEntity.fruitEntity.code,
-                          );
-                        },
-                        child: SvgPicture.asset(AppAssets.iconsTrash),
+                    ),
+                    Gap(8.w),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(8.r),
+                      onTap: () {
+                        context.read<CartCubit>().removeItemFromCart(
+                          cartItemEntity.fruitEntity.code,
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(6.r),
+                        decoration: BoxDecoration(
+                          color: context.colors.error.withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: SvgPicture.asset(
+                          AppAssets.iconsTrash,
+                          width: 16.r,
+                          height: 16.r,
+                          colorFilter: ColorFilter.mode(
+                            context.colors.error,
+                            BlendMode.srcIn,
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                  CartItemActionButtons(cartItemEntity: cartItemEntity),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+                Gap(10.h),
+                CartItemActionButtons(cartItemEntity: cartItemEntity),
+              ],
             ),
           ),
         ],

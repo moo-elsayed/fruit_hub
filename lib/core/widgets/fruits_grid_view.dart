@@ -13,6 +13,7 @@ class FruitsGridView extends StatelessWidget {
     this.physics = const AlwaysScrollableScrollPhysics(),
     this.shrinkWrap = false,
     this.bottomPadding,
+    this.needTopPadding = true,
   });
 
   final List<FruitEntity>? fruits;
@@ -21,6 +22,7 @@ class FruitsGridView extends StatelessWidget {
   final ScrollPhysics? physics;
   final bool shrinkWrap;
   final double? bottomPadding;
+  final bool needTopPadding;
 
   @override
   Widget build(BuildContext context) => Skeletonizer(
@@ -29,7 +31,7 @@ class FruitsGridView extends StatelessWidget {
       padding: EdgeInsets.only(
         left: 16.w,
         right: 16.w,
-        top: 8.h,
+        top: needTopPadding ? 8.h : 0,
         bottom: bottomPadding ?? 85.h,
       ),
       physics: physics,

@@ -28,7 +28,8 @@ class AppRouter {
   FavoriteCubit? _favoriteCubit;
 
   CartCubit get _getCartCubit =>
-      _cartCubit ??= getIt.get<CartCubit>()..getCartItems();
+      _cartCubit ??= getIt.get<CartCubit>()
+        ..getProductsInCart(needLoading: false);
 
   FavoriteCubit get _getFavoriteCubit =>
       _favoriteCubit ??= getIt.get<FavoriteCubit>()..getFavorites();
@@ -60,7 +61,6 @@ class AppRouter {
         return _route(
           MultiBlocProvider(
             providers: [
-
               BlocProvider.value(value: _getCartCubit),
               BlocProvider.value(value: _getFavoriteCubit),
             ],
@@ -73,9 +73,7 @@ class AppRouter {
             providers: [
               BlocProvider.value(value: _getCartCubit),
               BlocProvider.value(value: _getFavoriteCubit),
-              BlocProvider(
-                create: (context) => getIt.get<ProductsCubit>(),
-              ),
+              BlocProvider(create: (context) => getIt.get<ProductsCubit>()),
             ],
             child: const ProductsView(),
           ),

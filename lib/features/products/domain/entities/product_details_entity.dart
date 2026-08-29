@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import '../../../../core/helpers/app_assets.dart';
+import '../../../../core/helpers/app_strings.dart';
 
 class ProductDetailsEntity {
   ProductDetailsEntity({
@@ -16,23 +16,18 @@ class ProductDetailsEntity {
 
 List<ProductDetailsEntity> getProductDetails(FruitEntity fruitEntity) => [
   ProductDetailsEntity(
-    title: "${fruitEntity.daysUntilExpiration} ${"days".tr()}",
-    subtitle: 'validity'.tr(),
+    title: '${fruitEntity.daysUntilExpiration} ${AppStrings.days}',
+    subtitle: AppStrings.validity,
     trailingAsset: AppAssets.iconsCalendar,
   ),
   ProductDetailsEntity(
-    title: '100%',
-    subtitle: 'organic'.tr(),
-    trailingAsset: AppAssets.iconsOrganic,
+    title: '${fruitEntity.weightInGrams} ${AppStrings.gram}',
+    subtitle: AppStrings.gram,
+    trailingAsset: AppAssets.iconsScale,
   ),
   ProductDetailsEntity(
-    title: "${fruitEntity.numberOfCalories} ${"calories".tr()}",
-    subtitle: "${fruitEntity.unitAmount} ${"gram".tr()}",
+    title: '${fruitEntity.numberOfCalories} ${AppStrings.calories}',
+    subtitle: AppStrings.calories,
     trailingAsset: AppAssets.iconsCalory,
-  ),
-  ProductDetailsEntity(
-    title: '${fruitEntity.avgRating} (${fruitEntity.reviews.length})',
-    subtitle: 'reviews'.tr(),
-    trailingAsset: AppAssets.iconsFavourites,
   ),
 ];

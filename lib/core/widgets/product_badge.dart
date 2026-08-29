@@ -25,11 +25,7 @@ class ProductBadge extends StatelessWidget {
         color: context.colors.surface.withValues(alpha: 0.85),
         border: Border.all(color: color.withValues(alpha: 0.35), width: 1),
         boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4,
-            offset: Offset(0, 1),
-          ),
+          BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 1)),
         ],
       ),
       child: Center(

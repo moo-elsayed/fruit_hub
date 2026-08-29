@@ -7,7 +7,6 @@ class GetProductsInCartUseCase {
 
   final CartRepo _cartRepo;
 
-  Future<NetworkResponse<List<CartItemEntity>>> call(
-    List<Map<String, dynamic>> cartItems,
-  ) async => await _cartRepo.getProductsInCart(cartItems);
+  Future<NetworkResponse<List<CartItemEntity>>> call() async =>
+      await _cartRepo.getProductsInCart();
 }
