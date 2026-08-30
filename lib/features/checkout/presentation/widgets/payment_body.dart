@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/payment_option_entity.dart';
@@ -33,10 +33,10 @@ class _PaymentBodyState extends State<PaymentBody> {
       context.read<CheckoutCubit>().shippingConfig!,
     );
     return Column(
-      crossAxisAlignment: .start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'choose_the_payment_method_that_suits_you_best'.tr(),
+          AppStrings.chooseThePaymentMethodThatSuitsYouBest,
           style: AppTextStyles.font13Bold.copyWith(
             color: context.colors.mainText,
           ),

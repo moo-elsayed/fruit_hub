@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/helpers/app_assets.dart';
@@ -18,14 +18,14 @@ class OrderSuccessTopWidget extends StatelessWidget {
       SvgPicture.asset(AppAssets.svgsSuccess),
       Gap(33.h),
       Text(
-        'It_was_done_successfully!'.tr(),
+        AppStrings.itWasDoneSuccessfully,
         style: AppTextStyles.font16Bold.copyWith(
           color: context.colors.mainText,
         ),
       ),
       Gap(9.h),
       Text(
-        "${"order_number".tr()}: $orderId#",
+        '${AppStrings.orderNumber}: $orderId#',
         style: AppTextStyles.font14Regular.copyWith(
           color: context.colors.subText,
         ),

@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
@@ -27,7 +27,11 @@ class _CheckoutViewState extends State<CheckoutView> {
   late PageController _pageController;
   int currentIndex = 0;
 
-  List<String> get steps => ['address'.tr(), 'payment'.tr(), 'review'.tr()];
+  List<String> get steps => [
+    AppStrings.address,
+    AppStrings.payment,
+    AppStrings.review,
+  ];
 
   @override
   void initState() {

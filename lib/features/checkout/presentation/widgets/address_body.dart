@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/features/checkout/presentation/args/address_args.dart';
 import 'package:fruit_hub/features/checkout/presentation/managers/checkout_cubit/checkout_cubit.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/save_address.dart';
@@ -29,9 +29,8 @@ class _AddressBodyState extends State<AddressBody> {
   }
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
-    onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
-    behavior: HitTestBehavior.opaque,
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.symmetric(horizontal: 4.w),
     child: SingleChildScrollView(
       child: Form(
         key: widget.addressArgs.formKey,
@@ -40,7 +39,7 @@ class _AddressBodyState extends State<AddressBody> {
             Gap(2.h),
             TextFormFieldHelper(
               controller: widget.addressArgs.nameController,
-              labelText: 'full_name'.tr(),
+              labelText: AppStrings.fullName,
               keyboardType: TextInputType.name,
               onValidate: Validator.validateName,
               action: TextInputAction.next,
@@ -48,7 +47,7 @@ class _AddressBodyState extends State<AddressBody> {
             Gap(16.h),
             TextFormFieldHelper(
               controller: widget.addressArgs.emailController,
-              labelText: 'email'.tr(),
+              labelText: AppStrings.email,
               keyboardType: TextInputType.emailAddress,
               onValidate: Validator.validateEmail,
               action: TextInputAction.next,
@@ -56,7 +55,7 @@ class _AddressBodyState extends State<AddressBody> {
             Gap(16.h),
             TextFormFieldHelper(
               controller: widget.addressArgs.phoneController,
-              labelText: 'phone_number'.tr(),
+              labelText: AppStrings.phoneNumber,
               keyboardType: TextInputType.phone,
               onValidate: Validator.validatePhoneNumber,
               action: TextInputAction.next,
@@ -64,7 +63,7 @@ class _AddressBodyState extends State<AddressBody> {
             Gap(16.h),
             TextFormFieldHelper(
               controller: widget.addressArgs.cityController,
-              labelText: 'city'.tr(),
+              labelText: AppStrings.city,
               keyboardType: TextInputType.streetAddress,
               onValidate: Validator.validateCity,
               action: TextInputAction.done,
@@ -72,7 +71,7 @@ class _AddressBodyState extends State<AddressBody> {
             Gap(16.h),
             TextFormFieldHelper(
               controller: widget.addressArgs.streetNameController,
-              labelText: 'street_name'.tr(),
+              labelText: AppStrings.streetName,
               keyboardType: TextInputType.streetAddress,
               onValidate: Validator.validateStreetName,
               action: TextInputAction.next,
@@ -80,7 +79,7 @@ class _AddressBodyState extends State<AddressBody> {
             Gap(16.h),
             TextFormFieldHelper(
               controller: widget.addressArgs.buildingController,
-              labelText: 'building_number'.tr(),
+              labelText: AppStrings.buildingNumber,
               keyboardType: TextInputType.number,
               onValidate: Validator.validateBuildingNumber,
               action: TextInputAction.next,
@@ -88,12 +87,12 @@ class _AddressBodyState extends State<AddressBody> {
             Gap(16.h),
             Row(
               spacing: 8.w,
-              crossAxisAlignment: .start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: TextFormFieldHelper(
                     controller: widget.addressArgs.floorController,
-                    labelText: 'floor_number'.tr(),
+                    labelText: AppStrings.floorNumber,
                     keyboardType: TextInputType.number,
                     onValidate: Validator.validateFloorNumber,
                     action: TextInputAction.done,
@@ -102,7 +101,7 @@ class _AddressBodyState extends State<AddressBody> {
                 Expanded(
                   child: TextFormFieldHelper(
                     controller: widget.addressArgs.apartmentController,
-                    labelText: 'apartment_number'.tr(),
+                    labelText: AppStrings.apartmentNumber,
                     keyboardType: TextInputType.number,
                     onValidate: Validator.validateApartmentNumber,
                     action: TextInputAction.done,

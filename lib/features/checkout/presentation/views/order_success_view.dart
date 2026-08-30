@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
@@ -16,10 +16,10 @@ class OrderSuccessView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     body: Padding(
-      padding: .symmetric(horizontal: 16.w),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
-        mainAxisAlignment: .spaceAround,
-        crossAxisAlignment: .center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           OrderSuccessTopWidget(orderId: orderEntity.orderId),
           Column(
@@ -27,7 +27,7 @@ class OrderSuccessView extends StatelessWidget {
             children: [
               CustomMaterialButton(
                 onPressed: () {},
-                text: 'track_order'.tr(),
+                text: AppStrings.trackOrder,
                 maxWidth: true,
                 textStyle: AppTextStyles.font16Bold.copyWith(
                   color: Colors.white,
@@ -36,7 +36,7 @@ class OrderSuccessView extends StatelessWidget {
               GestureDetector(
                 onTap: () => context.pushReplacementNamed(Routes.mainView),
                 child: Text(
-                  'home'.tr(),
+                  AppStrings.home,
                   style: AppTextStyles.font16Bold.copyWith(
                     color: context.colors.primary,
                     decoration: TextDecoration.underline,

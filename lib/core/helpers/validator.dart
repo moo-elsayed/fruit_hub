@@ -3,19 +3,27 @@ import 'package:fruit_hub/core/helpers/app_strings.dart';
 class Validator {
   Validator._();
 
+  static final RegExp _emailRegex = RegExp(
+    r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+  );
+  static final RegExp _uppercaseRegex = RegExp(r'(?=.*[A-Z])');
+  static final RegExp _lowercaseRegex = RegExp(r'(?=.*[a-z])');
+  static final RegExp _numberRegex = RegExp(r'(?=.*\d)');
+  static final RegExp _specialCharRegex = RegExp(
+    r'(?=.*[!@#$%^&*(),.?":{}|<>_])',
+  );
+  static final RegExp _phoneRegex = RegExp(r'^\+?\d+$');
+
   static String? validateEmail(String? val) {
-    final RegExp emailRegex = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-    );
     if (val == null || val.trim().isEmpty) {
       return AppStrings.emailCannotBeEmpty;
-    } else if (!emailRegex.hasMatch(val)) {
+    }
+    if (!_emailRegex.hasMatch(val.trim())) {
       return AppStrings.enterAValidEmailAddress;
     }
     return null;
   }
 
-  // General use
   static String? validateRequiredField(String? val) {
     if (val == null || val.trim().isEmpty) {
       return AppStrings.requiredField;
@@ -34,62 +42,57 @@ class Validator {
     if (val == null || val.isEmpty) {
       return AppStrings.passwordCannotBeEmpty;
     }
-
     if (val.length < 8) {
       return AppStrings.passwordMustBeAtLeast8CharactersLong;
     }
-
-    if (!RegExp(r'(?=.*[A-Z])').hasMatch(val)) {
+    if (!_uppercaseRegex.hasMatch(val)) {
       return AppStrings.passwordMustContainUppercase;
     }
-
-    if (!RegExp(r'(?=.*[a-z])').hasMatch(val)) {
+    if (!_lowercaseRegex.hasMatch(val)) {
       return AppStrings.passwordMustContainLowercase;
     }
-
-    if (!RegExp(r'(?=.*\d)').hasMatch(val)) {
+    if (!_numberRegex.hasMatch(val)) {
       return AppStrings.passwordMustContainNumber;
     }
-
-    if (!RegExp(r'(?=.*[!@#$%^&*(),.?":{}|<>_])').hasMatch(val)) {
+    if (!_specialCharRegex.hasMatch(val)) {
       return AppStrings.passwordMustContainSpecialCharacter;
     }
-
     return null;
   }
 
   static String? validateConfirmPassword(String? val, String? password) {
     if (val == null || val.isEmpty) {
       return AppStrings.passwordCannotBeEmpty;
-    } else if (val != password) {
+    }
+    if (val != password) {
       return AppStrings.confirmPasswordMustMatchThePassword;
     }
     return null;
   }
 
   static String? validateName(String? val) {
-    if (val == null || val.isEmpty) {
+    if (val == null || val.trim().isEmpty) {
       return AppStrings.nameCannotBeEmpty;
     }
     return null;
   }
 
   static String? validateProfilePicture(String? val) {
-    if (val == null || val.isEmpty) {
+    if (val == null || val.trim().isEmpty) {
       return AppStrings.profilePictureIsRequired;
     }
     return null;
   }
 
   static String? validateNationalIdCardImage(String? val) {
-    if (val == null || val.isEmpty) {
+    if (val == null || val.trim().isEmpty) {
       return AppStrings.idCardImageIsRequired;
     }
     return null;
   }
 
   static String? validateUserName(String? val) {
-    if (val == null || val.isEmpty) {
+    if (val == null || val.trim().isEmpty) {
       return AppStrings.usernameCannotBeEmpty;
     }
     return null;
@@ -140,28 +143,28 @@ class Validator {
   }
 
   static String? validateDescription(String? val) {
-    if (val == null || val.isEmpty) {
+    if (val == null || val.trim().isEmpty) {
       return AppStrings.pleaseEnterDescription;
     }
     return null;
   }
 
   static String? validateLocation(String? val) {
-    if (val == null || val.isEmpty) {
+    if (val == null || val.trim().isEmpty) {
       return AppStrings.pleaseSelectLocation;
     }
     return null;
   }
 
   static String? validateDate(String? val) {
-    if (val == null || val.isEmpty) {
+    if (val == null || val.trim().isEmpty) {
       return AppStrings.pleaseSelectDate;
     }
     return null;
   }
 
   static String? validateTime(String? val) {
-    if (val == null || val.isEmpty) {
+    if (val == null || val.trim().isEmpty) {
       return AppStrings.pleaseSelectTime;
     }
     return null;
@@ -181,33 +184,30 @@ class Validator {
     if (val == null || val.trim().isEmpty) {
       return AppStrings.phoneNumberCannotBeEmpty;
     }
-
     final phone = val.trim();
-    final isValid = RegExp(r'^\+?\d+$').hasMatch(phone);
-    if (!isValid) {
+    if (!_phoneRegex.hasMatch(phone)) {
       return AppStrings.enterAValidPhoneNumber;
     }
-
     return null;
   }
 
   static String? validateCode(String? val) {
-    if (val == null || val.isEmpty) {
+    if (val == null || val.trim().isEmpty) {
       return AppStrings.codeCannotBeEmpty;
-    } else if (val.length < 6) {
-      return AppStrings.codeShouldBeAtLeast6Digits;
-    } else {
-      return null;
     }
+    if (val.trim().length < 6) {
+      return AppStrings.codeShouldBeAtLeast6Digits;
+    }
+    return null;
   }
 
   static String? validateNationalId(String? val) {
-    if (val == null || val.isEmpty) {
+    if (val == null || val.trim().isEmpty) {
       return AppStrings.nationalIdCannotBeEmpty;
-    } else if (val.length != 14) {
-      return AppStrings.nationalIdMustBe14Digits;
-    } else {
-      return null;
     }
+    if (val.trim().length != 14) {
+      return AppStrings.nationalIdMustBe14Digits;
+    }
+    return null;
   }
 }

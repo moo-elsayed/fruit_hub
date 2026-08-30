@@ -22,12 +22,12 @@ List<ProductDetailsEntity> getProductDetails(FruitEntity fruitEntity) => [
   ),
   ProductDetailsEntity(
     title: '${fruitEntity.weightInGrams} ${AppStrings.gram}',
-    subtitle: AppStrings.gram,
+    subtitle: AppStrings.weight,
     trailingAsset: AppAssets.iconsScale,
   ),
   ProductDetailsEntity(
     title: '${fruitEntity.numberOfCalories} ${AppStrings.calories}',
-    subtitle: AppStrings.calories,
+    subtitle: AppStrings.per100Gram,
     trailingAsset: AppAssets.iconsCalory,
   ),
 ];

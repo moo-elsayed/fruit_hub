@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/theming/app_text_styles.dart';
@@ -28,16 +28,16 @@ class OrderSummary extends StatelessWidget {
       children: [
         _buildRow(
           context: context,
-          title: 'subtotal'.tr(),
-          value: "${subtotal.formattedPrice} ${"pounds".tr()}",
+          title: AppStrings.subtotal,
+          value: '${subtotal.formattedPrice} ${AppStrings.pounds}',
         ),
         Gap(8.h),
         _buildRow(
           context: context,
-          title: 'shipping'.tr(),
+          title: AppStrings.shipping,
           value: shippingCost == 0
-              ? 'free'.tr()
-              : "${shippingCost.formattedPrice} ${"pounds".tr()}",
+              ? AppStrings.free
+              : '${shippingCost.formattedPrice} ${AppStrings.pounds}',
           freeShipping: shippingCost == 0,
         ),
         Divider(color: context.colors.border, thickness: 0.5, height: 30.h),
@@ -45,13 +45,13 @@ class OrderSummary extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'total'.tr(),
+              AppStrings.total,
               style: AppTextStyles.font16Bold.copyWith(
                 color: context.colors.mainText,
               ),
             ),
             Text(
-              "${total.formattedPrice} ${"pounds".tr()}",
+              '${total.formattedPrice} ${AppStrings.pounds}',
               style: AppTextStyles.font16Bold.copyWith(
                 color: context.colors.mainText,
               ),
@@ -73,16 +73,16 @@ class OrderSummary extends StatelessWidget {
       Text(
         title,
         style: AppTextStyles.font13SemiBold.copyWith(
-          color: context.colors.mainText,
+          color: context.colors.subText,
         ),
       ),
       Text(
         value,
-        style: freeShipping
-            ? AppTextStyles.font13Bold.copyWith(color: context.colors.primary)
-            : AppTextStyles.font13SemiBold.copyWith(
-                color: context.colors.mainText,
-              ),
+        style: AppTextStyles.font13SemiBold.copyWith(
+          color: freeShipping
+              ? context.colors.primary
+              : context.colors.mainText,
+        ),
       ),
     ],
   );

@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/payment_option_entity.dart';
 import 'package:gap/gap.dart';
@@ -19,8 +19,8 @@ class PaymentOption extends StatelessWidget {
   final bool isSelected;
 
   String getTrailingText(double shippingCost) => shippingCost == 0
-      ? 'free_shipping'.tr()
-      : "$shippingCost ${"pounds".tr()}";
+      ? AppStrings.freeShipping
+      : '$shippingCost ${AppStrings.pounds}';
 
   @override
   Widget build(BuildContext context) => GestureDetector(
@@ -30,10 +30,10 @@ class PaymentOption extends StatelessWidget {
     child: AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
-      padding: .symmetric(horizontal: 16.w, vertical: 14.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
       decoration: BoxDecoration(
         color: context.colors.surface,
-        borderRadius: .circular(12.r),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: isSelected ? context.colors.primary : context.colors.border,
         ),
@@ -52,7 +52,7 @@ class PaymentOption extends StatelessWidget {
                 width: 2,
               ),
             ),
-            padding: const .all(3),
+            padding: const EdgeInsets.all(3),
             child: isSelected
                 ? Container(
                     decoration: BoxDecoration(

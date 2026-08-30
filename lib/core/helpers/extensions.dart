@@ -83,7 +83,7 @@ extension ThemeModeExtension on ThemeMode {
 
 extension AddressFormatter on AddressEntity {
   String get formattedLocation =>
-      "$streetName, ${"building".tr()} $buildingNumber, ${"floor".tr()} $floorNumber, ${"apartment".tr()} $apartmentNumber, $city";
+      '$streetName, ${AppStrings.building} $buildingNumber, ${AppStrings.floor} $floorNumber, ${AppStrings.apartment} $apartmentNumber, $city';
 }
 
 extension NumExtension on num {

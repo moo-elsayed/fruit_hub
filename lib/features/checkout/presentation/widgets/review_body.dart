@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/address_entity.dart';
@@ -46,10 +46,10 @@ class _ReviewBodyState extends State<ReviewBody> {
 
   @override
   Widget build(BuildContext context) => Column(
-    crossAxisAlignment: .start,
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        'order_summary'.tr(),
+        AppStrings.orderSummary,
         style: AppTextStyles.font16Bold.copyWith(
           color: context.colors.mainText,
         ),
@@ -61,14 +61,14 @@ class _ReviewBodyState extends State<ReviewBody> {
       ),
       Gap(16.h),
       ReviewItem(
-        title: 'payment_method'.tr(),
+        title: AppStrings.paymentMethod,
         value: paymentOption.title,
         icon: _getPaymentIcon(paymentOption),
         onEditTap: () => _navigateToPage(1),
       ),
       Gap(16.h),
       ReviewItem(
-        title: 'delivery_address'.tr(),
+        title: AppStrings.deliveryAddress,
         value: address.formattedLocation,
         icon: SvgPicture.asset(AppAssets.iconsLocation),
         onEditTap: () => _navigateToPage(0),

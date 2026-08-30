@@ -32,19 +32,15 @@ class SignOutButton extends StatelessWidget {
           }
         },
         child: CustomMaterialButton(
-          onPressed: () {
-            showCupertinoDialog(
-              context: context,
-              builder: (_) => CustomConfirmationDialog(
-                title: AppStrings.logOutConfirmation,
-                textConfirmButton: AppStrings.ok,
-                textCancelButton: AppStrings.cancel,
-                onConfirm: () async {
-                  await context.read<SignOutCubit>().signOut();
-                },
-              ),
-            );
-          },
+          onPressed: () => CustomConfirmationDialog.show(
+            context: context,
+            title: AppStrings.logOutConfirmation,
+            textConfirmButton: AppStrings.ok,
+            textCancelButton: AppStrings.cancel,
+            onConfirm: () async {
+              await context.read<SignOutCubit>().signOut();
+            },
+          ),
           text: AppStrings.signOut,
           textStyle: AppTextStyles.font16Bold.copyWith(color: AppPalette.white),
           maxWidth: true,

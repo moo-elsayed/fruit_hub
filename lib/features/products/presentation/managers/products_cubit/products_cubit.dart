@@ -1,10 +1,12 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/enums/product_category_filter.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
+import 'package:fruit_hub/features/products/domain/entities/paginated_products_entity.dart';
+import 'package:fruit_hub/features/products/domain/entities/products_filter_entity.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
-import '../../../../../core/entities/fruit_entity.dart';
-import '../../../domain/use_cases/get_product_details_use_case.dart';
+import 'package:fruit_hub/features/products/domain/use_cases/get_product_details_use_case.dart';
 
 part 'products_state.dart';
 
@@ -17,26 +19,96 @@ class ProductsCubit extends Cubit<ProductsState> {
   final GetAllProductsUseCase getAllProductsUseCase;
   final GetProductDetailsUseCase getProductDetailsUseCase;
 
-  List<FruitEntity> _originalFruits = [];
-  List<FruitEntity> fruits = [];
-  int selectedSortOption = -1;
-  final List<String> sortOptions = [
-    'price_lowest_to_highest'.tr(),
-    'price_highest_to_lowest'.tr(),
-    'alphabetical'.tr(),
-  ];
+  ProductsFilterEntity currentFilter = const ProductsFilterEntity();
+  dynamic _lastDoc;
+  bool _hasMore = true;
+  bool _isLoadingMore = false;
+  List<FruitEntity> _fruits = [];
 
-  Future<void> getAllProducts() async {
-    emit(GetAllProductsLoading());
-    final networkResponse = await getAllProductsUseCase.call();
-    switch (networkResponse) {
-      case NetworkSuccess<List<FruitEntity>>():
-        _originalFruits = networkResponse.data ?? [];
-        fruits = List.from(_originalFruits);
-        emit(GetAllProductsSuccess(_originalFruits));
-      case NetworkFailure<List<FruitEntity>>():
-        emit(GetAllProductsFailure(networkResponse.error));
+  bool get hasMore => _hasMore;
+  bool get isLoadingMore => _isLoadingMore;
+
+  Future<void> fetchFirstPage({ProductsFilterEntity? filter}) async {
+    if (filter != null) {
+      currentFilter = filter;
     }
+    _lastDoc = null;
+    _hasMore = true;
+    _fruits = [];
+    emit(GetProductsLoading());
+
+    final networkResponse = await getAllProductsUseCase.call(
+      limit: 10,
+      filter: currentFilter,
+    );
+
+    switch (networkResponse) {
+      case NetworkSuccess<PaginatedProductsEntity>():
+        final data = networkResponse.data!;
+        _fruits = List.from(data.fruits);
+        _lastDoc = data.lastDoc;
+        _hasMore = data.hasMore;
+        emit(
+          GetProductsSuccess(
+            fruits: _fruits,
+            hasMore: _hasMore,
+            isLoadingMore: false,
+            filter: currentFilter,
+          ),
+        );
+      case NetworkFailure<PaginatedProductsEntity>():
+        emit(GetProductsFailure(networkResponse.error));
+    }
+  }
+
+  Future<void> fetchNextPage() async {
+    if (!_hasMore || _isLoadingMore || state is! GetProductsSuccess) return;
+
+    _isLoadingMore = true;
+    emit((state as GetProductsSuccess).copyWith(isLoadingMore: true));
+
+    final networkResponse = await getAllProductsUseCase.call(
+      lastDoc: _lastDoc,
+      limit: 10,
+      filter: currentFilter,
+    );
+
+    _isLoadingMore = false;
+
+    switch (networkResponse) {
+      case NetworkSuccess<PaginatedProductsEntity>():
+        final data = networkResponse.data!;
+        _fruits.addAll(data.fruits);
+        _lastDoc = data.lastDoc;
+        _hasMore = data.hasMore;
+        emit(
+          GetProductsSuccess(
+            fruits: _fruits,
+            hasMore: _hasMore,
+            isLoadingMore: false,
+            filter: currentFilter,
+          ),
+        );
+      case NetworkFailure<PaginatedProductsEntity>():
+        emit((state as GetProductsSuccess).copyWith(isLoadingMore: false));
+    }
+  }
+
+  Future<void> refresh() async => fetchFirstPage();
+
+  void applyFilter(ProductsFilterEntity filter) {
+    currentFilter = filter;
+    fetchFirstPage(filter: filter);
+  }
+
+  void setCategoryFilter(ProductCategoryFilter category) {
+    if (currentFilter.categoryFilter == category) return;
+    applyFilter(currentFilter.copyWith(categoryFilter: category));
+  }
+
+  void resetFilter() {
+    currentFilter = const ProductsFilterEntity();
+    fetchFirstPage(filter: currentFilter);
   }
 
   Future<void> getProductDetails(String code) async {
@@ -48,27 +120,5 @@ class ProductsCubit extends Cubit<ProductsState> {
       case NetworkFailure<FruitEntity>():
         emit(GetProductDetailsFailure(networkResponse.error));
     }
-  }
-
-  void sortProducts(int selectedSortOption) {
-    this.selectedSortOption = selectedSortOption;
-    final List<FruitEntity> sortedList = List.from(fruits);
-    switch (selectedSortOption) {
-      case 0:
-        sortedList.sort((a, b) => a.price.compareTo(b.price));
-      case 1:
-        sortedList.sort((a, b) => b.price.compareTo(a.price));
-      case 2:
-        sortedList.sort((a, b) => a.name.compareTo(b.name));
-      default:
-        break;
-    }
-    fruits = sortedList;
-    emit(GetAllProductsSuccess(sortedList));
-  }
-
-  void resetSorting() {
-    selectedSortOption = -1;
-    emit(GetAllProductsSuccess(List.from(_originalFruits)));
   }
 }

@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/checkout/presentation/args/address_args.dart';
@@ -27,12 +27,15 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
   final int currentIndex;
   final AddressArgs addressArgs;
 
-  static const List<String> buttonTexts = ['next', 'next', 'pay_with'];
-
   void _navigateToNextPage() => pageController.nextPage(
     duration: const Duration(milliseconds: 500),
     curve: Curves.easeInOut,
   );
+
+  String _getButtonText() => switch (currentIndex) {
+    0 || 1 => AppStrings.next,
+    _ => AppStrings.confirmOrder,
+  };
 
   @override
   Widget build(BuildContext context) =>
@@ -41,7 +44,7 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
           if (state is AddOrderSuccess) {
             AppToast.show(
               context: context,
-              title: 'order_placed_successfully'.tr(),
+              title: AppStrings.orderPlacedSuccessfully,
               type: ToastificationType.success,
             );
             context.read<CartCubit>().clearCart();
@@ -91,7 +94,7 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
               }
             }
           },
-          text: buttonTexts[currentIndex].tr(),
+          text: _getButtonText(),
           textStyle: AppTextStyles.font16Bold.copyWith(color: Colors.white),
           maxWidth: true,
           isLoading: state is AddOrderLoading || state is MakePaymentLoading,
@@ -112,7 +115,7 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
           clientId: Env.paypalClientId,
           secretKey: Env.paypalSecretKey,
           transactions: [orderModel.toPaypalTransaction()],
-          note: 'contact_us_for_any_questions_on_your_order'.tr(),
+          note: AppStrings.contactUsForAnyQuestionsOnYourOrder,
           onSuccess: (Map params) async {
             context.pop();
             await cubit.addOrder();
@@ -129,7 +132,7 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
             context.pop();
             AppToast.show(
               context: context,
-              title: 'order_cancelled'.tr(),
+              title: AppStrings.orderCancelled,
               type: ToastificationType.error,
             );
           },

@@ -24,7 +24,7 @@ class ProductDetailsBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    padding: EdgeInsets.fromLTRB(20.w, 14.h, 20.w, 16.h),
+    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
     decoration: BoxDecoration(
       color: context.colors.surface,
       borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),

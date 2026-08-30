@@ -5,16 +5,36 @@ sealed class ProductsState {}
 
 final class ProductsInitial extends ProductsState {}
 
-final class GetAllProductsLoading extends ProductsState {}
+final class GetProductsLoading extends ProductsState {}
 
-final class GetAllProductsSuccess extends ProductsState {
-  GetAllProductsSuccess(this.fruits);
+final class GetProductsSuccess extends ProductsState {
+  GetProductsSuccess({
+    required this.fruits,
+    required this.hasMore,
+    this.isLoadingMore = false,
+    required this.filter,
+  });
 
   final List<FruitEntity> fruits;
+  final bool hasMore;
+  final bool isLoadingMore;
+  final ProductsFilterEntity filter;
+
+  GetProductsSuccess copyWith({
+    List<FruitEntity>? fruits,
+    bool? hasMore,
+    bool? isLoadingMore,
+    ProductsFilterEntity? filter,
+  }) => GetProductsSuccess(
+    fruits: fruits ?? this.fruits,
+    hasMore: hasMore ?? this.hasMore,
+    isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+    filter: filter ?? this.filter,
+  );
 }
 
-final class GetAllProductsFailure extends ProductsState {
-  GetAllProductsFailure(this.error);
+final class GetProductsFailure extends ProductsState {
+  GetProductsFailure(this.error);
 
   final String error;
 }
