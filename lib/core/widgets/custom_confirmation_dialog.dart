@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:gap/gap.dart';
 import '../helpers/extensions.dart';
 import '../theming/app_text_styles.dart';
@@ -119,7 +120,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                         onPressed: onConfirm,
                         text: textConfirmButton,
                         textStyle: AppTextStyles.font16SemiBold.copyWith(
-                          color: Colors.white,
+                          color: AppPalette.white,
                         ),
                         backgroundColor: context.colors.primary,
                       ),
@@ -130,7 +131,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                   onPressed: onConfirm,
                   text: textConfirmButton,
                   textStyle: AppTextStyles.font16SemiBold.copyWith(
-                    color: Colors.white,
+                    color: AppPalette.white,
                   ),
                   backgroundColor: context.colors.primary,
                 ),

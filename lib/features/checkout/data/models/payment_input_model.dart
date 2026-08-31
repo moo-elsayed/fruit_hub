@@ -1,10 +1,10 @@
-import '../../../core/services/payment/payment_input_entity.dart';
+import '../../domain/entities/payment_input_entity.dart';
 
 class PaymentInputModel {
   PaymentInputModel({
     required this.amount,
     required this.currency,
-    required this.customerId,
+    this.customerId = '',
   });
 
   factory PaymentInputModel.fromEntity(PaymentInputEntity entity) =>
@@ -17,6 +17,8 @@ class PaymentInputModel {
   final double amount;
   final String currency;
   final String customerId;
+
+  String get amountInCents => (amount * 100).toInt().toString();
 
   PaymentInputEntity toEntity() => PaymentInputEntity(
     amount: amount,

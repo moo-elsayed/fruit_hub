@@ -44,17 +44,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   void _onAddToCart(FruitEntity fruit) {
     final cartCubit = context.read<CartCubit>();
     final quantity = _quantityNotifier.value;
-    final bool alreadyInCart = cartCubit.isInCart(fruit.code);
-
-    if (alreadyInCart) {
-      AppToast.show(
-        context: context,
-        title: AppStrings.itemAlreadyInCart,
-        type: ToastificationType.warning,
-      );
-      return;
-    }
-
     cartCubit.addItemToCart(fruit, quantity: quantity);
   }
 
@@ -69,11 +58,11 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           title: AppStrings.itemAddedToCart,
           type: ToastificationType.success,
         );
-      } else if (state is CartSuccess && state.itemAlreadyExists) {
+      } else if (state is CartSuccess && state.itemRemoved) {
         AppToast.show(
           context: context,
-          title: AppStrings.itemAlreadyInCart,
-          type: ToastificationType.warning,
+          title: AppStrings.itemRemovedFromCart,
+          type: ToastificationType.success,
         );
       } else if (state is CartFailure) {
         AppToast.show(

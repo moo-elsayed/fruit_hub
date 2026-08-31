@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/features/checkout/presentation/widgets/order_summary_row.dart';
 import 'package:gap/gap.dart';
 import '../../../../core/theming/app_text_styles.dart';
 
@@ -26,14 +27,12 @@ class OrderSummary extends StatelessWidget {
     ),
     child: Column(
       children: [
-        _buildRow(
-          context: context,
+        OrderSummaryRow(
           title: AppStrings.subtotal,
           value: '${subtotal.formattedPrice} ${AppStrings.pounds}',
         ),
         Gap(8.h),
-        _buildRow(
-          context: context,
+        OrderSummaryRow(
           title: AppStrings.shipping,
           value: shippingCost == 0
               ? AppStrings.free
@@ -60,30 +59,5 @@ class OrderSummary extends StatelessWidget {
         ),
       ],
     ),
-  );
-
-  Widget _buildRow({
-    required BuildContext context,
-    required String title,
-    required String value,
-    bool freeShipping = false,
-  }) => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Text(
-        title,
-        style: AppTextStyles.font13SemiBold.copyWith(
-          color: context.colors.subText,
-        ),
-      ),
-      Text(
-        value,
-        style: AppTextStyles.font13SemiBold.copyWith(
-          color: freeShipping
-              ? context.colors.primary
-              : context.colors.mainText,
-        ),
-      ),
-    ],
   );
 }

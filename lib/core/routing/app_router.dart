@@ -58,13 +58,14 @@ class AppRouter {
       case Routes.forgetPasswordView:
         return _route(const ForgetPasswordView());
       case Routes.mainView:
+        final initialIndex = settings.arguments as int? ?? 0;
         return _route(
           MultiBlocProvider(
             providers: [
               BlocProvider.value(value: _getCartCubit),
               BlocProvider.value(value: _getFavoriteCubit),
             ],
-            child: const MainView(),
+            child: MainView(initialIndex: initialIndex),
           ),
         );
       case Routes.productsView:

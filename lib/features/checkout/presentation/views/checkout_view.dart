@@ -25,6 +25,7 @@ class CheckoutView extends StatefulWidget {
 class _CheckoutViewState extends State<CheckoutView> {
   late AddressArgs addressArgs;
   late PageController _pageController;
+  late CheckoutCubit _checkoutCubit;
   int currentIndex = 0;
 
   List<String> get steps => [
@@ -38,27 +39,46 @@ class _CheckoutViewState extends State<CheckoutView> {
     super.initState();
     addressArgs = AddressArgs();
     _pageController = PageController();
+    _checkoutCubit = getIt.get<CheckoutCubit>()
+      ..setProducts(widget.cartItems)
+      ..getAddressFromLocalStorage()
+      ..fetchShippingConfig();
   }
 
   @override
   void dispose() {
     addressArgs.dispose();
     _pageController.dispose();
+    _checkoutCubit.close();
     super.dispose();
   }
 
+  void _handleBackNavigation() {
+    if (currentIndex > 0) {
+      _pageController.previousPage(
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      context.pop();
+    }
+  }
+
   @override
-  Widget build(BuildContext context) => BlocProvider(
-    create: (context) => getIt.get<CheckoutCubit>()
-      ..setProducts(widget.cartItems)
-      ..getAddressFromLocalStorage()
-      ..fetchShippingConfig(),
-    child: Builder(
-      builder: (context) => Scaffold(
+  Widget build(BuildContext context) => BlocProvider.value(
+    value: _checkoutCubit,
+    child: PopScope(
+      canPop: currentIndex == 0,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop && currentIndex > 0) {
+          _handleBackNavigation();
+        }
+      },
+      child: Scaffold(
         appBar: CustomAppBar(
           title: steps[currentIndex],
           showArrowBack: true,
-          onTap: () => context.pop(),
+          onTap: _handleBackNavigation,
         ),
         body: Column(
           children: [
@@ -76,16 +96,14 @@ class _CheckoutViewState extends State<CheckoutView> {
             ),
           ],
         ),
-        bottomNavigationBar: MediaQuery.viewInsetsOf(context).bottom != 0
-            ? null
-            : Padding(
-                padding: .symmetric(horizontal: 16.w, vertical: 16.h),
-                child: CheckoutButtonBlocConsumer(
-                  pageController: _pageController,
-                  currentIndex: currentIndex,
-                  addressArgs: addressArgs,
-                ),
-              ),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+          child: CheckoutButtonBlocConsumer(
+            pageController: _pageController,
+            currentIndex: currentIndex,
+            addressArgs: addressArgs,
+          ),
+        ),
       ),
     ),
   );

@@ -1,8 +1,5 @@
-import 'package:dio/dio.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service_imp.dart';
-import 'package:fruit_hub/core/services/payment/payment_service.dart';
 import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
 import 'package:fruit_hub/features/auth/data/data_sources/remote/auth_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/auth_repo_imp.dart';
@@ -56,7 +53,6 @@ import 'package:fruit_hub/features/search/data/repo_imp/search_repo_imp.dart';
 import 'package:fruit_hub/features/search/domain/use_cases/search_fruits_use_case.dart';
 import 'package:fruit_hub/features/search/presentation/managers/search_cubit/search_cubit.dart';
 import 'package:fruit_hub/features/splash/presentation/managers/splash_cubit/splash_cubit.dart';
-import 'package:fruit_hub/shared_data/services/payment/stripe_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -72,10 +68,6 @@ void setupServiceLocator() {
   /// Theming
   getIt.registerLazySingleton<AppThemeCubit>(
     () => AppThemeCubit(getIt<AppPreferencesService>()),
-  );
-
-  getIt.registerSingleton<PaymentService>(
-    StripeService(Dio(), Stripe.instance),
   );
 
   getIt.registerSingleton<AuthRepoImp>(AuthRepoImp(AuthRemoteDataSourceImp()));
@@ -264,9 +256,7 @@ void setupServiceLocator() {
   /// Checkout
   ////////////////////////////
   getIt.registerSingleton<CheckoutRepo>(
-    CheckoutRepoImp(
-      CheckoutRemoteDataSourceImp(paymentService: getIt.get<PaymentService>()),
-    ),
+    CheckoutRepoImp(CheckoutRemoteDataSourceImp()),
   );
 
   getIt.registerSingleton<FetchShippingConfigUseCase>(

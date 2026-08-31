@@ -1,10 +1,10 @@
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/models/fruit_model.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/products/data/models/paginated_products_data.dart';
 import 'package:fruit_hub/features/products/data/models/products_filter_model.dart';
 import 'package:fruit_hub/features/products/domain/entities/paginated_products_entity.dart';
 import 'package:fruit_hub/features/products/domain/entities/products_filter_entity.dart';
-import 'package:fruit_hub/shared_data/models/fruit_model.dart';
 import '../../domain/repo/products_repo.dart';
 import '../data_sources/remote/products_remote_data_source.dart';
 

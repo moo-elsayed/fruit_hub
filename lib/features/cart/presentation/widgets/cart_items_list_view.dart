@@ -13,10 +13,11 @@ class CartItemsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView.separated(
-    padding: EdgeInsets.only(top: 8.h, bottom: 200.h),
+    padding: EdgeInsets.only(bottom: 212.h),
     itemCount: itemCount ?? cartItems!.length,
     separatorBuilder: (context, index) => Gap(8.h),
     itemBuilder: (context, index) => CartItem(
+      key: ValueKey(cartItems?[index].fruitEntity.code),
       cartItemEntity: itemCount != null
           ? const CartItemEntity(fruitEntity: FruitEntity())
           : cartItems![index],

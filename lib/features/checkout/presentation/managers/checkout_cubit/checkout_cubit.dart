@@ -5,15 +5,15 @@ import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/helpers/app_logger.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
-import 'package:fruit_hub/core/services/payment/payment_input_entity.dart';
 import 'package:fruit_hub/features/checkout/data/models/address_model.dart';
+import 'package:fruit_hub/features/checkout/domain/entities/address_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
+import 'package:fruit_hub/features/checkout/domain/entities/payment_input_entity.dart';
+import 'package:fruit_hub/features/checkout/domain/entities/payment_option_entity.dart';
+import 'package:fruit_hub/features/checkout/domain/entities/shipping_config_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/use_cases/add_order_use_case.dart';
+import 'package:fruit_hub/features/checkout/domain/use_cases/fetch_shipping_config_use_case.dart';
 import 'package:fruit_hub/features/checkout/domain/use_cases/make_payment_use_case.dart';
-import '../../../domain/entities/address_entity.dart';
-import '../../../domain/entities/payment_option_entity.dart';
-import '../../../domain/entities/shipping_config_entity.dart';
-import '../../../domain/use_cases/fetch_shipping_config_use_case.dart';
 
 part 'checkout_state.dart';
 
@@ -33,12 +33,14 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   AddressEntity? address;
   PaymentOptionEntity paymentOption = const PaymentOptionEntity();
   bool saveAddress = true;
-  ShippingConfigEntity? shippingConfig;
-  late OrderEntity orderEntity = OrderEntity(
+  ShippingConfigEntity shippingConfig = const ShippingConfigEntity();
+  late final int orderId = _generateOrderId();
+
+  OrderEntity get orderEntity => OrderEntity(
     uid: _appPreferencesService.getUser()?.uid ?? '',
-    orderId: _generateOrderId(),
+    orderId: orderId,
     products: products,
-    address: address!,
+    address: address ?? const AddressEntity(),
     paymentOption: paymentOption,
   );
 
@@ -72,8 +74,9 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     final result = await _fetchShippingConfigUseCase();
     switch (result) {
       case NetworkSuccess<ShippingConfigEntity>():
-        shippingConfig = result.data;
+        shippingConfig = result.data!;
       case NetworkFailure<ShippingConfigEntity>():
+        shippingConfig = const ShippingConfigEntity();
         AppLogger.error(result.error);
     }
   }

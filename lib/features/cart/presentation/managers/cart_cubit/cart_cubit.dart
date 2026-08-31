@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
@@ -27,9 +28,18 @@ class CartCubit extends Cubit<CartState> {
   final ClearCartUseCase _clearCartUseCase;
 
   List<CartItemEntity> _productsInCart = [];
+  final Map<String, Timer> _debounceTimers = {};
+  final Map<String, int> _serverSyncedQuantities = {};
 
   bool isInCart(String productId) =>
       _productsInCart.any((item) => item.fruitEntity.code == productId);
+
+  CartItemEntity? getCartItem(String productId) {
+    final index = _productsInCart.indexWhere(
+      (item) => item.fruitEntity.code == productId,
+    );
+    return index != -1 ? _productsInCart[index] : null;
+  }
 
   List<CartItemEntity> get productsInCart => _productsInCart;
 
@@ -51,20 +61,19 @@ class CartCubit extends Cubit<CartState> {
       productId,
       quantity: quantity,
     );
-    switch (result) {
-      case NetworkSuccess<void>():
-        break;
-      case NetworkFailure<void>():
-        // Revert on failure
-        _productsInCart.removeWhere(
-          (item) => item.fruitEntity.code == productId,
-        );
-        _emitCartSuccess();
-        emit(CartFailure(result.error));
+    if (result is NetworkFailure<void>) {
+      // Revert on failure
+      _productsInCart.removeWhere((item) => item.fruitEntity.code == productId);
+      _emitCartSuccess();
+      emit(CartFailure(result.error));
     }
   }
 
   Future<void> removeItemFromCart(String productId) async {
+    _debounceTimers[productId]?.cancel();
+    _debounceTimers.remove(productId);
+    _serverSyncedQuantities.remove(productId);
+
     final int index = _productsInCart.indexWhere(
       (item) => item.fruitEntity.code == productId,
     );
@@ -78,18 +87,21 @@ class CartCubit extends Cubit<CartState> {
 
     // 2. Background server call
     final result = await _removeItemFromCartUseCase.call(productId);
-    switch (result) {
-      case NetworkSuccess<void>():
-        break;
-      case NetworkFailure<void>():
-        // Revert on failure
-        _productsInCart.insert(index, removedItem);
-        _emitCartSuccess();
-        emit(CartFailure(result.error));
+    if (result is NetworkFailure<void>) {
+      // Revert on failure
+      _productsInCart.insert(index, removedItem);
+      _emitCartSuccess();
+      emit(CartFailure(result.error));
     }
   }
 
   Future<void> clearCart() async {
+    for (final timer in _debounceTimers.values) {
+      timer.cancel();
+    }
+    _debounceTimers.clear();
+    _serverSyncedQuantities.clear();
+
     emit(CartLoading());
     final result = await _clearCartUseCase.call();
     switch (result) {
@@ -119,54 +131,69 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<void> incrementItemQuantity(String productId) async {
-    await _updateQuantityOptimistically(
-      productId: productId,
-      isIncrement: true,
-    );
-  }
+  void incrementItemQuantity(String productId) =>
+      _updateQuantityOptimistically(productId: productId, isIncrement: true);
 
-  Future<void> decrementItemQuantity(String productId) async {
-    await _updateQuantityOptimistically(
-      productId: productId,
-      isIncrement: false,
-    );
-  }
+  void decrementItemQuantity(String productId) =>
+      _updateQuantityOptimistically(productId: productId, isIncrement: false);
 
-  Future<void> _updateQuantityOptimistically({
+  void _updateQuantityOptimistically({
     required String productId,
     required bool isIncrement,
-  }) async {
+  }) {
     final index = _productsInCart.indexWhere(
       (e) => e.fruitEntity.code == productId,
     );
     if (index == -1) return;
 
     final currentItem = _productsInCart[index];
-    final int oldQuantity = currentItem.quantity;
-    final int newQuantity = isIncrement ? oldQuantity + 1 : oldQuantity - 1;
+    final int currentQuantity = currentItem.quantity;
+    final int newQuantity = isIncrement
+        ? currentQuantity + 1
+        : currentQuantity - 1;
 
     if (newQuantity == 0) {
-      await removeItemFromCart(productId);
+      removeItemFromCart(productId);
       return;
     }
 
+    // Save the baseline server-synced quantity before debounce sequence starts
+    _serverSyncedQuantities.putIfAbsent(productId, () => currentQuantity);
+
+    // 1. Instant optimistic local update (0ms UI latency)
     _updateLocalListQuantity(productId, newQuantity);
     _emitCartSuccess();
 
-    final result = await _updateItemQuantityUseCase.call(
-      productId: productId,
-      newQuantity: newQuantity,
+    // 2. Debounce server sync
+    _debounceTimers[productId]?.cancel();
+    _debounceTimers[productId] = Timer(
+      const Duration(milliseconds: 500),
+      () async {
+        _debounceTimers.remove(productId);
+
+        final itemIndex = _productsInCart.indexWhere(
+          (e) => e.fruitEntity.code == productId,
+        );
+        if (itemIndex == -1) return;
+        final targetQuantity = _productsInCart[itemIndex].quantity;
+
+        final result = await _updateItemQuantityUseCase.call(
+          productId: productId,
+          newQuantity: targetQuantity,
+        );
+
+        switch (result) {
+          case NetworkSuccess<void>():
+            _serverSyncedQuantities.remove(productId);
+          case NetworkFailure<void>():
+            final fallbackQuantity =
+                _serverSyncedQuantities.remove(productId) ?? currentQuantity;
+            _updateLocalListQuantity(productId, fallbackQuantity);
+            _emitCartSuccess();
+            emit(CartFailure(result.error));
+        }
+      },
     );
-
-    switch (result) {
-      case NetworkSuccess<void>():
-        break;
-
-      case NetworkFailure<void>():
-        _updateLocalListQuantity(productId, oldQuantity);
-        _emitCartSuccess();
-    }
   }
 
   // -----------------------------------------------
@@ -200,5 +227,15 @@ class CartCubit extends Cubit<CartState> {
       final oldItem = _productsInCart[productIndex];
       _productsInCart[productIndex] = oldItem.copyWith(quantity: quantity);
     }
+  }
+
+  @override
+  Future<void> close() {
+    for (final timer in _debounceTimers.values) {
+      timer.cancel();
+    }
+    _debounceTimers.clear();
+    _serverSyncedQuantities.clear();
+    return super.close();
   }
 }

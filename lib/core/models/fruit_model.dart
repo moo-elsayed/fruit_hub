@@ -1,5 +1,5 @@
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
-import 'package:fruit_hub/shared_data/models/review_model.dart';
+import 'package:fruit_hub/core/models/review_model.dart';
 
 class FruitModel {
   FruitModel({

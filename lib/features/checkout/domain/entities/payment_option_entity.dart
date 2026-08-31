@@ -14,14 +14,14 @@ class PaymentOptionEntity {
   final double shippingCost;
 }
 
-List<PaymentOptionEntity> getPaymentOptions(
-  ShippingConfigEntity shippingConfig,
-) => [
+List<PaymentOptionEntity> getPaymentOptions([
+  ShippingConfigEntity? shippingConfig,
+]) => [
   PaymentOptionEntity(title: AppStrings.payByPaypal, type: .paypal),
   PaymentOptionEntity(title: AppStrings.payByCreditCard, type: .card),
   PaymentOptionEntity(
     title: AppStrings.cashOnDelivery,
     type: .cash,
-    shippingCost: shippingConfig.shippingCost,
+    shippingCost: shippingConfig?.shippingCost ?? 0,
   ),
 ];

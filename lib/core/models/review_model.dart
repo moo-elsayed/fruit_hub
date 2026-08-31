@@ -1,4 +1,4 @@
-import '../../core/entities/review_entity.dart';
+import 'package:fruit_hub/core/entities/review_entity.dart';
 
 class ReviewModel {
   ReviewModel({

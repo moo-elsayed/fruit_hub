@@ -1,6 +1,6 @@
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/models/fruit_model.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
-import 'package:fruit_hub/shared_data/models/fruit_model.dart';
 import '../../domain/repo/search_repo.dart';
 import '../data_sources/remote/search_remote_data_source.dart';
 

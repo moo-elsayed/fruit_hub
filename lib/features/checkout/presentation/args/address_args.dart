@@ -23,7 +23,7 @@ class AddressArgs {
   final TextEditingController floorController;
   final TextEditingController apartmentController;
 
-  bool get isValid => formKey.currentState!.validate();
+  bool get isValid => formKey.currentState?.validate() ?? false;
 
   void dispose() {
     nameController.dispose();

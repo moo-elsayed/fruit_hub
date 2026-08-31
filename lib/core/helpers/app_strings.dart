@@ -126,6 +126,7 @@ abstract class AppStrings {
   static String get apply => 'apply'.tr();
   static String get reset => 'reset'.tr();
   static String get addToCart => 'add_to_cart'.tr();
+  static String get viewCart => 'view_cart'.tr();
   static String get validity => 'validity'.tr();
   static String get days => 'days'.tr();
   static String get organic => 'organic'.tr();

@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fruit_hub/core/errors/exceptions.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
+import 'package:fruit_hub/core/models/fruit_model.dart';
 import 'package:fruit_hub/core/network/api_helper.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/products/data/models/paginated_products_data.dart';
 import 'package:fruit_hub/features/products/data/models/products_filter_model.dart';
-import 'package:fruit_hub/shared_data/models/fruit_model.dart';
+
 import 'products_remote_data_source.dart';
 
 class ProductsRemoteDataSourceImp implements ProductsRemoteDataSource {

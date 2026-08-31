@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruit_hub/core/errors/exceptions.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
+import 'package:fruit_hub/core/models/fruit_model.dart';
 import 'package:fruit_hub/core/network/api_helper.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/favorites/data/data_sources/remote/favorites_remote_data_source.dart';
-import 'package:fruit_hub/shared_data/models/fruit_model.dart';
 
 class FavoritesRemoteDataSourceImp implements FavoritesRemoteDataSource {
   FavoritesRemoteDataSourceImp({

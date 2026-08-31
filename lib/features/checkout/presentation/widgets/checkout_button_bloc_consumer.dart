@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
+import 'package:fruit_hub/core/enums/payment_method_type.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/checkout/presentation/args/address_args.dart';
 import 'package:toastification/toastification.dart';
@@ -72,22 +74,24 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
         builder: (context, state) => CustomMaterialButton(
           onPressed: () {
             final cubit = context.read<CheckoutCubit>();
-            if (currentIndex == 0 &&
-                addressArgs.isValid &&
-                cubit.shippingConfig != null) {
-              cubit.setAddress(addressArgs.toEntity());
-              _navigateToNextPage();
+            if (currentIndex == 0) {
+              if (addressArgs.isValid) {
+                cubit.setAddress(addressArgs.toEntity());
+                _navigateToNextPage();
+              }
+              return;
             }
             if (currentIndex == 1) {
               _navigateToNextPage();
+              return;
             }
             if (currentIndex == 2) {
-              if (cubit.paymentOption.type == .paypal) {
+              if (cubit.paymentOption.type == PaymentMethodType.paypal) {
                 _executePaypalPayment(
                   context: context,
                   orderEntity: cubit.orderEntity,
                 );
-              } else if (cubit.paymentOption.type == .card) {
+              } else if (cubit.paymentOption.type == PaymentMethodType.card) {
                 cubit.makePayment();
               } else {
                 cubit.addOrder();
@@ -95,7 +99,7 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
             }
           },
           text: _getButtonText(),
-          textStyle: AppTextStyles.font16Bold.copyWith(color: Colors.white),
+          textStyle: AppTextStyles.font16Bold.copyWith(color: AppPalette.white),
           maxWidth: true,
           isLoading: state is AddOrderLoading || state is MakePaymentLoading,
         ),

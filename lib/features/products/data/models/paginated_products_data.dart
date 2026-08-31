@@ -1,4 +1,4 @@
-import 'package:fruit_hub/shared_data/models/fruit_model.dart';
+import 'package:fruit_hub/core/models/fruit_model.dart';
 
 class PaginatedProductsData {
   const PaginatedProductsData({

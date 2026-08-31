@@ -16,22 +16,23 @@ class PaymentBody extends StatefulWidget {
 }
 
 class _PaymentBodyState extends State<PaymentBody> {
-  late int selectedPaymentOption;
+  int selectedPaymentOption = 0;
 
   @override
   void initState() {
     super.initState();
     final cubit = context.read<CheckoutCubit>();
-    selectedPaymentOption = getPaymentOptions(
-      cubit.shippingConfig!,
-    ).indexWhere((element) => element.type == cubit.paymentOption.type);
+    final options = getPaymentOptions(cubit.shippingConfig);
+    final index = options.indexWhere(
+      (element) => element.type == cubit.paymentOption.type,
+    );
+    selectedPaymentOption = index != -1 ? index : 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    final paymentOptions = getPaymentOptions(
-      context.read<CheckoutCubit>().shippingConfig!,
-    );
+    final cubit = context.read<CheckoutCubit>();
+    final paymentOptions = getPaymentOptions(cubit.shippingConfig);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -50,9 +51,7 @@ class _PaymentBodyState extends State<PaymentBody> {
               onTap: (paymentOptionEntity) {
                 setState(() {
                   selectedPaymentOption = index;
-                  context.read<CheckoutCubit>().setPaymentOption(
-                    paymentOptionEntity,
-                  );
+                  cubit.setPaymentOption(paymentOptionEntity);
                 });
               },
               isSelected: selectedPaymentOption == index,

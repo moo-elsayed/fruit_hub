@@ -1,10 +1,12 @@
 import 'package:fruit_hub/core/network/network_response.dart';
-import 'package:fruit_hub/core/services/payment/payment_input_entity.dart';
-import 'package:fruit_hub/core/services/payment/payment_output_entity.dart';
 import 'package:fruit_hub/features/checkout/data/data_sources/remote/checkout_remote_data_source.dart';
 import 'package:fruit_hub/features/checkout/data/models/order_model.dart';
+import 'package:fruit_hub/features/checkout/data/models/payment_input_model.dart';
+import 'package:fruit_hub/features/checkout/data/models/payment_output_model.dart';
 import 'package:fruit_hub/features/checkout/data/models/shipping_config_model.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
+import 'package:fruit_hub/features/checkout/domain/entities/payment_input_entity.dart';
+import 'package:fruit_hub/features/checkout/domain/entities/payment_output_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/shipping_config_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/repo/checkout_repo.dart';
 
@@ -33,5 +35,14 @@ class CheckoutRepoImp implements CheckoutRepo {
   @override
   Future<NetworkResponse<PaymentOutputEntity>> makePayment(
     PaymentInputEntity input,
-  ) async => await _checkoutRemoteDataSource.makePayment(input);
+  ) async {
+    final model = PaymentInputModel.fromEntity(input);
+    final response = await _checkoutRemoteDataSource.makePayment(model);
+    switch (response) {
+      case NetworkSuccess<PaymentOutputModel>():
+        return NetworkSuccess(response.data!.toEntity());
+      case NetworkFailure<PaymentOutputModel>():
+        return NetworkFailure(response.failure);
+    }
+  }
 }

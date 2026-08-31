@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/widgets/custom_empty_state_widget.dart';
@@ -21,9 +20,6 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
-  var cartItemsList = <CartItemEntity>[];
-  num totalPrice = 0;
-
   @override
   void initState() {
     super.initState();
@@ -38,82 +34,78 @@ class _CartState extends State<Cart> {
         Gap(12.h),
         MainScreenHeader(title: AppStrings.cartAppBar),
         Gap(12.h),
-        BlocConsumer<CartCubit, CartState>(
-          listener: (context, state) {
-            if (state is CartSuccess) {
-              cartItemsList = state.items;
-              totalPrice = state.totalPrice.formattedPrice;
-            }
-          },
-          builder: (context, state) {
-            if (state is CartLoading && !state.itemRemoved) {
-              return Skeletonizer(
-                enabled: true,
-                child: ProductsCount(count: cartItemsList.length),
-              );
-            }
-            if (cartItemsList.isNotEmpty) {
-              return ProductsCount(count: cartItemsList.length);
-            }
-            return const SizedBox.shrink();
-          },
-        ),
         Expanded(
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              BlocBuilder<CartCubit, CartState>(
-                builder: (context, state) {
-                  if (state is CartLoading && !state.itemRemoved) {
-                    return const Skeletonizer(
+          child: BlocBuilder<CartCubit, CartState>(
+            builder: (context, state) {
+              if (state is CartLoading && !state.itemRemoved) {
+                return Column(
+                  children: [
+                    const Skeletonizer(
                       enabled: true,
-                      child: CartItemsListView(itemCount: 3),
-                    );
-                  }
-                  if (cartItemsList.isEmpty) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 85.h),
-                      child: CustomEmptyStateWidget(
-                        customIcon: Container(
-                          width: 100.w,
-                          height: 100.h,
-                          decoration: BoxDecoration(
-                            color: context.colors.primary.withValues(
-                              alpha: 0.1,
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: Icon(
-                              Icons.shopping_cart_outlined,
-                              size: 48.r,
-                              color: context.colors.primary,
-                            ),
-                          ),
-                        ),
-                        title: AppStrings.shoppingCart,
-                        text: AppStrings.emptyCartSubtitle,
+                      child: ProductsCount(count: 3),
+                    ),
+                    Gap(12.h),
+                    const Expanded(
+                      child: Skeletonizer(
+                        enabled: true,
+                        child: CartItemsListView(itemCount: 3),
                       ),
-                    );
-                  }
-                  return CartItemsListView(cartItems: cartItemsList);
-                },
-              ),
-              BlocBuilder<CartCubit, CartState>(
-                builder: (context, state) {
-                  if (cartItemsList.isEmpty) return const SizedBox.shrink();
-                  return Positioned(
+                    ),
+                  ],
+                );
+              }
+
+              final items = state is CartSuccess
+                  ? state.items
+                  : context.read<CartCubit>().productsInCart;
+              final totalPrice = state is CartSuccess
+                  ? state.totalPrice.formattedPrice
+                  : 0;
+
+              if (items.isEmpty) {
+                return CustomEmptyStateWidget(
+                  customIcon: Container(
+                    width: 100.w,
+                    height: 100.h,
+                    decoration: BoxDecoration(
+                      color: context.colors.primary.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.shopping_cart_outlined,
+                        size: 48.r,
+                        color: context.colors.primary,
+                      ),
+                    ),
+                  ),
+                  title: AppStrings.shoppingCart,
+                  text: AppStrings.emptyCartSubtitle,
+                );
+              }
+
+              return Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Column(
+                    children: [
+                      ProductsCount(count: items.length),
+                      Gap(12.h),
+                      Expanded(child: CartItemsListView(cartItems: items)),
+                    ],
+                  ),
+                  Positioned(
                     bottom: 85.h,
                     left: 0,
                     right: 0,
                     child: CartCheckoutBottomBar(
-                      cartItems: cartItemsList,
+                      cartItems: items,
                       totalPrice: totalPrice,
                     ),
-                  );
-                },
-              ),
-            ],
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ],

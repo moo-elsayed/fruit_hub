@@ -12,19 +12,26 @@ import 'package:fruit_hub/features/favorites/presentation/views/favorites.dart';
 import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cubit.dart';
 import 'package:fruit_hub/features/home/presentation/views/home.dart';
 import 'package:fruit_hub/features/main/presentation/items/nav_bar_item.dart';
+import 'package:fruit_hub/features/main/presentation/managers/main_tab_notifier.dart';
 import 'package:fruit_hub/features/main/presentation/widgets/custom_bottom_navigation_bar.dart';
 import 'package:fruit_hub/features/profile/presentation/views/profile.dart';
 import 'package:toastification/toastification.dart';
 
 class MainView extends StatefulWidget {
-  const MainView({super.key});
+  const MainView({super.key, this.initialIndex = 0});
+
+  final int initialIndex;
 
   @override
   State<MainView> createState() => _MainViewState();
 }
 
 class _MainViewState extends State<MainView> {
-  int _currentIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    MainTabNotifier.currentTab.value = widget.initialIndex;
+  }
 
   final List<Widget> _screens = [
     BlocProvider(
@@ -67,51 +74,54 @@ class _MainViewState extends State<MainView> {
     // Listen to locale changes so nav items and screens rebuild dynamically
     final _ = EasyLocalization.of(context)?.locale;
 
-    return PopScope(
-      canPop: _currentIndex == 0,
-      onPopInvokedWithResult: (didPop, result) {
-        if (!didPop && _currentIndex != 0) {
-          setState(() => _currentIndex = 0);
-        }
-      },
-      child: BlocListener<CartCubit, CartState>(
-        listenWhen: (previous, current) =>
-            current is CartSuccess || current is CartFailure,
-        listener: (context, state) {
-          if (ModalRoute.of(context)?.isCurrent != true) return;
-          if (state is CartSuccess &&
-              (state.itemRemoved || state.newItemAdded)) {
-            AppToast.show(
-              context: context,
-              title: state.newItemAdded
-                  ? AppStrings.itemAddedToCart
-                  : AppStrings.itemRemovedFromCart,
-              type: ToastificationType.success,
-            );
-          } else if (state is CartSuccess && state.itemAlreadyExists) {
-            AppToast.show(
-              context: context,
-              title: AppStrings.itemAlreadyInCart,
-              type: ToastificationType.warning,
-            );
-          } else if (state is CartFailure) {
-            AppToast.show(
-              context: context,
-              title: state.errorMessage,
-              type: ToastificationType.error,
-            );
+    return ValueListenableBuilder<int>(
+      valueListenable: MainTabNotifier.currentTab,
+      builder: (context, currentIndex, _) => PopScope(
+        canPop: currentIndex == 0,
+        onPopInvokedWithResult: (didPop, result) {
+          if (!didPop && currentIndex != 0) {
+            MainTabNotifier.switchToTab(0);
           }
         },
-        child: Scaffold(
-          extendBody: true,
-          body: SafeArea(
-            bottom: false,
-            child: IndexedStack(index: _currentIndex, children: _screens),
-          ),
-          bottomNavigationBar: CustomBottomNavigationBar(
-            currentIndex: _currentIndex,
-            items: _navItems,
-            onTabSelected: (index) => setState(() => _currentIndex = index),
+        child: BlocListener<CartCubit, CartState>(
+          listenWhen: (previous, current) =>
+              current is CartSuccess || current is CartFailure,
+          listener: (context, state) {
+            if (ModalRoute.of(context)?.isCurrent != true) return;
+            if (state is CartSuccess &&
+                (state.itemRemoved || state.newItemAdded)) {
+              AppToast.show(
+                context: context,
+                title: state.newItemAdded
+                    ? AppStrings.itemAddedToCart
+                    : AppStrings.itemRemovedFromCart,
+                type: ToastificationType.success,
+              );
+            } else if (state is CartSuccess && state.itemAlreadyExists) {
+              AppToast.show(
+                context: context,
+                title: AppStrings.itemAlreadyInCart,
+                type: ToastificationType.warning,
+              );
+            } else if (state is CartFailure) {
+              AppToast.show(
+                context: context,
+                title: state.errorMessage,
+                type: ToastificationType.error,
+              );
+            }
+          },
+          child: Scaffold(
+            extendBody: true,
+            body: SafeArea(
+              bottom: false,
+              child: IndexedStack(index: currentIndex, children: _screens),
+            ),
+            bottomNavigationBar: CustomBottomNavigationBar(
+              currentIndex: currentIndex,
+              items: _navItems,
+              onTabSelected: (index) => MainTabNotifier.switchToTab(index),
+            ),
           ),
         ),
       ),

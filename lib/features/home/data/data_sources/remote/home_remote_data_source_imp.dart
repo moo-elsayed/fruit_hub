@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
+import 'package:fruit_hub/core/models/fruit_model.dart';
 import 'package:fruit_hub/core/network/api_helper.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
-import 'package:fruit_hub/shared_data/models/fruit_model.dart';
+
 import 'home_remote_data_source.dart';
 
 class HomeRemoteDataSourceImp implements HomeRemoteDataSource {
