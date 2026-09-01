@@ -20,6 +20,10 @@
 ## Theming & Color Management
 - **Strict Color System Usage**: Never use hardcoded colors (e.g., `Colors.white`, `Colors.black`, raw hex `Color(0xFF...)`) outside the theme definition. Always access colors via `context.colors` (`ColorsManager`) or directly through `AppPalette`.
 
+## Routing & Navigation Guidelines
+- **Unified Navigation via `context` Extensions**: Always use the project's centralized navigation extensions on `BuildContext` (`context.pushNamed(Routes.xxx, arguments: ...)`, `context.pushReplacementNamed(...)`, `context.pop(...)`). Direct use of `Navigator.push` / `MaterialPageRoute` is strictly prohibited.
+- **Centralized Route Registration**: All views must have their route named constant in `Routes` and handled inside `AppRouter` (`generateRoute`).
+
 ## Performance Best Practices
 - Always enforce performance best practices (e.g., using `const` constructors where possible, avoiding heavy work inside `build` methods, optimizing list view builders and animations).
 

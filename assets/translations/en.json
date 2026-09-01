@@ -208,5 +208,21 @@
   "no_products_found": "No matching products found",
   "categories": "Categories",
   "weight": "Weight",
-  "per_100_gram": "Per 100g"
+  "per_100_gram": "Per 100g",
+  "select_location_on_map": "Select Location on Map",
+  "confirm_location": "Confirm Location",
+  "locating": "Locating...",
+  "location_permission_denied": "Location permission denied",
+  "location_services_disabled": "Location services are disabled on your device",
+  "selected_location": "Selected Location",
+  "move_map_to_pick": "Move map to pin your location",
+  "current_location": "Current Location",
+  "map_instructions": "Pin your exact location for smooth delivery",
+  "pin_location_hint": "Drag map to adjust delivery point",
+  "gps_disabled": "Location services are disabled, please enable GPS",
+  "location_permission_permanently_denied": "Location permission is permanently denied, please enable it from settings",
+  "select_location_from_map": "Select Location from Map",
+  "drag_map_to_select_location": "Drag map to select delivery location accurately",
+  "unknown_area": "Unknown Area",
+  "please_select_location_on_map": "Please select your location on the map first"
 }

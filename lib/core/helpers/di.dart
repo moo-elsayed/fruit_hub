@@ -1,5 +1,6 @@
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service_imp.dart';
+import 'package:fruit_hub/core/services/location/location_service.dart';
 import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
 import 'package:fruit_hub/features/auth/data/data_sources/remote/auth_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/auth_repo_imp.dart';
@@ -64,6 +65,9 @@ void setupServiceLocator() {
     final sharedPreferences = await SharedPreferences.getInstance();
     return AppPreferencesServiceImpl(sharedPreferences);
   });
+
+  /// Location Service
+  getIt.registerLazySingleton<LocationService>(() => LocationService());
 
   /// Theming
   getIt.registerLazySingleton<AppThemeCubit>(

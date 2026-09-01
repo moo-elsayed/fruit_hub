@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
+import 'package:fruit_hub/features/auth/domain/entities/sign_up_input_entity.dart';
 import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
 
@@ -13,17 +14,9 @@ class SignupCubit extends Cubit<SignupState> {
   final CreateUserWithEmailAndPasswordUseCase
   _createUserWithEmailAndPasswordUseCase;
 
-  Future<void> createUserWithEmailAndPassword({
-    required String email,
-    required String password,
-    required String username,
-  }) async {
+  Future<void> createUserWithEmailAndPassword(SignUpInputEntity input) async {
     emit(SignUpLoading());
-    final result = await _createUserWithEmailAndPasswordUseCase.call(
-      email: email,
-      password: password,
-      username: username,
-    );
+    final result = await _createUserWithEmailAndPasswordUseCase.call(input);
     switch (result) {
       case NetworkSuccess<UserEntity>():
         emit(SignUpSuccess());

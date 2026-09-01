@@ -28,6 +28,14 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
   }
 
   @override
+  void didUpdateWidget(CustomCheckBox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value) {
+      _myBool = widget.value;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) => GestureDetector(
     onTap: () {
       setState(() {

@@ -6,7 +6,8 @@ import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
 import 'package:fruit_hub/core/network/api_helper.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
-import 'package:fruit_hub/features/auth/data/models/user_model.dart';
+import '../../models/sign_up_input_model.dart';
+import '../../models/user_model.dart';
 import 'auth_remote_data_source.dart';
 
 class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
@@ -24,15 +25,13 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   static const String _usersCollection = BackendEndpoints.usersCollection;
 
   @override
-  Future<NetworkResponse<UserModel>> createUserWithEmailAndPassword({
-    required String email,
-    required String password,
-    required String username,
-  }) async => ApiHelper.executeSafely(() async {
+  Future<NetworkResponse<UserModel>> createUserWithEmailAndPassword(
+    SignUpInputModel input,
+  ) async => ApiHelper.executeSafely(() async {
     try {
       final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: input.email,
+        password: input.password,
       );
 
       final user = userCredential.user;
@@ -40,12 +39,13 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
         throw BusinessException(AppStrings.unexpectedError);
       }
 
-      await user.updateDisplayName(username);
+      await user.updateDisplayName(input.username);
 
       final userModel = UserModel(
         uid: user.uid,
-        name: username,
-        email: email,
+        name: input.username,
+        email: input.email,
+        phone: input.phone,
         isVerified: user.emailVerified,
       );
 
@@ -215,9 +215,19 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
           : userModel.name;
       storedUserData['name'] = resolvedName;
 
+      final String storedPhone =
+          (storedUserData['phone'] ?? storedUserData['phoneNumber'] ?? '')
+              .toString()
+              .trim();
+      final String resolvedPhone = storedPhone.isNotEmpty
+          ? storedPhone
+          : userModel.phone;
+      storedUserData['phone'] = resolvedPhone;
+
       await _firestore.collection(_usersCollection).doc(userModel.uid).update({
         'isVerified': isVerifiedNow,
         if (resolvedName.isNotEmpty) 'name': resolvedName,
+        if (resolvedPhone.isNotEmpty) 'phone': resolvedPhone,
       });
       return UserModel.fromJson(storedUserData);
     } else {

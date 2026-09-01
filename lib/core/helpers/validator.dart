@@ -116,9 +116,6 @@ class Validator {
     if (val == null || val.trim().isEmpty) {
       return AppStrings.buildingNumberCannotBeEmpty;
     }
-    if (int.tryParse(val) == null) {
-      return AppStrings.itMustBeANumber;
-    }
     return null;
   }
 
@@ -126,18 +123,12 @@ class Validator {
     if (val == null || val.trim().isEmpty) {
       return AppStrings.floorNumberCannotBeEmpty;
     }
-    if (int.tryParse(val) == null) {
-      return AppStrings.itMustBeANumber;
-    }
     return null;
   }
 
   static String? validateApartmentNumber(String? val) {
     if (val == null || val.trim().isEmpty) {
       return AppStrings.apartmentNumberCannotBeEmpty;
-    }
-    if (int.tryParse(val) == null) {
-      return AppStrings.itMustBeANumber;
     }
     return null;
   }

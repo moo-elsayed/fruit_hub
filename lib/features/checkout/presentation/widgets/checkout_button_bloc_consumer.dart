@@ -76,6 +76,14 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
             final cubit = context.read<CheckoutCubit>();
             if (currentIndex == 0) {
               if (addressArgs.isValid) {
+                if (!addressArgs.hasLocation) {
+                  AppToast.show(
+                    context: context,
+                    title: AppStrings.pleaseSelectLocationOnMap,
+                    type: ToastificationType.warning,
+                  );
+                  return;
+                }
                 cubit.setAddress(addressArgs.toEntity());
                 _navigateToNextPage();
               }

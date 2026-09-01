@@ -208,5 +208,21 @@
   "no_products_found": "لم يتم العثور على أي منتجات مطابقة",
   "categories": "الأقسام",
   "weight": "الوزن",
-  "per_100_gram": "لكل 100 جرام"
+  "per_100_gram": "لكل 100 جرام",
+  "select_location_on_map": "تحديد الموقع من الخريطة",
+  "confirm_location": "تأكيد الموقع",
+  "locating": "جاري تحديد الموقع...",
+  "location_permission_denied": "تم رفض إذن الوصول إلى الموقع",
+  "location_services_disabled": "خدمات الموقع غير مفعلة على جهازك",
+  "selected_location": "الموقع المحدد",
+  "move_map_to_pick": "حرك الخريطة لاختيار موقعك بدقة",
+  "current_location": "موقعي الحالي",
+  "map_instructions": "اختر موقعك بدقة لتسهيل وصول المندوب إليك",
+  "pin_location_hint": "انقر أو حرك الدبوس لتحديد المكان",
+  "gps_disabled": "خدمات الموقع غير مفعلة، يرجى تفعيل الـ GPS",
+  "location_permission_permanently_denied": "تم رفض إذن الموقع بشكل دائم، يرجى تفعيله من الإعدادات",
+  "select_location_from_map": "تحديد الموقع من الخريطة",
+  "drag_map_to_select_location": "حرّك الخريطة لتحديد مكان التوصيل بدقة",
+  "unknown_area": "منطقة غير معروفة",
+  "please_select_location_on_map": "يرجى تحديد موقعك على الخريطة أولاً"
 }

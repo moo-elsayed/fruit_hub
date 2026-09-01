@@ -10,7 +10,9 @@ import 'package:fruit_hub/features/auth/presentation/views/login_view.dart';
 import 'package:fruit_hub/features/auth/presentation/views/register_view.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
+import 'package:fruit_hub/features/checkout/presentation/args/location_picker_args.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
+import 'package:fruit_hub/features/checkout/presentation/views/location_picker_view.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/order_success_view.dart';
 import 'package:fruit_hub/features/favorites/presentation/managers/favorite_cubit/favorite_cubit.dart';
 import 'package:fruit_hub/features/main/presentation/views/main_view.dart';
@@ -122,6 +124,14 @@ class AppRouter {
       case Routes.orderSuccessView:
         final args = settings.arguments as OrderEntity;
         return _route(OrderSuccessView(orderEntity: args));
+      case Routes.locationPickerView:
+        final args = settings.arguments as LocationPickerArgs?;
+        return _route(
+          LocationPickerView(
+            initialLatitude: args?.latitude,
+            initialLongitude: args?.longitude,
+          ),
+        );
       default:
         return null;
     }

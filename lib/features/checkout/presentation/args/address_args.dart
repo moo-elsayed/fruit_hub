@@ -22,8 +22,11 @@ class AddressArgs {
   final TextEditingController buildingController;
   final TextEditingController floorController;
   final TextEditingController apartmentController;
+  double? latitude;
+  double? longitude;
 
   bool get isValid => formKey.currentState?.validate() ?? false;
+  bool get hasLocation => latitude != null && longitude != null;
 
   void dispose() {
     nameController.dispose();
@@ -45,6 +48,13 @@ class AddressArgs {
     buildingController.text = address.buildingNumber;
     floorController.text = address.floorNumber;
     apartmentController.text = address.apartmentNumber;
+    latitude = address.latitude;
+    longitude = address.longitude;
+  }
+
+  void setCoordinates({required double lat, required double lng}) {
+    latitude = lat;
+    longitude = lng;
   }
 
   AddressEntity toEntity() => AddressEntity(
@@ -56,5 +66,7 @@ class AddressArgs {
     buildingNumber: buildingController.text,
     floorNumber: floorController.text,
     apartmentNumber: apartmentController.text,
+    latitude: latitude,
+    longitude: longitude,
   );
 }

@@ -1,5 +1,7 @@
 import 'package:fruit_hub/core/network/network_response.dart';
+import 'package:fruit_hub/features/auth/data/models/sign_up_input_model.dart';
 import 'package:fruit_hub/features/auth/data/models/user_model.dart';
+import 'package:fruit_hub/features/auth/domain/entities/sign_up_input_entity.dart';
 import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
 import '../../domain/repo/auth_repo.dart';
 import '../data_sources/remote/auth_remote_data_source.dart';
@@ -10,15 +12,11 @@ class AuthRepoImp implements AuthRepo {
   final AuthRemoteDataSource _authRemoteDataSource;
 
   @override
-  Future<NetworkResponse<UserEntity>> createUserWithEmailAndPassword({
-    required String email,
-    required String password,
-    required String username,
-  }) async {
+  Future<NetworkResponse<UserEntity>> createUserWithEmailAndPassword(
+    SignUpInputEntity input,
+  ) async {
     final response = await _authRemoteDataSource.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-      username: username,
+      SignUpInputModel.fromEntity(input),
     );
     return _mapToEntityResponse(response);
   }

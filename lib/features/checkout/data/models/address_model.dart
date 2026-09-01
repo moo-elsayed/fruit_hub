@@ -10,6 +10,8 @@ class AddressModel {
     required this.streetName,
     required this.floorNumber,
     required this.apartmentNumber,
+    this.latitude,
+    this.longitude,
   });
 
   factory AddressModel.fromJson(Map<String, dynamic> map) => AddressModel(
@@ -21,6 +23,12 @@ class AddressModel {
     buildingNumber: map['building_number'] ?? '',
     floorNumber: map['floor_number'] ?? '',
     apartmentNumber: map['apartment_number'] ?? '',
+    latitude: map['latitude'] != null
+        ? (map['latitude'] as num).toDouble()
+        : null,
+    longitude: map['longitude'] != null
+        ? (map['longitude'] as num).toDouble()
+        : null,
   );
 
   factory AddressModel.fromEntity(AddressEntity entity) => AddressModel(
@@ -32,6 +40,8 @@ class AddressModel {
     buildingNumber: entity.buildingNumber,
     floorNumber: entity.floorNumber,
     apartmentNumber: entity.apartmentNumber,
+    latitude: entity.latitude,
+    longitude: entity.longitude,
   );
 
   final String name;
@@ -42,6 +52,8 @@ class AddressModel {
   final String buildingNumber;
   final String floorNumber;
   final String apartmentNumber;
+  final double? latitude;
+  final double? longitude;
 
   Map<String, dynamic> toJson() => {
     'name': name,
@@ -52,6 +64,8 @@ class AddressModel {
     'building_number': buildingNumber,
     'floor_number': floorNumber,
     'apartment_number': apartmentNumber,
+    if (latitude != null) 'latitude': latitude,
+    if (longitude != null) 'longitude': longitude,
   };
 
   AddressEntity toEntity() => AddressEntity(
@@ -63,5 +77,7 @@ class AddressModel {
     buildingNumber: buildingNumber,
     floorNumber: floorNumber,
     apartmentNumber: apartmentNumber,
+    latitude: latitude,
+    longitude: longitude,
   );
 }

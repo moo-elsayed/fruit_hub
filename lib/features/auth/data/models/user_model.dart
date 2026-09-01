@@ -6,12 +6,14 @@ class UserModel {
     required this.uid,
     required this.name,
     required this.email,
+    this.phone = '',
     required this.isVerified,
   });
 
   factory UserModel.fromFirebaseUser(
     User user, {
     String? customName,
+    String? customPhone,
     Map<String, dynamic>? additionalProfile,
   }) {
     String resolvedName = (customName ?? user.displayName ?? '').trim();
@@ -45,10 +47,13 @@ class UserModel {
       }
     }
 
+    final resolvedPhone = (customPhone ?? user.phoneNumber ?? '').trim();
+
     return UserModel(
       uid: user.uid,
       name: resolvedName,
       email: user.email ?? '',
+      phone: resolvedPhone,
       isVerified: user.emailVerified,
     );
   }
@@ -57,6 +62,7 @@ class UserModel {
     uid: map['uid'] ?? '',
     name: map['name'] ?? '',
     email: map['email'] ?? '',
+    phone: map['phone'] ?? map['phoneNumber'] ?? '',
     isVerified: map['isVerified'] ?? false,
   );
 
@@ -64,21 +70,29 @@ class UserModel {
     uid: user.uid,
     name: user.name,
     email: user.email,
+    phone: user.phone,
     isVerified: user.isVerified,
   );
 
   final String uid;
   String name;
   final String email;
+  final String phone;
   final bool isVerified;
 
   Map<String, dynamic> toJson() => {
     'uid': uid,
     'name': name,
     'email': email,
+    'phone': phone,
     'isVerified': isVerified,
   };
 
-  UserEntity toUserEntity() =>
-      UserEntity(uid: uid, name: name, email: email, isVerified: isVerified);
+  UserEntity toUserEntity() => UserEntity(
+    uid: uid,
+    name: name,
+    email: email,
+    phone: phone,
+    isVerified: isVerified,
+  );
 }

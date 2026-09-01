@@ -244,4 +244,25 @@ abstract class AppStrings {
   static String get categories => 'categories'.tr();
   static String get weight => 'weight'.tr();
   static String get per100Gram => 'per_100_gram'.tr();
+  static String get selectLocationOnMap => 'select_location_on_map'.tr();
+  static String get confirmLocation => 'confirm_location'.tr();
+  static String get locating => 'locating'.tr();
+  static String get locationPermissionDenied =>
+      'location_permission_denied'.tr();
+  static String get locationServicesDisabled =>
+      'location_services_disabled'.tr();
+  static String get selectedLocation => 'selected_location'.tr();
+  static String get moveMapToPick => 'move_map_to_pick'.tr();
+  static String get currentLocation => 'current_location'.tr();
+  static String get mapInstructions => 'map_instructions'.tr();
+  static String get pinLocationHint => 'pin_location_hint'.tr();
+  static String get gpsDisabled => 'gps_disabled'.tr();
+  static String get locationPermissionPermanentlyDenied =>
+      'location_permission_permanently_denied'.tr();
+  static String get selectLocationFromMap => 'select_location_from_map'.tr();
+  static String get dragMapToSelectLocation =>
+      'drag_map_to_select_location'.tr();
+  static String get unknownArea => 'unknown_area'.tr();
+  static String get pleaseSelectLocationOnMap =>
+      'please_select_location_on_map'.tr();
 }

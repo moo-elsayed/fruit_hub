@@ -4,8 +4,12 @@
 	<dict>
 		<key>NSCameraUsageDescription</key>
 		<string>Scan your card to add it automatically</string>
-		<key>NSCameraUsageDescription</key>
-		<string>To scan cards</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>FruitHub needs access to location to deliver fruits to your exact address.</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>FruitHub needs access to location to deliver fruits to your exact address.</string>
+		<key>GoogleMapsApiKey</key>
+		<string>$(MAPS_API_KEY)</string>
 		<key>CFBundleLocalizations</key>
 		<array>
 			<string>en</string>
