@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
+import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/order_summary_row.dart';
 import 'package:gap/gap.dart';
-import '../../../../core/theming/app_text_styles.dart';
 
 class OrderSummary extends StatelessWidget {
   const OrderSummary({
@@ -22,8 +23,11 @@ class OrderSummary extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
     decoration: BoxDecoration(
-      color: context.colors.surface,
+      color: context.isDarkMode
+          ? context.colors.surface
+          : AppPalette.bgLightSecondary,
       borderRadius: BorderRadius.circular(12.r),
+      border: Border.all(color: context.colors.border),
     ),
     child: Column(
       children: [

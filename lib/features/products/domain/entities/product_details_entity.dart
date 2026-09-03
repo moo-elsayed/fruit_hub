@@ -1,4 +1,5 @@
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
+
 import '../../../../core/helpers/app_assets.dart';
 import '../../../../core/helpers/app_strings.dart';
 

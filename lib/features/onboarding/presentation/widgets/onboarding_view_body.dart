@@ -10,6 +10,7 @@ import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:fruit_hub/features/onboarding/domain/entities/onboarding_entity.dart';
 import 'package:fruit_hub/features/onboarding/presentation/managers/onboarding_cubit/onboarding_cubit.dart';
 import 'package:gap/gap.dart';
+
 import 'onboarding_indicator.dart';
 import 'onboarding_page_view.dart';
 

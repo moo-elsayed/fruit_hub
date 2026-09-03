@@ -135,9 +135,8 @@ class ProductDetailsBottomBar extends StatelessWidget {
                     ? () {
                         MainTabNotifier.switchToTab(2);
                         if (Navigator.of(context).canPop()) {
-                          Navigator.of(
-                            context,
-                          ).popUntil((route) => route.isFirst);
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
                         } else {
                           context.pushReplacementNamed(
                             Routes.mainView,

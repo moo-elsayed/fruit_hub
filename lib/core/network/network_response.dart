@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import '../errors/failures.dart';
 
 sealed class NetworkResponse<T> {

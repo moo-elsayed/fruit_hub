@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/enums/step_item_state.dart';
+
 import 'custom_step_item.dart';
 
 class CheckoutSteps extends StatelessWidget {
@@ -7,35 +8,32 @@ class CheckoutSteps extends StatelessWidget {
     super.key,
     required this.currentIndex,
     required this.steps,
-    required this.pageController,
+    this.onStepTapped,
   });
 
   final int currentIndex;
   final List<String> steps;
-  final PageController pageController;
+  final ValueChanged<int>? onStepTapped;
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    height: 23.h,
-    child: Row(
-      mainAxisAlignment: .spaceAround,
-      children: List.generate(
-        steps.length,
-        (index) => GestureDetector(
-          onTap: () {
-            if (index < currentIndex) {
-              pageController.animateToPage(
-                index,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-              );
-            }
-          },
-          child: CustomStepItem(
-            isActive: index <= currentIndex,
-            stepNumber: index + 1,
-            stepText: steps[index],
+  Widget build(BuildContext context) => Row(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: List.generate(
+      steps.length,
+      (index) => GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          if (index < currentIndex) {
+            onStepTapped?.call(index);
+          }
+        },
+        child: CustomStepItem(
+          state: StepItemState.fromIndex(
+            index: index,
+            currentIndex: currentIndex,
           ),
+          stepNumber: index + 1,
+          stepText: steps[index],
         ),
       ),
     ),

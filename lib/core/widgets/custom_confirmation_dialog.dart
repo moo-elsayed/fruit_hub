@@ -6,6 +6,7 @@ import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:gap/gap.dart';
+
 import '../helpers/extensions.dart';
 import '../theming/app_text_styles.dart';
 import 'custom_material_button.dart';

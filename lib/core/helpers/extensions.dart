@@ -1,9 +1,10 @@
 import 'dart:ui' as ui;
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fruit_hub/core/theming/colors_manager.dart';
 import 'package:toastification/toastification.dart';
-import '../../features/checkout/domain/entities/address_entity.dart';
+
 import 'app_strings.dart';
 
 extension Navigation on BuildContext {
@@ -79,11 +80,6 @@ extension ThemeModeExtension on ThemeMode {
         return AppStrings.dark;
     }
   }
-}
-
-extension AddressFormatter on AddressEntity {
-  String get formattedLocation =>
-      '$streetName, ${AppStrings.building} $buildingNumber, ${AppStrings.floor} $floorNumber, ${AppStrings.apartment} $apartmentNumber, $city';
 }
 
 extension NumExtension on num {

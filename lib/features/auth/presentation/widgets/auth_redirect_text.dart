@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+
 import '../../../../core/theming/app_text_styles.dart';
 
 class AuthRedirectText extends StatelessWidget {

@@ -63,24 +63,27 @@ class _CartState extends State<Cart> {
                   : 0;
 
               if (items.isEmpty) {
-                return CustomEmptyStateWidget(
-                  customIcon: Container(
-                    width: 100.w,
-                    height: 100.h,
-                    decoration: BoxDecoration(
-                      color: context.colors.primary.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.shopping_cart_outlined,
-                        size: 48.r,
-                        color: context.colors.primary,
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 85.h),
+                  child: CustomEmptyStateWidget(
+                    customIcon: Container(
+                      width: 100.w,
+                      height: 100.h,
+                      decoration: BoxDecoration(
+                        color: context.colors.primary.withValues(alpha: 0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.shopping_cart_outlined,
+                          size: 48.r,
+                          color: context.colors.primary,
+                        ),
                       ),
                     ),
+                    title: AppStrings.shoppingCart,
+                    text: AppStrings.emptyCartSubtitle,
                   ),
-                  title: AppStrings.shoppingCart,
-                  text: AppStrings.emptyCartSubtitle,
                 );
               }
 

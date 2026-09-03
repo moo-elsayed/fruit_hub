@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../domain/entities/address_entity.dart';
 
 class AddressArgs {

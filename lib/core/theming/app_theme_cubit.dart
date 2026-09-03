@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../services/local_storage/app_preferences_service.dart';
 
 class AppThemeCubit extends Cubit<ThemeMode> {

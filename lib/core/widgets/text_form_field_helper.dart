@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../helpers/extensions.dart';
 import '../theming/app_text_styles.dart';
 
@@ -180,9 +181,10 @@ class _TextFormFieldHelperState extends State<TextFormFieldHelper> {
                   padding: EdgeInsets.symmetric(horizontal: 12.w),
                   child: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) =>
-                            ScaleTransition(scale: animation, child: child),
+                    transitionBuilder: (
+                      Widget child,
+                      Animation<double> animation,
+                    ) => ScaleTransition(scale: animation, child: child),
                     child: Icon(
                       key: ValueKey<bool>(_obscureText),
                       _obscureText

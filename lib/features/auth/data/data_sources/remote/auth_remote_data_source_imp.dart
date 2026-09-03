@@ -6,6 +6,7 @@ import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
 import 'package:fruit_hub/core/network/api_helper.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
+
 import '../../models/sign_up_input_model.dart';
 import '../../models/user_model.dart';
 import 'auth_remote_data_source.dart';

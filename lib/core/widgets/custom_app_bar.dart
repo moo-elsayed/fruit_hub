@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:gap/gap.dart';
+
 import '../theming/app_text_styles.dart';
 import 'custom_arrow_back.dart';
 import 'notification_widget.dart';

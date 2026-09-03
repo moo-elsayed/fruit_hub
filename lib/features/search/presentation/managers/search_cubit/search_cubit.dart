@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
+
 import '../../../domain/use_cases/search_fruits_use_case.dart';
 
 part 'search_state.dart';

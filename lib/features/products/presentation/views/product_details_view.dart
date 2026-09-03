@@ -9,6 +9,7 @@ import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cu
 import 'package:fruit_hub/features/products/domain/entities/product_details_entity.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:toastification/toastification.dart';
+
 import '../widgets/product_details_bottom_bar.dart';
 import '../widgets/product_details_grid_view.dart';
 import '../widgets/product_details_header.dart';

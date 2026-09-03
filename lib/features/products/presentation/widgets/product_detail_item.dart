@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:gap/gap.dart';
+
 import '../../../../core/theming/app_text_styles.dart';
 import '../../domain/entities/product_details_entity.dart';
 

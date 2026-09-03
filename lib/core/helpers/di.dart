@@ -1,3 +1,4 @@
+import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service_imp.dart';
 import 'package:fruit_hub/core/services/location/location_service.dart';
@@ -49,6 +50,13 @@ import 'package:fruit_hub/features/products/data/repo_imp/products_repo_imp.dart
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_product_details_use_case.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
+import 'package:fruit_hub/features/reviews/data/data_sources/remote/reviews_remote_data_source.dart';
+import 'package:fruit_hub/features/reviews/data/data_sources/remote/reviews_remote_data_source_imp.dart';
+import 'package:fruit_hub/features/reviews/data/repo_imp/reviews_repo_imp.dart';
+import 'package:fruit_hub/features/reviews/domain/repo/reviews_repo.dart';
+import 'package:fruit_hub/features/reviews/domain/use_cases/add_review_use_case.dart';
+import 'package:fruit_hub/features/reviews/domain/use_cases/check_user_purchased_product_use_case.dart';
+import 'package:fruit_hub/features/reviews/presentation/managers/reviews_cubit/reviews_cubit.dart';
 import 'package:fruit_hub/features/search/data/data_sources/remote/search_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/search/data/repo_imp/search_repo_imp.dart';
 import 'package:fruit_hub/features/search/domain/use_cases/search_fruits_use_case.dart';
@@ -281,6 +289,33 @@ void setupServiceLocator() {
       getIt<FetchShippingConfigUseCase>(),
       getIt<AddOrderUseCase>(),
       getIt<MakePaymentUseCase>(),
+    ),
+  );
+
+  /// Reviews
+  ////////////////////////////
+  getIt.registerSingleton<ReviewsRemoteDataSource>(
+    ReviewsRemoteDataSourceImp(),
+  );
+
+  getIt.registerSingleton<ReviewsRepo>(
+    ReviewsRepoImp(getIt<ReviewsRemoteDataSource>()),
+  );
+
+  getIt.registerSingleton<CheckUserPurchasedProductUseCase>(
+    CheckUserPurchasedProductUseCase(getIt<ReviewsRepo>()),
+  );
+
+  getIt.registerSingleton<AddReviewUseCase>(
+    AddReviewUseCase(getIt<ReviewsRepo>()),
+  );
+
+  getIt.registerFactoryParam<ReviewsCubit, FruitEntity, void>(
+    (fruit, _) => ReviewsCubit(
+      checkUserPurchasedProductUseCase:
+          getIt<CheckUserPurchasedProductUseCase>(),
+      addReviewUseCase: getIt<AddReviewUseCase>(),
+      fruit: fruit,
     ),
   );
 }

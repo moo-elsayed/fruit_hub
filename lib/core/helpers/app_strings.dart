@@ -265,4 +265,36 @@ abstract class AppStrings {
   static String get unknownArea => 'unknown_area'.tr();
   static String get pleaseSelectLocationOnMap =>
       'please_select_location_on_map'.tr();
+  static String get writeReview => 'write_review'.tr();
+  static String get yourRating => 'your_rating'.tr();
+  static String get writeYourReviewHere => 'write_your_review_here'.tr();
+  static String get noReviewsYet => 'no_reviews_yet'.tr();
+  static String get beTheFirstToReview => 'be_the_first_to_review'.tr();
+  static String get submitReview => 'submit_review'.tr();
+  static String get reviewAddedSuccessfully =>
+      'review_added_successfully'.tr();
+  static String get pleaseSelectRating => 'please_select_rating'.tr();
+  static String get verifiedPurchase => 'verified_purchase'.tr();
+  static String get onlyBuyersCanReview => 'only_buyers_can_review'.tr();
+  static String get youPurchasedThisProduct =>
+      'you_purchased_this_product'.tr();
+  static String get alreadyReviewedProduct =>
+      'already_reviewed_product'.tr();
+  static String get ratingSummary => 'rating_summary'.tr();
+  static String get excellent => 'excellent'.tr();
+  static String get veryGood => 'very_good'.tr();
+  static String get good => 'good'.tr();
+  static String get fair => 'fair'.tr();
+  static String get poor => 'poor'.tr();
+  static String get continueShopping => 'continue_shopping'.tr();
+  static String get orderCopied => 'order_copied'.tr();
+  static String get estimatedDelivery => 'estimated_delivery'.tr();
+  static String get deliveryWithinHours => 'delivery_within_hours'.tr();
+  static String get orderPlaced => 'order_placed'.tr();
+  static String get orderPreparing => 'order_preparing'.tr();
+  static String get orderOnTheWay => 'order_on_the_way'.tr();
+  static String get orderDelivered => 'order_delivered'.tr();
+  static String get orderedItems => 'ordered_items'.tr();
+  static String get thankYouForYourOrder => 'thank_you_for_your_order'.tr();
+  static String get copy => 'copy'.tr();
 }

@@ -24,15 +24,13 @@ class _SelectLocationCardState extends State<SelectLocationCard> {
       widget.addressArgs.longitude != null;
 
   Future<void> _handleTap() async {
-    final result =
-        await context.pushNamed(
-              Routes.locationPickerView,
-              arguments: LocationPickerArgs(
-                latitude: widget.addressArgs.latitude,
-                longitude: widget.addressArgs.longitude,
-              ),
-            )
-            as SelectedLocationEntity?;
+    final result = await context.pushNamed(
+      Routes.locationPickerView,
+      arguments: LocationPickerArgs(
+        latitude: widget.addressArgs.latitude,
+        longitude: widget.addressArgs.longitude,
+      ),
+    ) as SelectedLocationEntity?;
 
     if (result != null && mounted) {
       widget.addressArgs.setCoordinates(

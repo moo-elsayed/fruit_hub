@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:fruit_hub/core/errors/exceptions.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:geocoding/geocoding.dart';

@@ -3,6 +3,7 @@ import 'package:fruit_hub/features/auth/data/models/sign_up_input_model.dart';
 import 'package:fruit_hub/features/auth/data/models/user_model.dart';
 import 'package:fruit_hub/features/auth/domain/entities/sign_up_input_entity.dart';
 import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
+
 import '../../domain/repo/auth_repo.dart';
 import '../data_sources/remote/auth_remote_data_source.dart';
 

@@ -10,6 +10,7 @@ import 'package:fruit_hub/features/checkout/presentation/args/address_args.dart'
 import 'package:fruit_hub/features/checkout/presentation/managers/checkout_cubit/checkout_cubit.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/checkout_button_bloc_consumer.dart';
 import 'package:gap/gap.dart';
+
 import '../widgets/checkout_page_view.dart';
 import '../widgets/checkout_steps.dart';
 
@@ -86,7 +87,11 @@ class _CheckoutViewState extends State<CheckoutView> {
             CheckoutSteps(
               currentIndex: currentIndex,
               steps: steps,
-              pageController: _pageController,
+              onStepTapped: (index) => _pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              ),
             ),
             Gap(24.h),
             CheckoutPageView(
@@ -99,7 +104,10 @@ class _CheckoutViewState extends State<CheckoutView> {
         bottomNavigationBar: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           child: CheckoutButtonBlocConsumer(
-            pageController: _pageController,
+            onNext: () => _pageController.nextPage(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+            ),
             currentIndex: currentIndex,
             addressArgs: addressArgs,
           ),

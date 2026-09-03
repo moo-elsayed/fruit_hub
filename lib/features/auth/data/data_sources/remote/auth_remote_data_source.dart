@@ -1,4 +1,5 @@
 import 'package:fruit_hub/core/network/network_response.dart';
+
 import '../../models/sign_up_input_model.dart';
 import '../../models/user_model.dart';
 

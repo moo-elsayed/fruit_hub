@@ -1,9 +1,9 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/price_per_kilo.dart';
 import 'package:fruit_hub/core/widgets/product_badge.dart';
@@ -62,9 +62,7 @@ class ProductDetailsInfoSection extends StatelessWidget {
       Gap(8.h),
       InkWell(
         borderRadius: BorderRadius.circular(8.r),
-        onTap: () {
-          log('Go to Reviews Page');
-        },
+        onTap: () => context.pushNamed(Routes.reviewsView, arguments: fruit),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

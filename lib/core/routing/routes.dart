@@ -12,4 +12,5 @@ class Routes {
   static const orderSuccessView = 'orderSuccessView';
   static const trackOrderView = 'trackOrderView';
   static const locationPickerView = 'locationPickerView';
+  static const reviewsView = 'reviewsView';
 }

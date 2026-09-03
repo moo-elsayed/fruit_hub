@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:gap/gap.dart';
+
 import 'cart_item.dart';
 
 class CartItemsListView extends StatelessWidget {

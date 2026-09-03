@@ -8,6 +8,7 @@ import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/checkout/presentation/args/address_args.dart';
 import 'package:toastification/toastification.dart';
+
 import '../../../../core/helpers/extensions.dart';
 import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/app_toasts.dart';
@@ -20,19 +21,14 @@ import '../managers/checkout_cubit/checkout_cubit.dart';
 class CheckoutButtonBlocConsumer extends StatelessWidget {
   const CheckoutButtonBlocConsumer({
     super.key,
-    required this.pageController,
+    required this.onNext,
     required this.currentIndex,
     required this.addressArgs,
   });
 
-  final PageController pageController;
+  final VoidCallback onNext;
   final int currentIndex;
   final AddressArgs addressArgs;
-
-  void _navigateToNextPage() => pageController.nextPage(
-    duration: const Duration(milliseconds: 500),
-    curve: Curves.easeInOut,
-  );
 
   String _getButtonText() => switch (currentIndex) {
     0 || 1 => AppStrings.next,
@@ -85,12 +81,12 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
                   return;
                 }
                 cubit.setAddress(addressArgs.toEntity());
-                _navigateToNextPage();
+                onNext();
               }
               return;
             }
             if (currentIndex == 1) {
-              _navigateToNextPage();
+              onNext();
               return;
             }
             if (currentIndex == 2) {

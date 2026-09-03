@@ -1,5 +1,6 @@
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
+
 import '../entities/paginated_products_entity.dart';
 import '../entities/products_filter_entity.dart';
 
