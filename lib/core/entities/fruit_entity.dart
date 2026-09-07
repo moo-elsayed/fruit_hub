@@ -32,6 +32,36 @@ class FruitEntity extends Equatable {
   final num avgRating;
   final List<ReviewEntity> reviews;
 
+  FruitEntity copyWith({
+    String? imagePath,
+    String? name,
+    String? code,
+    String? description,
+    double? price,
+    bool? isFeatured,
+    bool? isOrganic,
+    int? daysUntilExpiration,
+    int? numberOfCalories,
+    int? weightInGrams,
+    int? ratingCount,
+    num? avgRating,
+    List<ReviewEntity>? reviews,
+  }) => FruitEntity(
+    imagePath: imagePath ?? this.imagePath,
+    name: name ?? this.name,
+    code: code ?? this.code,
+    description: description ?? this.description,
+    price: price ?? this.price,
+    isFeatured: isFeatured ?? this.isFeatured,
+    isOrganic: isOrganic ?? this.isOrganic,
+    daysUntilExpiration: daysUntilExpiration ?? this.daysUntilExpiration,
+    numberOfCalories: numberOfCalories ?? this.numberOfCalories,
+    weightInGrams: weightInGrams ?? this.weightInGrams,
+    ratingCount: ratingCount ?? this.ratingCount,
+    avgRating: avgRating ?? this.avgRating,
+    reviews: reviews ?? this.reviews,
+  );
+
   @override
   List<Object?> get props => [
     imagePath,

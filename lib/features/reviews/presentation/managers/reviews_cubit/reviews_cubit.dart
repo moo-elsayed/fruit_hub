@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
@@ -36,28 +35,43 @@ class ReviewsCubit extends Cubit<ReviewsState> {
   bool get hasAlreadyReviewed => _hasAlreadyReviewed;
   bool get isCheckingEligibility => _isCheckingEligibility;
 
-  void _emitLoaded() => emit(
-    ReviewsLoaded(
-      reviews: List.unmodifiable(_reviews),
-      avgRating: _avgRating,
-      ratingCount: _ratingCount,
-      isVerifiedBuyer: _isVerifiedBuyer,
-      hasAlreadyReviewed: _hasAlreadyReviewed,
-      isCheckingEligibility: _isCheckingEligibility,
-    ),
-  );
+  @override
+  void emit(ReviewsState state) {
+    if (!isClosed) {
+      super.emit(state);
+    }
+  }
+
+  void _emitLoaded() {
+    if (isClosed) return;
+    emit(
+      ReviewsLoaded(
+        reviews: List.unmodifiable(_reviews),
+        avgRating: _avgRating,
+        ratingCount: _ratingCount,
+        isVerifiedBuyer: _isVerifiedBuyer,
+        hasAlreadyReviewed: _hasAlreadyReviewed,
+        isCheckingEligibility: _isCheckingEligibility,
+      ),
+    );
+  }
 
   Future<void> _init() async {
+    _emitLoaded();
+
     final currentUser = FirebaseAuth.instance.currentUser;
+    final currentUserName =
+        currentUser?.displayName?.trim() ?? currentUser?.email ?? '';
+
+    // Check if current user has already reviewed
     if (currentUser != null) {
-      final currentUserName =
-          currentUser.displayName?.trim() ?? currentUser.email ?? '';
       _hasAlreadyReviewed = _reviews.any(
         (r) =>
-            r.name.trim().isNotEmpty &&
-            (r.name.trim() == currentUserName ||
-                (currentUser.email != null &&
-                    r.name.trim() == currentUser.email)),
+            (r.userId.isNotEmpty && r.userId == currentUser.uid) ||
+            (r.name.trim().isNotEmpty &&
+                (r.name.trim() == currentUserName ||
+                    (currentUser.email != null &&
+                        r.name.trim() == currentUser.email))),
       );
 
       _emitLoaded();
@@ -65,6 +79,7 @@ class ReviewsCubit extends Cubit<ReviewsState> {
       final result = await checkUserPurchasedProductUseCase(
         productCode: fruit.code,
       );
+      if (isClosed) return;
       if (result is NetworkSuccess<bool>) {
         _isVerifiedBuyer = result.data ?? false;
       }
@@ -73,6 +88,7 @@ class ReviewsCubit extends Cubit<ReviewsState> {
       _hasAlreadyReviewed = false;
     }
 
+    if (isClosed) return;
     _isCheckingEligibility = false;
     _emitLoaded();
   }
@@ -82,22 +98,26 @@ class ReviewsCubit extends Cubit<ReviewsState> {
     required String comment,
     required String userName,
     String? userImage,
+    String? userId,
   }) async {
     emit(AddReviewLoading());
 
-    final formattedDate = DateFormat('d MMMM yyyy').format(DateTime.now());
+    final isoDate = DateTime.now().toIso8601String();
     final newReview = ReviewEntity(
       name: userName.isNotEmpty ? userName : 'User',
       image: userImage ?? '',
       description: comment.trim(),
-      date: formattedDate,
+      date: isoDate,
       rating: rating,
+      userId: userId ?? '',
     );
 
     final result = await addReviewUseCase(
       productCode: fruit.code,
       reviewEntity: newReview,
     );
+
+    if (isClosed) return;
 
     switch (result) {
       case NetworkSuccess<void>():

@@ -19,11 +19,7 @@ class OrderTimelineStepItem extends StatelessWidget {
   final StepItemState state;
 
   (Color, Color, Border?) _getColors(BuildContext context) => switch (state) {
-    StepItemState.completed => (
-      context.colors.primary,
-      AppPalette.white,
-      null,
-    ),
+    StepItemState.completed => (context.colors.primary, AppPalette.white, null),
     StepItemState.current => (
       context.colors.primary.withValues(alpha: 0.15),
       context.colors.primary,

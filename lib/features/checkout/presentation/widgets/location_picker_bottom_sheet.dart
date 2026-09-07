@@ -47,7 +47,7 @@ class LocationPickerBottomSheet extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const BottomSheetHandle(),
+            const CustomBottomSheetHandle(),
             Gap(12.h),
             Row(
               children: [

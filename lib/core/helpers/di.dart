@@ -2,6 +2,7 @@ import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service_imp.dart';
 import 'package:fruit_hub/core/services/location/location_service.dart';
+import 'package:fruit_hub/core/services/notifications/notification_service.dart';
 import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
 import 'package:fruit_hub/features/auth/data/data_sources/remote/auth_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/auth_repo_imp.dart';
@@ -76,6 +77,9 @@ void setupServiceLocator() {
 
   /// Location Service
   getIt.registerLazySingleton<LocationService>(() => LocationService());
+
+  /// Notifications Service
+  getIt.registerLazySingleton<NotificationService>(() => NotificationService());
 
   /// Theming
   getIt.registerLazySingleton<AppThemeCubit>(

@@ -15,6 +15,8 @@ import 'package:fruit_hub/core/widgets/price_per_kilo.dart';
 import 'package:fruit_hub/core/widgets/product_badge.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/favorites/presentation/managers/favorite_cubit/favorite_cubit.dart';
+import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cubit.dart';
+import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:gap/gap.dart';
 
 class CustomFruitItem extends StatelessWidget {
@@ -27,8 +29,20 @@ class CustomFruitItem extends StatelessWidget {
     final myFavoriteCubit = context.read<FavoriteCubit>();
 
     return GestureDetector(
-      onTap: () =>
-          context.pushNamed(Routes.productDetailsView, arguments: fruitEntity),
+      onTap: () async {
+        final result = await context.pushNamed(
+          Routes.productDetailsView,
+          arguments: fruitEntity,
+        );
+        if (result is FruitEntity && context.mounted) {
+          try {
+            context.read<HomeCubit>().updateProduct(result);
+          } catch (_) {}
+          try {
+            context.read<ProductsCubit>().updateProduct(result);
+          } catch (_) {}
+        }
+      },
       behavior: HitTestBehavior.opaque,
       child: Stack(
         children: [

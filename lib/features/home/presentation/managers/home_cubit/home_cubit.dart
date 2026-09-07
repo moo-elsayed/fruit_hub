@@ -26,4 +26,17 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   String get getUserName => _appPreferencesService.getUser()?.name ?? '';
+
+  void updateProduct(FruitEntity updatedFruit) {
+    if (state is GetBestSellerProductsSuccess) {
+      final currentList = List<FruitEntity>.from(
+        (state as GetBestSellerProductsSuccess).fruits,
+      );
+      final index = currentList.indexWhere((f) => f.code == updatedFruit.code);
+      if (index != -1) {
+        currentList[index] = updatedFruit;
+        emit(GetBestSellerProductsSuccess(currentList));
+      }
+    }
+  }
 }

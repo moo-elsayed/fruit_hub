@@ -121,4 +121,17 @@ class ProductsCubit extends Cubit<ProductsState> {
         emit(GetProductDetailsFailure(networkResponse.error));
     }
   }
+
+  void updateProduct(FruitEntity updatedFruit) {
+    final index = _fruits.indexWhere((f) => f.code == updatedFruit.code);
+    if (index != -1) {
+      _fruits[index] = updatedFruit;
+      if (state is GetProductsSuccess) {
+        emit(
+          (state as GetProductsSuccess).copyWith(fruits: List.from(_fruits)),
+        );
+      }
+    }
+    emit(GetProductDetailsSuccess(updatedFruit));
+  }
 }

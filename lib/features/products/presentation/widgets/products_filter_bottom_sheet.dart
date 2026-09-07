@@ -54,8 +54,8 @@ class _ProductsFilterBottomSheetState extends State<ProductsFilterBottomSheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const BottomSheetHandle(),
-          Gap(8.h),
+          const CustomBottomSheetHandle(),
+          Gap(12.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

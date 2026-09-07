@@ -62,7 +62,7 @@ class CustomBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Drag Handle
-          const BottomSheetHandle(),
+          const CustomBottomSheetHandle(),
           Gap(12.h),
 
           // Title

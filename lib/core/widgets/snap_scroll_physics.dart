@@ -6,10 +6,8 @@ class SnapScrollPhysics extends ScrollPhysics {
   final double itemExtent;
 
   @override
-  SnapScrollPhysics applyTo(ScrollPhysics? ancestor) => SnapScrollPhysics(
-    parent: buildParent(ancestor),
-    itemExtent: itemExtent,
-  );
+  SnapScrollPhysics applyTo(ScrollPhysics? ancestor) =>
+      SnapScrollPhysics(parent: buildParent(ancestor), itemExtent: itemExtent);
 
   double _getTargetPixels(
     ScrollMetrics position,

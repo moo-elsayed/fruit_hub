@@ -39,7 +39,7 @@ class ProductDetailsHeader extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomArrowBack(onTap: () => context.pop(), size: 40.r),
+                  CustomArrowBack(onTap: () => context.pop(fruit), size: 40.r),
                   BlocBuilder<FavoriteCubit, FavoriteState>(
                     buildWhen: (previous, current) =>
                         current is ToggleFavoriteSuccess,

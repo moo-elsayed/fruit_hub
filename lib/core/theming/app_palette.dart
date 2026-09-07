@@ -27,6 +27,22 @@ class AppPalette {
   static const Color warning = Color(0xffF59E0B);
   static const Color info = Color(0xff3B82F6);
 
+  // --- Rating Sentiment Colors ---
+  static const Color ratingPoor = Color(0xFFEF4444); // Red
+  static const Color ratingFair = Color(0xFFFF7043); // Orange
+  static const Color ratingGood = Color(0xFFFFCA28); // Yellow/Amber
+  static const Color ratingVeryGood = Color(0xFF9CCC65); // Light Green
+  static const Color ratingExcellent = Color(0xFF22C55E); // Green
+
+  static Color getRatingColor(int rating) => switch (rating) {
+    1 => ratingPoor,
+    2 => ratingFair,
+    3 => ratingGood,
+    4 => ratingVeryGood,
+    5 => ratingExcellent,
+    _ => starYellow,
+  };
+
   // --- Common Colors ---
   static const Color white = Color(0xffFFFFFF);
   static const Color black = Color(0xff000000);

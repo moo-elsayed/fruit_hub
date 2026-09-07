@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fruit_hub/core/enums/order_status.dart';
 import 'package:fruit_hub/core/errors/exceptions.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
@@ -11,11 +12,9 @@ import 'package:fruit_hub/core/network/network_response.dart';
 import 'reviews_remote_data_source.dart';
 
 class ReviewsRemoteDataSourceImp implements ReviewsRemoteDataSource {
-  ReviewsRemoteDataSourceImp({
-    FirebaseFirestore? firestore,
-    FirebaseAuth? auth,
-  }) : _firestore = firestore ?? FirebaseFirestore.instance,
-       _auth = auth ?? FirebaseAuth.instance;
+  ReviewsRemoteDataSourceImp({FirebaseFirestore? firestore, FirebaseAuth? auth})
+    : _firestore = firestore ?? FirebaseFirestore.instance,
+      _auth = auth ?? FirebaseAuth.instance;
 
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
@@ -37,7 +36,7 @@ class ReviewsRemoteDataSourceImp implements ReviewsRemoteDataSource {
     for (final doc in querySnapshot.docs) {
       final data = doc.data();
       final status = data['status'] as String? ?? '';
-      if (status.toLowerCase() == 'cancelled') continue;
+      if (status.toLowerCase() != OrderStatus.delivered.databaseValue) continue;
 
       final orderItems = (data['orderItems'] as List<dynamic>? ?? []);
       final hasItem = orderItems.any(

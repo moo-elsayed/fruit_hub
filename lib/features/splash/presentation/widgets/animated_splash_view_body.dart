@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
@@ -20,6 +21,7 @@ class _AnimatedSplashViewBodyState extends State<AnimatedSplashViewBody> {
   @override
   void initState() {
     super.initState();
+    FlutterNativeSplash.remove();
     context.read<SplashCubit>().checkAppStatus();
   }
 

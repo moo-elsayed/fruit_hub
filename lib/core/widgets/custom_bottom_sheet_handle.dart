@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 
-class BottomSheetHandle extends StatelessWidget {
-  const BottomSheetHandle({super.key});
+class CustomBottomSheetHandle extends StatelessWidget {
+  const CustomBottomSheetHandle({super.key});
 
   @override
   Widget build(BuildContext context) {

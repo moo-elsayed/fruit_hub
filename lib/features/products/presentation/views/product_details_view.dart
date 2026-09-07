@@ -31,8 +31,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   @override
   void initState() {
     super.initState();
-    if (widget.fruitEntity == null && widget.fruitCode != null) {
-      context.read<ProductsCubit>().getProductDetails(widget.fruitCode!);
+    final code = widget.fruitCode ?? widget.fruitEntity?.code;
+    if (code != null) {
+      context.read<ProductsCubit>().getProductDetails(code);
     }
   }
 
@@ -82,35 +83,42 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         }
 
         if (currentFruit != null) {
-          return Scaffold(
-            backgroundColor: context.colors.background,
-            bottomNavigationBar: ProductDetailsBottomBar(
-              fruit: currentFruit,
-              quantityNotifier: _quantityNotifier,
-              onAddToCart: () => _onAddToCart(currentFruit!),
-            ),
-            body: Column(
-              children: [
-                ProductDetailsHeader(fruit: currentFruit),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20.w,
-                      vertical: 12.h,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 16.h,
-                      children: [
-                        ProductDetailsInfoSection(fruit: currentFruit),
-                        ProductDetailsGridView(
-                          productDetails: getProductDetails(currentFruit),
-                        ),
-                      ],
+          return PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) {
+              if (didPop) return;
+              context.pop(currentFruit);
+            },
+            child: Scaffold(
+              backgroundColor: context.colors.background,
+              bottomNavigationBar: ProductDetailsBottomBar(
+                fruit: currentFruit,
+                quantityNotifier: _quantityNotifier,
+                onAddToCart: () => _onAddToCart(currentFruit!),
+              ),
+              body: Column(
+                children: [
+                  ProductDetailsHeader(fruit: currentFruit),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20.w,
+                        vertical: 12.h,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 16.h,
+                        children: [
+                          ProductDetailsInfoSection(fruit: currentFruit),
+                          ProductDetailsGridView(
+                            productDetails: getProductDetails(currentFruit),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         } else if (state is GetProductDetailsFailure) {

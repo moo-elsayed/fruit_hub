@@ -29,9 +29,10 @@ class AddressEntity extends Equatable {
   bool get hasCoordinates => latitude != null && longitude != null;
 
   String get formattedLocation {
-    final streetAndCity = [city, streetName]
-        .where((s) => s.trim().isNotEmpty)
-        .join('، ');
+    final streetAndCity = [
+      city,
+      streetName,
+    ].where((s) => s.trim().isNotEmpty).join('، ');
 
     final buildingParts = <String>[];
     if (buildingNumber.trim().isNotEmpty) {

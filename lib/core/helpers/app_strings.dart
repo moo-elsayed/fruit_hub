@@ -271,21 +271,29 @@ abstract class AppStrings {
   static String get noReviewsYet => 'no_reviews_yet'.tr();
   static String get beTheFirstToReview => 'be_the_first_to_review'.tr();
   static String get submitReview => 'submit_review'.tr();
-  static String get reviewAddedSuccessfully =>
-      'review_added_successfully'.tr();
+  static String get reviewAddedSuccessfully => 'review_added_successfully'.tr();
   static String get pleaseSelectRating => 'please_select_rating'.tr();
   static String get verifiedPurchase => 'verified_purchase'.tr();
+  static String get anonymousUser => 'anonymous_user'.tr();
   static String get onlyBuyersCanReview => 'only_buyers_can_review'.tr();
   static String get youPurchasedThisProduct =>
       'you_purchased_this_product'.tr();
-  static String get alreadyReviewedProduct =>
-      'already_reviewed_product'.tr();
+  static String get alreadyReviewedProduct => 'already_reviewed_product'.tr();
   static String get ratingSummary => 'rating_summary'.tr();
   static String get excellent => 'excellent'.tr();
   static String get veryGood => 'very_good'.tr();
   static String get good => 'good'.tr();
   static String get fair => 'fair'.tr();
   static String get poor => 'poor'.tr();
+
+  static String getRatingLabel(int rating) => switch (rating) {
+    1 => poor,
+    2 => fair,
+    3 => good,
+    4 => veryGood,
+    5 => excellent,
+    _ => '',
+  };
   static String get continueShopping => 'continue_shopping'.tr();
   static String get orderCopied => 'order_copied'.tr();
   static String get estimatedDelivery => 'estimated_delivery'.tr();

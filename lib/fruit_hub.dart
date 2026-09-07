@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/routing/app_router.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/services/notifications/notification_router.dart';
 import 'package:fruit_hub/core/theming/app_theme.dart';
 import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/user_info_cubit/user_info_cubit.dart';
@@ -28,6 +29,7 @@ class FruitHub extends StatelessWidget {
       child: BlocBuilder<AppThemeCubit, ThemeMode>(
         builder: (context, themeMode) => ToastificationWrapper(
           child: MaterialApp(
+            navigatorKey: NotificationRouter.navigatorKey,
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
