@@ -6,6 +6,7 @@ class BackendEndpoints {
   static const String productsCollection = 'products';
   static const String ordersCollection = 'orders';
   static const String constantsCollection = 'constants';
+  static const String notificationsCollection = 'notifications';
 
   // Documents
   static const String shippingConfigDoc = 'shipping_config';

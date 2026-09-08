@@ -305,4 +305,27 @@ abstract class AppStrings {
   static String get orderedItems => 'ordered_items'.tr();
   static String get thankYouForYourOrder => 'thank_you_for_your_order'.tr();
   static String get copy => 'copy'.tr();
+  static String get notifications => 'notifications'.tr();
+  static String get noNotifications => 'no_notifications'.tr();
+  static String get noNotificationsDesc => 'no_notifications_desc'.tr();
+  static String get markAllAsRead => 'mark_all_as_read'.tr();
+  static String get allNotificationsMarkedAsRead =>
+      'all_notifications_marked_as_read'.tr();
+  static String get myOrders => 'my_orders'.tr();
+  static String get orderNumberPrefix => 'order_number_prefix'.tr();
+  static String get items => 'items'.tr();
+  static String get viewDetails => 'view_details'.tr();
+  static String get hideDetails => 'hide_details'.tr();
+  static String get shippingAddress => 'shipping_address'.tr();
+  static String get grandTotal => 'grand_total'.tr();
+  static String get codeLabel => 'code_label'.tr();
+  static String get noOrdersYet => 'no_orders_yet'.tr();
+  static String get noOrdersDescription => 'no_orders_desc'.tr();
+  static String get cancelOrder => 'cancel_order'.tr();
+  static String get cancelOrderConfirm => 'cancel_order_confirm'.tr();
+  static String get orderCancelledSuccessfully =>
+      'order_cancelled_successfully'.tr();
+  static String get cannotCancelOrder => 'cannot_cancel_order'.tr();
+  static String get unknownUser => 'unknown_user'.tr();
+  static String get orderDetails => 'order_details'.tr();
 }

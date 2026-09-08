@@ -1,10 +1,10 @@
+import 'package:fruit_hub/core/entities/order_entity.dart';
+import 'package:fruit_hub/core/models/order_model.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/checkout/data/data_sources/remote/checkout_remote_data_source.dart';
-import 'package:fruit_hub/features/checkout/data/models/order_model.dart';
 import 'package:fruit_hub/features/checkout/data/models/payment_input_model.dart';
 import 'package:fruit_hub/features/checkout/data/models/payment_output_model.dart';
 import 'package:fruit_hub/features/checkout/data/models/shipping_config_model.dart';
-import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/payment_input_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/payment_output_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/shipping_config_entity.dart';

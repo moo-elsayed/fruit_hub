@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/entities/order_entity.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/app_toasts.dart';
 import 'package:fruit_hub/core/widgets/custom_price_text.dart';
-import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
 
@@ -29,8 +29,7 @@ class OrderReceiptCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final total =
-        orderEntity.totalPrice + orderEntity.paymentOption.shippingCost;
+    final total = orderEntity.totalPrice;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),

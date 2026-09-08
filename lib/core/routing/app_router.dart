@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/entities/order_entity.dart';
 import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/features/auth/presentation/args/login_args.dart';
@@ -9,14 +10,17 @@ import 'package:fruit_hub/features/auth/presentation/views/forget_password_view.
 import 'package:fruit_hub/features/auth/presentation/views/login_view.dart';
 import 'package:fruit_hub/features/auth/presentation/views/register_view.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
-import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'package:fruit_hub/features/checkout/presentation/args/location_picker_args.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/location_picker_view.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/order_success_view.dart';
 import 'package:fruit_hub/features/favorites/presentation/managers/favorite_cubit/favorite_cubit.dart';
 import 'package:fruit_hub/features/main/presentation/views/main_view.dart';
+import 'package:fruit_hub/features/notifications/presentation/managers/notifications_cubit/notifications_cubit.dart';
+import 'package:fruit_hub/features/notifications/presentation/views/notifications_view.dart';
 import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view.dart';
+import 'package:fruit_hub/features/orders/presentation/views/orders_view.dart';
+import 'package:fruit_hub/features/orders/presentation/views/track_order_view.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/views/product_details_view.dart';
 import 'package:fruit_hub/features/products/presentation/views/products_view.dart';
@@ -30,6 +34,7 @@ class AppRouter {
 
   CartCubit? _cartCubit;
   FavoriteCubit? _favoriteCubit;
+  NotificationsCubit? _notificationsCubit;
 
   CartCubit get _getCartCubit =>
       _cartCubit ??= getIt.get<CartCubit>()
@@ -38,11 +43,17 @@ class AppRouter {
   FavoriteCubit get _getFavoriteCubit =>
       _favoriteCubit ??= getIt.get<FavoriteCubit>()..getFavorites();
 
+  NotificationsCubit get _getNotificationsCubit =>
+      _notificationsCubit ??= getIt.get<NotificationsCubit>()
+        ..initNotificationsStream();
+
   void _resetAuthenticatedCubits() {
     _cartCubit?.close();
     _cartCubit = null;
     _favoriteCubit?.close();
     _favoriteCubit = null;
+    _notificationsCubit?.close();
+    _notificationsCubit = null;
   }
 
   Route? generateRoute(RouteSettings settings) {
@@ -68,6 +79,7 @@ class AppRouter {
             providers: [
               BlocProvider.value(value: _getCartCubit),
               BlocProvider.value(value: _getFavoriteCubit),
+              BlocProvider.value(value: _getNotificationsCubit),
             ],
             child: MainView(initialIndex: initialIndex),
           ),
@@ -142,6 +154,26 @@ class AppRouter {
             child: ReviewsView(fruit: fruit),
           ),
         );
+      case Routes.notificationsView:
+        return _route(
+          BlocProvider.value(
+            value: _getNotificationsCubit,
+            child: const NotificationsView(),
+          ),
+        );
+      case Routes.ordersView:
+        return _route(const OrdersView());
+      case Routes.trackOrderView:
+        OrderEntity? orderArg;
+        String? orderIdArg;
+        if (settings.arguments is OrderEntity) {
+          orderArg = settings.arguments as OrderEntity;
+        } else if (settings.arguments is String) {
+          orderIdArg = settings.arguments as String;
+        } else if (settings.arguments is int) {
+          orderIdArg = settings.arguments.toString();
+        }
+        return _route(TrackOrderView(order: orderArg, orderId: orderIdArg));
       default:
         return null;
     }

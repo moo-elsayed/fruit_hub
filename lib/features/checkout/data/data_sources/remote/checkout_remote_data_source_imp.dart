@@ -6,11 +6,11 @@ import 'package:fruit_hub/core/errors/exceptions.dart';
 import 'package:fruit_hub/core/helpers/api_constants.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
+import 'package:fruit_hub/core/models/order_model.dart';
 import 'package:fruit_hub/core/network/api_helper.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/env.dart';
 import 'package:fruit_hub/features/checkout/data/data_sources/remote/checkout_remote_data_source.dart';
-import 'package:fruit_hub/features/checkout/data/models/order_model.dart';
 import 'package:fruit_hub/features/checkout/data/models/payment_input_model.dart';
 import 'package:fruit_hub/features/checkout/data/models/payment_output_model.dart';
 

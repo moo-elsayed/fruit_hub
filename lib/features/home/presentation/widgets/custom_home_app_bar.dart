@@ -4,9 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/notification_widget.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/user_info_cubit/user_info_cubit.dart';
+import 'package:fruit_hub/features/notifications/presentation/managers/notifications_cubit/notifications_cubit.dart';
+import 'package:fruit_hub/features/notifications/presentation/managers/notifications_cubit/notifications_state.dart';
 import 'package:gap/gap.dart';
 
 class CustomHomeAppBar extends StatelessWidget {
@@ -52,7 +55,17 @@ class CustomHomeAppBar extends StatelessWidget {
             ],
           ),
         ),
-        const NotificationWidget(),
+        BlocBuilder<NotificationsCubit, NotificationsState>(
+          builder: (context, state) {
+            final unreadCount = state is NotificationsSuccess
+                ? state.unreadCount
+                : 0;
+            return NotificationWidget(
+              unreadCount: unreadCount,
+              onTap: () => context.pushNamed(Routes.notificationsView),
+            );
+          },
+        ),
       ],
     ),
   );

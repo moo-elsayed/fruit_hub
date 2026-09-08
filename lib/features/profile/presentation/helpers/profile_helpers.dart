@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
 import 'package:fruit_hub/core/utils/custom_bottom_sheet_selection_item.dart';
 import 'package:fruit_hub/core/widgets/custom_bottom_sheet.dart';
@@ -69,6 +70,11 @@ List<CustomBottomSheetSelectionItem<ThemeMode>> _getThemeItems(
 // --------------- Profile Items ---------------
 
 List<ProfileCardItem> getProfileItems(BuildContext context) => [
+  ProfileCardItem(
+    icon: Icons.inventory_2_outlined,
+    title: AppStrings.myOrders,
+    onTap: () => context.pushNamed(Routes.ordersView),
+  ),
   ProfileCardItem(
     icon: Icons.language_rounded,
     title: AppStrings.language,

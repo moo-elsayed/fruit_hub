@@ -91,7 +91,6 @@ class _MainViewState extends State<MainView> {
           listenWhen: (previous, current) =>
               current is CartSuccess || current is CartFailure,
           listener: (context, state) {
-            if (ModalRoute.of(context)?.isCurrent != true) return;
             if (state is CartSuccess &&
                 (state.itemRemoved || state.newItemAdded)) {
               AppToast.show(

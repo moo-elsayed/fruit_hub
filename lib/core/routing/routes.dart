@@ -13,4 +13,6 @@ class Routes {
   static const trackOrderView = 'trackOrderView';
   static const locationPickerView = 'locationPickerView';
   static const reviewsView = 'reviewsView';
+  static const notificationsView = 'notificationsView';
+  static const ordersView = 'ordersView';
 }

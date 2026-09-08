@@ -21,12 +21,15 @@ exports.onOrderStatusChanged = onDocumentUpdated(
 
     if (!beforeData || !afterData) return;
 
-    // Only proceed if status has actually changed
-    if (beforeData.status === afterData.status) return;
+    const oldStatus = (beforeData.status || "").toLowerCase().trim();
+    const newStatus = (afterData.status || "").toLowerCase().trim();
 
-    const newStatus = afterData.status;
+    // Only proceed if status has actually changed
+    if (!newStatus || oldStatus === newStatus) return;
+
     const userId = afterData.uId || afterData.userId;
-    const orderId = afterData.orderId || event.params.orderDocId;
+    const orderId =
+      afterData.orderId != null ? afterData.orderId : event.params.orderDocId;
 
     if (!userId) {
       logger.warn(`Order ${orderId} has no userId/uId associated.`);
@@ -44,7 +47,7 @@ exports.onOrderStatusChanged = onDocumentUpdated(
     const fcmToken = userData.fcmToken;
     const isArabic = (userData.languageCode || "ar") === "ar";
 
-    // Build localized message based on status
+    // Build localized message based on normalized status
     const messageContent = getOrderStatusMessage(newStatus, orderId, isArabic);
     if (!messageContent) return;
 
@@ -55,10 +58,7 @@ exports.onOrderStatusChanged = onDocumentUpdated(
       try {
         await messaging.send({
           token: fcmToken,
-          notification: {
-            title,
-            body,
-          },
+          notification: { title, body },
           data: {
             type: "order",
             orderId: String(orderId),
@@ -75,16 +75,19 @@ exports.onOrderStatusChanged = onDocumentUpdated(
           },
           apns: {
             payload: {
-              aps: {
-                sound: "default",
-                badge: 1,
-              },
+              aps: { sound: "default", badge: 1 },
             },
           },
         });
-        logger.info(`Push notification sent to user ${userId} for order ${orderId} status: ${newStatus}`);
+        logger.info(
+          `Push notification sent to user ${userId} for order ${orderId} status: ${newStatus}`
+        );
       } catch (error) {
-        logger.error(`Failed to send push notification to user ${userId}:`, error);
+        logger.error(
+          `Failed to send push notification to user ${userId}:`,
+          error
+        );
+        await handleFcmError(error, userId);
       }
     }
 
@@ -100,15 +103,17 @@ exports.onOrderStatusChanged = onDocumentUpdated(
         createdAt: FieldValue.serverTimestamp(),
       });
     } catch (error) {
-      logger.error(`Failed to save notification record for user ${userId}:`, error);
+      logger.error(
+        `Failed to save notification record for user ${userId}:`,
+        error
+      );
     }
   }
 );
 
 /**
  * 2. Post-Delivery Review Prompt Notification
- * When order becomes `delivered`, check products and prompt review
- * ONLY IF the user hasn't reviewed the product yet!
+ * Triggered only when order transitions to 'delivered'
  */
 exports.onOrderDeliveredPromptReview = onDocumentUpdated(
   "orders/{orderDocId}",
@@ -118,8 +123,11 @@ exports.onOrderDeliveredPromptReview = onDocumentUpdated(
 
     if (!beforeData || !afterData) return;
 
-    // Trigger only on transition to 'delivered'
-    if (beforeData.status === "delivered" || afterData.status !== "delivered") {
+    const beforeStatus = (beforeData.status || "").toLowerCase().trim();
+    const afterStatus = (afterData.status || "").toLowerCase().trim();
+
+    // Trigger strictly on transition to 'delivered'
+    if (beforeStatus === "delivered" || afterStatus !== "delivered") {
       return;
     }
 
@@ -128,7 +136,6 @@ exports.onOrderDeliveredPromptReview = onDocumentUpdated(
 
     if (!userId || orderItems.length === 0) return;
 
-    // Get user details
     const userDoc = await db.collection("users").doc(userId).get();
     if (!userDoc.exists) return;
 
@@ -138,36 +145,42 @@ exports.onOrderDeliveredPromptReview = onDocumentUpdated(
 
     // Find the first product that the user has NOT reviewed yet
     for (const item of orderItems) {
-      const productCode = item.fruitCode || item.productId || item.code;
+      const productCode = item.code || item.fruitCode || item.productId;
       if (!productCode) continue;
 
-      const productDoc = await db.collection("products").doc(String(productCode)).get();
+      const productDoc = await db
+        .collection("products")
+        .doc(String(productCode))
+        .get();
       if (!productDoc.exists) continue;
 
       const productData = productDoc.data() || {};
       const reviews = productData.reviews || [];
 
-      // Check if user already reviewed this product
+      // Check strictly by user identity (userId or uId)
       const hasAlreadyReviewed = reviews.some(
-        (r) => r.userId === userId || (r.name && r.name === userData.name)
+        (r) =>
+          (r.userId && r.userId === userId) || (r.uId && r.uId === userId)
       );
 
       if (hasAlreadyReviewed) {
-        logger.info(`User ${userId} already reviewed product ${productCode}. Skipping prompt.`);
+        logger.info(
+          `User ${userId} already reviewed product ${productCode}. Skipping prompt.`
+        );
         continue;
       }
 
-      // Found an unreviewed product: send review prompt!
       const productName = isArabic
-        ? (item.nameAr || item.name || "المنتج")
-        : (item.nameEn || item.name || "the product");
+        ? item.nameAr || item.name || "المنتج"
+        : item.nameEn || item.name || "the product";
 
-      const title = isArabic ? "كيف كانت الفواكه؟ ⭐" : "How was your fruit? ⭐";
+      const title = isArabic
+        ? "كيف كانت الفواكه؟ ⭐"
+        : "How was your fruit? ⭐";
       const body = isArabic
         ? `شاركنا رأيك في "${productName}" وساعد عملاء آخرين في اختيار الأفضل!`
         : `Share your review for "${productName}" to help other buyers!`;
 
-      // Send push notification
       if (fcmToken) {
         try {
           await messaging.send({
@@ -186,23 +199,31 @@ exports.onOrderDeliveredPromptReview = onDocumentUpdated(
               },
             },
           });
-          logger.info(`Review prompt sent to user ${userId} for product ${productCode}`);
+          logger.info(
+            `Review prompt sent to user ${userId} for product ${productCode}`
+          );
         } catch (error) {
-          logger.error(`Failed to send review prompt to user ${userId}:`, error);
+          logger.error(
+            `Failed to send review prompt to user ${userId}:`,
+            error
+          );
+          await handleFcmError(error, userId);
         }
       }
 
-      // Save notification to in-app collection
-      await db.collection("users").doc(userId).collection("notifications").add({
-        title,
-        body,
-        type: "review",
-        productCode: String(productCode),
-        isRead: false,
-        createdAt: FieldValue.serverTimestamp(),
-      });
+      await db
+        .collection("users")
+        .doc(userId)
+        .collection("notifications")
+        .add({
+          title,
+          body,
+          type: "review",
+          productCode: String(productCode),
+          isRead: false,
+          createdAt: FieldValue.serverTimestamp(),
+        });
 
-      // Stop after finding the first unreviewed product to avoid spamming
       break;
     }
   }
@@ -210,61 +231,133 @@ exports.onOrderDeliveredPromptReview = onDocumentUpdated(
 
 /**
  * 3. Abandoned Cart Reminder Notification
- * Runs on schedule (e.g. daily at 18:00 UTC) to notify users with items in their cart
+ * Runs daily at 18:00 (UTC) with anti-spam protection & batch processing
  */
 exports.checkAbandonedCarts = onSchedule(
-  "every 24 hours",
+  {
+    schedule: "0 18 * * *",
+    timeZone: "UTC",
+  },
   async (event) => {
     logger.info("Running checkAbandonedCarts scheduled job...");
 
-    const usersSnapshot = await db.collection("users").get();
+    // Query only users that have an FCM token
+    const usersSnapshot = await db
+      .collection("users")
+      .where("fcmToken", "!=", null)
+      .get();
+
+    const now = Date.now();
+    const TWO_DAYS_MS = 48 * 60 * 60 * 1000;
+
+    const candidates = [];
 
     for (const userDoc of usersSnapshot.docs) {
       const userData = userDoc.data() || {};
       const cartItems = userData.cartItems || [];
       const fcmToken = userData.fcmToken;
 
-      // Only notify if user has cart items and an FCM token
-      if (cartItems.length === 0 || !fcmToken) continue;
-
-      const isArabic = (userData.languageCode || "ar") === "ar";
-      const title = isArabic ? "سلتك في انتظارك! 🛒" : "Your cart is waiting! 🛒";
-      const body = isArabic
-        ? "فواكهك المفضلة لا تزال في السلة، أكمل طلبك الآن لتصلك طازجة!"
-        : "Your favorite fresh fruits are still in your cart. Complete your order now!";
-
-      try {
-        await messaging.send({
-          token: fcmToken,
-          notification: { title, body },
-          data: {
-            type: "cart",
-            click_action: "FLUTTER_NOTIFICATION_CLICK",
-          },
-          android: {
-            priority: "high",
-            notification: {
-              channelId: "fruit_hub_notifications",
-              icon: "@mipmap/launcher_icon",
-            },
-          },
-        });
-
-        await db.collection("users").doc(userDoc.id).collection("notifications").add({
-          title,
-          body,
-          type: "cart",
-          isRead: false,
-          createdAt: FieldValue.serverTimestamp(),
-        });
-
-        logger.info(`Abandoned cart reminder sent to user: ${userDoc.id}`);
-      } catch (error) {
-        logger.error(`Error sending abandoned cart notification to ${userDoc.id}:`, error);
+      if (!Array.isArray(cartItems) || cartItems.length === 0 || !fcmToken) {
+        continue;
       }
+
+      // Anti-Spam: Do not notify again if notified within the last 48 hours
+      const lastReminder = userData.lastCartReminderSentAt?.toMillis?.() || 0;
+      if (now - lastReminder < TWO_DAYS_MS) {
+        continue;
+      }
+
+      candidates.push({ userDoc, userData, fcmToken });
+    }
+
+    logger.info(
+      `Found ${candidates.length} candidate users for abandoned cart reminders.`
+    );
+
+    // Process concurrently in chunks of 20 to prevent execution timeout
+    const chunkSize = 20;
+    for (let i = 0; i < candidates.length; i += chunkSize) {
+      const chunk = candidates.slice(i, i + chunkSize);
+      await Promise.allSettled(
+        chunk.map(async ({ userDoc, userData, fcmToken }) => {
+          const isArabic = (userData.languageCode || "ar") === "ar";
+          const title = isArabic
+            ? "سلتك في انتظارك! 🛒"
+            : "Your cart is waiting! 🛒";
+          const body = isArabic
+            ? "فواكهك المفضلة لا تزال في السلة، أكمل طلبك الآن لتصلك طازجة!"
+            : "Your favorite fresh fruits are still in your cart. Complete your order now!";
+
+          try {
+            await messaging.send({
+              token: fcmToken,
+              notification: { title, body },
+              data: {
+                type: "cart",
+                click_action: "FLUTTER_NOTIFICATION_CLICK",
+              },
+              android: {
+                priority: "high",
+                notification: {
+                  channelId: "fruit_hub_notifications",
+                  icon: "@mipmap/launcher_icon",
+                },
+              },
+            });
+
+            const batch = db.batch();
+            const notificationRef = db
+              .collection("users")
+              .doc(userDoc.id)
+              .collection("notifications")
+              .doc();
+
+            batch.set(notificationRef, {
+              title,
+              body,
+              type: "cart",
+              isRead: false,
+              createdAt: FieldValue.serverTimestamp(),
+            });
+
+            // Update timestamp to prevent recurring spam
+            batch.update(userDoc.ref, {
+              lastCartReminderSentAt: FieldValue.serverTimestamp(),
+            });
+
+            await batch.commit();
+            logger.info(`Abandoned cart reminder sent to user: ${userDoc.id}`);
+          } catch (error) {
+            logger.error(
+              `Error sending abandoned cart notification to ${userDoc.id}:`,
+              error
+            );
+            await handleFcmError(error, userDoc.id);
+          }
+        })
+      );
     }
   }
 );
+
+/**
+ * Clean up invalid / unregistered FCM tokens automatically
+ */
+async function handleFcmError(error, userId) {
+  if (
+    error.code === "messaging/registration-token-not-registered" ||
+    error.code === "messaging/invalid-registration-token"
+  ) {
+    logger.warn(`Removing invalid FCM token for user ${userId}`);
+    try {
+      await db.collection("users").doc(userId).update({
+        fcmToken: FieldValue.delete(),
+      });
+    } catch (dbErr) {
+      logger.error(`Failed to remove FCM token for user ${userId}:`, dbErr);
+    }
+  }
+}
 
 /**
  * Localized Helper for Order Status Messages
@@ -287,7 +380,9 @@ function getOrderStatusMessage(status, orderId, isArabic) {
       };
     case "delivered":
       return {
-        title: isArabic ? "تم توصيل طلبك بنجاح ✅" : "Order Delivered Successfully ✅",
+        title: isArabic
+          ? "تم توصيل طلبك بنجاح ✅"
+          : "Order Delivered Successfully ✅",
         body: isArabic
           ? `تم تسليم طلبك رقم #${orderId}. نتمنى لك تجربة ممتعة مع Fruit Hub!`
           : `Your order #${orderId} has been delivered. Enjoy your fresh fruits!`,

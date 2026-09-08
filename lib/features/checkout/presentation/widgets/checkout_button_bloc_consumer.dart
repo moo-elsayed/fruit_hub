@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
+import 'package:fruit_hub/core/entities/order_entity.dart';
 import 'package:fruit_hub/core/enums/payment_method_type.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/models/order_model.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
@@ -14,8 +16,6 @@ import '../../../../core/theming/app_text_styles.dart';
 import '../../../../core/widgets/app_toasts.dart';
 import '../../../../core/widgets/custom_material_button.dart';
 import '../../../../env.dart';
-import '../../data/models/order_model.dart';
-import '../../domain/entities/order_entity.dart';
 import '../managers/checkout_cubit/checkout_cubit.dart';
 
 class CheckoutButtonBlocConsumer extends StatelessWidget {

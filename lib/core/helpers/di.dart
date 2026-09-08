@@ -1,4 +1,5 @@
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
+import 'package:fruit_hub/core/entities/order_entity.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service_imp.dart';
 import 'package:fruit_hub/core/services/location/location_service.dart';
@@ -45,7 +46,24 @@ import 'package:fruit_hub/features/home/data/data_sources/remote/home_remote_dat
 import 'package:fruit_hub/features/home/data/repo_imp/home_repo_imp.dart';
 import 'package:fruit_hub/features/home/domain/use_cases/get_best_seller_products_use_case.dart';
 import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cubit.dart';
+import 'package:fruit_hub/features/notifications/data/data_sources/remote/notifications_remote_data_source.dart';
+import 'package:fruit_hub/features/notifications/data/data_sources/remote/notifications_remote_data_source_imp.dart';
+import 'package:fruit_hub/features/notifications/data/repo_imp/notifications_repo_imp.dart';
+import 'package:fruit_hub/features/notifications/domain/repo/notifications_repo.dart';
+import 'package:fruit_hub/features/notifications/domain/use_cases/get_notifications_stream_use_case.dart';
+import 'package:fruit_hub/features/notifications/domain/use_cases/mark_all_notifications_as_read_use_case.dart';
+import 'package:fruit_hub/features/notifications/domain/use_cases/mark_notification_as_read_use_case.dart';
+import 'package:fruit_hub/features/notifications/presentation/managers/notifications_cubit/notifications_cubit.dart';
 import 'package:fruit_hub/features/onboarding/presentation/managers/onboarding_cubit/onboarding_cubit.dart';
+import 'package:fruit_hub/features/orders/data/data_sources/remote/orders_remote_data_source.dart';
+import 'package:fruit_hub/features/orders/data/data_sources/remote/orders_remote_data_source_imp.dart';
+import 'package:fruit_hub/features/orders/data/repo_imp/orders_repo_imp.dart';
+import 'package:fruit_hub/features/orders/domain/repo/orders_repo.dart';
+import 'package:fruit_hub/features/orders/domain/use_cases/cancel_order_use_case.dart';
+import 'package:fruit_hub/features/orders/domain/use_cases/stream_order_by_id_use_case.dart';
+import 'package:fruit_hub/features/orders/domain/use_cases/stream_user_orders_use_case.dart';
+import 'package:fruit_hub/features/orders/presentation/managers/orders_cubit/orders_cubit.dart';
+import 'package:fruit_hub/features/orders/presentation/managers/track_order_cubit/track_order_cubit.dart';
 import 'package:fruit_hub/features/products/data/data_sources/remote/products_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/products/data/repo_imp/products_repo_imp.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
@@ -86,33 +104,37 @@ void setupServiceLocator() {
     () => AppThemeCubit(getIt<AppPreferencesService>()),
   );
 
-  getIt.registerSingleton<AuthRepoImp>(AuthRepoImp(AuthRemoteDataSourceImp()));
-
-  getIt.registerSingleton<SignInWithEmailAndPasswordUseCase>(
-    SignInWithEmailAndPasswordUseCase(getIt<AuthRepoImp>()),
+  getIt.registerLazySingleton<AuthRepoImp>(
+    () => AuthRepoImp(AuthRemoteDataSourceImp()),
   );
 
-  getIt.registerSingleton<CreateUserWithEmailAndPasswordUseCase>(
-    CreateUserWithEmailAndPasswordUseCase(getIt<AuthRepoImp>()),
+  getIt.registerLazySingleton<SignInWithEmailAndPasswordUseCase>(
+    () => SignInWithEmailAndPasswordUseCase(getIt<AuthRepoImp>()),
   );
 
-  getIt.registerSingleton<GoogleSignInUseCase>(
-    GoogleSignInUseCase(getIt<AuthRepoImp>()),
+  getIt.registerLazySingleton<CreateUserWithEmailAndPasswordUseCase>(
+    () => CreateUserWithEmailAndPasswordUseCase(getIt<AuthRepoImp>()),
   );
 
-  getIt.registerSingleton<FacebookSignInUseCase>(
-    FacebookSignInUseCase(getIt<AuthRepoImp>()),
+  getIt.registerLazySingleton<GoogleSignInUseCase>(
+    () => GoogleSignInUseCase(getIt<AuthRepoImp>()),
   );
 
-  getIt.registerSingleton<ForgetPasswordUseCase>(
-    ForgetPasswordUseCase(getIt<AuthRepoImp>()),
+  getIt.registerLazySingleton<FacebookSignInUseCase>(
+    () => FacebookSignInUseCase(getIt<AuthRepoImp>()),
   );
 
-  getIt.registerSingleton<GetUserInfoUseCase>(
-    GetUserInfoUseCase(getIt<AuthRepoImp>()),
+  getIt.registerLazySingleton<ForgetPasswordUseCase>(
+    () => ForgetPasswordUseCase(getIt<AuthRepoImp>()),
   );
 
-  getIt.registerSingleton<SignOutUseCase>(SignOutUseCase(getIt<AuthRepoImp>()));
+  getIt.registerLazySingleton<GetUserInfoUseCase>(
+    () => GetUserInfoUseCase(getIt<AuthRepoImp>()),
+  );
+
+  getIt.registerLazySingleton<SignOutUseCase>(
+    () => SignOutUseCase(getIt<AuthRepoImp>()),
+  );
 
   /// Splash & Onboarding
   getIt.registerFactory<SplashCubit>(
@@ -156,10 +178,12 @@ void setupServiceLocator() {
 
   /// Home
   ////////////////////////////
-  getIt.registerSingleton<HomeRepoImp>(HomeRepoImp(HomeRemoteDataSourceImp()));
+  getIt.registerLazySingleton<HomeRepoImp>(
+    () => HomeRepoImp(HomeRemoteDataSourceImp()),
+  );
 
-  getIt.registerSingleton<GetBestSellerProductsUseCase>(
-    GetBestSellerProductsUseCase(getIt<HomeRepoImp>()),
+  getIt.registerLazySingleton<GetBestSellerProductsUseCase>(
+    () => GetBestSellerProductsUseCase(getIt<HomeRepoImp>()),
   );
 
   getIt.registerFactory<HomeCubit>(
@@ -171,16 +195,16 @@ void setupServiceLocator() {
 
   /// Products
   ////////////////////////////
-  getIt.registerSingleton<ProductsRepoImp>(
-    ProductsRepoImp(ProductsRemoteDataSourceImp()),
+  getIt.registerLazySingleton<ProductsRepoImp>(
+    () => ProductsRepoImp(ProductsRemoteDataSourceImp()),
   );
 
-  getIt.registerSingleton<GetAllProductsUseCase>(
-    GetAllProductsUseCase(getIt<ProductsRepoImp>()),
+  getIt.registerLazySingleton<GetAllProductsUseCase>(
+    () => GetAllProductsUseCase(getIt<ProductsRepoImp>()),
   );
 
-  getIt.registerSingleton<GetProductDetailsUseCase>(
-    GetProductDetailsUseCase(getIt<ProductsRepoImp>()),
+  getIt.registerLazySingleton<GetProductDetailsUseCase>(
+    () => GetProductDetailsUseCase(getIt<ProductsRepoImp>()),
   );
 
   getIt.registerFactory<ProductsCubit>(
@@ -192,12 +216,12 @@ void setupServiceLocator() {
 
   /// Search
   ////////////////////////////
-  getIt.registerSingleton<SearchRepoImp>(
-    SearchRepoImp(SearchRemoteDataSourceImp()),
+  getIt.registerLazySingleton<SearchRepoImp>(
+    () => SearchRepoImp(SearchRemoteDataSourceImp()),
   );
 
-  getIt.registerSingleton<SearchFruitsUseCase>(
-    SearchFruitsUseCase(getIt<SearchRepoImp>()),
+  getIt.registerLazySingleton<SearchFruitsUseCase>(
+    () => SearchFruitsUseCase(getIt<SearchRepoImp>()),
   );
 
   getIt.registerFactory<SearchCubit>(
@@ -206,26 +230,28 @@ void setupServiceLocator() {
 
   /// Cart
   ////////////////////////////
-  getIt.registerSingleton<CartRepoImp>(CartRepoImp(CartRemoteDataSourceImp()));
-
-  getIt.registerSingleton<GetProductsInCartUseCase>(
-    GetProductsInCartUseCase(getIt<CartRepoImp>()),
+  getIt.registerLazySingleton<CartRepoImp>(
+    () => CartRepoImp(CartRemoteDataSourceImp()),
   );
 
-  getIt.registerSingleton<AddItemToCartUseCase>(
-    AddItemToCartUseCase(getIt<CartRepoImp>()),
+  getIt.registerLazySingleton<GetProductsInCartUseCase>(
+    () => GetProductsInCartUseCase(getIt<CartRepoImp>()),
   );
 
-  getIt.registerSingleton<RemoveItemFromCartUseCase>(
-    RemoveItemFromCartUseCase(getIt<CartRepoImp>()),
+  getIt.registerLazySingleton<AddItemToCartUseCase>(
+    () => AddItemToCartUseCase(getIt<CartRepoImp>()),
   );
 
-  getIt.registerSingleton<UpdateItemQuantityUseCase>(
-    UpdateItemQuantityUseCase(getIt<CartRepoImp>()),
+  getIt.registerLazySingleton<RemoveItemFromCartUseCase>(
+    () => RemoveItemFromCartUseCase(getIt<CartRepoImp>()),
   );
 
-  getIt.registerSingleton<ClearCartUseCase>(
-    ClearCartUseCase(getIt<CartRepoImp>()),
+  getIt.registerLazySingleton<UpdateItemQuantityUseCase>(
+    () => UpdateItemQuantityUseCase(getIt<CartRepoImp>()),
+  );
+
+  getIt.registerLazySingleton<ClearCartUseCase>(
+    () => ClearCartUseCase(getIt<CartRepoImp>()),
   );
 
   getIt.registerFactory<CartCubit>(
@@ -240,24 +266,24 @@ void setupServiceLocator() {
 
   /// Favorites
   ////////////////////////////
-  getIt.registerSingleton<FavoritesRepoImp>(
-    FavoritesRepoImp(FavoritesRemoteDataSourceImp()),
+  getIt.registerLazySingleton<FavoritesRepoImp>(
+    () => FavoritesRepoImp(FavoritesRemoteDataSourceImp()),
   );
 
-  getIt.registerSingleton<GetFavoritesUseCase>(
-    GetFavoritesUseCase(getIt<FavoritesRepoImp>()),
+  getIt.registerLazySingleton<GetFavoritesUseCase>(
+    () => GetFavoritesUseCase(getIt<FavoritesRepoImp>()),
   );
 
-  getIt.registerSingleton<GetFavoriteIdsUseCase>(
-    GetFavoriteIdsUseCase(getIt<FavoritesRepoImp>()),
+  getIt.registerLazySingleton<GetFavoriteIdsUseCase>(
+    () => GetFavoriteIdsUseCase(getIt<FavoritesRepoImp>()),
   );
 
-  getIt.registerSingleton<AddItemToFavoritesUseCase>(
-    AddItemToFavoritesUseCase(getIt<FavoritesRepoImp>()),
+  getIt.registerLazySingleton<AddItemToFavoritesUseCase>(
+    () => AddItemToFavoritesUseCase(getIt<FavoritesRepoImp>()),
   );
 
-  getIt.registerSingleton<RemoveItemFromFavoritesUseCase>(
-    RemoveItemFromFavoritesUseCase(getIt<FavoritesRepoImp>()),
+  getIt.registerLazySingleton<RemoveItemFromFavoritesUseCase>(
+    () => RemoveItemFromFavoritesUseCase(getIt<FavoritesRepoImp>()),
   );
 
   getIt.registerFactory<FavoriteCubit>(
@@ -271,20 +297,20 @@ void setupServiceLocator() {
 
   /// Checkout
   ////////////////////////////
-  getIt.registerSingleton<CheckoutRepo>(
-    CheckoutRepoImp(CheckoutRemoteDataSourceImp()),
+  getIt.registerLazySingleton<CheckoutRepo>(
+    () => CheckoutRepoImp(CheckoutRemoteDataSourceImp()),
   );
 
-  getIt.registerSingleton<FetchShippingConfigUseCase>(
-    FetchShippingConfigUseCase(getIt<CheckoutRepo>()),
+  getIt.registerLazySingleton<FetchShippingConfigUseCase>(
+    () => FetchShippingConfigUseCase(getIt<CheckoutRepo>()),
   );
 
-  getIt.registerSingleton<AddOrderUseCase>(
-    AddOrderUseCase(getIt<CheckoutRepo>()),
+  getIt.registerLazySingleton<AddOrderUseCase>(
+    () => AddOrderUseCase(getIt<CheckoutRepo>()),
   );
 
-  getIt.registerSingleton<MakePaymentUseCase>(
-    MakePaymentUseCase(getIt<CheckoutRepo>()),
+  getIt.registerLazySingleton<MakePaymentUseCase>(
+    () => MakePaymentUseCase(getIt<CheckoutRepo>()),
   );
 
   getIt.registerFactory<CheckoutCubit>(
@@ -298,20 +324,20 @@ void setupServiceLocator() {
 
   /// Reviews
   ////////////////////////////
-  getIt.registerSingleton<ReviewsRemoteDataSource>(
-    ReviewsRemoteDataSourceImp(),
+  getIt.registerLazySingleton<ReviewsRemoteDataSource>(
+    () => ReviewsRemoteDataSourceImp(),
   );
 
-  getIt.registerSingleton<ReviewsRepo>(
-    ReviewsRepoImp(getIt<ReviewsRemoteDataSource>()),
+  getIt.registerLazySingleton<ReviewsRepo>(
+    () => ReviewsRepoImp(getIt<ReviewsRemoteDataSource>()),
   );
 
-  getIt.registerSingleton<CheckUserPurchasedProductUseCase>(
-    CheckUserPurchasedProductUseCase(getIt<ReviewsRepo>()),
+  getIt.registerLazySingleton<CheckUserPurchasedProductUseCase>(
+    () => CheckUserPurchasedProductUseCase(getIt<ReviewsRepo>()),
   );
 
-  getIt.registerSingleton<AddReviewUseCase>(
-    AddReviewUseCase(getIt<ReviewsRepo>()),
+  getIt.registerLazySingleton<AddReviewUseCase>(
+    () => AddReviewUseCase(getIt<ReviewsRepo>()),
   );
 
   getIt.registerFactoryParam<ReviewsCubit, FruitEntity, void>(
@@ -320,6 +346,75 @@ void setupServiceLocator() {
           getIt<CheckUserPurchasedProductUseCase>(),
       addReviewUseCase: getIt<AddReviewUseCase>(),
       fruit: fruit,
+    ),
+  );
+
+  /// Notifications
+  ////////////////////////////
+  getIt.registerLazySingleton<NotificationsRemoteDataSource>(
+    () => NotificationsRemoteDataSourceImp(),
+  );
+
+  getIt.registerLazySingleton<NotificationsRepo>(
+    () => NotificationsRepoImp(getIt<NotificationsRemoteDataSource>()),
+  );
+
+  getIt.registerLazySingleton<GetNotificationsStreamUseCase>(
+    () => GetNotificationsStreamUseCase(getIt<NotificationsRepo>()),
+  );
+
+  getIt.registerLazySingleton<MarkNotificationAsReadUseCase>(
+    () => MarkNotificationAsReadUseCase(getIt<NotificationsRepo>()),
+  );
+
+  getIt.registerLazySingleton<MarkAllNotificationsAsReadUseCase>(
+    () => MarkAllNotificationsAsReadUseCase(getIt<NotificationsRepo>()),
+  );
+
+  getIt.registerFactory<NotificationsCubit>(
+    () => NotificationsCubit(
+      getNotificationsStreamUseCase: getIt<GetNotificationsStreamUseCase>(),
+      markNotificationAsReadUseCase: getIt<MarkNotificationAsReadUseCase>(),
+      markAllNotificationsAsReadUseCase:
+          getIt<MarkAllNotificationsAsReadUseCase>(),
+    ),
+  );
+
+  /// Orders
+  ////////////////////////////
+  getIt.registerLazySingleton<OrdersRemoteDataSource>(
+    () => OrdersRemoteDataSourceImp(),
+  );
+
+  getIt.registerLazySingleton<OrdersRepo>(
+    () => OrdersRepoImp(getIt<OrdersRemoteDataSource>()),
+  );
+
+  getIt.registerLazySingleton<StreamUserOrdersUseCase>(
+    () => StreamUserOrdersUseCase(getIt<OrdersRepo>()),
+  );
+
+  getIt.registerLazySingleton<StreamOrderByIdUseCase>(
+    () => StreamOrderByIdUseCase(getIt<OrdersRepo>()),
+  );
+
+  getIt.registerLazySingleton<CancelOrderUseCase>(
+    () => CancelOrderUseCase(getIt<OrdersRepo>()),
+  );
+
+  getIt.registerFactory<OrdersCubit>(
+    () => OrdersCubit(
+      getIt<StreamUserOrdersUseCase>(),
+      getIt<CancelOrderUseCase>(),
+    ),
+  );
+
+  getIt.registerFactoryParam<TrackOrderCubit, OrderEntity?, String?>(
+    (order, orderId) => TrackOrderCubit(
+      getIt<StreamOrderByIdUseCase>(),
+      getIt<CancelOrderUseCase>(),
+      initialOrder: order,
+      orderId: orderId,
     ),
   );
 }

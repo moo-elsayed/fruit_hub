@@ -5,8 +5,8 @@ import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_palette.dart';
 
-import 'order_timeline_connector.dart';
-import 'order_timeline_step_item.dart';
+import '../../features/checkout/presentation/widgets/order_timeline_connector.dart';
+import '../../features/checkout/presentation/widgets/order_timeline_step_item.dart';
 
 class OrderTimelinePreview extends StatelessWidget {
   const OrderTimelinePreview({super.key, this.currentStep = 1});

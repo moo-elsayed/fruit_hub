@@ -35,3 +35,6 @@
 ## Performance Best Practices
 - Always enforce performance best practices (e.g., using `const` constructors where possible, avoiding heavy work inside `build` methods, optimizing list view builders and animations).
 
+## Dependency Injection (GetIt) Guidelines
+- **Always Prefer `registerLazySingleton`**: Always use `getIt.registerLazySingleton` instead of `registerSingleton` for all repositories, data sources, use cases, and services (unless asynchronous startup is explicitly required like `registerSingletonAsync`). This prevents unnecessary early instantiation on app startup and guarantees resources are initialized lazily on-demand.
+

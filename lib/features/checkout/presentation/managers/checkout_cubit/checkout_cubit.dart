@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
+import 'package:fruit_hub/core/entities/order_entity.dart';
 import 'package:fruit_hub/core/helpers/app_logger.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/features/checkout/data/models/address_model.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/address_entity.dart';
-import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/payment_input_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/payment_option_entity.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/shipping_config_entity.dart';
@@ -37,7 +37,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   ShippingConfigEntity shippingConfig = const ShippingConfigEntity();
   late final int orderId = _generateOrderId();
 
-  OrderEntity get orderEntity => OrderEntity(
+  OrderEntity get orderEntity => OrderEntity.fromCheckout(
     uid: _appPreferencesService.getUser()?.uid ?? '',
     orderId: orderId,
     products: products,

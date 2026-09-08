@@ -1,17 +1,17 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/entities/order_entity.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
-import 'package:fruit_hub/features/checkout/domain/entities/order_entity.dart';
+import 'package:fruit_hub/core/widgets/order_timeline_preview.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/order_items_preview.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/order_receipt_card.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/order_success_top_widget.dart';
-import 'package:fruit_hub/features/checkout/presentation/widgets/order_timeline_preview.dart';
 import 'package:gap/gap.dart';
 
 class OrderSuccessView extends StatelessWidget {
@@ -72,23 +72,54 @@ class OrderSuccessView extends StatelessWidget {
                 Gap(24.h),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: FadeInUp(
-                    duration: const Duration(milliseconds: 500),
-                    delay: const Duration(milliseconds: 400),
-                    child: CustomMaterialButton(
-                      onPressed: () => _navigateToHome(context),
-                      text: AppStrings.continueShopping,
-                      maxWidth: true,
-                      borderRadius: BorderRadius.circular(12.r),
-                      icon: Icon(
-                        Icons.shopping_bag_outlined,
-                        color: AppPalette.white,
-                        size: 20.sp,
+                  child: Column(
+                    children: [
+                      FadeInUp(
+                        duration: const Duration(milliseconds: 500),
+                        delay: const Duration(milliseconds: 400),
+                        child: CustomMaterialButton(
+                          onPressed: () => context.pushReplacementNamed(
+                            Routes.trackOrderView,
+                            arguments: orderEntity.orderId.toString(),
+                          ),
+                          text: AppStrings.trackOrder,
+                          maxWidth: true,
+                          borderRadius: BorderRadius.circular(12.r),
+                          icon: Icon(
+                            Icons.navigation_outlined,
+                            color: AppPalette.white,
+                            size: 20.sp,
+                          ),
+                          textStyle: AppTextStyles.font16Bold.copyWith(
+                            color: AppPalette.white,
+                          ),
+                        ),
                       ),
-                      textStyle: AppTextStyles.font16Bold.copyWith(
-                        color: AppPalette.white,
+                      Gap(12.h),
+                      FadeInUp(
+                        duration: const Duration(milliseconds: 500),
+                        delay: const Duration(milliseconds: 450),
+                        child: CustomMaterialButton(
+                          onPressed: () => _navigateToHome(context),
+                          text: AppStrings.continueShopping,
+                          maxWidth: true,
+                          borderRadius: BorderRadius.circular(12.r),
+                          backgroundColor: Colors.transparent,
+                          side: BorderSide(
+                            color: context.colors.primary,
+                            width: 1.5,
+                          ),
+                          icon: Icon(
+                            Icons.shopping_bag_outlined,
+                            color: context.colors.primary,
+                            size: 20.sp,
+                          ),
+                          textStyle: AppTextStyles.font16Bold.copyWith(
+                            color: context.colors.primary,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
                 Gap(16.h),
