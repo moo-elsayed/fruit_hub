@@ -23,7 +23,7 @@ class _PaymentBodyState extends State<PaymentBody> {
   void initState() {
     super.initState();
     final cubit = context.read<CheckoutCubit>();
-    _paymentOptions = getPaymentOptions(cubit.shippingConfig);
+    _paymentOptions = getPaymentOptions(cubit.shippingConfig, cubit.subtotal);
     final index = _paymentOptions.indexWhere(
       (element) => element.type == cubit.paymentOption.type,
     );

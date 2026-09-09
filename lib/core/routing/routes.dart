@@ -15,4 +15,5 @@ class Routes {
   static const reviewsView = 'reviewsView';
   static const notificationsView = 'notificationsView';
   static const ordersView = 'ordersView';
+  static const paypalCheckoutView = 'paypalCheckoutView';
 }

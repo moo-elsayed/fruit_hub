@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fruit_hub/core/enums/notification_type.dart';
 
 import '../../domain/entities/notification_entity.dart';
 
@@ -9,6 +10,10 @@ class NotificationModel {
     required this.body,
     required this.type,
     required this.isRead,
+    this.titleAr,
+    this.titleEn,
+    this.bodyAr,
+    this.bodyEn,
     this.orderId,
     this.status,
     this.productCode,
@@ -27,11 +32,23 @@ class NotificationModel {
       parsedDate = DateTime.tryParse(rawCreatedAt);
     }
 
+    // Bilingual fields (new documents). Old documents fall back to single title/body.
+    final titleAr = json['titleAr'] as String?;
+    final titleEn = json['titleEn'] as String?;
+    final bodyAr = json['bodyAr'] as String?;
+    final bodyEn = json['bodyEn'] as String?;
+    final legacyTitle = json['title'] as String? ?? '';
+    final legacyBody = json['body'] as String? ?? '';
+
     return NotificationModel(
       id: docId,
-      title: json['title'] as String? ?? '',
-      body: json['body'] as String? ?? '',
-      type: json['type'] as String? ?? '',
+      title: legacyTitle,
+      body: legacyBody,
+      titleAr: titleAr,
+      titleEn: titleEn,
+      bodyAr: bodyAr,
+      bodyEn: bodyEn,
+      type: NotificationType.fromString(json['type'] as String?),
       isRead: json['isRead'] as bool? ?? false,
       orderId: json['orderId']?.toString(),
       status: json['status'] as String?,
@@ -43,7 +60,11 @@ class NotificationModel {
   final String id;
   final String title;
   final String body;
-  final String type;
+  final String? titleAr;
+  final String? titleEn;
+  final String? bodyAr;
+  final String? bodyEn;
+  final NotificationType type;
   final bool isRead;
   final String? orderId;
   final String? status;
@@ -53,7 +74,11 @@ class NotificationModel {
   Map<String, dynamic> toJson() => {
     'title': title,
     'body': body,
-    'type': type,
+    if (titleAr != null) 'titleAr': titleAr,
+    if (titleEn != null) 'titleEn': titleEn,
+    if (bodyAr != null) 'bodyAr': bodyAr,
+    if (bodyEn != null) 'bodyEn': bodyEn,
+    'type': type.value,
     'isRead': isRead,
     if (orderId != null) 'orderId': orderId,
     if (status != null) 'status': status,
@@ -65,6 +90,10 @@ class NotificationModel {
     id: id,
     title: title,
     body: body,
+    titleAr: titleAr,
+    titleEn: titleEn,
+    bodyAr: bodyAr,
+    bodyEn: bodyEn,
     type: type,
     isRead: isRead,
     orderId: orderId,

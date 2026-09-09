@@ -13,7 +13,6 @@ class NotificationsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView.separated(
-    physics: const BouncingScrollPhysics(),
     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
     itemCount: notifications.length,
     separatorBuilder: (context, index) => SizedBox(height: 10.h),

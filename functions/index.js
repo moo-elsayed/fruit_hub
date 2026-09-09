@@ -1,4 +1,7 @@
-const { onDocumentUpdated } = require("firebase-functions/v2/firestore");
+const {
+  onDocumentCreated,
+  onDocumentUpdated,
+} = require("firebase-functions/v2/firestore");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore, FieldValue } = require("firebase-admin/firestore");
@@ -8,6 +11,45 @@ const logger = require("firebase-functions/logger");
 initializeApp();
 const db = getFirestore();
 const messaging = getMessaging();
+
+/**
+ * 0. Order Created: Update Product Selling Counts
+ * Triggers automatically when a new order document is created in `orders/{orderDocId}`
+ */
+exports.onOrderCreated = onDocumentCreated(
+  "orders/{orderDocId}",
+  async (event) => {
+    const snapshot = event.data;
+    if (!snapshot) return;
+
+    const orderData = snapshot.data();
+    if (!orderData) return;
+
+    const status = (orderData.status || "").toLowerCase().trim();
+    if (status === "cancelled") return;
+
+    const orderItems = orderData.orderItems || [];
+    if (!Array.isArray(orderItems) || orderItems.length === 0) return;
+
+    try {
+      await adjustProductSellingCounts(
+        orderItems,
+        1,
+        snapshot.ref,
+        true,
+        event.params.orderDocId
+      );
+      logger.info(
+        `Successfully incremented sellingCount for new order ${event.params.orderDocId}`
+      );
+    } catch (error) {
+      logger.error(
+        `Failed to increment sellingCount for order ${event.params.orderDocId}:`,
+        error
+      );
+    }
+  }
+);
 
 /**
  * 1. Order Status Changed Notification
@@ -31,6 +73,39 @@ exports.onOrderStatusChanged = onDocumentUpdated(
     const orderId =
       afterData.orderId != null ? afterData.orderId : event.params.orderDocId;
 
+    // 0. Handle sellingCount rollback on cancellation or re-apply on un-cancellation
+    if (newStatus === "cancelled" && beforeData.sellingCountApplied === true) {
+      try {
+        await adjustProductSellingCounts(
+          afterData.orderItems || beforeData.orderItems || [],
+          -1,
+          event.data.after.ref,
+          false,
+          orderId
+        );
+        logger.info(`Rolled back sellingCount for cancelled order ${orderId}`);
+      } catch (err) {
+        logger.error(`Failed to rollback sellingCount for order ${orderId}:`, err);
+      }
+    } else if (
+      oldStatus === "cancelled" &&
+      newStatus !== "cancelled" &&
+      beforeData.sellingCountApplied === false
+    ) {
+      try {
+        await adjustProductSellingCounts(
+          afterData.orderItems || beforeData.orderItems || [],
+          1,
+          event.data.after.ref,
+          true,
+          orderId
+        );
+        logger.info(`Re-applied sellingCount for un-cancelled order ${orderId}`);
+      } catch (err) {
+        logger.error(`Failed to re-apply sellingCount for order ${orderId}:`, err);
+      }
+    }
+
     if (!userId) {
       logger.warn(`Order ${orderId} has no userId/uId associated.`);
       return;
@@ -47,11 +122,13 @@ exports.onOrderStatusChanged = onDocumentUpdated(
     const fcmToken = userData.fcmToken;
     const isArabic = (userData.languageCode || "ar") === "ar";
 
-    // Build localized message based on normalized status
-    const messageContent = getOrderStatusMessage(newStatus, orderId, isArabic);
-    if (!messageContent) return;
+    // Build both AR and EN messages for bilingual storage
+    const arContent = getOrderStatusMessage(newStatus, orderId, true);
+    const enContent = getOrderStatusMessage(newStatus, orderId, false);
+    if (!arContent || !enContent) return;
 
-    const { title, body } = messageContent;
+    // Pick the push banner language based on user's current languageCode
+    const { title, body } = isArabic ? arContent : enContent;
 
     // 1. Send FCM Push Notification if token exists
     if (fcmToken) {
@@ -69,7 +146,6 @@ exports.onOrderStatusChanged = onDocumentUpdated(
             priority: "high",
             notification: {
               channelId: "fruit_hub_notifications",
-              icon: "@mipmap/launcher_icon",
               sound: "default",
             },
           },
@@ -91,11 +167,13 @@ exports.onOrderStatusChanged = onDocumentUpdated(
       }
     }
 
-    // 2. Save notification to user in-app notifications collection
+    // 2. Save bilingual notification to user in-app notifications collection
     try {
       await db.collection("users").doc(userId).collection("notifications").add({
-        title,
-        body,
+        titleAr: arContent.title,
+        titleEn: enContent.title,
+        bodyAr: arContent.body,
+        bodyEn: enContent.body,
         type: "order",
         orderId: String(orderId),
         status: String(newStatus),
@@ -170,22 +248,24 @@ exports.onOrderDeliveredPromptReview = onDocumentUpdated(
         continue;
       }
 
-      const productName = isArabic
-        ? item.nameAr || item.name || "المنتج"
-        : item.nameEn || item.name || "the product";
+      // Build bilingual product name (OrderItemModel only has 'name', use it for both)
+      const productNameAr = item.name || "المنتج";
+      const productNameEn = item.name || "the product";
 
-      const title = isArabic
-        ? "كيف كانت الفواكه؟ ⭐"
-        : "How was your fruit? ⭐";
-      const body = isArabic
-        ? `شاركنا رأيك في "${productName}" وساعد عملاء آخرين في اختيار الأفضل!`
-        : `Share your review for "${productName}" to help other buyers!`;
+      const titleAr = "كيف كانت الفواكه؟ ⭐";
+      const titleEn = "How was your fruit? ⭐";
+      const bodyAr = `شاركنا رأيك في "${productNameAr}" وساعد عملاء آخرين في اختيار الأفضل!`;
+      const bodyEn = `Share your review for "${productNameEn}" to help other buyers!`;
+
+      // Push banner uses user's current language
+      const pushTitle = isArabic ? titleAr : titleEn;
+      const pushBody = isArabic ? bodyAr : bodyEn;
 
       if (fcmToken) {
         try {
           await messaging.send({
             token: fcmToken,
-            notification: { title, body },
+            notification: { title: pushTitle, body: pushBody },
             data: {
               type: "review",
               productCode: String(productCode),
@@ -195,7 +275,7 @@ exports.onOrderDeliveredPromptReview = onDocumentUpdated(
               priority: "high",
               notification: {
                 channelId: "fruit_hub_notifications",
-                icon: "@mipmap/launcher_icon",
+                sound: "default",
               },
             },
           });
@@ -216,8 +296,10 @@ exports.onOrderDeliveredPromptReview = onDocumentUpdated(
         .doc(userId)
         .collection("notifications")
         .add({
-          title,
-          body,
+          titleAr,
+          titleEn,
+          bodyAr,
+          bodyEn,
           type: "review",
           productCode: String(productCode),
           isRead: false,
@@ -281,17 +363,19 @@ exports.checkAbandonedCarts = onSchedule(
       await Promise.allSettled(
         chunk.map(async ({ userDoc, userData, fcmToken }) => {
           const isArabic = (userData.languageCode || "ar") === "ar";
-          const title = isArabic
-            ? "سلتك في انتظارك! 🛒"
-            : "Your cart is waiting! 🛒";
-          const body = isArabic
-            ? "فواكهك المفضلة لا تزال في السلة، أكمل طلبك الآن لتصلك طازجة!"
-            : "Your favorite fresh fruits are still in your cart. Complete your order now!";
+          const titleAr = "سلتك في انتظارك! 🛒";
+          const titleEn = "Your cart is waiting! 🛒";
+          const bodyAr = "فواكهك المفضلة لا تزال في السلة، أكمل طلبك الآن لتصلك طازجة!";
+          const bodyEn = "Your favorite fresh fruits are still in your cart. Complete your order now!";
+
+          // Push banner uses user's current language
+          const pushTitle = isArabic ? titleAr : titleEn;
+          const pushBody = isArabic ? bodyAr : bodyEn;
 
           try {
             await messaging.send({
               token: fcmToken,
-              notification: { title, body },
+              notification: { title: pushTitle, body: pushBody },
               data: {
                 type: "cart",
                 click_action: "FLUTTER_NOTIFICATION_CLICK",
@@ -300,7 +384,7 @@ exports.checkAbandonedCarts = onSchedule(
                 priority: "high",
                 notification: {
                   channelId: "fruit_hub_notifications",
-                  icon: "@mipmap/launcher_icon",
+                  sound: "default",
                 },
               },
             });
@@ -313,8 +397,10 @@ exports.checkAbandonedCarts = onSchedule(
               .doc();
 
             batch.set(notificationRef, {
-              title,
-              body,
+              titleAr,
+              titleEn,
+              bodyAr,
+              bodyEn,
               type: "cart",
               isRead: false,
               createdAt: FieldValue.serverTimestamp(),
@@ -398,3 +484,44 @@ function getOrderStatusMessage(status, orderId, isArabic) {
       return null;
   }
 }
+
+/**
+ * Helper to adjust product selling counts atomically in batch
+ */
+async function adjustProductSellingCounts(
+  orderItems,
+  multiplier,
+  orderRef,
+  newAppliedStatus,
+  orderDocId
+) {
+  if (!Array.isArray(orderItems) || orderItems.length === 0) return;
+
+  const batch = db.batch();
+  let validItemsCount = 0;
+
+  for (const item of orderItems) {
+    const productCode = item.code || item.fruitCode || item.productId;
+    const qty = Number(item.quantity) || 1;
+    const delta = qty * multiplier;
+
+    if (!productCode || delta === 0) continue;
+
+    const productRef = db.collection("products").doc(String(productCode));
+    batch.set(
+      productRef,
+      { sellingCount: FieldValue.increment(delta) },
+      { merge: true }
+    );
+    validItemsCount++;
+  }
+
+  if (validItemsCount > 0 && orderRef) {
+    batch.update(orderRef, { sellingCountApplied: newAppliedStatus });
+    await batch.commit();
+    logger.info(
+      `Adjusted sellingCount (${multiplier > 0 ? "+1" : "-1"} direction) for ${validItemsCount} products in order ${orderDocId}`
+    );
+  }
+}
+

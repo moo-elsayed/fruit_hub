@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/entities/order_entity.dart';
+import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/di.dart';
+import 'package:fruit_hub/core/models/order_model.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/env.dart';
 import 'package:fruit_hub/features/auth/presentation/args/login_args.dart';
 import 'package:fruit_hub/features/auth/presentation/views/forget_password_view.dart';
 import 'package:fruit_hub/features/auth/presentation/views/login_view.dart';
 import 'package:fruit_hub/features/auth/presentation/views/register_view.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/checkout/presentation/args/location_picker_args.dart';
+import 'package:fruit_hub/features/checkout/presentation/args/paypal_checkout_args.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/checkout_view.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/location_picker_view.dart';
 import 'package:fruit_hub/features/checkout/presentation/views/order_success_view.dart';
@@ -174,6 +179,21 @@ class AppRouter {
           orderIdArg = settings.arguments.toString();
         }
         return _route(TrackOrderView(order: orderArg, orderId: orderIdArg));
+      case Routes.paypalCheckoutView:
+        final args = settings.arguments as PaypalCheckoutArgs;
+        final orderModel = OrderModel.fromEntity(args.orderEntity);
+        return _route(
+          PaypalCheckoutView(
+            sandboxMode: true,
+            clientId: Env.paypalClientId,
+            secretKey: Env.paypalSecretKey,
+            transactions: [orderModel.toPaypalTransaction()],
+            note: AppStrings.contactUsForAnyQuestionsOnYourOrder,
+            onSuccess: args.onSuccess,
+            onError: args.onError,
+            onCancel: args.onCancel,
+          ),
+        );
       default:
         return null;
     }

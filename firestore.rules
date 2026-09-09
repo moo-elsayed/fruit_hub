@@ -1,0 +1,132 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ====================================================
+    // Helper Functions
+    // ====================================================
+
+    // Check if the request comes from an authenticated user
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if the authenticated user is the owner of the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Check if the user is an Administrator:
+    // 1. By Admin email list (whitelisted emails)
+    // 2. OR by role == 'admin' inside their users/{uid} document
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email in [
+          'sonaa3764@gmail.com'
+        ] ||
+        (
+          exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+        )
+      );
+    }
+
+    // ====================================================
+    // 1. Users Collection
+    // ====================================================
+    match /users/{userId} {
+      // Authenticated users can read profiles; Admins can read all
+      allow read: if isAuthenticated();
+
+      // Users can only create their own user document (prevent self-granting admin role)
+      allow create: if isOwner(userId) && (
+        !('role' in request.resource.data) ||
+        request.resource.data.role != 'admin' ||
+        isAdmin()
+      );
+
+      // Users can update their own data, but cannot elevate their role to 'admin'
+      allow update: if (
+        isOwner(userId) && (
+          !('role' in request.resource.data) ||
+          request.resource.data.role == resource.data.role ||
+          isAdmin()
+        )
+      ) || isAdmin();
+
+      // Only Admin can delete a user document
+      allow delete: if isAdmin();
+
+      // In-App Notifications Subcollection
+      match /notifications/{notificationId} {
+        // Users can read, mark as read, and delete their own notifications
+        // Cloud Functions uses Firebase Admin SDK (bypasses security rules)
+        allow read, write: if isOwner(userId) || isAdmin();
+      }
+    }
+
+    // ====================================================
+    // 2. Products Collection
+    // ====================================================
+    match /products/{productId} {
+      // Public read: anyone can browse the product catalog
+      allow read: if true;
+
+      // Only Admins can add or delete products
+      allow create, delete: if isAdmin();
+
+      // Updates:
+      // 1. Admins have full edit permissions
+      // 2. Customers can only submit reviews (reviews, avgRating, ratingCount)
+      allow update: if isAdmin() || (
+        isAuthenticated() &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reviews', 'avgRating', 'ratingCount'])
+      );
+    }
+
+    // ====================================================
+    // 3. Orders Collection
+    // ====================================================
+    match /orders/{orderId} {
+      // Read: Users can only read their own orders; Admins can read all orders
+      allow read: if (
+        isAuthenticated() && (
+          resource.data.uId == request.auth.uid ||
+          resource.data.userId == request.auth.uid
+        )
+      ) || isAdmin();
+
+      // Create: Authenticated users can only create orders for themselves
+      allow create: if isAuthenticated() && (
+        request.resource.data.uId == request.auth.uid ||
+        request.resource.data.userId == request.auth.uid
+      );
+
+      // Update:
+      // 1. Admins can update order status (processing, shipped, delivered, etc.)
+      // 2. Customers can only cancel their own pending order
+      allow update: if isAdmin() || (
+        isAuthenticated() &&
+        (resource.data.uId == request.auth.uid || resource.data.userId == request.auth.uid) &&
+        resource.data.status == 'pending' &&
+        request.resource.data.status == 'cancelled' &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+      );
+
+      // Delete: Orders should not be deleted by customers
+      allow delete: if isAdmin();
+    }
+
+    // ====================================================
+    // 4. Constants Collection (Shipping Config, etc.)
+    // ====================================================
+    match /constants/{constantId} {
+      // Public read: needed by Cart & Checkout to calculate shipping threshold
+      allow read: if true;
+
+      // Only Admins can update shipping cost or free shipping threshold
+      allow write: if isAdmin();
+    }
+  }
+}

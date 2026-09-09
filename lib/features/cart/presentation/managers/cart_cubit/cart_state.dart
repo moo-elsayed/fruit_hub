@@ -17,6 +17,7 @@ final class CartSuccess extends CartState {
     required this.items,
     required this.totalPrice,
     required this.totalItemCount,
+    this.shippingConfig,
     this.newItemAdded = false,
     this.itemRemoved = false,
     this.itemAlreadyExists = false,
@@ -25,6 +26,7 @@ final class CartSuccess extends CartState {
   final List<CartItemEntity> items;
   final double totalPrice;
   final int totalItemCount;
+  final ShippingConfigEntity? shippingConfig;
   final bool newItemAdded;
   final bool itemRemoved;
   final bool itemAlreadyExists;

@@ -93,25 +93,28 @@ class OrderModel {
       0.0,
       (totalSum, item) => totalSum + (item.price * item.quantity),
     );
-    final double shippingCost = totalPrice - subTotal;
+    final double shippingCost = (totalPrice - subTotal).clamp(
+      0.0,
+      double.infinity,
+    );
     return {
       'amount': {
-        'total': totalPrice.toString(),
+        'total': totalPrice.toStringAsFixed(2),
         'currency': 'USD',
         'details': {
-          'subtotal': subTotal.toString(),
-          'shipping': shippingCost.toString(),
+          'subtotal': subTotal.toStringAsFixed(2),
+          'shipping': shippingCost.toStringAsFixed(2),
           'shipping_discount': 0,
         },
       },
-      'description': 'The payment transaction description.',
+      'description': 'Fruit Hub order transaction',
       'item_list': {
         'items': orderItems
             .map(
               (item) => {
                 'name': item.name,
                 'quantity': item.quantity,
-                'price': item.price.toString(),
+                'price': item.price.toStringAsFixed(2),
                 'currency': 'USD',
               },
             )

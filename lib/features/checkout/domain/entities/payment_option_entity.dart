@@ -16,12 +16,13 @@ class PaymentOptionEntity {
 
 List<PaymentOptionEntity> getPaymentOptions([
   ShippingConfigEntity? shippingConfig,
+  double subtotal = 0,
 ]) => [
   PaymentOptionEntity(title: AppStrings.payByPaypal, type: .paypal),
   PaymentOptionEntity(title: AppStrings.payByCreditCard, type: .card),
   PaymentOptionEntity(
     title: AppStrings.cashOnDelivery,
     type: .cash,
-    shippingCost: shippingConfig?.shippingCost ?? 0,
+    shippingCost: shippingConfig?.calculateShippingCost(subtotal) ?? 0,
   ),
 ];

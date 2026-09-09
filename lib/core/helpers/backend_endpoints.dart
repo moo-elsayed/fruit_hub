@@ -15,4 +15,6 @@ class BackendEndpoints {
   static const String favoriteIdsField = 'favoriteIds';
   static const String cartItemsField = 'cartItems';
   static const String customerIdField = 'customerId';
+  static const String freeShippingThresholdField = 'free_shipping_threshold';
+  static const String shippingCostField = 'shipping_cost';
 }

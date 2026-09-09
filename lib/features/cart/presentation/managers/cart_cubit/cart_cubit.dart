@@ -10,6 +10,8 @@ import 'package:fruit_hub/features/cart/domain/use_cases/clear_cart_use_case.dar
 import 'package:fruit_hub/features/cart/domain/use_cases/get_products_in_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/remove_item_from_cart_use_case.dart';
 import 'package:fruit_hub/features/cart/domain/use_cases/update_item_quantity_use_case.dart';
+import 'package:fruit_hub/features/checkout/domain/entities/shipping_config_entity.dart';
+import 'package:fruit_hub/features/checkout/domain/use_cases/fetch_shipping_config_use_case.dart';
 
 part 'cart_state.dart';
 
@@ -20,6 +22,7 @@ class CartCubit extends Cubit<CartState> {
     this._getProductsInCart,
     this._updateItemQuantityUseCase,
     this._clearCartUseCase,
+    this._fetchShippingConfigUseCase,
   ) : super(CartInitial());
 
   final AddItemToCartUseCase _addItemToCartUseCase;
@@ -27,8 +30,10 @@ class CartCubit extends Cubit<CartState> {
   final GetProductsInCartUseCase _getProductsInCart;
   final UpdateItemQuantityUseCase _updateItemQuantityUseCase;
   final ClearCartUseCase _clearCartUseCase;
+  final FetchShippingConfigUseCase _fetchShippingConfigUseCase;
 
   List<CartItemEntity> _productsInCart = [];
+  ShippingConfigEntity? shippingConfig;
   final Map<String, Timer> _debounceTimers = {};
   final Map<String, int> _serverSyncedQuantities = {};
 
@@ -115,6 +120,7 @@ class CartCubit extends Cubit<CartState> {
   }
 
   Future<void> getProductsInCart({bool needLoading = true}) async {
+    unawaited(_fetchShippingConfig());
     if (_productsInCart.isNotEmpty) {
       _emitCartSuccess();
       return;
@@ -129,6 +135,17 @@ class CartCubit extends Cubit<CartState> {
         _emitCartSuccess();
       case NetworkFailure<List<CartItemEntity>>():
         emit(CartFailure(result.error));
+    }
+  }
+
+  Future<void> _fetchShippingConfig() async {
+    if (shippingConfig != null) return;
+    final result = await _fetchShippingConfigUseCase();
+    if (result is NetworkSuccess<ShippingConfigEntity>) {
+      shippingConfig = result.data;
+      if (state is CartSuccess) {
+        _emitCartSuccess();
+      }
     }
   }
 
@@ -213,6 +230,7 @@ class CartCubit extends Cubit<CartState> {
         items: List.from(_productsInCart),
         totalItemCount: _productsInCart.length,
         totalPrice: _calculateTotalPrice(_productsInCart),
+        shippingConfig: shippingConfig,
         newItemAdded: newItemAdded,
         itemRemoved: itemRemoved,
         itemAlreadyExists: itemAlreadyExists,

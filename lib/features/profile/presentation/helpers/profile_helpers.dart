@@ -1,9 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/theming/app_language_cubit.dart';
 import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
 import 'package:fruit_hub/core/utils/custom_bottom_sheet_selection_item.dart';
 import 'package:fruit_hub/core/widgets/custom_bottom_sheet.dart';
@@ -19,14 +19,14 @@ List<CustomBottomSheetSelectionItem<String>> _getLanguageItems(
     icon: Icons.language_rounded,
     value: 'ar',
     isSelected: context.isArabic,
-    onTap: () => context.setLocale(const Locale('ar')),
+    onTap: () => context.read<AppLanguageCubit>().changeLanguage('ar'),
   ),
   CustomBottomSheetSelectionItem<String>(
     title: AppStrings.english,
     icon: Icons.language_rounded,
     value: 'en',
     isSelected: !context.isArabic,
-    onTap: () => context.setLocale(const Locale('en')),
+    onTap: () => context.read<AppLanguageCubit>().changeLanguage('en'),
   ),
 ];
 

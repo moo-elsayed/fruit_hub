@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 
 import '../helpers/app_assets.dart';
 import '../helpers/extensions.dart';
+import '../theming/app_palette.dart';
+import '../theming/app_text_styles.dart';
 
 class NotificationWidget extends StatelessWidget {
   const NotificationWidget({super.key, this.onTap, this.unreadCount = 0});
@@ -25,6 +27,10 @@ class NotificationWidget extends StatelessWidget {
             AppAssets.iconsNotification,
             height: 20.h,
             width: 20.w,
+            colorFilter: ColorFilter.mode(
+              context.colors.primary.withValues(alpha: 0.8),
+              BlendMode.srcIn,
+            ),
           ),
         ),
         if (unreadCount > 0)
@@ -42,10 +48,8 @@ class NotificationWidget extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 unreadCount > 99 ? '99+' : '$unreadCount',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.bold,
+                style: AppTextStyles.font10Bold.copyWith(
+                  color: AppPalette.white,
                   height: 1.1,
                 ),
                 textAlign: TextAlign.center,

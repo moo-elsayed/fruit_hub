@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
+import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/services/notifications/notification_router.dart';
 
 @pragma('vm:entry-point')
@@ -17,6 +18,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class NotificationService {
   NotificationService({
+    required this.preferencesService,
     FirebaseMessaging? messaging,
     FirebaseFirestore? firestore,
     FirebaseAuth? auth,
@@ -27,6 +29,7 @@ class NotificationService {
        _localNotifications =
            localNotifications ?? FlutterLocalNotificationsPlugin();
 
+  final AppPreferencesService preferencesService;
   final FirebaseMessaging _messaging;
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
@@ -155,7 +158,7 @@ class NotificationService {
   Future<void> _saveTokenToFirestore(String token) async {
     final user = _auth.currentUser;
     if (user != null) {
-      final language = PlatformDispatcher.instance.locale.languageCode;
+      final language = preferencesService.getLanguage();
       await _firestore
           .collection(BackendEndpoints.usersCollection)
           .doc(user.uid)

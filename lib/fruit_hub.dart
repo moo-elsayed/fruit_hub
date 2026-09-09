@@ -6,6 +6,7 @@ import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/routing/app_router.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/services/notifications/notification_router.dart';
+import 'package:fruit_hub/core/theming/app_language_cubit.dart';
 import 'package:fruit_hub/core/theming/app_theme.dart';
 import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/user_info_cubit/user_info_cubit.dart';
@@ -24,21 +25,25 @@ class FruitHub extends StatelessWidget {
     child: MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt.get<AppThemeCubit>()),
+        BlocProvider(create: (context) => getIt.get<AppLanguageCubit>()),
         BlocProvider(create: (context) => getIt.get<UserInfoCubit>()),
       ],
       child: BlocBuilder<AppThemeCubit, ThemeMode>(
-        builder: (context, themeMode) => ToastificationWrapper(
-          child: MaterialApp(
-            navigatorKey: NotificationRouter.navigatorKey,
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            debugShowCheckedModeBanner: false,
-            onGenerateRoute: appRouter.generateRoute,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: themeMode,
-            initialRoute: Routes.splashView,
+        builder: (context, themeMode) => BlocListener<AppLanguageCubit, Locale>(
+          listener: (context, locale) => context.setLocale(locale),
+          child: ToastificationWrapper(
+            child: MaterialApp(
+              navigatorKey: NotificationRouter.navigatorKey,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              debugShowCheckedModeBanner: false,
+              onGenerateRoute: appRouter.generateRoute,
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: themeMode,
+              initialRoute: Routes.splashView,
+            ),
           ),
         ),
       ),

@@ -22,10 +22,7 @@ class OrderHeaderBadge extends StatelessWidget {
     decoration: BoxDecoration(
       color: color.withValues(alpha: 0.12),
       borderRadius: BorderRadius.circular(20.r),
-      border: Border.all(
-        color: color.withValues(alpha: 0.25),
-        width: 1,
-      ),
+      border: Border.all(color: color.withValues(alpha: 0.25), width: 1),
     ),
     child: Row(
       mainAxisSize: MainAxisSize.min,
@@ -37,8 +34,7 @@ class OrderHeaderBadge extends StatelessWidget {
             height: 7.r,
             decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           ),
-        if (icon != null)
-          Icon(icon, size: 13.sp, color: color),
+        if (icon != null) Icon(icon, size: 13.sp, color: color),
         Text(label, style: AppTextStyles.font11SemiBold.copyWith(color: color)),
       ],
     ),

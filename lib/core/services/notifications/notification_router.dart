@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fruit_hub/core/enums/notification_type.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 
 class NotificationRouter {
@@ -59,7 +60,7 @@ class NotificationRouter {
 
     if (data.isEmpty) return;
 
-    final type = data['type']?.toString() ?? '';
+    final type = NotificationType.fromString(data['type']?.toString());
     final orderId = (data['orderId'] ?? data['order_id'])?.toString();
     final productCode = (data['productCode'] ?? data['product_code'])
         ?.toString();
@@ -77,7 +78,7 @@ class NotificationRouter {
     }
 
     // 3. Cart reminders
-    if (type == 'cart') {
+    if (type == NotificationType.cart) {
       _navigateTo(Routes.mainView, arguments: 2);
       return;
     }
@@ -85,7 +86,7 @@ class NotificationRouter {
     // 4. Fallback ID if passed directly
     final id = data['id']?.toString();
     if (id != null && id.isNotEmpty) {
-      if (type == 'review' || type == 'product') {
+      if (type == NotificationType.review) {
         _navigateTo(Routes.productDetailsView, arguments: id);
       } else {
         _navigateTo(Routes.trackOrderView, arguments: id);

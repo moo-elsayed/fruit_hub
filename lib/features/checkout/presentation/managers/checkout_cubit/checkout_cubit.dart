@@ -76,6 +76,11 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     switch (result) {
       case NetworkSuccess<ShippingConfigEntity>():
         shippingConfig = result.data!;
+        final updatedOptions = getPaymentOptions(shippingConfig, subtotal);
+        paymentOption = updatedOptions.firstWhere(
+          (o) => o.type == paymentOption.type,
+          orElse: () => updatedOptions.first,
+        );
       case NetworkFailure<ShippingConfigEntity>():
         shippingConfig = const ShippingConfigEntity();
         AppLogger.error(result.error);

@@ -147,6 +147,15 @@ abstract class AppStrings {
   static String get payByCreditCard => 'pay_by_credit_card'.tr();
   static String get freeShipping => 'free_shipping'.tr();
   static String get free => 'free'.tr();
+  static String addAmountMoreForFreeShipping(String amount) =>
+      'add_more_for_free_shipping'.tr(args: [amount]);
+  static String get congratulationsFreeShipping =>
+      'congratulations_free_shipping'.tr();
+  static String get justNow => 'just_now'.tr();
+  static String minutesAgo(int minutes) =>
+      'minutes_ago'.tr(args: [minutes.toString()]);
+  static String hoursAgo(int hours) => 'hours_ago'.tr(args: [hours.toString()]);
+  static String daysAgo(int days) => 'days_ago'.tr(args: [days.toString()]);
   static String get phoneNumber => 'phone_number'.tr();
   static String get streetNameCannotBeEmpty =>
       'street_name_cannot_be_empty'.tr();
