@@ -32,8 +32,8 @@ class Validator {
   }
 
   static String? validateOldPassword(String? val) {
-    if (val == null || val.isEmpty) {
-      return AppStrings.passwordCannotBeEmpty;
+    if (val == null || val.trim().isEmpty) {
+      return AppStrings.currentPasswordCannotBeEmpty;
     }
     return null;
   }

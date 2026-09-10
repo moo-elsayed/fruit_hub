@@ -18,6 +18,19 @@ class FruitEntity extends Equatable {
     this.reviews = const [],
   });
 
+  static const FruitEntity dummy = FruitEntity(
+    name: 'اسم الفاكهة التجريبي',
+    description:
+        'وصف تفصيلي للفاكهة الطازجة والفوائد الغذائية الممتازة التي تحتوي عليها',
+    price: 50.0,
+    isOrganic: true,
+    daysUntilExpiration: 7,
+    numberOfCalories: 45,
+    weightInGrams: 500,
+    ratingCount: 20,
+    avgRating: 4.8,
+  );
+
   final String imagePath;
   final String name;
   final String code;

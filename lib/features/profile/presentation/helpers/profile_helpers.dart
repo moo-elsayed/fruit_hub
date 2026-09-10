@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fruit_hub/core/cubits/app_language_cubit.dart';
+import 'package:fruit_hub/core/cubits/app_theme_cubit.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
-import 'package:fruit_hub/core/theming/app_language_cubit.dart';
-import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
 import 'package:fruit_hub/core/utils/custom_bottom_sheet_selection_item.dart';
 import 'package:fruit_hub/core/widgets/custom_bottom_sheet.dart';
 import 'package:fruit_hub/features/profile/presentation/widgets/profile_card.dart';

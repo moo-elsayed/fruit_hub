@@ -16,4 +16,6 @@ class Routes {
   static const notificationsView = 'notificationsView';
   static const ordersView = 'ordersView';
   static const paypalCheckoutView = 'paypalCheckoutView';
+  static const fullScreenImageGalleryView = 'fullScreenImageGalleryView';
+  static const editProfileView = 'editProfileView';
 }

@@ -163,7 +163,6 @@ class _LoginViewState extends State<LoginView> {
                         controller: _passwordController,
                         hint: AppStrings.password,
                         isPassword: true,
-                        obscuringCharacter: '●',
                         keyboardType: TextInputType.visiblePassword,
                         onValidate: Validator.validatePassword,
                         action: TextInputAction.done,

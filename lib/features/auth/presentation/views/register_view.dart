@@ -147,7 +147,6 @@ class _RegisterViewState extends State<RegisterView> {
                         controller: _passwordController,
                         hint: AppStrings.password,
                         isPassword: true,
-                        obscuringCharacter: '●',
                         keyboardType: TextInputType.visiblePassword,
                         onValidate: Validator.validatePassword,
                         action: TextInputAction.done,

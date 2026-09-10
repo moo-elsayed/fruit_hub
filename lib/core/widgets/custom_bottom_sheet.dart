@@ -93,6 +93,9 @@ class CustomBottomSheet extends StatelessWidget {
                   final item = items[index];
                   final isLast = index == items.length - 1;
 
+                  final isSelected = item.isSelected == true;
+                  final hasSelection = item.isSelected != null;
+
                   return Padding(
                     padding: EdgeInsets.only(bottom: isLast ? 0 : 10.h),
                     child: InkWell(
@@ -108,17 +111,15 @@ class CustomBottomSheet extends StatelessWidget {
                           vertical: 12.h,
                         ),
                         decoration: BoxDecoration(
-                          color: item.isSelected
+                          color: isSelected
                               ? colors.primary.withValues(alpha: 0.12)
                               : (context.isDarkMode
                                     ? colors.border.withValues(alpha: 0.2)
                                     : colors.border.withValues(alpha: 0.12)),
                           borderRadius: BorderRadius.circular(14.r),
                           border: Border.all(
-                            color: item.isSelected
-                                ? colors.primary
-                                : colors.border,
-                            width: item.isSelected ? 1.5 : 1.0,
+                            color: isSelected ? colors.primary : colors.border,
+                            width: isSelected ? 1.5 : 1.0,
                           ),
                         ),
                         child: Row(
@@ -127,16 +128,16 @@ class CustomBottomSheet extends StatelessWidget {
                               Container(
                                 padding: EdgeInsets.all(6.r),
                                 decoration: BoxDecoration(
-                                  color: item.isSelected
+                                  color: isSelected
                                       ? colors.primary.withValues(alpha: 0.15)
                                       : colors.primary.withValues(alpha: 0.08),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
                                   item.icon,
-                                  color: item.isSelected
+                                  color: isSelected
                                       ? colors.primary
-                                      : colors.mainText,
+                                      : colors.primary,
                                   size: 18.sp,
                                 ),
                               ),
@@ -149,10 +150,10 @@ class CustomBottomSheet extends StatelessWidget {
                                   Text(
                                     item.title,
                                     style: AppTextStyles.font14Medium.copyWith(
-                                      color: item.isSelected
+                                      color: isSelected
                                           ? colors.primary
                                           : colors.mainText,
-                                      fontWeight: item.isSelected
+                                      fontWeight: isSelected
                                           ? FontWeight.bold
                                           : FontWeight.w600,
                                     ),
@@ -169,15 +170,24 @@ class CustomBottomSheet extends StatelessWidget {
                               ),
                             ),
                             Gap(8.w),
-                            Icon(
-                              item.isSelected
-                                  ? Icons.radio_button_checked_rounded
-                                  : Icons.radio_button_off_rounded,
-                              color: item.isSelected
-                                  ? colors.primary
-                                  : colors.subText,
-                              size: 20.sp,
-                            ),
+                            if (item.trailing != null)
+                              item.trailing!
+                            else if (hasSelection)
+                              Icon(
+                                isSelected
+                                    ? Icons.radio_button_checked_rounded
+                                    : Icons.radio_button_off_rounded,
+                                color: isSelected
+                                    ? colors.primary
+                                    : colors.subText,
+                                size: 20.sp,
+                              )
+                            else
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: colors.subText.withValues(alpha: 0.5),
+                                size: 16.sp,
+                              ),
                           ],
                         ),
                       ),

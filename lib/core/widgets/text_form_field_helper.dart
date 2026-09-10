@@ -12,7 +12,7 @@ class TextFormFieldHelper extends StatefulWidget {
     this.isPassword = false,
     this.hint,
     this.enabled = true,
-    this.obscuringCharacter,
+    this.obscuringCharacter = '●',
     this.onValidate,
     this.onChanged,
     this.onFieldSubmitted,

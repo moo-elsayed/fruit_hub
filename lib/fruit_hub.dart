@@ -2,13 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/cubits/app_language_cubit.dart';
+import 'package:fruit_hub/core/cubits/app_theme_cubit.dart';
 import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/routing/app_router.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/services/notifications/notification_router.dart';
-import 'package:fruit_hub/core/theming/app_language_cubit.dart';
 import 'package:fruit_hub/core/theming/app_theme.dart';
-import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/user_info_cubit/user_info_cubit.dart';
 import 'package:toastification/toastification.dart';
 

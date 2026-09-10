@@ -16,12 +16,15 @@ class ServerFailure extends Failure {
   factory ServerFailure.fromException(Object exception) {
     final String errorStr = exception.toString().toLowerCase();
 
-    if (errorStr.contains('invalid-credential') ||
+    if (errorStr.contains('wrong-password')) {
+      return ServerFailure(error: AppStrings.wrongPasswordProvidedForThatUser);
+    } else if (errorStr.contains('invalid-credential') ||
         errorStr.contains('invalid_credential') ||
         errorStr.contains('invalid-login-credentials') ||
-        errorStr.contains('wrong-password') ||
         errorStr.contains('user-not-found')) {
       return ServerFailure(error: AppStrings.invalidCredential);
+    } else if (errorStr.contains('weak-password')) {
+      return ServerFailure(error: AppStrings.thePasswordProvidedIsTooWeak);
     } else if (errorStr.contains('email-already-in-use')) {
       return ServerFailure(error: AppStrings.emailAlreadyInUse);
     } else if (errorStr.contains('account-exists-with-different-credential') ||

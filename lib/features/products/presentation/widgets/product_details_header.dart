@@ -7,6 +7,7 @@ import 'package:fruit_hub/core/widgets/custom_arrow_back.dart';
 import 'package:fruit_hub/core/widgets/custom_favourite_icon.dart';
 import 'package:fruit_hub/core/widgets/custom_network_image.dart';
 import 'package:fruit_hub/features/favorites/presentation/managers/favorite_cubit/favorite_cubit.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductDetailsHeader extends StatelessWidget {
   const ProductDetailsHeader({super.key, required this.fruit});
@@ -39,7 +40,12 @@ class ProductDetailsHeader extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomArrowBack(onTap: () => context.pop(fruit), size: 40.r),
+                  Skeleton.keep(
+                    child: CustomArrowBack(
+                      onTap: () => context.pop(fruit),
+                      size: 40.r,
+                    ),
+                  ),
                   BlocBuilder<FavoriteCubit, FavoriteState>(
                     buildWhen: (previous, current) =>
                         current is ToggleFavoriteSuccess,

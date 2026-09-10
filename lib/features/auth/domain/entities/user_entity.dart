@@ -6,6 +6,7 @@ class UserEntity extends Equatable {
     this.name = '',
     this.email = '',
     this.phone = '',
+    this.image = '',
     this.isVerified = false,
   });
 
@@ -13,22 +14,25 @@ class UserEntity extends Equatable {
   final String name;
   final String email;
   final String phone;
+  final String image;
   final bool isVerified;
 
   @override
-  List<Object?> get props => [uid, name, email, phone, isVerified];
+  List<Object?> get props => [uid, name, email, phone, image, isVerified];
 
   UserEntity copyWith({
     String? uid,
     String? name,
     String? email,
     String? phone,
+    String? image,
     bool? isVerified,
   }) => UserEntity(
     uid: uid ?? this.uid,
     name: name ?? this.name,
     email: email ?? this.email,
     phone: phone ?? this.phone,
+    image: image ?? this.image,
     isVerified: isVerified ?? this.isVerified,
   );
 }

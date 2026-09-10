@@ -1,11 +1,11 @@
+import 'package:fruit_hub/core/cubits/app_language_cubit.dart';
+import 'package:fruit_hub/core/cubits/app_theme_cubit.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/entities/order_entity.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service_imp.dart';
 import 'package:fruit_hub/core/services/location/location_service.dart';
 import 'package:fruit_hub/core/services/notifications/notification_service.dart';
-import 'package:fruit_hub/core/theming/app_language_cubit.dart';
-import 'package:fruit_hub/core/theming/app_theme_cubit.dart';
 import 'package:fruit_hub/features/auth/data/data_sources/remote/auth_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/auth/data/repo_imp/auth_repo_imp.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/create_user_with_email_and_password_use_case.dart';
@@ -70,6 +70,14 @@ import 'package:fruit_hub/features/products/data/repo_imp/products_repo_imp.dart
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_product_details_use_case.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
+import 'package:fruit_hub/features/profile/data/data_sources/remote/profile_remote_data_source.dart';
+import 'package:fruit_hub/features/profile/data/data_sources/remote/profile_remote_data_source_imp.dart';
+import 'package:fruit_hub/features/profile/data/repo_imp/profile_repo_imp.dart';
+import 'package:fruit_hub/features/profile/domain/repo/profile_repo.dart';
+import 'package:fruit_hub/features/profile/domain/use_cases/change_password_use_case.dart';
+import 'package:fruit_hub/features/profile/domain/use_cases/update_profile_use_case.dart';
+import 'package:fruit_hub/features/profile/presentation/managers/change_password_cubit/change_password_cubit.dart';
+import 'package:fruit_hub/features/profile/presentation/managers/edit_profile_cubit/edit_profile_cubit.dart';
 import 'package:fruit_hub/features/reviews/data/data_sources/remote/reviews_remote_data_source.dart';
 import 'package:fruit_hub/features/reviews/data/data_sources/remote/reviews_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/reviews/data/repo_imp/reviews_repo_imp.dart';
@@ -428,5 +436,31 @@ void setupServiceLocator() {
       initialOrder: order,
       orderId: orderId,
     ),
+  );
+
+  /// Profile
+  getIt.registerLazySingleton<ProfileRemoteDataSource>(
+    () => ProfileRemoteDataSourceImp(),
+  );
+
+  getIt.registerLazySingleton<ProfileRepo>(
+    () => ProfileRepoImp(getIt<ProfileRemoteDataSource>()),
+  );
+
+  getIt.registerLazySingleton<UpdateProfileUseCase>(
+    () => UpdateProfileUseCase(getIt<ProfileRepo>()),
+  );
+
+  getIt.registerLazySingleton<ChangePasswordUseCase>(
+    () => ChangePasswordUseCase(getIt<ProfileRepo>()),
+  );
+
+  getIt.registerFactory<EditProfileCubit>(
+    () =>
+        EditProfileCubit(getIt<UpdateProfileUseCase>(), getIt<UserInfoCubit>()),
+  );
+
+  getIt.registerFactory<ChangePasswordCubit>(
+    () => ChangePasswordCubit(getIt<ChangePasswordUseCase>()),
   );
 }

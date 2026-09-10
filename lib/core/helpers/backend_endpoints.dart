@@ -17,4 +17,7 @@ class BackendEndpoints {
   static const String customerIdField = 'customerId';
   static const String freeShippingThresholdField = 'free_shipping_threshold';
   static const String shippingCostField = 'shipping_cost';
+
+  // Storage
+  static const String userAvatarsStorage = 'users_avatars';
 }

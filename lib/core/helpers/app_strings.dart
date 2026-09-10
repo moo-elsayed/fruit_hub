@@ -77,6 +77,12 @@ abstract class AppStrings {
       'error_occurred_please_try_again'.tr();
   static String get permissionDenied => 'permission-denied'.tr();
   static String get goodMorning => 'good_morning'.tr();
+  static String get goodEvening => 'good_evening'.tr();
+  static String get greeting {
+    final hour = DateTime.now().hour;
+    return (hour >= 4 && hour < 12) ? goodMorning : goodEvening;
+  }
+
   static String get searchFor => 'search_for'.tr();
   static String get eidOffers => 'eid_offers'.tr();
   static String get discount => 'discount'.tr();
@@ -337,4 +343,29 @@ abstract class AppStrings {
   static String get cannotCancelOrder => 'cannot_cancel_order'.tr();
   static String get unknownUser => 'unknown_user'.tr();
   static String get orderDetails => 'order_details'.tr();
+  static String get productDetails => 'product_details'.tr();
+  static String get editProfile => 'edit_profile'.tr();
+  static String get personalInfo => 'personal_info'.tr();
+  static String get profilePicture => 'profile_picture'.tr();
+  static String get profileUpdatedSuccessfully =>
+      'profile_updated_successfully'.tr();
+  static String get saveChanges => 'save_changes'.tr();
+  static String get emailCannotBeChanged => 'email_cannot_be_changed'.tr();
+  static String get verifiedAccount => 'verified_account'.tr();
+  static String get basicInfo => 'basic_info'.tr();
+  static String get accountSecurity => 'account_security'.tr();
+  static String get changePassword => 'change_password'.tr();
+  static String get currentPassword => 'current_password'.tr();
+  static String get newPassword => 'new_password'.tr();
+  static String get confirmNewPassword => 'confirm_new_password'.tr();
+  static String get passwordsDoNotMatch => 'passwords_do_not_match'.tr();
+  static String get passwordChangedSuccessfully =>
+      'password_changed_successfully'.tr();
+  static String get currentPasswordCannotBeEmpty =>
+      'current_password_cannot_be_empty'.tr();
+  static String get newPasswordCannotBeEmpty =>
+      'new_password_cannot_be_empty'.tr();
+  static String get chooseImageSource => 'choose_image_source'.tr();
+  static String get camera => 'camera'.tr();
+  static String get gallery => 'gallery'.tr();
 }

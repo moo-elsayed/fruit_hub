@@ -1,0 +1,78 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ====================================================
+    // Helper Functions
+    // ====================================================
+
+    // Check if the user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if the user is the owner of the resource
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Check if the user is an Administrator:
+    // 1. By Admin email list
+    // 2. OR by role == 'admin' in Firestore users collection
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email in [
+          'sonaa3764@gmail.com'
+        ] ||
+        (
+          firestore.exists(/databases/(default)/documents/users/$(request.auth.uid)) &&
+          firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin'
+        )
+      );
+    }
+
+    // Validate that the uploaded file is an image and within size limits
+    function isValidImage(maxSizeInMb) {
+      return request.resource.contentType.matches('image/.*') &&
+             request.resource.size <= maxSizeInMb * 1024 * 1024;
+    }
+
+    // ====================================================
+    // 1. User Profile Avatars
+    // Path: users_avatars/{userId}/{fileName}
+    // ====================================================
+    match /users_avatars/{userId}/{allPaths=**} {
+      // Anyone can view user avatars (for profile, reviews, comments)
+      allow read: if true;
+
+      // Only the user themselves (or an Admin) can upload their avatar (max 5MB)
+      allow create, update: if (isOwner(userId) || isAdmin()) && isValidImage(5);
+
+      // Only the user themselves (or an Admin) can delete their avatar
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+
+    // ====================================================
+    // 2. Products Images (from Dashboard)
+    // Path: images/{productCode}/{fileName}
+    // ====================================================
+    match /images/{productCode}/{allPaths=**} {
+      // Anyone can view product images in the store
+      allow read: if true;
+
+      // Only Admins can upload/modify product images (max 10MB)
+      allow create, update: if isAdmin() && isValidImage(10);
+
+      // Only Admins can delete product images
+      allow delete: if isAdmin();
+    }
+
+    // ====================================================
+    // 3. Deny Any Other Paths
+    // ====================================================
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

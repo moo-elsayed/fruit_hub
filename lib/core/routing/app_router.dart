@@ -8,6 +8,8 @@ import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/models/order_model.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/utils/full_screen_image_gallery_input_item.dart';
+import 'package:fruit_hub/core/widgets/full_screen_image_gallery.dart';
 import 'package:fruit_hub/env.dart';
 import 'package:fruit_hub/features/auth/presentation/args/login_args.dart';
 import 'package:fruit_hub/features/auth/presentation/views/forget_password_view.dart';
@@ -29,6 +31,8 @@ import 'package:fruit_hub/features/orders/presentation/views/track_order_view.da
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/views/product_details_view.dart';
 import 'package:fruit_hub/features/products/presentation/views/products_view.dart';
+import 'package:fruit_hub/features/profile/presentation/managers/edit_profile_cubit/edit_profile_cubit.dart';
+import 'package:fruit_hub/features/profile/presentation/views/edit_profile_view.dart';
 import 'package:fruit_hub/features/reviews/presentation/managers/reviews_cubit/reviews_cubit.dart';
 import 'package:fruit_hub/features/reviews/presentation/views/reviews_view.dart';
 import 'package:fruit_hub/features/search/presentation/views/search_view.dart';
@@ -192,6 +196,16 @@ class AppRouter {
             onSuccess: args.onSuccess,
             onError: args.onError,
             onCancel: args.onCancel,
+          ),
+        );
+      case Routes.fullScreenImageGalleryView:
+        final item = settings.arguments as FullScreenImageGalleryInputItem;
+        return _route(FullScreenImageGallery(item: item));
+      case Routes.editProfileView:
+        return _route(
+          BlocProvider(
+            create: (context) => getIt<EditProfileCubit>(),
+            child: const EditProfileView(),
           ),
         );
       default:
