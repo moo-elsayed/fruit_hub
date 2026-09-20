@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
 
 class CustomArrowBack extends StatelessWidget {
   const CustomArrowBack({super.key, this.onTap, this.padding, this.size});
@@ -17,7 +18,7 @@ class CustomArrowBack extends StatelessWidget {
   Widget build(BuildContext context) {
     final double buttonSize = size ?? 40.r;
     return Material(
-      color: Colors.transparent,
+      color: AppPalette.transparent,
       shape: const CircleBorder(),
       clipBehavior: Clip.antiAlias,
       child: Ink(

@@ -20,8 +20,7 @@ class FruitEntity extends Equatable {
 
   static const FruitEntity dummy = FruitEntity(
     name: 'اسم الفاكهة التجريبي',
-    description:
-        'وصف تفصيلي للفاكهة الطازجة والفوائد الغذائية الممتازة التي تحتوي عليها',
+    description: 'وصف تفصيلي للفاكهة الطازجة والفوائد الغذائية الممتازة التي تحتوي عليها',
     price: 50.0,
     isOrganic: true,
     daysUntilExpiration: 7,

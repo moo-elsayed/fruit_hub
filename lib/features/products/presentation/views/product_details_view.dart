@@ -94,8 +94,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                 bottomNavigationBar: ProductDetailsBottomBar(
                   fruit: displayFruit,
                   quantityNotifier: _quantityNotifier,
-                  onAddToCart:
-                      isLoading ? () {} : () => _onAddToCart(displayFruit),
+                  onAddToCart: isLoading
+                      ? () {}
+                      : () => _onAddToCart(displayFruit),
                 ),
                 body: Column(
                   children: [

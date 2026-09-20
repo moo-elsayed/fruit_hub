@@ -21,6 +21,7 @@ class AppLanguageCubit extends Cubit<Locale> {
   }
 
   Future<void> changeLanguage(String languageCode) async {
+    if (state.languageCode == languageCode) return;
     final locale = Locale(languageCode);
     emit(locale);
     await _preferencesService.saveLanguage(languageCode);

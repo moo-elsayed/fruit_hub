@@ -24,6 +24,7 @@ class AppThemeCubit extends Cubit<ThemeMode> {
   }
 
   Future<void> changeTheme(ThemeMode themeMode) async {
+    if (state == themeMode) return;
     emit(themeMode);
     String themeString = 'system';
     if (themeMode == ThemeMode.light) themeString = 'light';

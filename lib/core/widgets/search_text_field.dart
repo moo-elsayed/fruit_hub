@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/text_form_field_helper.dart';
 
@@ -18,6 +19,7 @@ class SearchTextField extends StatelessWidget {
     this.readOnly = false,
     this.focusNode,
     this.suffixWidget,
+    this.hint,
   });
 
   final TextEditingController? controller;
@@ -28,6 +30,7 @@ class SearchTextField extends StatelessWidget {
   final bool readOnly;
   final FocusNode? focusNode;
   final Widget? suffixWidget;
+  final String? hint;
 
   @override
   Widget build(BuildContext context) => GestureDetector(
@@ -38,7 +41,7 @@ class SearchTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
+            color: AppPalette.black.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 3),
           ),
@@ -56,44 +59,55 @@ class SearchTextField extends StatelessWidget {
           AppAssets.iconsSearchIcon,
           fit: BoxFit.scaleDown,
         ),
-        suffixWidget: _buildSuffixWidget(context),
+        suffixWidget:
+            suffixWidget ??
+            (controller != null
+                ? _SearchClearSuffix(
+                    controller: controller!,
+                    onClear: () {
+                      controller?.clear();
+                      onChanged?.call('');
+                      onClear?.call();
+                    },
+                  )
+                : null),
         fillColor: context.colors.surface,
         borderColor: context.colors.border.withValues(alpha: 0.6),
-        hint: AppStrings.searchFor,
+        hint: hint ?? AppStrings.searchFor,
         hintStyle: AppTextStyles.font13Regular.copyWith(
           color: context.colors.subText,
         ),
       ),
     ),
   );
+}
 
-  Widget? _buildSuffixWidget(BuildContext context) {
-    if (suffixWidget != null) return suffixWidget;
-    if (controller == null) return null;
+class _SearchClearSuffix extends StatelessWidget {
+  const _SearchClearSuffix({required this.controller, required this.onClear});
 
-    return ValueListenableBuilder<TextEditingValue>(
-      valueListenable: controller!,
-      builder: (context, value, _) {
-        if (value.text.isEmpty) return const SizedBox.shrink();
-        return GestureDetector(
-          onTap: () {
-            controller?.clear();
-            onChanged?.call('');
-            onClear?.call();
-          },
-          behavior: HitTestBehavior.opaque,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Icon(
-              Icons.close_rounded,
-              color: context.colors.subText,
-              size: 20.sp,
+  final TextEditingController controller;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) =>
+      ValueListenableBuilder<TextEditingValue>(
+        valueListenable: controller,
+        builder: (context, value, _) {
+          if (value.text.isEmpty) return const SizedBox.shrink();
+          return GestureDetector(
+            onTap: onClear,
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: Icon(
+                Icons.close_rounded,
+                color: context.colors.subText,
+                size: 20.sp,
+              ),
             ),
-          ),
-        );
-      },
-    );
-  }
+          );
+        },
+      );
 }
 
 // Alias for backwards compatibility

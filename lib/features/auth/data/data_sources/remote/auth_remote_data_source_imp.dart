@@ -82,7 +82,7 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
 
     final user = userCredential.user;
     if (user == null) {
-      throw BusinessException(AppStrings.userNotFound);
+      throw BusinessException(AppStrings.unexpectedError);
     }
 
     await user.reload();
@@ -125,9 +125,13 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
           permissions: ['public_profile', 'email'],
         );
 
+        if (loginResult.status == LoginStatus.cancelled) {
+          throw BusinessException(AppStrings.userCanceledSignIn);
+        }
+
         final accessToken = loginResult.accessToken;
         if (accessToken == null) {
-          throw BusinessException('Facebook access token is null.');
+          throw BusinessException(AppStrings.unexpectedError);
         }
         final OAuthCredential facebookAuthCredential =
             FacebookAuthProvider.credential(accessToken.tokenString);

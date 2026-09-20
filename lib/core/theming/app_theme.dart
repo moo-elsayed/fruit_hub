@@ -16,11 +16,11 @@ class AppTheme {
     fontFamily: 'Cairo',
     appBarTheme: const AppBarTheme(
       backgroundColor: AppPalette.bgLight,
-      surfaceTintColor: Colors.transparent,
+      surfaceTintColor: AppPalette.transparent,
       elevation: 0,
       centerTitle: true,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
+        statusBarColor: AppPalette.transparent,
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.light,
         systemNavigationBarColor: AppPalette.bgLight,
@@ -43,7 +43,7 @@ class AppTheme {
     ),
     dialogTheme: const DialogThemeData(
       backgroundColor: AppPalette.surfaceLight,
-      surfaceTintColor: Colors.transparent,
+      surfaceTintColor: AppPalette.transparent,
     ),
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
@@ -62,11 +62,11 @@ class AppTheme {
     fontFamily: 'Cairo',
     appBarTheme: const AppBarTheme(
       backgroundColor: AppPalette.bgDark,
-      surfaceTintColor: Colors.transparent,
+      surfaceTintColor: AppPalette.transparent,
       elevation: 0,
       centerTitle: true,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
+        statusBarColor: AppPalette.transparent,
         statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,
         systemNavigationBarColor: AppPalette.bgDark,
@@ -89,11 +89,11 @@ class AppTheme {
           onSurface: AppPalette.textMainDark,
         ).copyWith(
           surface: AppPalette.surfaceDark,
-          surfaceTint: Colors.transparent,
+          surfaceTint: AppPalette.transparent,
         ),
     dialogTheme: const DialogThemeData(
       backgroundColor: AppPalette.surfaceDark,
-      surfaceTintColor: Colors.transparent,
+      surfaceTintColor: AppPalette.transparent,
     ),
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {

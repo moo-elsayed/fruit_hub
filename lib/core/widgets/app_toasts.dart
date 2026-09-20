@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
@@ -60,7 +61,7 @@ class AppToast {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.07),
+                  color: AppPalette.black.withValues(alpha: 0.07),
                   blurRadius: 16,
                   offset: const Offset(0, 5),
                 ),

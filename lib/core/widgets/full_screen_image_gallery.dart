@@ -1,11 +1,8 @@
-import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/utils/full_screen_image_gallery_input_item.dart';
+import 'package:fruit_hub/core/widgets/full_screen_gallery_image_item.dart';
 
 class FullScreenImageGallery extends StatefulWidget {
   const FullScreenImageGallery({super.key, required this.item});
@@ -31,49 +28,6 @@ class _FullScreenImageGalleryState extends State<FullScreenImageGallery> {
   void dispose() {
     _pageController.dispose();
     super.dispose();
-  }
-
-  Widget _buildImage(String path) {
-    if (path.startsWith('http')) {
-      return CachedNetworkImage(
-        imageUrl: path,
-        fit: BoxFit.contain,
-        placeholder: (context, url) => const Center(
-          child: CupertinoActivityIndicator(color: AppPalette.white),
-        ),
-        errorWidget: (context, url, error) => const Center(
-          child: Icon(
-            Icons.error_outline_rounded,
-            color: AppPalette.white,
-            size: 48,
-          ),
-        ),
-      );
-    } else if (path.startsWith('assets/')) {
-      return Image.asset(
-        path,
-        fit: BoxFit.contain,
-        errorBuilder: (context, error, stackTrace) => const Center(
-          child: Icon(
-            Icons.error_outline_rounded,
-            color: AppPalette.white,
-            size: 48,
-          ),
-        ),
-      );
-    } else {
-      return Image.file(
-        File(path),
-        fit: BoxFit.contain,
-        errorBuilder: (context, error, stackTrace) => const Center(
-          child: Icon(
-            Icons.broken_image_rounded,
-            color: AppPalette.white,
-            size: 48,
-          ),
-        ),
-      );
-    }
   }
 
   @override
@@ -103,8 +57,11 @@ class _FullScreenImageGalleryState extends State<FullScreenImageGallery> {
           minScale: 1.0,
           maxScale: 4.0,
           child: path.isNotEmpty
-              ? Hero(tag: path, child: _buildImage(path))
-              : _buildImage(path),
+              ? Hero(
+                  tag: path,
+                  child: FullScreenGalleryImageItem(path: path),
+                )
+              : FullScreenGalleryImageItem(path: path),
         );
       },
     ),

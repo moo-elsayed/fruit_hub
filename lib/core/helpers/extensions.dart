@@ -1,6 +1,5 @@
 import 'dart:ui' as ui;
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fruit_hub/core/theming/colors_manager.dart';
 import 'package:toastification/toastification.dart';
@@ -52,15 +51,8 @@ extension AppTheme on BuildContext {
 }
 
 extension LanguageExtension on BuildContext {
-  bool get isArabic {
-    try {
-      return locale.languageCode == 'ar';
-    } catch (_) {
-      return false;
-    }
-  }
-
   bool get isRTL => Directionality.of(this) == ui.TextDirection.rtl;
+  bool get isArabic => Localizations.localeOf(this).languageCode == 'ar';
 }
 
 extension ThemeExtension on BuildContext {

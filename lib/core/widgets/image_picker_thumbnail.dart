@@ -31,18 +31,27 @@ class ImagePickerThumbnail extends StatelessWidget {
               height: size.w,
               color: context.colors.border,
             ),
-            errorWidget: (context, url, error) => _buildError(context),
+            errorWidget: (context, url, error) =>
+                _ThumbnailErrorWidget(size: size),
           )
         : Image.file(
             File(path),
             width: size.w,
             height: size.w,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => _buildError(context),
+            errorBuilder: (context, error, stackTrace) =>
+                _ThumbnailErrorWidget(size: size),
           ),
   );
+}
 
-  Widget _buildError(BuildContext context) => Container(
+class _ThumbnailErrorWidget extends StatelessWidget {
+  const _ThumbnailErrorWidget({required this.size});
+
+  final double size;
+
+  @override
+  Widget build(BuildContext context) => Container(
     width: size.w,
     height: size.w,
     color: context.colors.border.withValues(alpha: 0.2),

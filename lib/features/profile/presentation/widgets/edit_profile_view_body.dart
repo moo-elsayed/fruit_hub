@@ -81,85 +81,87 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
               key: _formKey,
               child: Column(
                 children: [
-            EditProfileHeaderCard(imageController: _imageController),
-            Gap(24.h),
-            EditProfileSectionHeader(
-              title: AppStrings.profilePicture,
-              icon: Icons.photo_camera_outlined,
-            ),
-            Gap(10.h),
-            ImagePickerField(
-              controller: _imageController,
-              label: AppStrings.profilePicture,
-              icon: Icons.person_outline_rounded,
-            ),
-            Gap(20.h),
-            EditProfileSectionHeader(
-              title: AppStrings.basicInfo,
-              icon: Icons.person_outline_rounded,
-            ),
-            Gap(10.h),
-            EditProfileCardContainer(
-              child: Column(
-                children: [
-                  TextFormFieldHelper(
-                    controller: _nameController,
-                    labelText: AppStrings.fullName,
-                    prefixIcon: Icon(
-                      Icons.person_outline_rounded,
-                      color: context.colors.primary,
-                      size: 22.sp,
-                    ),
-                    onValidate: Validator.validateName,
+                  EditProfileHeaderCard(imageController: _imageController),
+                  Gap(24.h),
+                  EditProfileSectionHeader(
+                    title: AppStrings.profilePicture,
+                    icon: Icons.photo_camera_outlined,
                   ),
-                  Gap(14.h),
-                  TextFormFieldHelper(
-                    controller: _emailController,
-                    labelText: AppStrings.email,
-                    enabled: false,
-                    fillColor: context.colors.border.withValues(alpha: 0.12),
-                    prefixIcon: Icon(
-                      Icons.email_outlined,
-                      color: context.colors.subText,
-                      size: 22.sp,
-                    ),
-                    suffixWidget: Padding(
-                      padding: EdgeInsetsDirectional.only(end: 12.w),
-                      child: Icon(
-                        Icons.lock_outline_rounded,
-                        color: context.colors.subText,
-                        size: 18.sp,
-                      ),
+                  Gap(10.h),
+                  ImagePickerField(
+                    controller: _imageController,
+                    label: AppStrings.profilePicture,
+                    icon: Icons.person_outline_rounded,
+                  ),
+                  Gap(20.h),
+                  EditProfileSectionHeader(
+                    title: AppStrings.basicInfo,
+                    icon: Icons.person_outline_rounded,
+                  ),
+                  Gap(10.h),
+                  EditProfileCardContainer(
+                    child: Column(
+                      children: [
+                        TextFormFieldHelper(
+                          controller: _nameController,
+                          labelText: AppStrings.fullName,
+                          prefixIcon: Icon(
+                            Icons.person_outline_rounded,
+                            color: context.colors.primary,
+                            size: 22.sp,
+                          ),
+                          onValidate: Validator.validateName,
+                        ),
+                        Gap(14.h),
+                        TextFormFieldHelper(
+                          controller: _emailController,
+                          labelText: AppStrings.email,
+                          enabled: false,
+                          fillColor: context.colors.border.withValues(
+                            alpha: 0.12,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.email_outlined,
+                            color: context.colors.subText,
+                            size: 22.sp,
+                          ),
+                          suffixWidget: Padding(
+                            padding: EdgeInsetsDirectional.only(end: 12.w),
+                            child: Icon(
+                              Icons.lock_outline_rounded,
+                              color: context.colors.subText,
+                              size: 18.sp,
+                            ),
+                          ),
+                        ),
+                        Gap(14.h),
+                        TextFormFieldHelper(
+                          controller: _phoneController,
+                          labelText: AppStrings.phoneNumber,
+                          keyboardType: TextInputType.phone,
+                          prefixIcon: Icon(
+                            Icons.phone_outlined,
+                            color: context.colors.primary,
+                            size: 22.sp,
+                          ),
+                          onValidate: Validator.validatePhoneNumber,
+                        ),
+                      ],
                     ),
                   ),
-                  Gap(14.h),
-                  TextFormFieldHelper(
-                    controller: _phoneController,
-                    labelText: AppStrings.phoneNumber,
-                    keyboardType: TextInputType.phone,
-                    prefixIcon: Icon(
-                      Icons.phone_outlined,
-                      color: context.colors.primary,
-                      size: 22.sp,
-                    ),
-                    onValidate: Validator.validatePhoneNumber,
+                  Gap(20.h),
+                  EditProfileSectionHeader(
+                    title: AppStrings.accountSecurity,
+                    icon: Icons.shield_outlined,
                   ),
+                  Gap(10.h),
+                  const EditProfileCardContainer(child: ChangePasswordTile()),
+                  Gap(28.h),
+                  EditProfileSaveButton(onPressed: _onSave),
                 ],
               ),
             ),
-            Gap(20.h),
-            EditProfileSectionHeader(
-              title: AppStrings.accountSecurity,
-              icon: Icons.shield_outlined,
-            ),
-            Gap(10.h),
-            const EditProfileCardContainer(child: ChangePasswordTile()),
-            Gap(28.h),
-            EditProfileSaveButton(onPressed: _onSave),
-          ],
+          ),
         ),
-      ),
-    ),
-  ),
-);
+      );
 }

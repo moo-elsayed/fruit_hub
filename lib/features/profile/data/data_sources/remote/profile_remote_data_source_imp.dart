@@ -42,24 +42,30 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
       final file = File(imageUrl);
       if (file.existsSync()) {
         try {
-          final listResult =
-              await _storage.ref().child(avatarStoragePath).listAll();
+          final listResult = await _storage
+              .ref()
+              .child(avatarStoragePath)
+              .listAll();
           for (final item in listResult.items) {
             await item.delete();
           }
         } catch (_) {}
 
-        final extension =
-            file.path.contains('.') ? file.path.split('.').last : 'jpg';
-        final ref =
-            _storage.ref().child('$avatarStoragePath/avatar.$extension');
+        final extension = file.path.contains('.')
+            ? file.path.split('.').last
+            : 'jpg';
+        final ref = _storage.ref().child(
+          '$avatarStoragePath/avatar.$extension',
+        );
         await ref.putFile(file);
         imageUrl = await ref.getDownloadURL();
       }
     } else if (imageUrl.isEmpty) {
       try {
-        final listResult =
-            await _storage.ref().child(avatarStoragePath).listAll();
+        final listResult = await _storage
+            .ref()
+            .child(avatarStoragePath)
+            .listAll();
         for (final item in listResult.items) {
           await item.delete();
         }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
 
 class CustomFavouriteIcon extends StatefulWidget {
   const CustomFavouriteIcon({
@@ -38,8 +39,8 @@ class _CustomFavouriteIconState extends State<CustomFavouriteIcon> {
         visualDensity: VisualDensity.compact,
         iconSize: 20.r,
       ),
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
+      splashColor: AppPalette.transparent,
+      highlightColor: AppPalette.transparent,
       splashRadius: 24,
       onPressed: () {
         setState(() => _isFavourite = !_isFavourite);

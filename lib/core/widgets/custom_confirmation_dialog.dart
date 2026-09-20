@@ -108,7 +108,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                         textStyle: AppTextStyles.font16SemiBold.copyWith(
                           color: context.colors.primary,
                         ),
-                        backgroundColor: Colors.transparent,
+                        backgroundColor: AppPalette.transparent,
                         side: BorderSide(
                           color: context.colors.primary,
                           width: 1.5,

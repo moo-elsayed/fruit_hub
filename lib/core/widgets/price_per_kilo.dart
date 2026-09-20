@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
-import 'package:fruit_hub/core/theming/app_palette.dart';
 
 import '../theming/app_text_styles.dart';
 
@@ -23,7 +22,7 @@ class PricePerKilo extends StatelessWidget {
         TextSpan(
           text: ' / ${AppStrings.kilo}',
           style: AppTextStyles.font13SemiBold.copyWith(
-            color: AppPalette.secondaryOrangeLight,
+            color: context.colors.subText,
           ),
         ),
       ],

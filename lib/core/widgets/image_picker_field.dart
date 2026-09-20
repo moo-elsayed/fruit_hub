@@ -10,7 +10,7 @@ import 'package:fruit_hub/core/utils/custom_bottom_sheet_selection_item.dart';
 import 'package:fruit_hub/core/utils/full_screen_image_gallery_input_item.dart';
 import 'package:fruit_hub/core/widgets/app_toasts.dart';
 import 'package:fruit_hub/core/widgets/custom_bottom_sheet.dart';
-import 'package:fruit_hub/core/widgets/edit_delete_actions_button.dart';
+import 'package:fruit_hub/core/widgets/edit_delete_action_buttons.dart';
 import 'package:fruit_hub/core/widgets/image_picker_thumbnail.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';

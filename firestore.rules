@@ -128,5 +128,15 @@ service cloud.firestore {
       // Only Admins can update shipping cost or free shipping threshold
       allow write: if isAdmin();
     }
+    // ====================================================
+    // 5. Analytics Collections
+    // ====================================================
+    match /analytics/{docId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /analytics_daily/{dateId} {
+      allow read, write: if isAdmin();
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/utils/custom_bottom_sheet_selection_item.dart';
 import 'package:fruit_hub/core/widgets/custom_bottom_sheet_handle.dart';
@@ -26,8 +27,8 @@ class CustomBottomSheet extends StatelessWidget {
   }) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withValues(alpha: 0.5),
+      backgroundColor: AppPalette.transparent,
+      barrierColor: AppPalette.black.withValues(alpha: 0.5),
       isScrollControlled: true,
       builder: (context) =>
           CustomBottomSheet(title: title, subtitle: subtitle, items: items),
@@ -51,7 +52,7 @@ class CustomBottomSheet extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
+            color: AppPalette.black.withValues(alpha: 0.15),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),

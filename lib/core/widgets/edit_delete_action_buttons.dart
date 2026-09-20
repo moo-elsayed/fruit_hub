@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
 
 class EditDeleteActionButtons extends StatelessWidget {
   const EditDeleteActionButtons({
@@ -20,7 +21,7 @@ class EditDeleteActionButtons extends StatelessWidget {
       border: Border.all(color: context.colors.primary.withValues(alpha: 0.15)),
     ),
     child: Material(
-      color: Colors.transparent,
+      color: AppPalette.transparent,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

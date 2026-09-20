@@ -21,6 +21,7 @@ class AppPalette {
 
   // --- Accent & Status Colors ---
   static const Color accentGreen = Color(0xff10B981); // Emerald Green
+  static const Color accentPink = Color(0xffEC4899); // Rose Pink
   static const Color starYellow = Color(0xffF59E0B);
   static const Color error = Color(0xffEF4444);
   static const Color success = Color(0xff1B5E37);
@@ -46,6 +47,7 @@ class AppPalette {
   // --- Common Colors ---
   static const Color white = Color(0xffFFFFFF);
   static const Color black = Color(0xff000000);
+  static const Color transparent = Color(0x00000000);
 
   // --- Backgrounds & Surfaces (Light Theme) ---
   static const Color bgLight = Color(0xffFFFFFF); // خلفية التطبيق الفاتحة

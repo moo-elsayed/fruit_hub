@@ -39,7 +39,7 @@ class CustomSuccessDialog extends StatelessWidget {
     canPop: false,
     child: Dialog(
       elevation: 0,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppPalette.transparent,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
         decoration: ShapeDecoration(

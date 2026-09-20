@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:gap/gap.dart';
 
 import '../theming/app_text_styles.dart';
@@ -34,7 +35,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) => AppBar(
     elevation: 0,
     scrolledUnderElevation: 0,
-    backgroundColor: backgroundColor ?? Colors.transparent,
+    backgroundColor: backgroundColor ?? AppPalette.transparent,
     leadingWidth: showArrowBack ? 60.w : null,
     leading: showArrowBack
         ? Padding(
