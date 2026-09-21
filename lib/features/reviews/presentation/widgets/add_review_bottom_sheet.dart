@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_hub/core/entities/review_entity.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
+import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/app_toasts.dart';
@@ -11,6 +13,7 @@ import 'package:fruit_hub/core/widgets/custom_keyboard_unfocus.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:fruit_hub/core/widgets/text_form_field_helper.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/user_info_cubit/user_info_cubit.dart';
+import 'package:fruit_hub/features/reviews/presentation/managers/add_review_cubit/add_review_cubit.dart';
 import 'package:fruit_hub/features/reviews/presentation/managers/reviews_cubit/reviews_cubit.dart';
 import 'package:fruit_hub/features/reviews/presentation/widgets/add_review_rating_section.dart';
 import 'package:gap/gap.dart';
@@ -26,8 +29,11 @@ class AddReviewBottomSheet extends StatefulWidget {
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
-    builder: (_) => BlocProvider.value(
-      value: reviewsCubit,
+    builder: (_) => MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: reviewsCubit),
+        BlocProvider(create: (_) => getIt<AddReviewCubit>()),
+      ],
       child: const AddReviewBottomSheet(),
     ),
   );
@@ -58,13 +64,20 @@ class _AddReviewBottomSheetState extends State<AddReviewBottomSheet> {
               : (firebaseUser?.email ?? 'User'));
     final userImage = firebaseUser?.photoURL;
     final userId = firebaseUser?.uid ?? cachedUser?.uid ?? '';
+    final productCode = context.read<ReviewsCubit>().fruit.code;
 
-    context.read<ReviewsCubit>().submitReview(
+    final reviewEntity = ReviewEntity(
+      name: userName,
+      image: userImage ?? '',
+      description: _commentController.text.trim(),
+      date: DateTime.now().toIso8601String(),
       rating: _ratingNotifier.value.toDouble(),
-      comment: _commentController.text,
-      userName: userName,
-      userImage: userImage,
       userId: userId,
+    );
+
+    context.read<AddReviewCubit>().submitReview(
+      productCode: productCode,
+      reviewEntity: reviewEntity,
     );
   }
 
@@ -80,9 +93,10 @@ class _AddReviewBottomSheetState extends State<AddReviewBottomSheet> {
           color: context.colors.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
         ),
-        child: BlocConsumer<ReviewsCubit, ReviewsState>(
+        child: BlocConsumer<AddReviewCubit, AddReviewState>(
           listener: (context, state) {
             if (state is AddReviewSuccess) {
+              context.read<ReviewsCubit>().addReviewLocally(state.newReview);
               AppToast.show(
                 context: context,
                 title: AppStrings.reviewAddedSuccessfully,

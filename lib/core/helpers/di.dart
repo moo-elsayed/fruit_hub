@@ -2,6 +2,7 @@ import 'package:fruit_hub/core/cubits/app_language_cubit.dart';
 import 'package:fruit_hub/core/cubits/app_theme_cubit.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/entities/order_entity.dart';
+import 'package:fruit_hub/core/helpers/image_compressor.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service_imp.dart';
 import 'package:fruit_hub/core/services/location/location_service.dart';
@@ -84,6 +85,7 @@ import 'package:fruit_hub/features/reviews/data/repo_imp/reviews_repo_imp.dart';
 import 'package:fruit_hub/features/reviews/domain/repo/reviews_repo.dart';
 import 'package:fruit_hub/features/reviews/domain/use_cases/add_review_use_case.dart';
 import 'package:fruit_hub/features/reviews/domain/use_cases/check_user_purchased_product_use_case.dart';
+import 'package:fruit_hub/features/reviews/presentation/managers/add_review_cubit/add_review_cubit.dart';
 import 'package:fruit_hub/features/reviews/presentation/managers/reviews_cubit/reviews_cubit.dart';
 import 'package:fruit_hub/features/search/data/data_sources/remote/search_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/search/data/repo_imp/search_repo_imp.dart';
@@ -110,6 +112,9 @@ void setupServiceLocator() {
     () =>
         NotificationService(preferencesService: getIt<AppPreferencesService>()),
   );
+
+  /// Image Compressor
+  getIt.registerLazySingleton<ImageCompressor>(() => const ImageCompressor());
 
   /// Theming & Language
   getIt.registerLazySingleton<AppThemeCubit>(
@@ -173,7 +178,10 @@ void setupServiceLocator() {
   );
 
   getIt.registerFactory<SignInCubit>(
-    () => SignInCubit(getIt<SignInWithEmailAndPasswordUseCase>()),
+    () => SignInCubit(
+      getIt<SignInWithEmailAndPasswordUseCase>(),
+      getIt<UserInfoCubit>(),
+    ),
   );
 
   getIt.registerFactory<SignupCubit>(
@@ -184,6 +192,7 @@ void setupServiceLocator() {
     () => SocialSignInCubit(
       getIt<GoogleSignInUseCase>(),
       getIt<FacebookSignInUseCase>(),
+      getIt<UserInfoCubit>(),
     ),
   );
 
@@ -192,7 +201,10 @@ void setupServiceLocator() {
   );
 
   getIt.registerFactory<SignOutCubit>(
-    () => SignOutCubit(getIt<SignOutUseCase>()),
+    () => SignOutCubit(
+      getIt<SignOutUseCase>(),
+      getIt<UserInfoCubit>(),
+    ),
   );
 
   /// Home
@@ -364,9 +376,12 @@ void setupServiceLocator() {
     (fruit, _) => ReviewsCubit(
       checkUserPurchasedProductUseCase:
           getIt<CheckUserPurchasedProductUseCase>(),
-      addReviewUseCase: getIt<AddReviewUseCase>(),
       fruit: fruit,
     ),
+  );
+
+  getIt.registerFactory<AddReviewCubit>(
+    () => AddReviewCubit(getIt<AddReviewUseCase>()),
   );
 
   /// Notifications
@@ -440,7 +455,7 @@ void setupServiceLocator() {
 
   /// Profile
   getIt.registerLazySingleton<ProfileRemoteDataSource>(
-    () => ProfileRemoteDataSourceImp(),
+    () => ProfileRemoteDataSourceImp(imageCompressor: getIt<ImageCompressor>()),
   );
 
   getIt.registerLazySingleton<ProfileRepo>(

@@ -1,9 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/entities/review_entity.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
-import 'package:fruit_hub/features/reviews/domain/use_cases/add_review_use_case.dart';
 import 'package:fruit_hub/features/reviews/domain/use_cases/check_user_purchased_product_use_case.dart';
 
 part 'reviews_state.dart';
@@ -11,29 +11,29 @@ part 'reviews_state.dart';
 class ReviewsCubit extends Cubit<ReviewsState> {
   ReviewsCubit({
     required this.checkUserPurchasedProductUseCase,
-    required this.addReviewUseCase,
     required this.fruit,
-  }) : super(ReviewsInitial()) {
+    FirebaseAuth? auth,
+  }) : _auth = auth ?? FirebaseAuth.instance,
+       super(
+         ReviewsState(
+           reviews: List.unmodifiable(fruit.reviews),
+           avgRating: fruit.avgRating,
+           ratingCount: fruit.ratingCount,
+         ),
+       ) {
     _init();
   }
 
   final CheckUserPurchasedProductUseCase checkUserPurchasedProductUseCase;
-  final AddReviewUseCase addReviewUseCase;
   final FruitEntity fruit;
+  final FirebaseAuth _auth;
 
-  late final List<ReviewEntity> _reviews = List.from(fruit.reviews);
-  late num _avgRating = fruit.avgRating;
-  late int _ratingCount = fruit.ratingCount;
-  bool _isVerifiedBuyer = false;
-  bool _hasAlreadyReviewed = false;
-  bool _isCheckingEligibility = true;
-
-  List<ReviewEntity> get reviews => _reviews;
-  num get avgRating => _avgRating;
-  int get ratingCount => _ratingCount;
-  bool get isVerifiedBuyer => _isVerifiedBuyer;
-  bool get hasAlreadyReviewed => _hasAlreadyReviewed;
-  bool get isCheckingEligibility => _isCheckingEligibility;
+  List<ReviewEntity> get reviews => state.reviews;
+  num get avgRating => state.avgRating;
+  int get ratingCount => state.ratingCount;
+  bool get isVerifiedBuyer => state.isVerifiedBuyer;
+  bool get hasAlreadyReviewed => state.hasAlreadyReviewed;
+  bool get isCheckingEligibility => state.isCheckingEligibility;
 
   @override
   void emit(ReviewsState state) {
@@ -42,97 +42,58 @@ class ReviewsCubit extends Cubit<ReviewsState> {
     }
   }
 
-  void _emitLoaded() {
-    if (isClosed) return;
-    emit(
-      ReviewsLoaded(
-        reviews: List.unmodifiable(_reviews),
-        avgRating: _avgRating,
-        ratingCount: _ratingCount,
-        isVerifiedBuyer: _isVerifiedBuyer,
-        hasAlreadyReviewed: _hasAlreadyReviewed,
-        isCheckingEligibility: _isCheckingEligibility,
-      ),
-    );
-  }
-
   Future<void> _init() async {
-    _emitLoaded();
+    final currentUser = _auth.currentUser;
+    var hasAlreadyReviewed = false;
+    var isVerifiedBuyer = false;
 
-    final currentUser = FirebaseAuth.instance.currentUser;
-    final currentUserName =
-        currentUser?.displayName?.trim() ?? currentUser?.email ?? '';
-
-    // Check if current user has already reviewed
     if (currentUser != null) {
-      _hasAlreadyReviewed = _reviews.any(
-        (r) =>
-            (r.userId.isNotEmpty && r.userId == currentUser.uid) ||
-            (r.name.trim().isNotEmpty &&
-                (r.name.trim() == currentUserName ||
-                    (currentUser.email != null &&
-                        r.name.trim() == currentUser.email))),
+      hasAlreadyReviewed = state.reviews.any(
+        (r) => r.userId.isNotEmpty && r.userId == currentUser.uid,
       );
 
-      _emitLoaded();
+      emit(state.copyWith(hasAlreadyReviewed: hasAlreadyReviewed));
 
       final result = await checkUserPurchasedProductUseCase(
         productCode: fruit.code,
       );
       if (isClosed) return;
-      if (result is NetworkSuccess<bool>) {
-        _isVerifiedBuyer = result.data ?? false;
+      switch (result) {
+        case NetworkSuccess<bool>():
+          isVerifiedBuyer = result.data ?? false;
+        case NetworkFailure<bool>():
+          isVerifiedBuyer = false;
+          hasAlreadyReviewed = false;
       }
-    } else {
-      _isVerifiedBuyer = false;
-      _hasAlreadyReviewed = false;
     }
 
     if (isClosed) return;
-    _isCheckingEligibility = false;
-    _emitLoaded();
+    emit(
+      state.copyWith(
+        isCheckingEligibility: false,
+        isVerifiedBuyer: isVerifiedBuyer,
+        hasAlreadyReviewed: hasAlreadyReviewed,
+      ),
+    );
   }
 
-  Future<void> submitReview({
-    required double rating,
-    required String comment,
-    required String userName,
-    String? userImage,
-    String? userId,
-  }) async {
-    emit(AddReviewLoading());
-
-    final isoDate = DateTime.now().toIso8601String();
-    final newReview = ReviewEntity(
-      name: userName.isNotEmpty ? userName : 'User',
-      image: userImage ?? '',
-      description: comment.trim(),
-      date: isoDate,
-      rating: rating,
-      userId: userId ?? '',
+  void addReviewLocally(ReviewEntity newReview) {
+    final updatedReviews = [newReview, ...state.reviews];
+    final totalRating = updatedReviews.fold<double>(
+      0.0,
+      (summation, r) => summation + r.rating,
+    );
+    final newAvgRating = double.parse(
+      (totalRating / updatedReviews.length).toStringAsFixed(1),
     );
 
-    final result = await addReviewUseCase(
-      productCode: fruit.code,
-      reviewEntity: newReview,
+    emit(
+      state.copyWith(
+        reviews: List.unmodifiable(updatedReviews),
+        avgRating: newAvgRating,
+        ratingCount: updatedReviews.length,
+        hasAlreadyReviewed: true,
+      ),
     );
-
-    if (isClosed) return;
-
-    switch (result) {
-      case NetworkSuccess<void>():
-        _reviews.insert(0, newReview);
-        final totalRating = _reviews.fold<double>(0.0, (s, r) => s + r.rating);
-        _avgRating = double.parse(
-          (totalRating / _reviews.length).toStringAsFixed(1),
-        );
-        _ratingCount = _reviews.length;
-        _hasAlreadyReviewed = true;
-        emit(AddReviewSuccess(newReview));
-        _emitLoaded();
-      case NetworkFailure<void>():
-        emit(AddReviewFailure(result.error));
-        _emitLoaded();
-    }
   }
 }

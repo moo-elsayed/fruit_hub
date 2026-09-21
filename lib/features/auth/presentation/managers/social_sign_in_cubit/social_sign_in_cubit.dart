@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/facebook_sign_in_use_case.dart';
@@ -10,11 +9,15 @@ import 'package:fruit_hub/features/auth/presentation/managers/user_info_cubit/us
 part 'social_sign_in_state.dart';
 
 class SocialSignInCubit extends Cubit<SocialSignInState> {
-  SocialSignInCubit(this._googleSignInUseCase, this._facebookSignInUseCase)
-    : super(SocialSignInInitial());
+  SocialSignInCubit(
+    this._googleSignInUseCase,
+    this._facebookSignInUseCase,
+    this._userInfoCubit,
+  ) : super(SocialSignInInitial());
 
   final GoogleSignInUseCase _googleSignInUseCase;
   final FacebookSignInUseCase _facebookSignInUseCase;
+  final UserInfoCubit _userInfoCubit;
 
   Future<void> googleSignIn() async {
     emit(GoogleLoading());
@@ -22,7 +25,7 @@ class SocialSignInCubit extends Cubit<SocialSignInState> {
     switch (result) {
       case NetworkSuccess<UserEntity>():
         if (result.data != null) {
-          await getIt<UserInfoCubit>().saveUserLocally(result.data!);
+          await _userInfoCubit.saveUserLocally(result.data!);
         }
         emit(GoogleSuccess());
       case NetworkFailure<UserEntity>():
@@ -37,7 +40,7 @@ class SocialSignInCubit extends Cubit<SocialSignInState> {
     switch (result) {
       case NetworkSuccess<UserEntity>():
         if (result.data != null) {
-          await getIt<UserInfoCubit>().saveUserLocally(result.data!);
+          await _userInfoCubit.saveUserLocally(result.data!);
         }
         emit(FacebookSuccess());
       case NetworkFailure<UserEntity>():

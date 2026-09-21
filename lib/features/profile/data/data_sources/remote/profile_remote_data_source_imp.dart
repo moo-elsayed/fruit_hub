@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fruit_hub/core/errors/exceptions.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/backend_endpoints.dart';
+import 'package:fruit_hub/core/helpers/image_compressor.dart';
 import 'package:fruit_hub/core/network/api_helper.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/auth/data/models/user_model.dart';
@@ -18,13 +20,16 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
     FirebaseAuth? firebaseAuth,
     FirebaseFirestore? firestore,
     FirebaseStorage? firebaseStorage,
+    ImageCompressor? imageCompressor,
   }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
        _firestore = firestore ?? FirebaseFirestore.instance,
-       _storage = firebaseStorage ?? FirebaseStorage.instance;
+       _storage = firebaseStorage ?? FirebaseStorage.instance,
+       _imageCompressor = imageCompressor ?? const ImageCompressor();
 
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore;
   final FirebaseStorage _storage;
+  final ImageCompressor _imageCompressor;
 
   @override
   Future<NetworkResponse<UserModel>> updateProfile(
@@ -51,13 +56,25 @@ class ProfileRemoteDataSourceImp implements ProfileRemoteDataSource {
           }
         } catch (_) {}
 
-        final extension = file.path.contains('.')
-            ? file.path.split('.').last
-            : 'jpg';
-        final ref = _storage.ref().child(
-          '$avatarStoragePath/avatar.$extension',
+        final ref = _storage.ref().child('$avatarStoragePath/avatar.jpg');
+
+        final compressedBytes = await _imageCompressor.compressWithFile(
+          file.path,
+          minWidth: 512,
+          minHeight: 512,
+          quality: 75,
+          format: CompressFormat.jpeg,
         );
-        await ref.putFile(file);
+
+        if (compressedBytes != null) {
+          await ref.putData(
+            compressedBytes,
+            SettableMetadata(contentType: 'image/jpeg'),
+          );
+        } else {
+          await ref.putFile(file);
+        }
+
         imageUrl = await ref.getDownloadURL();
       }
     } else if (imageUrl.isEmpty) {

@@ -1,17 +1,13 @@
 part of 'reviews_cubit.dart';
 
-sealed class ReviewsState {}
-
-final class ReviewsInitial extends ReviewsState {}
-
-final class ReviewsLoaded extends ReviewsState {
-  ReviewsLoaded({
-    required this.reviews,
-    required this.avgRating,
-    required this.ratingCount,
-    required this.isVerifiedBuyer,
-    required this.hasAlreadyReviewed,
-    required this.isCheckingEligibility,
+class ReviewsState extends Equatable {
+  const ReviewsState({
+    this.reviews = const [],
+    this.avgRating = 0.0,
+    this.ratingCount = 0,
+    this.isVerifiedBuyer = false,
+    this.hasAlreadyReviewed = false,
+    this.isCheckingEligibility = true,
   });
 
   final List<ReviewEntity> reviews;
@@ -20,16 +16,30 @@ final class ReviewsLoaded extends ReviewsState {
   final bool isVerifiedBuyer;
   final bool hasAlreadyReviewed;
   final bool isCheckingEligibility;
-}
 
-final class AddReviewLoading extends ReviewsState {}
+  ReviewsState copyWith({
+    List<ReviewEntity>? reviews,
+    num? avgRating,
+    int? ratingCount,
+    bool? isVerifiedBuyer,
+    bool? hasAlreadyReviewed,
+    bool? isCheckingEligibility,
+  }) => ReviewsState(
+    reviews: reviews ?? this.reviews,
+    avgRating: avgRating ?? this.avgRating,
+    ratingCount: ratingCount ?? this.ratingCount,
+    isVerifiedBuyer: isVerifiedBuyer ?? this.isVerifiedBuyer,
+    hasAlreadyReviewed: hasAlreadyReviewed ?? this.hasAlreadyReviewed,
+    isCheckingEligibility: isCheckingEligibility ?? this.isCheckingEligibility,
+  );
 
-final class AddReviewSuccess extends ReviewsState {
-  AddReviewSuccess(this.newReview);
-  final ReviewEntity newReview;
-}
-
-final class AddReviewFailure extends ReviewsState {
-  AddReviewFailure(this.errorMessage);
-  final String errorMessage;
+  @override
+  List<Object?> get props => [
+    reviews,
+    avgRating,
+    ratingCount,
+    isVerifiedBuyer,
+    hasAlreadyReviewed,
+    isCheckingEligibility,
+  ];
 }

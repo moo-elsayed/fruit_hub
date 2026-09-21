@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fruit_hub/core/errors/failures.dart';
-import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_out_use_case.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/signout_cubit/sign_out_cubit.dart';
@@ -24,21 +23,13 @@ void main() {
     mockUseCase = MockSignOutUseCase();
     mockUserInfoCubit = MockUserInfoCubit();
 
-    if (getIt.isRegistered<UserInfoCubit>()) {
-      getIt.unregister<UserInfoCubit>();
-    }
-    getIt.registerSingleton<UserInfoCubit>(mockUserInfoCubit);
-
     when(() => mockUserInfoCubit.clearUserLocally()).thenAnswer((_) async {});
 
-    sut = SignOutCubit(mockUseCase);
+    sut = SignOutCubit(mockUseCase, mockUserInfoCubit);
   });
 
   tearDown(() {
     sut.close();
-    if (getIt.isRegistered<UserInfoCubit>()) {
-      getIt.unregister<UserInfoCubit>();
-    }
   });
 
   test('initial state should be SignOutInitial', () {

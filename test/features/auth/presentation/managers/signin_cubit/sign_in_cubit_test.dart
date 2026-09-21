@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fruit_hub/core/errors/failures.dart';
-import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
 import 'package:fruit_hub/features/auth/domain/use_cases/sign_in_with_email_and_password_use_case.dart';
@@ -44,22 +43,14 @@ void main() {
     mockUseCase = MockSignInWithEmailAndPasswordUseCase();
     mockUserInfoCubit = MockUserInfoCubit();
 
-    if (getIt.isRegistered<UserInfoCubit>()) {
-      getIt.unregister<UserInfoCubit>();
-    }
-    getIt.registerSingleton<UserInfoCubit>(mockUserInfoCubit);
-
     when(() => mockUserInfoCubit.saveUserLocally(any()))
         .thenAnswer((_) async {});
 
-    sut = SignInCubit(mockUseCase);
+    sut = SignInCubit(mockUseCase, mockUserInfoCubit);
   });
 
   tearDown(() {
     sut.close();
-    if (getIt.isRegistered<UserInfoCubit>()) {
-      getIt.unregister<UserInfoCubit>();
-    }
   });
 
   test('initial state should be SignInInitial', () {

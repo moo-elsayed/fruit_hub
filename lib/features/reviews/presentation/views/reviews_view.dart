@@ -45,7 +45,7 @@ class ReviewsView extends StatelessWidget {
         ),
         body: BlocBuilder<ReviewsCubit, ReviewsState>(
           builder: (context, state) {
-            final reviews = cubit.reviews;
+            final reviews = state.reviews;
 
             return CustomScrollView(
               slivers: [
@@ -53,8 +53,8 @@ class ReviewsView extends StatelessWidget {
                   padding: EdgeInsets.all(16.r),
                   sliver: SliverToBoxAdapter(
                     child: RatingSummaryCard(
-                      avgRating: cubit.avgRating,
-                      ratingCount: cubit.ratingCount,
+                      avgRating: state.avgRating,
+                      ratingCount: state.ratingCount,
                       reviews: reviews,
                     ),
                   ),
@@ -84,11 +84,11 @@ class ReviewsView extends StatelessWidget {
         ),
         bottomNavigationBar: BlocBuilder<ReviewsCubit, ReviewsState>(
           builder: (context, state) {
-            if (cubit.isCheckingEligibility) {
+            if (state.isCheckingEligibility) {
               return const SizedBox.shrink();
             }
 
-            if (cubit.hasAlreadyReviewed) {
+            if (state.hasAlreadyReviewed) {
               return ReviewStatusBanner(
                 icon: Icons.check_circle_outline_rounded,
                 message: AppStrings.alreadyReviewedProduct,
@@ -96,7 +96,7 @@ class ReviewsView extends StatelessWidget {
               );
             }
 
-            if (cubit.isVerifiedBuyer) {
+            if (state.isVerifiedBuyer) {
               return Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 decoration: BoxDecoration(
