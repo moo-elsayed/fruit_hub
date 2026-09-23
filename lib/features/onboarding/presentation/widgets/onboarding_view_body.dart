@@ -67,7 +67,7 @@ class _OnboardingViewBodyState extends State<OnboardingViewBody> {
                     },
                     child: CustomMaterialButton(
                       onPressed: () =>
-                          context.read<OnboardingCubit>().setFirstTime(false),
+                          context.read<OnboardingCubit>().setFirstTime(),
                       maxWidth: true,
                       text: AppStrings.startNow,
                       textStyle: AppTextStyles.font16Bold.copyWith(

@@ -28,6 +28,7 @@ import 'package:fruit_hub/features/notifications/presentation/views/notification
 import 'package:fruit_hub/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:fruit_hub/features/orders/presentation/views/orders_view.dart';
 import 'package:fruit_hub/features/orders/presentation/views/track_order_view.dart';
+import 'package:fruit_hub/features/products/presentation/managers/product_details_cubit/product_details_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/views/product_details_view.dart';
 import 'package:fruit_hub/features/products/presentation/views/products_view.dart';
@@ -128,7 +129,9 @@ class AppRouter {
             providers: [
               BlocProvider.value(value: _getCartCubit),
               BlocProvider.value(value: _getFavoriteCubit),
-              BlocProvider(create: (context) => getIt.get<ProductsCubit>()),
+              BlocProvider(
+                create: (context) => getIt.get<ProductDetailsCubit>(),
+              ),
             ],
             child: ProductDetailsView(
               fruitEntity: fruitArg,

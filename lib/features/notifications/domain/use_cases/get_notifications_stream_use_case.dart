@@ -1,3 +1,5 @@
+import 'package:fruit_hub/core/network/network_response.dart';
+
 import '../entities/notification_entity.dart';
 import '../repo/notifications_repo.dart';
 
@@ -6,6 +8,6 @@ class GetNotificationsStreamUseCase {
 
   final NotificationsRepo _notificationsRepo;
 
-  Stream<List<NotificationEntity>> call() =>
+  Stream<NetworkResponse<List<NotificationEntity>>> call() =>
       _notificationsRepo.getNotificationsStream();
 }

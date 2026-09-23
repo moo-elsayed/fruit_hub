@@ -35,34 +35,31 @@ void main() {
     sut = AddReviewUseCase(mockReviewsRepo);
   });
 
-  test(
-    'should call addReview on ReviewsRepo with correct productCode and reviewEntity and return NetworkSuccess',
-    () async {
-      // Arrange
-      when(
-        () => mockReviewsRepo.addReview(
-          productCode: any(named: 'productCode'),
-          reviewEntity: any(named: 'reviewEntity'),
-        ),
-      ).thenAnswer((_) async => const NetworkSuccess<void>());
+  test('should call addReview on ReviewsRepo with correct productCode and reviewEntity and return NetworkSuccess', () async {
+    // Arrange
+    when(
+      () => mockReviewsRepo.addReview(
+        productCode: any(named: 'productCode'),
+        reviewEntity: any(named: 'reviewEntity'),
+      ),
+    ).thenAnswer((_) async => const NetworkSuccess<void>());
 
-      // Act
-      final result = await sut(
+    // Act
+    final result = await sut(
+      productCode: tProductCode,
+      reviewEntity: tReviewEntity,
+    );
+
+    // Assert
+    expect(result, isA<NetworkSuccess<void>>());
+    verify(
+      () => mockReviewsRepo.addReview(
         productCode: tProductCode,
         reviewEntity: tReviewEntity,
-      );
-
-      // Assert
-      expect(result, isA<NetworkSuccess<void>>());
-      verify(
-        () => mockReviewsRepo.addReview(
-          productCode: tProductCode,
-          reviewEntity: tReviewEntity,
-        ),
-      ).called(1);
-      verifyNoMoreInteractions(mockReviewsRepo);
-    },
-  );
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(mockReviewsRepo);
+  });
 
   test(
     'should return NetworkFailure when ReviewsRepo fails during addReview',

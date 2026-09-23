@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fruit_hub/core/network/network_response.dart';
 
 import '../../../domain/entities/notification_entity.dart';
 import '../../../domain/use_cases/get_notifications_stream_use_case.dart';
@@ -19,16 +20,21 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   final MarkNotificationAsReadUseCase markNotificationAsReadUseCase;
   final MarkAllNotificationsAsReadUseCase markAllNotificationsAsReadUseCase;
 
-  StreamSubscription<List<NotificationEntity>>? _subscription;
+  StreamSubscription<NetworkResponse<List<NotificationEntity>>>? _subscription;
 
   void initNotificationsStream() {
     _subscription?.cancel();
     emit(const NotificationsLoading());
 
     _subscription = getNotificationsStreamUseCase().listen(
-      (notifications) {
+      (response) {
         if (!isClosed) {
-          emit(NotificationsSuccess(notifications));
+          switch (response) {
+            case NetworkSuccess<List<NotificationEntity>>(:final data):
+              emit(NotificationsSuccess(data ?? []));
+            case NetworkFailure<List<NotificationEntity>>(:final error):
+              emit(NotificationsFailure(error));
+          }
         }
       },
       onError: (error) {
@@ -39,13 +45,10 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     );
   }
 
-  Future<void> markAsRead(String notificationId) async {
-    await markNotificationAsReadUseCase(notificationId);
-  }
+  Future<void> markAsRead(String notificationId) =>
+      markNotificationAsReadUseCase(notificationId);
 
-  Future<void> markAllAsRead() async {
-    await markAllNotificationsAsReadUseCase();
-  }
+  Future<void> markAllAsRead() => markAllNotificationsAsReadUseCase();
 
   @override
   Future<void> close() {

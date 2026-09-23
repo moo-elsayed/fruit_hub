@@ -1,17 +1,21 @@
+import 'package:equatable/equatable.dart';
 import 'package:fruit_hub/core/enums/payment_method_type.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/shipping_config_entity.dart';
 
-class PaymentOptionEntity {
+class PaymentOptionEntity extends Equatable {
   const PaymentOptionEntity({
     this.title = '',
-    this.type = .paypal,
+    this.type = PaymentMethodType.paypal,
     this.shippingCost = 0,
   });
 
   final String title;
   final PaymentMethodType type;
   final double shippingCost;
+
+  @override
+  List<Object?> get props => [title, type, shippingCost];
 }
 
 List<PaymentOptionEntity> getPaymentOptions([

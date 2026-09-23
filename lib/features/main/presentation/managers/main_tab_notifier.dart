@@ -5,7 +5,5 @@ class MainTabNotifier {
 
   static final ValueNotifier<int> currentTab = ValueNotifier<int>(0);
 
-  static void switchToTab(int index) {
-    currentTab.value = index;
-  }
+  static void switchToTab(int index) => currentTab.value = index;
 }

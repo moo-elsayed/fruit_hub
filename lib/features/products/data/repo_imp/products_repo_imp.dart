@@ -27,15 +27,7 @@ class ProductsRepoImp implements ProductsRepo {
     );
     switch (response) {
       case NetworkSuccess<PaginatedProductsData>():
-        final data = response.data!;
-        final entities = data.fruits.map((model) => model.toEntity()).toList();
-        return NetworkSuccess(
-          PaginatedProductsEntity(
-            fruits: entities,
-            lastDoc: data.lastDoc,
-            hasMore: data.hasMore,
-          ),
-        );
+        return NetworkSuccess(response.data!.toEntity());
       case NetworkFailure<PaginatedProductsData>():
         return NetworkFailure(response.failure);
     }

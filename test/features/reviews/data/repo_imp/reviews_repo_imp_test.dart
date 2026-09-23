@@ -38,160 +38,145 @@ void main() {
   });
 
   group('checkUserPurchasedProduct', () {
-    test(
-      'should call remoteDataSource.checkUserPurchasedProduct with correct productCode and return NetworkSuccess(true)',
-      () async {
-        // Arrange
-        when(
-          () => mockRemoteDataSource.checkUserPurchasedProduct(
-            productCode: any(named: 'productCode'),
-          ),
-        ).thenAnswer((_) async => const NetworkSuccess(true));
+    test('should call remoteDataSource.checkUserPurchasedProduct with correct productCode and return NetworkSuccess(true)', () async {
+      // Arrange
+      when(
+        () => mockRemoteDataSource.checkUserPurchasedProduct(
+          productCode: any(named: 'productCode'),
+        ),
+      ).thenAnswer((_) async => const NetworkSuccess(true));
 
-        // Act
-        final result = await sut.checkUserPurchasedProduct(
+      // Act
+      final result = await sut.checkUserPurchasedProduct(
+        productCode: tProductCode,
+      );
+
+      // Assert
+      expect(result, isA<NetworkSuccess<bool>>());
+      final isPurchased = (result as NetworkSuccess<bool>).data;
+      expect(isPurchased, isTrue);
+      verify(
+        () => mockRemoteDataSource.checkUserPurchasedProduct(
           productCode: tProductCode,
-        );
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(mockRemoteDataSource);
+    });
 
-        // Assert
-        expect(result, isA<NetworkSuccess<bool>>());
-        final isPurchased = (result as NetworkSuccess<bool>).data;
-        expect(isPurchased, isTrue);
-        verify(
-          () => mockRemoteDataSource.checkUserPurchasedProduct(
-            productCode: tProductCode,
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(mockRemoteDataSource);
-      },
-    );
+    test('should call remoteDataSource.checkUserPurchasedProduct with correct productCode and return NetworkSuccess(false)', () async {
+      // Arrange
+      when(
+        () => mockRemoteDataSource.checkUserPurchasedProduct(
+          productCode: any(named: 'productCode'),
+        ),
+      ).thenAnswer((_) async => const NetworkSuccess(false));
 
-    test(
-      'should call remoteDataSource.checkUserPurchasedProduct with correct productCode and return NetworkSuccess(false)',
-      () async {
-        // Arrange
-        when(
-          () => mockRemoteDataSource.checkUserPurchasedProduct(
-            productCode: any(named: 'productCode'),
-          ),
-        ).thenAnswer((_) async => const NetworkSuccess(false));
+      // Act
+      final result = await sut.checkUserPurchasedProduct(
+        productCode: tProductCode,
+      );
 
-        // Act
-        final result = await sut.checkUserPurchasedProduct(
+      // Assert
+      expect(result, isA<NetworkSuccess<bool>>());
+      final isPurchased = (result as NetworkSuccess<bool>).data;
+      expect(isPurchased, isFalse);
+      verify(
+        () => mockRemoteDataSource.checkUserPurchasedProduct(
           productCode: tProductCode,
-        );
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(mockRemoteDataSource);
+    });
 
-        // Assert
-        expect(result, isA<NetworkSuccess<bool>>());
-        final isPurchased = (result as NetworkSuccess<bool>).data;
-        expect(isPurchased, isFalse);
-        verify(
-          () => mockRemoteDataSource.checkUserPurchasedProduct(
-            productCode: tProductCode,
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(mockRemoteDataSource);
-      },
-    );
+    test('should return NetworkFailure when remoteDataSource fails', () async {
+      // Arrange
+      when(
+        () => mockRemoteDataSource.checkUserPurchasedProduct(
+          productCode: any(named: 'productCode'),
+        ),
+      ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
-    test(
-      'should return NetworkFailure when remoteDataSource fails',
-      () async {
-        // Arrange
-        when(
-          () => mockRemoteDataSource.checkUserPurchasedProduct(
-            productCode: any(named: 'productCode'),
-          ),
-        ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+      // Act
+      final result = await sut.checkUserPurchasedProduct(
+        productCode: tProductCode,
+      );
 
-        // Act
-        final result = await sut.checkUserPurchasedProduct(
+      // Assert
+      expect(result, isA<NetworkFailure<bool>>());
+      final failure = (result as NetworkFailure<bool>).failure;
+      expect(failure.error, tServerFailure.error);
+      verify(
+        () => mockRemoteDataSource.checkUserPurchasedProduct(
           productCode: tProductCode,
-        );
-
-        // Assert
-        expect(result, isA<NetworkFailure<bool>>());
-        final failure = (result as NetworkFailure<bool>).failure;
-        expect(failure.error, tServerFailure.error);
-        verify(
-          () => mockRemoteDataSource.checkUserPurchasedProduct(
-            productCode: tProductCode,
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(mockRemoteDataSource);
-      },
-    );
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(mockRemoteDataSource);
+    });
   });
 
   group('addReview', () {
-    test(
-      'should map ReviewEntity to ReviewModel, call remoteDataSource.addReview, and return NetworkSuccess',
-      () async {
-        // Arrange
-        when(
-          () => mockRemoteDataSource.addReview(
-            productCode: any(named: 'productCode'),
-            reviewModel: any(named: 'reviewModel'),
-          ),
-        ).thenAnswer((_) async => const NetworkSuccess<void>());
+    test('should map ReviewEntity to ReviewModel, call remoteDataSource.addReview, and return NetworkSuccess', () async {
+      // Arrange
+      when(
+        () => mockRemoteDataSource.addReview(
+          productCode: any(named: 'productCode'),
+          reviewModel: any(named: 'reviewModel'),
+        ),
+      ).thenAnswer((_) async => const NetworkSuccess<void>());
 
-        // Act
-        final result = await sut.addReview(
+      // Act
+      final result = await sut.addReview(
+        productCode: tProductCode,
+        reviewEntity: tReviewEntity,
+      );
+
+      // Assert
+      expect(result, isA<NetworkSuccess<void>>());
+
+      final captured =
+          verify(
+                () => mockRemoteDataSource.addReview(
+                  productCode: tProductCode,
+                  reviewModel: captureAny(named: 'reviewModel'),
+                ),
+              ).captured.single
+              as ReviewModel;
+
+      expect(captured.name, tReviewEntity.name);
+      expect(captured.image, tReviewEntity.image);
+      expect(captured.description, tReviewEntity.description);
+      expect(captured.date, tReviewEntity.date);
+      expect(captured.rating, tReviewEntity.rating);
+      expect(captured.userId, tReviewEntity.userId);
+      verifyNoMoreInteractions(mockRemoteDataSource);
+    });
+
+    test('should return NetworkFailure when remoteDataSource fails during addReview', () async {
+      // Arrange
+      when(
+        () => mockRemoteDataSource.addReview(
+          productCode: any(named: 'productCode'),
+          reviewModel: any(named: 'reviewModel'),
+        ),
+      ).thenAnswer((_) async => const NetworkFailure<void>(tServerFailure));
+
+      // Act
+      final result = await sut.addReview(
+        productCode: tProductCode,
+        reviewEntity: tReviewEntity,
+      );
+
+      // Assert
+      expect(result, isA<NetworkFailure<void>>());
+      final failure = (result as NetworkFailure<void>).failure;
+      expect(failure.error, tServerFailure.error);
+      verify(
+        () => mockRemoteDataSource.addReview(
           productCode: tProductCode,
-          reviewEntity: tReviewEntity,
-        );
-
-        // Assert
-        expect(result, isA<NetworkSuccess<void>>());
-
-        final captured =
-            verify(
-                  () => mockRemoteDataSource.addReview(
-                    productCode: tProductCode,
-                    reviewModel: captureAny(named: 'reviewModel'),
-                  ),
-                ).captured.single
-                as ReviewModel;
-
-        expect(captured.name, tReviewEntity.name);
-        expect(captured.image, tReviewEntity.image);
-        expect(captured.description, tReviewEntity.description);
-        expect(captured.date, tReviewEntity.date);
-        expect(captured.rating, tReviewEntity.rating);
-        expect(captured.userId, tReviewEntity.userId);
-        verifyNoMoreInteractions(mockRemoteDataSource);
-      },
-    );
-
-    test(
-      'should return NetworkFailure when remoteDataSource fails during addReview',
-      () async {
-        // Arrange
-        when(
-          () => mockRemoteDataSource.addReview(
-            productCode: any(named: 'productCode'),
-            reviewModel: any(named: 'reviewModel'),
-          ),
-        ).thenAnswer((_) async => const NetworkFailure<void>(tServerFailure));
-
-        // Act
-        final result = await sut.addReview(
-          productCode: tProductCode,
-          reviewEntity: tReviewEntity,
-        );
-
-        // Assert
-        expect(result, isA<NetworkFailure<void>>());
-        final failure = (result as NetworkFailure<void>).failure;
-        expect(failure.error, tServerFailure.error);
-        verify(
-          () => mockRemoteDataSource.addReview(
-            productCode: tProductCode,
-            reviewModel: any(named: 'reviewModel'),
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(mockRemoteDataSource);
-      },
-    );
+          reviewModel: any(named: 'reviewModel'),
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(mockRemoteDataSource);
+    });
   });
 }

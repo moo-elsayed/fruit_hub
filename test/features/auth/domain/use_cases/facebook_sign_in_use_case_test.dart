@@ -28,33 +28,28 @@ void main() {
     sut = FacebookSignInUseCase(mockAuthRepo);
   });
 
-  test(
-    'should call facebookSignIn on AuthRepo and return NetworkSuccess<UserEntity>',
-    () async {
-      // Arrange
-      when(
-        () => mockAuthRepo.facebookSignIn(),
-      ).thenAnswer((_) async => const NetworkSuccess(tUserEntity));
+  test('should call facebookSignIn on AuthRepo and return NetworkSuccess<UserEntity>', () async {
+    // Arrange
+    when(() => mockAuthRepo.facebookSignIn())
+        .thenAnswer((_) async => const NetworkSuccess(tUserEntity));
 
-      // Act
-      final result = await sut();
+    // Act
+    final result = await sut();
 
-      // Assert
-      expect(result, isA<NetworkSuccess<UserEntity>>());
-      final successResult = result as NetworkSuccess<UserEntity>;
-      expect(successResult.data, tUserEntity);
-      verify(() => mockAuthRepo.facebookSignIn()).called(1);
-      verifyNoMoreInteractions(mockAuthRepo);
-    },
-  );
+    // Assert
+    expect(result, isA<NetworkSuccess<UserEntity>>());
+    final successResult = result as NetworkSuccess<UserEntity>;
+    expect(successResult.data, tUserEntity);
+    verify(() => mockAuthRepo.facebookSignIn()).called(1);
+    verifyNoMoreInteractions(mockAuthRepo);
+  });
 
   test(
     'should return NetworkFailure when AuthRepo fails during facebookSignIn',
     () async {
       // Arrange
-      when(
-        () => mockAuthRepo.facebookSignIn(),
-      ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+      when(() => mockAuthRepo.facebookSignIn())
+          .thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
       // Act
       final result = await sut();

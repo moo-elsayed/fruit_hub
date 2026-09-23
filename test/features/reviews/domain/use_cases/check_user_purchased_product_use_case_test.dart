@@ -19,81 +19,69 @@ void main() {
     sut = CheckUserPurchasedProductUseCase(mockReviewsRepo);
   });
 
-  test(
-    'should call checkUserPurchasedProduct on ReviewsRepo with correct productCode and return NetworkSuccess(true)',
-    () async {
-      // Arrange
-      when(
-        () => mockReviewsRepo.checkUserPurchasedProduct(
-          productCode: any(named: 'productCode'),
-        ),
-      ).thenAnswer((_) async => const NetworkSuccess(true));
+  test('should call checkUserPurchasedProduct on ReviewsRepo with correct productCode and return NetworkSuccess(true)', () async {
+    // Arrange
+    when(
+      () => mockReviewsRepo.checkUserPurchasedProduct(
+        productCode: any(named: 'productCode'),
+      ),
+    ).thenAnswer((_) async => const NetworkSuccess(true));
 
-      // Act
-      final result = await sut(productCode: tProductCode);
+    // Act
+    final result = await sut(productCode: tProductCode);
 
-      // Assert
-      expect(result, isA<NetworkSuccess<bool>>());
-      final isPurchased = (result as NetworkSuccess<bool>).data;
-      expect(isPurchased, isTrue);
-      verify(
-        () => mockReviewsRepo.checkUserPurchasedProduct(
-          productCode: tProductCode,
-        ),
-      ).called(1);
-      verifyNoMoreInteractions(mockReviewsRepo);
-    },
-  );
+    // Assert
+    expect(result, isA<NetworkSuccess<bool>>());
+    final isPurchased = (result as NetworkSuccess<bool>).data;
+    expect(isPurchased, isTrue);
+    verify(
+      () =>
+          mockReviewsRepo.checkUserPurchasedProduct(productCode: tProductCode),
+    ).called(1);
+    verifyNoMoreInteractions(mockReviewsRepo);
+  });
 
-  test(
-    'should call checkUserPurchasedProduct on ReviewsRepo with correct productCode and return NetworkSuccess(false)',
-    () async {
-      // Arrange
-      when(
-        () => mockReviewsRepo.checkUserPurchasedProduct(
-          productCode: any(named: 'productCode'),
-        ),
-      ).thenAnswer((_) async => const NetworkSuccess(false));
+  test('should call checkUserPurchasedProduct on ReviewsRepo with correct productCode and return NetworkSuccess(false)', () async {
+    // Arrange
+    when(
+      () => mockReviewsRepo.checkUserPurchasedProduct(
+        productCode: any(named: 'productCode'),
+      ),
+    ).thenAnswer((_) async => const NetworkSuccess(false));
 
-      // Act
-      final result = await sut(productCode: tProductCode);
+    // Act
+    final result = await sut(productCode: tProductCode);
 
-      // Assert
-      expect(result, isA<NetworkSuccess<bool>>());
-      final isPurchased = (result as NetworkSuccess<bool>).data;
-      expect(isPurchased, isFalse);
-      verify(
-        () => mockReviewsRepo.checkUserPurchasedProduct(
-          productCode: tProductCode,
-        ),
-      ).called(1);
-      verifyNoMoreInteractions(mockReviewsRepo);
-    },
-  );
+    // Assert
+    expect(result, isA<NetworkSuccess<bool>>());
+    final isPurchased = (result as NetworkSuccess<bool>).data;
+    expect(isPurchased, isFalse);
+    verify(
+      () =>
+          mockReviewsRepo.checkUserPurchasedProduct(productCode: tProductCode),
+    ).called(1);
+    verifyNoMoreInteractions(mockReviewsRepo);
+  });
 
-  test(
-    'should return NetworkFailure when ReviewsRepo fails',
-    () async {
-      // Arrange
-      when(
-        () => mockReviewsRepo.checkUserPurchasedProduct(
-          productCode: any(named: 'productCode'),
-        ),
-      ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+  test('should return NetworkFailure when ReviewsRepo fails', () async {
+    // Arrange
+    when(
+      () => mockReviewsRepo.checkUserPurchasedProduct(
+        productCode: any(named: 'productCode'),
+      ),
+    ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
-      // Act
-      final result = await sut(productCode: tProductCode);
+    // Act
+    final result = await sut(productCode: tProductCode);
 
-      // Assert
-      expect(result, isA<NetworkFailure<bool>>());
-      final failure = (result as NetworkFailure<bool>).failure;
-      expect(failure.error, tServerFailure.error);
-      verify(
-        () => mockReviewsRepo.checkUserPurchasedProduct(
-          productCode: tProductCode,
-        ),
-      ).called(1);
-      verifyNoMoreInteractions(mockReviewsRepo);
-    },
-  );
+    // Assert
+    expect(result, isA<NetworkFailure<bool>>());
+    final failure = (result as NetworkFailure<bool>).failure;
+    expect(failure.error, tServerFailure.error);
+    verify(
+      () =>
+          mockReviewsRepo.checkUserPurchasedProduct(productCode: tProductCode),
+    ).called(1);
+    verifyNoMoreInteractions(mockReviewsRepo);
+  });
 }

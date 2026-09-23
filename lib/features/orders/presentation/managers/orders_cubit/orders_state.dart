@@ -34,30 +34,3 @@ class OrdersFailure extends OrdersState {
   @override
   List<Object?> get props => [message];
 }
-
-class OrderCancelLoading extends OrdersState {
-  const OrderCancelLoading(this.docId);
-
-  final String docId;
-
-  @override
-  List<Object?> get props => [docId];
-}
-
-class OrderCancelSuccess extends OrdersState {
-  const OrderCancelSuccess(this.docId);
-
-  final String docId;
-
-  @override
-  List<Object?> get props => [docId];
-}
-
-class OrderCancelFailure extends OrdersState {
-  const OrderCancelFailure(this.message);
-
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
-}

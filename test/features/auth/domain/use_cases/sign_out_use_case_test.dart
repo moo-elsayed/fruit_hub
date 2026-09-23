@@ -22,9 +22,8 @@ void main() {
     'should call signOut on AuthRepo and return NetworkSuccess<void>',
     () async {
       // Arrange
-      when(
-        () => mockAuthRepo.signOut(),
-      ).thenAnswer((_) async => const NetworkSuccess<void>());
+      when(() => mockAuthRepo.signOut())
+          .thenAnswer((_) async => const NetworkSuccess<void>());
 
       // Act
       final result = await sut();
@@ -40,9 +39,8 @@ void main() {
     'should return NetworkFailure when AuthRepo fails during signOut',
     () async {
       // Arrange
-      when(
-        () => mockAuthRepo.signOut(),
-      ).thenAnswer((_) async => const NetworkFailure<void>(tServerFailure));
+      when(() => mockAuthRepo.signOut())
+          .thenAnswer((_) async => const NetworkFailure<void>(tServerFailure));
 
       // Act
       final result = await sut();

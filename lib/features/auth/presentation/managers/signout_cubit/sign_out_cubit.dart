@@ -7,7 +7,8 @@ import 'package:fruit_hub/features/auth/presentation/managers/user_info_cubit/us
 part 'sign_out_state.dart';
 
 class SignOutCubit extends Cubit<SignOutState> {
-  SignOutCubit(this._signOutUseCase, this._userInfoCubit) : super(SignOutInitial());
+  SignOutCubit(this._signOutUseCase, this._userInfoCubit)
+    : super(SignOutInitial());
 
   final SignOutUseCase _signOutUseCase;
   final UserInfoCubit _userInfoCubit;

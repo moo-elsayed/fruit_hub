@@ -30,33 +30,28 @@ void main() {
     sut = GetUserInfoUseCase(mockAuthRepo);
   });
 
-  test(
-    'should call getUserInfo on AuthRepo with uid and return NetworkSuccess<UserEntity>',
-    () async {
-      // Arrange
-      when(
-        () => mockAuthRepo.getUserInfo(tUid),
-      ).thenAnswer((_) async => const NetworkSuccess(tUserEntity));
+  test('should call getUserInfo on AuthRepo with uid and return NetworkSuccess<UserEntity>', () async {
+    // Arrange
+    when(() => mockAuthRepo.getUserInfo(tUid))
+        .thenAnswer((_) async => const NetworkSuccess(tUserEntity));
 
-      // Act
-      final result = await sut(tUid);
+    // Act
+    final result = await sut(tUid);
 
-      // Assert
-      expect(result, isA<NetworkSuccess<UserEntity>>());
-      final successResult = result as NetworkSuccess<UserEntity>;
-      expect(successResult.data, tUserEntity);
-      verify(() => mockAuthRepo.getUserInfo(tUid)).called(1);
-      verifyNoMoreInteractions(mockAuthRepo);
-    },
-  );
+    // Assert
+    expect(result, isA<NetworkSuccess<UserEntity>>());
+    final successResult = result as NetworkSuccess<UserEntity>;
+    expect(successResult.data, tUserEntity);
+    verify(() => mockAuthRepo.getUserInfo(tUid)).called(1);
+    verifyNoMoreInteractions(mockAuthRepo);
+  });
 
   test(
     'should return NetworkFailure when AuthRepo fails to get user info',
     () async {
       // Arrange
-      when(
-        () => mockAuthRepo.getUserInfo(tUid),
-      ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+      when(() => mockAuthRepo.getUserInfo(tUid))
+          .thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
       // Act
       final result = await sut(tUid);

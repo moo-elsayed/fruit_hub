@@ -79,21 +79,18 @@ void main() {
       expect(sut.state.ratingCount, tFruit.ratingCount);
     });
 
-    test(
-      'should finish checking eligibility with isVerifiedBuyer false when currentUser is null',
-      () {
-        // Arrange
-        when(() => mockAuth.currentUser).thenReturn(null);
+    test('should finish checking eligibility with isVerifiedBuyer false when currentUser is null', () {
+      // Arrange
+      when(() => mockAuth.currentUser).thenReturn(null);
 
-        // Act
-        createCubit();
+      // Act
+      createCubit();
 
-        // Assert
-        expect(sut.state.isCheckingEligibility, isFalse);
-        expect(sut.state.isVerifiedBuyer, isFalse);
-        expect(sut.state.hasAlreadyReviewed, isFalse);
-      },
-    );
+      // Assert
+      expect(sut.state.isCheckingEligibility, isFalse);
+      expect(sut.state.isVerifiedBuyer, isFalse);
+      expect(sut.state.hasAlreadyReviewed, isFalse);
+    });
 
     blocTest<ReviewsCubit, ReviewsState>(
       'should check eligibility and set isVerifiedBuyer true when purchase check succeeds',

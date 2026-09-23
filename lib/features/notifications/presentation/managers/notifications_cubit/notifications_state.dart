@@ -1,7 +1,12 @@
+import 'package:equatable/equatable.dart';
+
 import '../../../domain/entities/notification_entity.dart';
 
-sealed class NotificationsState {
+sealed class NotificationsState extends Equatable {
   const NotificationsState();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class NotificationsInitial extends NotificationsState {
@@ -18,10 +23,16 @@ class NotificationsSuccess extends NotificationsState {
   final List<NotificationEntity> notifications;
 
   int get unreadCount => notifications.where((n) => !n.isRead).length;
+
+  @override
+  List<Object?> get props => [notifications];
 }
 
 class NotificationsFailure extends NotificationsState {
   const NotificationsFailure(this.errorMessage);
 
   final String errorMessage;
+
+  @override
+  List<Object?> get props => [errorMessage];
 }

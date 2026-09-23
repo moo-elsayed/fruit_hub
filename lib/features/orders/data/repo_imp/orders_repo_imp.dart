@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:fruit_hub/core/entities/order_entity.dart';
-import 'package:fruit_hub/core/errors/failures.dart';
 import 'package:fruit_hub/core/network/api_helper.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 
@@ -13,28 +14,33 @@ class OrdersRepoImp implements OrdersRepo {
 
   @override
   Stream<NetworkResponse<List<OrderEntity>>> streamUserOrders() =>
-      _remoteDataSource
-          .streamUserOrders()
-          .map<NetworkResponse<List<OrderEntity>>>(
-            (models) =>
-                NetworkSuccess(models.map((m) => m.toEntity()).toList()),
-          )
-          .handleError(
-            (error) => NetworkFailure<List<OrderEntity>>(
-              ServerFailure.fromException(error),
+      _remoteDataSource.streamUserOrders().transform(
+        StreamTransformer.fromHandlers(
+          handleData: (models, sink) => sink.add(
+            NetworkSuccess(models.map((m) => m.toEntity()).toList()),
+          ),
+          handleError: (error, _, sink) => sink.add(
+            NetworkFailure<List<OrderEntity>>(
+              ApiHelper.failureFromException(error),
             ),
-          );
+          ),
+        ),
+      );
 
   @override
   Stream<NetworkResponse<OrderEntity>> streamOrderById(String orderId) =>
       _remoteDataSource
           .streamOrderById(orderId)
-          .map<NetworkResponse<OrderEntity>>(
-            (model) => NetworkSuccess(model.toEntity()),
-          )
-          .handleError(
-            (error) =>
-                NetworkFailure<OrderEntity>(ServerFailure.fromException(error)),
+          .transform(
+            StreamTransformer.fromHandlers(
+              handleData: (model, sink) =>
+                  sink.add(NetworkSuccess(model.toEntity())),
+              handleError: (error, _, sink) => sink.add(
+                NetworkFailure<OrderEntity>(
+                  ApiHelper.failureFromException(error),
+                ),
+              ),
+            ),
           );
 
   @override

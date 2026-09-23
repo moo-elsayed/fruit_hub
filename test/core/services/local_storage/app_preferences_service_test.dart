@@ -35,13 +35,16 @@ void main() {
         expect(sut.isFirstTime(), isTrue);
       });
 
-      test('should persist isFirstTime as false when saveFirstTime is called', () async {
-        // Act
-        await sut.saveFirstTime();
+      test(
+        'should persist isFirstTime as false when saveFirstTime is called',
+        () async {
+          // Act
+          await sut.saveFirstTime();
 
-        // Assert
-        expect(sut.isFirstTime(), isFalse);
-      });
+          // Assert
+          expect(sut.isFirstTime(), isFalse);
+        },
+      );
     });
 
     group('getThemeMode & saveThemeMode', () {
@@ -50,19 +53,22 @@ void main() {
         expect(sut.getThemeMode(), equals('system'));
       });
 
-      test('should persist selected theme mode when saveThemeMode is called', () async {
-        // Act
-        await sut.saveThemeMode('dark');
+      test(
+        'should persist selected theme mode when saveThemeMode is called',
+        () async {
+          // Act
+          await sut.saveThemeMode('dark');
 
-        // Assert
-        expect(sut.getThemeMode(), equals('dark'));
+          // Assert
+          expect(sut.getThemeMode(), equals('dark'));
 
-        // Act
-        await sut.saveThemeMode('light');
+          // Act
+          await sut.saveThemeMode('light');
 
-        // Assert
-        expect(sut.getThemeMode(), equals('light'));
-      });
+          // Assert
+          expect(sut.getThemeMode(), equals('light'));
+        },
+      );
     });
 
     group('getLanguage & saveLanguage', () {
@@ -71,19 +77,22 @@ void main() {
         expect(sut.getLanguage(), equals('ar'));
       });
 
-      test('should persist selected language when saveLanguage is called', () async {
-        // Act
-        await sut.saveLanguage('en');
+      test(
+        'should persist selected language when saveLanguage is called',
+        () async {
+          // Act
+          await sut.saveLanguage('en');
 
-        // Assert
-        expect(sut.getLanguage(), equals('en'));
+          // Assert
+          expect(sut.getLanguage(), equals('en'));
 
-        // Act
-        await sut.saveLanguage('ar');
+          // Act
+          await sut.saveLanguage('ar');
 
-        // Assert
-        expect(sut.getLanguage(), equals('ar'));
-      });
+          // Assert
+          expect(sut.getLanguage(), equals('ar'));
+        },
+      );
     });
 
     group('getUser, saveUser & clearUser', () {
@@ -115,32 +124,41 @@ void main() {
         expect(sut.getUser(), isNull);
       });
 
-      test('should return null safely when cached json is invalid or corrupted', () async {
-        // Arrange
-        await sharedPreferences.setString('cached_user', 'invalid_json_data');
+      test(
+        'should return null safely when cached json is invalid or corrupted',
+        () async {
+          // Arrange
+          await sharedPreferences.setString('cached_user', 'invalid_json_data');
 
-        // Act & Assert
-        expect(sut.getUser(), isNull);
-      });
+          // Act & Assert
+          expect(sut.getUser(), isNull);
+        },
+      );
 
-      test('should remove cached user from preferences when clearUser is called', () async {
-        // Arrange
-        await sut.saveUser(tUserEntity);
-        expect(sut.getUser(), isNotNull);
+      test(
+        'should remove cached user from preferences when clearUser is called',
+        () async {
+          // Arrange
+          await sut.saveUser(tUserEntity);
+          expect(sut.getUser(), isNotNull);
 
-        // Act
-        await sut.clearUser();
+          // Act
+          await sut.clearUser();
 
-        // Assert
-        expect(sut.getUser(), isNull);
-      });
+          // Assert
+          expect(sut.getUser(), isNull);
+        },
+      );
     });
 
     group('getAddress, saveAddress & deleteAddress', () {
-      test('should return empty string by default when no address is cached', () {
-        // Act & Assert
-        expect(sut.getAddress(), equals(''));
-      });
+      test(
+        'should return empty string by default when no address is cached',
+        () {
+          // Act & Assert
+          expect(sut.getAddress(), equals(''));
+        },
+      );
 
       test('should persist address json when saveAddress is called', () async {
         // Act
@@ -152,17 +170,20 @@ void main() {
         expect(address, contains('Cairo'));
       });
 
-      test('should remove cached address when deleteAddress is called', () async {
-        // Arrange
-        await sut.saveAddress(tAddressMap);
-        expect(sut.getAddress(), isNotEmpty);
+      test(
+        'should remove cached address when deleteAddress is called',
+        () async {
+          // Arrange
+          await sut.saveAddress(tAddressMap);
+          expect(sut.getAddress(), isNotEmpty);
 
-        // Act
-        await sut.deleteAddress();
+          // Act
+          await sut.deleteAddress();
 
-        // Assert
-        expect(sut.getAddress(), equals(''));
-      });
+          // Assert
+          expect(sut.getAddress(), equals(''));
+        },
+      );
     });
   });
 }

@@ -99,426 +99,384 @@ void main() {
   });
 
   group('createUserWithEmailAndPassword', () {
-    test(
-      'should successfully create user, update display name, save to Firestore, send verification, sign out and return NetworkSuccess',
-      () async {
-        // Arrange
-        when(
-          () => mockFirebaseAuth.createUserWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenAnswer((_) async => mockUserCredential);
+    test('should successfully create user, update display name, save to Firestore, send verification, sign out and return NetworkSuccess', () async {
+      // Arrange
+      when(
+        () => mockFirebaseAuth.createUserWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+        ),
+      ).thenAnswer((_) async => mockUserCredential);
 
-        // Act
-        final result = await sut.createUserWithEmailAndPassword(tSignUpInput);
+      // Act
+      final result = await sut.createUserWithEmailAndPassword(tSignUpInput);
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserModel>>());
-        final user = (result as NetworkSuccess<UserModel>).data;
-        expect(user, isNotNull);
-        expect(user!.uid, tUid);
-        expect(user.name, tUsername);
-        expect(user.email, tEmail);
-        expect(user.phone, tPhone);
+      // Assert
+      expect(result, isA<NetworkSuccess<UserModel>>());
+      final user = (result as NetworkSuccess<UserModel>).data;
+      expect(user, isNotNull);
+      expect(user!.uid, tUid);
+      expect(user.name, tUsername);
+      expect(user.email, tEmail);
+      expect(user.phone, tPhone);
 
-        final doc = await fakeFirestore
-            .collection(BackendEndpoints.usersCollection)
-            .doc(tUid)
-            .get();
-        expect(doc.exists, isTrue);
-        expect(doc.data()!['name'], tUsername);
-        expect(doc.data()!['email'], tEmail);
+      final doc = await fakeFirestore
+          .collection(BackendEndpoints.usersCollection)
+          .doc(tUid)
+          .get();
+      expect(doc.exists, isTrue);
+      expect(doc.data()!['name'], tUsername);
+      expect(doc.data()!['email'], tEmail);
 
-        verify(() => mockUser.updateDisplayName(tUsername)).called(1);
-        verify(() => mockUser.sendEmailVerification()).called(1);
-        verify(() => mockFirebaseAuth.signOut()).called(1);
-      },
-    );
+      verify(() => mockUser.updateDisplayName(tUsername)).called(1);
+      verify(() => mockUser.sendEmailVerification()).called(1);
+      verify(() => mockFirebaseAuth.signOut()).called(1);
+    });
 
-    test(
-      'should return NetworkFailure with unexpectedError and delete currentUser when userCredential.user is null',
-      () async {
-        // Arrange
-        when(
-          () => mockFirebaseAuth.createUserWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenAnswer((_) async => mockUserCredential);
-        when(() => mockUserCredential.user).thenReturn(null);
+    test('should return NetworkFailure with unexpectedError and delete currentUser when userCredential.user is null', () async {
+      // Arrange
+      when(
+        () => mockFirebaseAuth.createUserWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+        ),
+      ).thenAnswer((_) async => mockUserCredential);
+      when(() => mockUserCredential.user).thenReturn(null);
 
-        // Act
-        final result = await sut.createUserWithEmailAndPassword(tSignUpInput);
+      // Act
+      final result = await sut.createUserWithEmailAndPassword(tSignUpInput);
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserModel>>());
-        final failure = (result as NetworkFailure<UserModel>).failure;
-        expect(failure.error, AppStrings.unexpectedError);
-        verify(() => mockCurrentUser.delete()).called(1);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<UserModel>>());
+      final failure = (result as NetworkFailure<UserModel>).failure;
+      expect(failure.error, AppStrings.unexpectedError);
+      verify(() => mockCurrentUser.delete()).called(1);
+    });
 
-    test(
-      'should return NetworkFailure with emailAlreadyInUse and NOT delete currentUser when code is email-already-in-use',
-      () async {
-        // Arrange
-        when(
-          () => mockFirebaseAuth.createUserWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenThrow(FirebaseAuthException(code: 'email-already-in-use'));
+    test('should return NetworkFailure with emailAlreadyInUse and NOT delete currentUser when code is email-already-in-use', () async {
+      // Arrange
+      when(
+        () => mockFirebaseAuth.createUserWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+        ),
+      ).thenThrow(FirebaseAuthException(code: 'email-already-in-use'));
 
-        // Act
-        final result = await sut.createUserWithEmailAndPassword(tSignUpInput);
+      // Act
+      final result = await sut.createUserWithEmailAndPassword(tSignUpInput);
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserModel>>());
-        final failure = (result as NetworkFailure<UserModel>).failure;
-        expect(failure.error, AppStrings.emailAlreadyInUse);
-        verifyNever(() => mockCurrentUser.delete());
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<UserModel>>());
+      final failure = (result as NetworkFailure<UserModel>).failure;
+      expect(failure.error, AppStrings.emailAlreadyInUse);
+      verifyNever(() => mockCurrentUser.delete());
+    });
 
-    test(
-      'should return NetworkFailure with weakPassword and delete currentUser when code is weak-password',
-      () async {
-        // Arrange
-        when(
-          () => mockFirebaseAuth.createUserWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenThrow(FirebaseAuthException(code: 'weak-password'));
+    test('should return NetworkFailure with weakPassword and delete currentUser when code is weak-password', () async {
+      // Arrange
+      when(
+        () => mockFirebaseAuth.createUserWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+        ),
+      ).thenThrow(FirebaseAuthException(code: 'weak-password'));
 
-        // Act
-        final result = await sut.createUserWithEmailAndPassword(tSignUpInput);
+      // Act
+      final result = await sut.createUserWithEmailAndPassword(tSignUpInput);
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserModel>>());
-        final failure = (result as NetworkFailure<UserModel>).failure;
-        expect(failure.error, AppStrings.thePasswordProvidedIsTooWeak);
-        verify(() => mockCurrentUser.delete()).called(1);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<UserModel>>());
+      final failure = (result as NetworkFailure<UserModel>).failure;
+      expect(failure.error, AppStrings.thePasswordProvidedIsTooWeak);
+      verify(() => mockCurrentUser.delete()).called(1);
+    });
 
-    test(
-      'should return NetworkFailure with unexpectedError and delete currentUser on generic exception',
-      () async {
-        // Arrange
-        when(
-          () => mockFirebaseAuth.createUserWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenThrow(Exception('Generic database failure'));
+    test('should return NetworkFailure with unexpectedError and delete currentUser on generic exception', () async {
+      // Arrange
+      when(
+        () => mockFirebaseAuth.createUserWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+        ),
+      ).thenThrow(Exception('Generic database failure'));
 
-        // Act
-        final result = await sut.createUserWithEmailAndPassword(tSignUpInput);
+      // Act
+      final result = await sut.createUserWithEmailAndPassword(tSignUpInput);
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserModel>>());
-        final failure = (result as NetworkFailure<UserModel>).failure;
-        expect(failure.error, AppStrings.unexpectedError);
-        verify(() => mockCurrentUser.delete()).called(1);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<UserModel>>());
+      final failure = (result as NetworkFailure<UserModel>).failure;
+      expect(failure.error, AppStrings.unexpectedError);
+      verify(() => mockCurrentUser.delete()).called(1);
+    });
   });
 
   group('signInWithEmailAndPassword', () {
-    test(
-      'should return NetworkSuccess with UserModel when email is verified and user exists in Firestore',
-      () async {
-        // Arrange
-        await fakeFirestore
-            .collection(BackendEndpoints.usersCollection)
-            .doc(tUid)
-            .set({
-              'uid': tUid,
-              'name': 'Custom DB Name',
-              'email': tEmail,
-              'phone': '01122334455',
-              'isVerified': true,
-            });
+    test('should return NetworkSuccess with UserModel when email is verified and user exists in Firestore', () async {
+      // Arrange
+      await fakeFirestore
+          .collection(BackendEndpoints.usersCollection)
+          .doc(tUid)
+          .set({
+            'uid': tUid,
+            'name': 'Custom DB Name',
+            'email': tEmail,
+            'phone': '01122334455',
+            'isVerified': true,
+          });
 
-        when(
-          () => mockFirebaseAuth.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenAnswer((_) async => mockUserCredential);
-
-        // Act
-        final result = await sut.signInWithEmailAndPassword(
+      when(
+        () => mockFirebaseAuth.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
-        );
+        ),
+      ).thenAnswer((_) async => mockUserCredential);
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserModel>>());
-        final user = (result as NetworkSuccess<UserModel>).data;
-        expect(user, isNotNull);
-        expect(user!.name, 'Custom DB Name');
-        expect(user.phone, '01122334455');
-        expect(user.isVerified, isTrue);
+      // Act
+      final result = await sut.signInWithEmailAndPassword(
+        email: tEmail,
+        password: tPassword,
+      );
 
-        verify(() => mockUser.reload()).called(1);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<UserModel>>());
+      final user = (result as NetworkSuccess<UserModel>).data;
+      expect(user, isNotNull);
+      expect(user!.name, 'Custom DB Name');
+      expect(user.phone, '01122334455');
+      expect(user.isVerified, isTrue);
 
-    test(
-      'should create user in Firestore and return NetworkSuccess if user does not exist in DB yet',
-      () async {
-        // Arrange - no user in fakeFirestore
-        when(
-          () => mockFirebaseAuth.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenAnswer((_) async => mockUserCredential);
+      verify(() => mockUser.reload()).called(1);
+    });
 
-        // Act
-        final result = await sut.signInWithEmailAndPassword(
+    test('should create user in Firestore and return NetworkSuccess if user does not exist in DB yet', () async {
+      // Arrange - no user in fakeFirestore
+      when(
+        () => mockFirebaseAuth.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
-        );
+        ),
+      ).thenAnswer((_) async => mockUserCredential);
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserModel>>());
-        final user = (result as NetworkSuccess<UserModel>).data;
-        expect(user!.uid, tUid);
+      // Act
+      final result = await sut.signInWithEmailAndPassword(
+        email: tEmail,
+        password: tPassword,
+      );
 
-        final doc = await fakeFirestore
-            .collection(BackendEndpoints.usersCollection)
-            .doc(tUid)
-            .get();
-        expect(doc.exists, isTrue);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<UserModel>>());
+      final user = (result as NetworkSuccess<UserModel>).data;
+      expect(user!.uid, tUid);
 
-    test(
-      'should return NetworkFailure with pleaseVerifyYourEmail and sign out when emailVerified is false',
-      () async {
-        // Arrange
-        when(() => mockCurrentUser.emailVerified).thenReturn(false);
-        when(
-          () => mockFirebaseAuth.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenAnswer((_) async => mockUserCredential);
+      final doc = await fakeFirestore
+          .collection(BackendEndpoints.usersCollection)
+          .doc(tUid)
+          .get();
+      expect(doc.exists, isTrue);
+    });
 
-        // Act
-        final result = await sut.signInWithEmailAndPassword(
+    test('should return NetworkFailure with pleaseVerifyYourEmail and sign out when emailVerified is false', () async {
+      // Arrange
+      when(() => mockCurrentUser.emailVerified).thenReturn(false);
+      when(
+        () => mockFirebaseAuth.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
-        );
+        ),
+      ).thenAnswer((_) async => mockUserCredential);
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserModel>>());
-        final failure = (result as NetworkFailure<UserModel>).failure;
-        expect(failure.error, AppStrings.pleaseVerifyYourEmail);
-        verify(() => mockFirebaseAuth.signOut()).called(1);
-      },
-    );
+      // Act
+      final result = await sut.signInWithEmailAndPassword(
+        email: tEmail,
+        password: tPassword,
+      );
 
-    test(
-      'should return NetworkFailure with unexpectedError when userCredential.user is null',
-      () async {
-        // Arrange
-        when(
-          () => mockFirebaseAuth.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenAnswer((_) async => mockUserCredential);
-        when(() => mockUserCredential.user).thenReturn(null);
+      // Assert
+      expect(result, isA<NetworkFailure<UserModel>>());
+      final failure = (result as NetworkFailure<UserModel>).failure;
+      expect(failure.error, AppStrings.pleaseVerifyYourEmail);
+      verify(() => mockFirebaseAuth.signOut()).called(1);
+    });
 
-        // Act
-        final result = await sut.signInWithEmailAndPassword(
+    test('should return NetworkFailure with unexpectedError when userCredential.user is null', () async {
+      // Arrange
+      when(
+        () => mockFirebaseAuth.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
-        );
+        ),
+      ).thenAnswer((_) async => mockUserCredential);
+      when(() => mockUserCredential.user).thenReturn(null);
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserModel>>());
-        final failure = (result as NetworkFailure<UserModel>).failure;
-        expect(failure.error, AppStrings.unexpectedError);
-      },
-    );
+      // Act
+      final result = await sut.signInWithEmailAndPassword(
+        email: tEmail,
+        password: tPassword,
+      );
 
-    test(
-      'should return NetworkFailure with invalidCredential when FirebaseAuthException code is user-not-found',
-      () async {
-        // Arrange
-        when(
-          () => mockFirebaseAuth.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenThrow(FirebaseAuthException(code: 'user-not-found'));
+      // Assert
+      expect(result, isA<NetworkFailure<UserModel>>());
+      final failure = (result as NetworkFailure<UserModel>).failure;
+      expect(failure.error, AppStrings.unexpectedError);
+    });
 
-        // Act
-        final result = await sut.signInWithEmailAndPassword(
+    test('should return NetworkFailure with invalidCredential when FirebaseAuthException code is user-not-found', () async {
+      // Arrange
+      when(
+        () => mockFirebaseAuth.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
-        );
+        ),
+      ).thenThrow(FirebaseAuthException(code: 'user-not-found'));
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserModel>>());
-        final failure = (result as NetworkFailure<UserModel>).failure;
-        expect(failure.error, AppStrings.invalidCredential);
-      },
-    );
+      // Act
+      final result = await sut.signInWithEmailAndPassword(
+        email: tEmail,
+        password: tPassword,
+      );
 
-    test(
-      'should return NetworkFailure with wrongPassword when FirebaseAuthException code is wrong-password',
-      () async {
-        // Arrange
-        when(
-          () => mockFirebaseAuth.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenThrow(FirebaseAuthException(code: 'wrong-password'));
+      // Assert
+      expect(result, isA<NetworkFailure<UserModel>>());
+      final failure = (result as NetworkFailure<UserModel>).failure;
+      expect(failure.error, AppStrings.invalidCredential);
+    });
 
-        // Act
-        final result = await sut.signInWithEmailAndPassword(
+    test('should return NetworkFailure with wrongPassword when FirebaseAuthException code is wrong-password', () async {
+      // Arrange
+      when(
+        () => mockFirebaseAuth.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
-        );
+        ),
+      ).thenThrow(FirebaseAuthException(code: 'wrong-password'));
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserModel>>());
-        final failure = (result as NetworkFailure<UserModel>).failure;
-        expect(failure.error, AppStrings.wrongPasswordProvidedForThatUser);
-      },
-    );
+      // Act
+      final result = await sut.signInWithEmailAndPassword(
+        email: tEmail,
+        password: tPassword,
+      );
+
+      // Assert
+      expect(result, isA<NetworkFailure<UserModel>>());
+      final failure = (result as NetworkFailure<UserModel>).failure;
+      expect(failure.error, AppStrings.wrongPasswordProvidedForThatUser);
+    });
   });
 
   group('googleSignIn', () {
-    test(
-      'should sign in with Google provider, create user in Firestore and return NetworkSuccess for new user',
-      () async {
-        // Arrange
-        when(() => mockUser.displayName).thenReturn(null);
-        final mockAdditionalInfo = MockAdditionalUserInfo();
-        when(() => mockAdditionalInfo.profile).thenReturn({
-          'name': 'Google Custom Name',
-          'picture': 'https://example.com/avatar.jpg',
-        });
-        when(() => mockUserCredential.additionalUserInfo)
-            .thenReturn(mockAdditionalInfo);
+    test('should sign in with Google provider, create user in Firestore and return NetworkSuccess for new user', () async {
+      // Arrange
+      when(() => mockUser.displayName).thenReturn(null);
+      final mockAdditionalInfo = MockAdditionalUserInfo();
+      when(() => mockAdditionalInfo.profile).thenReturn({
+        'name': 'Google Custom Name',
+        'picture': 'https://example.com/avatar.jpg',
+      });
+      when(() => mockUserCredential.additionalUserInfo)
+          .thenReturn(mockAdditionalInfo);
 
-        when(
-          () => mockFirebaseAuth.signInWithProvider(
-            any(that: isA<GoogleAuthProvider>()),
-          ),
-        ).thenAnswer((_) async => mockUserCredential);
+      when(
+        () => mockFirebaseAuth.signInWithProvider(
+          any(that: isA<GoogleAuthProvider>()),
+        ),
+      ).thenAnswer((_) async => mockUserCredential);
 
-        // Act
-        final result = await sut.googleSignIn();
+      // Act
+      final result = await sut.googleSignIn();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserModel>>());
-        final user = (result as NetworkSuccess<UserModel>).data;
-        expect(user, isNotNull);
-        expect(user!.uid, tUid);
-        expect(user.name, 'Google Custom Name');
+      // Assert
+      expect(result, isA<NetworkSuccess<UserModel>>());
+      final user = (result as NetworkSuccess<UserModel>).data;
+      expect(user, isNotNull);
+      expect(user!.uid, tUid);
+      expect(user.name, 'Google Custom Name');
 
-        final doc = await fakeFirestore
-            .collection(BackendEndpoints.usersCollection)
-            .doc(tUid)
-            .get();
-        expect(doc.exists, isTrue);
-        expect(doc.data()!['name'], 'Google Custom Name');
-      },
-    );
+      final doc = await fakeFirestore
+          .collection(BackendEndpoints.usersCollection)
+          .doc(tUid)
+          .get();
+      expect(doc.exists, isTrue);
+      expect(doc.data()!['name'], 'Google Custom Name');
+    });
 
-    test(
-      'should preserve stored custom name and update isVerified for existing user',
-      () async {
-        // Arrange
-        await fakeFirestore
-            .collection(BackendEndpoints.usersCollection)
-            .doc(tUid)
-            .set({
-              'uid': tUid,
-              'name': 'Existing Custom Name',
-              'email': tEmail,
-              'isVerified': false,
-            });
+    test('should preserve stored custom name and update isVerified for existing user', () async {
+      // Arrange
+      await fakeFirestore
+          .collection(BackendEndpoints.usersCollection)
+          .doc(tUid)
+          .set({
+            'uid': tUid,
+            'name': 'Existing Custom Name',
+            'email': tEmail,
+            'isVerified': false,
+          });
 
-        final mockAdditionalInfo = MockAdditionalUserInfo();
-        when(() => mockAdditionalInfo.profile).thenReturn(null);
-        when(() => mockUserCredential.additionalUserInfo)
-            .thenReturn(mockAdditionalInfo);
+      final mockAdditionalInfo = MockAdditionalUserInfo();
+      when(() => mockAdditionalInfo.profile).thenReturn(null);
+      when(() => mockUserCredential.additionalUserInfo)
+          .thenReturn(mockAdditionalInfo);
 
-        when(
-          () => mockFirebaseAuth.signInWithProvider(
-            any(that: isA<GoogleAuthProvider>()),
-          ),
-        ).thenAnswer((_) async => mockUserCredential);
+      when(
+        () => mockFirebaseAuth.signInWithProvider(
+          any(that: isA<GoogleAuthProvider>()),
+        ),
+      ).thenAnswer((_) async => mockUserCredential);
 
-        // Act
-        final result = await sut.googleSignIn();
+      // Act
+      final result = await sut.googleSignIn();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserModel>>());
-        final user = (result as NetworkSuccess<UserModel>).data;
-        expect(user!.name, 'Existing Custom Name');
-        expect(user.isVerified, isTrue);
+      // Assert
+      expect(result, isA<NetworkSuccess<UserModel>>());
+      final user = (result as NetworkSuccess<UserModel>).data;
+      expect(user!.name, 'Existing Custom Name');
+      expect(user.isVerified, isTrue);
 
-        final doc = await fakeFirestore
-            .collection(BackendEndpoints.usersCollection)
-            .doc(tUid)
-            .get();
-        expect(doc.data()!['name'], 'Existing Custom Name');
-        expect(doc.data()!['isVerified'], isTrue);
-      },
-    );
+      final doc = await fakeFirestore
+          .collection(BackendEndpoints.usersCollection)
+          .doc(tUid)
+          .get();
+      expect(doc.data()!['name'], 'Existing Custom Name');
+      expect(doc.data()!['isVerified'], isTrue);
+    });
 
-    test(
-      'should fallback to userModel.name when stored user in DB has an empty name',
-      () async {
-        // Arrange
-        await fakeFirestore
-            .collection(BackendEndpoints.usersCollection)
-            .doc(tUid)
-            .set({
-              'uid': tUid,
-              'name': '   ',
-              'email': tEmail,
-              'isVerified': false,
-            });
+    test('should fallback to userModel.name when stored user in DB has an empty name', () async {
+      // Arrange
+      await fakeFirestore
+          .collection(BackendEndpoints.usersCollection)
+          .doc(tUid)
+          .set({
+            'uid': tUid,
+            'name': '   ',
+            'email': tEmail,
+            'isVerified': false,
+          });
 
-        final mockAdditionalInfo = MockAdditionalUserInfo();
-        when(() => mockAdditionalInfo.profile).thenReturn(null);
-        when(() => mockUserCredential.additionalUserInfo)
-            .thenReturn(mockAdditionalInfo);
+      final mockAdditionalInfo = MockAdditionalUserInfo();
+      when(() => mockAdditionalInfo.profile).thenReturn(null);
+      when(() => mockUserCredential.additionalUserInfo)
+          .thenReturn(mockAdditionalInfo);
 
-        when(
-          () => mockFirebaseAuth.signInWithProvider(
-            any(that: isA<GoogleAuthProvider>()),
-          ),
-        ).thenAnswer((_) async => mockUserCredential);
+      when(
+        () => mockFirebaseAuth.signInWithProvider(
+          any(that: isA<GoogleAuthProvider>()),
+        ),
+      ).thenAnswer((_) async => mockUserCredential);
 
-        // Act
-        final result = await sut.googleSignIn();
+      // Act
+      final result = await sut.googleSignIn();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserModel>>());
-        final user = (result as NetworkSuccess<UserModel>).data;
-        expect(user!.name, tUsername);
+      // Assert
+      expect(result, isA<NetworkSuccess<UserModel>>());
+      final user = (result as NetworkSuccess<UserModel>).data;
+      expect(user!.name, tUsername);
 
-        final doc = await fakeFirestore
-            .collection(BackendEndpoints.usersCollection)
-            .doc(tUid)
-            .get();
-        expect(doc.data()!['name'], tUsername);
-      },
-    );
+      final doc = await fakeFirestore
+          .collection(BackendEndpoints.usersCollection)
+          .doc(tUid)
+          .get();
+      expect(doc.data()!['name'], tUsername);
+    });
 
     test(
       'should return NetworkFailure with unexpectedError when user is null',
@@ -570,188 +528,149 @@ void main() {
       when(() => mockAccessToken.tokenString).thenReturn('fb_token_12345');
     });
 
-    test(
-      'should sign in with Facebook, retrieve user profile, update Firestore and return NetworkSuccess',
-      () async {
-        // Arrange
-        when(() => mockUser.displayName).thenReturn(null);
-        when(
-          () => mockFacebookAuth.login(
-            permissions: any(named: 'permissions'),
-          ),
-        ).thenAnswer(
-          (_) async => LoginResult(
-            status: LoginStatus.success,
-            accessToken: mockAccessToken,
-          ),
-        );
+    test('should sign in with Facebook, retrieve user profile, update Firestore and return NetworkSuccess', () async {
+      // Arrange
+      when(() => mockUser.displayName).thenReturn(null);
+      when(() => mockFacebookAuth.login(permissions: any(named: 'permissions')))
+          .thenAnswer(
+            (_) async => LoginResult(
+              status: LoginStatus.success,
+              accessToken: mockAccessToken,
+            ),
+          );
 
-        final mockAdditionalInfo = MockAdditionalUserInfo();
-        when(() => mockAdditionalInfo.profile).thenReturn({
-          'name': 'Facebook User Name',
-          'picture': {
-            'data': {'url': 'https://example.com/fb_avatar.jpg'},
-          },
-        });
-        when(() => mockUserCredential.additionalUserInfo)
-            .thenReturn(mockAdditionalInfo);
+      final mockAdditionalInfo = MockAdditionalUserInfo();
+      when(() => mockAdditionalInfo.profile).thenReturn({
+        'name': 'Facebook User Name',
+        'picture': {
+          'data': {'url': 'https://example.com/fb_avatar.jpg'},
+        },
+      });
+      when(() => mockUserCredential.additionalUserInfo)
+          .thenReturn(mockAdditionalInfo);
 
-        when(
-          () => mockFirebaseAuth.signInWithCredential(any()),
-        ).thenAnswer((_) async => mockUserCredential);
+      when(() => mockFirebaseAuth.signInWithCredential(any()))
+          .thenAnswer((_) async => mockUserCredential);
 
-        // Act
-        final result = await sut.facebookSignIn();
+      // Act
+      final result = await sut.facebookSignIn();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserModel>>());
-        final user = (result as NetworkSuccess<UserModel>).data;
-        expect(user, isNotNull);
-        expect(user!.uid, tUid);
-        expect(user.name, 'Facebook User Name');
-        expect(user.image, 'https://example.com/fb_avatar.jpg');
+      // Assert
+      expect(result, isA<NetworkSuccess<UserModel>>());
+      final user = (result as NetworkSuccess<UserModel>).data;
+      expect(user, isNotNull);
+      expect(user!.uid, tUid);
+      expect(user.name, 'Facebook User Name');
+      expect(user.image, 'https://example.com/fb_avatar.jpg');
 
-        final doc = await fakeFirestore
-            .collection(BackendEndpoints.usersCollection)
-            .doc(tUid)
-            .get();
-        expect(doc.exists, isTrue);
-        expect(doc.data()!['name'], 'Facebook User Name');
-      },
-    );
+      final doc = await fakeFirestore
+          .collection(BackendEndpoints.usersCollection)
+          .doc(tUid)
+          .get();
+      expect(doc.exists, isTrue);
+      expect(doc.data()!['name'], 'Facebook User Name');
+    });
 
-    test(
-      'should fallback to facebookAuth.getUserData() when additionalUserInfo profile is null',
-      () async {
-        // Arrange
-        when(() => mockUser.displayName).thenReturn(null);
-        when(
-          () => mockFacebookAuth.login(
-            permissions: any(named: 'permissions'),
-          ),
-        ).thenAnswer(
-          (_) async => LoginResult(
-            status: LoginStatus.success,
-            accessToken: mockAccessToken,
-          ),
-        );
+    test('should fallback to facebookAuth.getUserData() when additionalUserInfo profile is null', () async {
+      // Arrange
+      when(() => mockUser.displayName).thenReturn(null);
+      when(() => mockFacebookAuth.login(permissions: any(named: 'permissions')))
+          .thenAnswer(
+            (_) async => LoginResult(
+              status: LoginStatus.success,
+              accessToken: mockAccessToken,
+            ),
+          );
 
-        final mockAdditionalInfo = MockAdditionalUserInfo();
-        when(() => mockAdditionalInfo.profile).thenReturn(null);
-        when(() => mockUserCredential.additionalUserInfo)
-            .thenReturn(mockAdditionalInfo);
+      final mockAdditionalInfo = MockAdditionalUserInfo();
+      when(() => mockAdditionalInfo.profile).thenReturn(null);
+      when(() => mockUserCredential.additionalUserInfo)
+          .thenReturn(mockAdditionalInfo);
 
-        when(() => mockFacebookAuth.getUserData()).thenAnswer(
-          (_) async => {
-            'name': 'Fallback FB Name',
-            'picture': 'https://example.com/direct_pic.png',
-          },
-        );
+      when(() => mockFacebookAuth.getUserData()).thenAnswer(
+        (_) async => {
+          'name': 'Fallback FB Name',
+          'picture': 'https://example.com/direct_pic.png',
+        },
+      );
 
-        when(
-          () => mockFirebaseAuth.signInWithCredential(any()),
-        ).thenAnswer((_) async => mockUserCredential);
+      when(() => mockFirebaseAuth.signInWithCredential(any()))
+          .thenAnswer((_) async => mockUserCredential);
 
-        // Act
-        final result = await sut.facebookSignIn();
+      // Act
+      final result = await sut.facebookSignIn();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserModel>>());
-        final user = (result as NetworkSuccess<UserModel>).data;
-        expect(user!.name, 'Fallback FB Name');
-        expect(user.image, 'https://example.com/direct_pic.png');
-        verify(() => mockFacebookAuth.getUserData()).called(1);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<UserModel>>());
+      final user = (result as NetworkSuccess<UserModel>).data;
+      expect(user!.name, 'Fallback FB Name');
+      expect(user.image, 'https://example.com/direct_pic.png');
+      verify(() => mockFacebookAuth.getUserData()).called(1);
+    });
 
-    test(
-      'should return NetworkFailure with userCanceledSignIn when loginResult status is cancelled',
-      () async {
-        // Arrange
-        when(
-          () => mockFacebookAuth.login(
-            permissions: any(named: 'permissions'),
-          ),
-        ).thenAnswer(
-          (_) async => LoginResult(
-            status: LoginStatus.cancelled,
-            accessToken: null,
-          ),
-        );
+    test('should return NetworkFailure with userCanceledSignIn when loginResult status is cancelled', () async {
+      // Arrange
+      when(() => mockFacebookAuth.login(permissions: any(named: 'permissions')))
+          .thenAnswer(
+            (_) async =>
+                LoginResult(status: LoginStatus.cancelled, accessToken: null),
+          );
 
-        // Act
-        final result = await sut.facebookSignIn();
+      // Act
+      final result = await sut.facebookSignIn();
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserModel>>());
-        final failure = (result as NetworkFailure<UserModel>).failure;
-        expect(failure.error, AppStrings.userCanceledSignIn);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<UserModel>>());
+      final failure = (result as NetworkFailure<UserModel>).failure;
+      expect(failure.error, AppStrings.userCanceledSignIn);
+    });
 
-    test(
-      'should return NetworkFailure with unexpectedError when accessToken is null and status is failed',
-      () async {
-        // Arrange
-        when(
-          () => mockFacebookAuth.login(
-            permissions: any(named: 'permissions'),
-          ),
-        ).thenAnswer(
-          (_) async => LoginResult(
-            status: LoginStatus.failed,
-            accessToken: null,
-          ),
-        );
+    test('should return NetworkFailure with unexpectedError when accessToken is null and status is failed', () async {
+      // Arrange
+      when(() => mockFacebookAuth.login(permissions: any(named: 'permissions')))
+          .thenAnswer(
+            (_) async =>
+                LoginResult(status: LoginStatus.failed, accessToken: null),
+          );
 
-        // Act
-        final result = await sut.facebookSignIn();
+      // Act
+      final result = await sut.facebookSignIn();
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserModel>>());
-        final failure = (result as NetworkFailure<UserModel>).failure;
-        expect(failure.error, AppStrings.unexpectedError);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<UserModel>>());
+      final failure = (result as NetworkFailure<UserModel>).failure;
+      expect(failure.error, AppStrings.unexpectedError);
+    });
 
-    test(
-      'should return NetworkFailure with unexpectedError when signInWithCredential.user is null',
-      () async {
-        // Arrange
-        when(
-          () => mockFacebookAuth.login(
-            permissions: any(named: 'permissions'),
-          ),
-        ).thenAnswer(
-          (_) async => LoginResult(
-            status: LoginStatus.success,
-            accessToken: mockAccessToken,
-          ),
-        );
+    test('should return NetworkFailure with unexpectedError when signInWithCredential.user is null', () async {
+      // Arrange
+      when(() => mockFacebookAuth.login(permissions: any(named: 'permissions')))
+          .thenAnswer(
+            (_) async => LoginResult(
+              status: LoginStatus.success,
+              accessToken: mockAccessToken,
+            ),
+          );
 
-        when(() => mockUserCredential.user).thenReturn(null);
-        when(
-          () => mockFirebaseAuth.signInWithCredential(any()),
-        ).thenAnswer((_) async => mockUserCredential);
+      when(() => mockUserCredential.user).thenReturn(null);
+      when(() => mockFirebaseAuth.signInWithCredential(any()))
+          .thenAnswer((_) async => mockUserCredential);
 
-        // Act
-        final result = await sut.facebookSignIn();
+      // Act
+      final result = await sut.facebookSignIn();
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserModel>>());
-        final failure = (result as NetworkFailure<UserModel>).failure;
-        expect(failure.error, AppStrings.unexpectedError);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<UserModel>>());
+      final failure = (result as NetworkFailure<UserModel>).failure;
+      expect(failure.error, AppStrings.unexpectedError);
+    });
 
     test(
       'should return NetworkFailure when Facebook login throws an exception',
       () async {
         // Arrange
         when(
-          () => mockFacebookAuth.login(
-            permissions: any(named: 'permissions'),
-          ),
+          () => mockFacebookAuth.login(permissions: any(named: 'permissions')),
         ).thenThrow(Exception('Facebook SDK unavailable'));
 
         // Act
@@ -793,109 +712,96 @@ void main() {
       },
     );
 
-    test(
-      'should return NetworkFailure with noUserFoundForThatEmail and NOT call sendPasswordResetEmail when email does not exist in DB',
-      () async {
-        // Arrange - no user added to fakeFirestore
+    test('should return NetworkFailure with noUserFoundForThatEmail and NOT call sendPasswordResetEmail when email does not exist in DB', () async {
+      // Arrange - no user added to fakeFirestore
 
-        // Act
-        final result = await sut.forgetPassword('nonexistent@example.com');
+      // Act
+      final result = await sut.forgetPassword('nonexistent@example.com');
 
-        // Assert
-        expect(result, isA<NetworkFailure<void>>());
-        final failure = (result as NetworkFailure<void>).failure;
-        expect(failure.error, AppStrings.noUserFoundForThatEmail);
-        verifyNever(
-          () => mockFirebaseAuth.sendPasswordResetEmail(
-            email: any(named: 'email'),
-          ),
-        );
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<void>>());
+      final failure = (result as NetworkFailure<void>).failure;
+      expect(failure.error, AppStrings.noUserFoundForThatEmail);
+      verifyNever(
+        () =>
+            mockFirebaseAuth.sendPasswordResetEmail(email: any(named: 'email')),
+      );
+    });
 
-    test(
-      'should return NetworkFailure with invalidEmail when FirebaseAuthException is invalid-email',
-      () async {
-        // Arrange
-        await fakeFirestore
-            .collection(BackendEndpoints.usersCollection)
-            .doc(tUid)
-            .set({
-              'uid': tUid,
-              'email': tEmail,
-              'name': tUsername,
-              'isVerified': true,
-            });
+    test('should return NetworkFailure with invalidEmail when FirebaseAuthException is invalid-email', () async {
+      // Arrange
+      await fakeFirestore
+          .collection(BackendEndpoints.usersCollection)
+          .doc(tUid)
+          .set({
+            'uid': tUid,
+            'email': tEmail,
+            'name': tUsername,
+            'isVerified': true,
+          });
 
-        when(() => mockFirebaseAuth.sendPasswordResetEmail(email: tEmail))
-            .thenThrow(FirebaseAuthException(code: 'invalid-email'));
+      when(() => mockFirebaseAuth.sendPasswordResetEmail(email: tEmail))
+          .thenThrow(FirebaseAuthException(code: 'invalid-email'));
 
-        // Act
-        final result = await sut.forgetPassword(tEmail);
+      // Act
+      final result = await sut.forgetPassword(tEmail);
 
-        // Assert
-        expect(result, isA<NetworkFailure<void>>());
-        final failure = (result as NetworkFailure<void>).failure;
-        expect(failure.error, AppStrings.invalidEmail);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<void>>());
+      final failure = (result as NetworkFailure<void>).failure;
+      expect(failure.error, AppStrings.invalidEmail);
+    });
   });
 
   group('getUserInfo', () {
-    test(
-      'should return NetworkSuccess with UserModel when user document exists in Firestore',
-      () async {
-        // Arrange
-        await fakeFirestore
-            .collection(BackendEndpoints.usersCollection)
-            .doc(tUid)
-            .set({
-              'uid': tUid,
-              'name': tUsername,
-              'email': tEmail,
-              'phone': tPhone,
-              'isVerified': true,
-            });
+    test('should return NetworkSuccess with UserModel when user document exists in Firestore', () async {
+      // Arrange
+      await fakeFirestore
+          .collection(BackendEndpoints.usersCollection)
+          .doc(tUid)
+          .set({
+            'uid': tUid,
+            'name': tUsername,
+            'email': tEmail,
+            'phone': tPhone,
+            'isVerified': true,
+          });
 
-        // Act
-        final result = await sut.getUserInfo(tUid);
+      // Act
+      final result = await sut.getUserInfo(tUid);
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserModel>>());
-        final user = (result as NetworkSuccess<UserModel>).data;
-        expect(user!.uid, tUid);
-        expect(user.name, tUsername);
-        expect(user.email, tEmail);
-        expect(user.phone, tPhone);
-        expect(user.isVerified, isTrue);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<UserModel>>());
+      final user = (result as NetworkSuccess<UserModel>).data;
+      expect(user!.uid, tUid);
+      expect(user.name, tUsername);
+      expect(user.email, tEmail);
+      expect(user.phone, tPhone);
+      expect(user.isVerified, isTrue);
+    });
 
-    test(
-      'should resolve isVerified to true if Firestore has false but auth currentUser has emailVerified true',
-      () async {
-        // Arrange
-        await fakeFirestore
-            .collection(BackendEndpoints.usersCollection)
-            .doc(tUid)
-            .set({
-              'uid': tUid,
-              'name': tUsername,
-              'email': tEmail,
-              'isVerified': false,
-            });
+    test('should resolve isVerified to true if Firestore has false but auth currentUser has emailVerified true', () async {
+      // Arrange
+      await fakeFirestore
+          .collection(BackendEndpoints.usersCollection)
+          .doc(tUid)
+          .set({
+            'uid': tUid,
+            'name': tUsername,
+            'email': tEmail,
+            'isVerified': false,
+          });
 
-        when(() => mockCurrentUser.emailVerified).thenReturn(true);
+      when(() => mockCurrentUser.emailVerified).thenReturn(true);
 
-        // Act
-        final result = await sut.getUserInfo(tUid);
+      // Act
+      final result = await sut.getUserInfo(tUid);
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserModel>>());
-        final user = (result as NetworkSuccess<UserModel>).data;
-        expect(user!.isVerified, isTrue);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<UserModel>>());
+      final user = (result as NetworkSuccess<UserModel>).data;
+      expect(user!.isVerified, isTrue);
+    });
 
     test(
       'should return NetworkFailure with userNotFound when doc does not exist',
@@ -914,53 +820,44 @@ void main() {
   });
 
   group('signOut', () {
-    test(
-      'should call firebaseAuth.signOut and facebookAuth.logOut and return NetworkSuccess',
-      () async {
-        // Arrange - mocks ready
+    test('should call firebaseAuth.signOut and facebookAuth.logOut and return NetworkSuccess', () async {
+      // Arrange - mocks ready
 
-        // Act
-        final result = await sut.signOut();
+      // Act
+      final result = await sut.signOut();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<void>>());
-        verify(() => mockFirebaseAuth.signOut()).called(1);
-        verify(() => mockFacebookAuth.logOut()).called(1);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<void>>());
+      verify(() => mockFirebaseAuth.signOut()).called(1);
+      verify(() => mockFacebookAuth.logOut()).called(1);
+    });
 
-    test(
-      'should return NetworkSuccess even if facebookAuth.logOut throws an error',
-      () async {
-        // Arrange
-        when(() => mockFacebookAuth.logOut())
-            .thenThrow(Exception('FB logout error'));
+    test('should return NetworkSuccess even if facebookAuth.logOut throws an error', () async {
+      // Arrange
+      when(() => mockFacebookAuth.logOut())
+          .thenThrow(Exception('FB logout error'));
 
-        // Act
-        final result = await sut.signOut();
+      // Act
+      final result = await sut.signOut();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<void>>());
-        verify(() => mockFirebaseAuth.signOut()).called(1);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<void>>());
+      verify(() => mockFirebaseAuth.signOut()).called(1);
+    });
 
-    test(
-      'should return NetworkFailure with unexpectedError when firebaseAuth.signOut throws an exception',
-      () async {
-        // Arrange
-        when(() => mockFirebaseAuth.signOut())
-            .thenThrow(Exception('Sign out failed'));
+    test('should return NetworkFailure with unexpectedError when firebaseAuth.signOut throws an exception', () async {
+      // Arrange
+      when(() => mockFirebaseAuth.signOut())
+          .thenThrow(Exception('Sign out failed'));
 
-        // Act
-        final result = await sut.signOut();
+      // Act
+      final result = await sut.signOut();
 
-        // Assert
-        expect(result, isA<NetworkFailure<void>>());
-        final failure = (result as NetworkFailure<void>).failure;
-        expect(failure.error, AppStrings.unexpectedError);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<void>>());
+      final failure = (result as NetworkFailure<void>).failure;
+      expect(failure.error, AppStrings.unexpectedError);
+    });
   });
 
   group('Model and Entity Mappings', () {
@@ -1103,15 +1000,18 @@ void main() {
       expect(fromJsonModel.phone, entity.phone);
     });
 
-    test('SignUpInputModel fromJson should fallback gracefully when keys are null', () {
-      // Act
-      final model = SignUpInputModel.fromJson({});
+    test(
+      'SignUpInputModel fromJson should fallback gracefully when keys are null',
+      () {
+        // Act
+        final model = SignUpInputModel.fromJson({});
 
-      // Assert
-      expect(model.email, '');
-      expect(model.password, '');
-      expect(model.username, '');
-      expect(model.phone, '');
-    });
+        // Assert
+        expect(model.email, '');
+        expect(model.password, '');
+        expect(model.username, '');
+        expect(model.phone, '');
+      },
+    );
   });
 }

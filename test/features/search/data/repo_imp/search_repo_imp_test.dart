@@ -90,84 +90,69 @@ void main() {
   });
 
   group('searchFruits', () {
-    test(
-      'should call searchRemoteDataSource.searchFruits with correct query and return NetworkSuccess with mapped entities when remote data source succeeds',
-      () async {
-        // Arrange
-        when(
-          () => mockSearchRemoteDataSource.searchFruits(any()),
-        ).thenAnswer((_) async => NetworkSuccess([tFruitModel1, tFruitModel2]));
+    test('should call searchRemoteDataSource.searchFruits with correct query and return NetworkSuccess with mapped entities when remote data source succeeds', () async {
+      // Arrange
+      when(
+        () => mockSearchRemoteDataSource.searchFruits(any()),
+      ).thenAnswer((_) async => NetworkSuccess([tFruitModel1, tFruitModel2]));
 
-        // Act
-        final result = await sut.searchFruits(tQuery);
+      // Act
+      final result = await sut.searchFruits(tQuery);
 
-        // Assert
-        expect(result, isA<NetworkSuccess<List<FruitEntity>>>());
-        final successResult = result as NetworkSuccess<List<FruitEntity>>;
-        expect(successResult.data, equals([tFruitEntity1, tFruitEntity2]));
-        verify(() => mockSearchRemoteDataSource.searchFruits(tQuery)).called(1);
-        verifyNoMoreInteractions(mockSearchRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<List<FruitEntity>>>());
+      final successResult = result as NetworkSuccess<List<FruitEntity>>;
+      expect(successResult.data, equals([tFruitEntity1, tFruitEntity2]));
+      verify(() => mockSearchRemoteDataSource.searchFruits(tQuery)).called(1);
+      verifyNoMoreInteractions(mockSearchRemoteDataSource);
+    });
 
-    test(
-      'should return NetworkSuccess with empty list when remote data source returns NetworkSuccess with empty list',
-      () async {
-        // Arrange
-        when(
-          () => mockSearchRemoteDataSource.searchFruits(any()),
-        ).thenAnswer((_) async => const NetworkSuccess([]));
+    test('should return NetworkSuccess with empty list when remote data source returns NetworkSuccess with empty list', () async {
+      // Arrange
+      when(() => mockSearchRemoteDataSource.searchFruits(any()))
+          .thenAnswer((_) async => const NetworkSuccess([]));
 
-        // Act
-        final result = await sut.searchFruits(tQuery);
+      // Act
+      final result = await sut.searchFruits(tQuery);
 
-        // Assert
-        expect(result, isA<NetworkSuccess<List<FruitEntity>>>());
-        final successResult = result as NetworkSuccess<List<FruitEntity>>;
-        expect(successResult.data, isEmpty);
-        verify(() => mockSearchRemoteDataSource.searchFruits(tQuery)).called(1);
-        verifyNoMoreInteractions(mockSearchRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<List<FruitEntity>>>());
+      final successResult = result as NetworkSuccess<List<FruitEntity>>;
+      expect(successResult.data, isEmpty);
+      verify(() => mockSearchRemoteDataSource.searchFruits(tQuery)).called(1);
+      verifyNoMoreInteractions(mockSearchRemoteDataSource);
+    });
 
-    test(
-      'should return NetworkSuccess with empty list when remote data source returns NetworkSuccess with null data',
-      () async {
-        // Arrange
-        when(
-          () => mockSearchRemoteDataSource.searchFruits(any()),
-        ).thenAnswer((_) async => const NetworkSuccess(null));
+    test('should return NetworkSuccess with empty list when remote data source returns NetworkSuccess with null data', () async {
+      // Arrange
+      when(() => mockSearchRemoteDataSource.searchFruits(any()))
+          .thenAnswer((_) async => const NetworkSuccess(null));
 
-        // Act
-        final result = await sut.searchFruits(tQuery);
+      // Act
+      final result = await sut.searchFruits(tQuery);
 
-        // Assert
-        expect(result, isA<NetworkSuccess<List<FruitEntity>>>());
-        final successResult = result as NetworkSuccess<List<FruitEntity>>;
-        expect(successResult.data, isEmpty);
-        verify(() => mockSearchRemoteDataSource.searchFruits(tQuery)).called(1);
-        verifyNoMoreInteractions(mockSearchRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<List<FruitEntity>>>());
+      final successResult = result as NetworkSuccess<List<FruitEntity>>;
+      expect(successResult.data, isEmpty);
+      verify(() => mockSearchRemoteDataSource.searchFruits(tQuery)).called(1);
+      verifyNoMoreInteractions(mockSearchRemoteDataSource);
+    });
 
-    test(
-      'should return NetworkFailure with same failure when remote data source returns NetworkFailure',
-      () async {
-        // Arrange
-        when(
-          () => mockSearchRemoteDataSource.searchFruits(any()),
-        ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+    test('should return NetworkFailure with same failure when remote data source returns NetworkFailure', () async {
+      // Arrange
+      when(() => mockSearchRemoteDataSource.searchFruits(any()))
+          .thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
-        // Act
-        final result = await sut.searchFruits(tQuery);
+      // Act
+      final result = await sut.searchFruits(tQuery);
 
-        // Assert
-        expect(result, isA<NetworkFailure<List<FruitEntity>>>());
-        final failureResult = result as NetworkFailure<List<FruitEntity>>;
-        expect(failureResult.failure.error, tServerFailure.error);
-        verify(() => mockSearchRemoteDataSource.searchFruits(tQuery)).called(1);
-        verifyNoMoreInteractions(mockSearchRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<List<FruitEntity>>>());
+      final failureResult = result as NetworkFailure<List<FruitEntity>>;
+      expect(failureResult.failure.error, tServerFailure.error);
+      verify(() => mockSearchRemoteDataSource.searchFruits(tQuery)).called(1);
+      verifyNoMoreInteractions(mockSearchRemoteDataSource);
+    });
   });
 }

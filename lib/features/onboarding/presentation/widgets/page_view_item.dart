@@ -39,8 +39,7 @@ class PageViewItem extends StatelessWidget {
                   }
                 },
                 child: GestureDetector(
-                  onTap: () =>
-                      context.read<OnboardingCubit>().setFirstTime(false),
+                  onTap: () => context.read<OnboardingCubit>().setFirstTime(),
                   child: Text(
                     AppStrings.skip,
                     style: AppTextStyles.font14SemiBold.copyWith(

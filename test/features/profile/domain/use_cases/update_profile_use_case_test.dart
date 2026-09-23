@@ -43,33 +43,28 @@ void main() {
     sut = UpdateProfileUseCase(mockProfileRepo);
   });
 
-  test(
-    'should call updateProfile on ProfileRepo with correct input and return NetworkSuccess<UserEntity>',
-    () async {
-      // Arrange
-      when(
-        () => mockProfileRepo.updateProfile(any()),
-      ).thenAnswer((_) async => const NetworkSuccess(tUserEntity));
+  test('should call updateProfile on ProfileRepo with correct input and return NetworkSuccess<UserEntity>', () async {
+    // Arrange
+    when(() => mockProfileRepo.updateProfile(any()))
+        .thenAnswer((_) async => const NetworkSuccess(tUserEntity));
 
-      // Act
-      final result = await sut(tInputEntity);
+    // Act
+    final result = await sut(tInputEntity);
 
-      // Assert
-      expect(result, isA<NetworkSuccess<UserEntity>>());
-      final actualUser = (result as NetworkSuccess<UserEntity>).data;
-      expect(actualUser, equals(tUserEntity));
+    // Assert
+    expect(result, isA<NetworkSuccess<UserEntity>>());
+    final actualUser = (result as NetworkSuccess<UserEntity>).data;
+    expect(actualUser, equals(tUserEntity));
 
-      verify(() => mockProfileRepo.updateProfile(tInputEntity)).called(1);
-    },
-  );
+    verify(() => mockProfileRepo.updateProfile(tInputEntity)).called(1);
+  });
 
   test(
     'should return NetworkFailure when ProfileRepo fails during updateProfile',
     () async {
       // Arrange
-      when(
-        () => mockProfileRepo.updateProfile(any()),
-      ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+      when(() => mockProfileRepo.updateProfile(any()))
+          .thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
       // Act
       final result = await sut(tInputEntity);

@@ -39,33 +39,28 @@ void main() {
     sut = SearchFruitsUseCase(mockSearchRepo);
   });
 
-  test(
-    'should call searchFruits on SearchRepo with query and return NetworkSuccess<List<FruitEntity>>',
-    () async {
-      // Arrange
-      when(
-        () => mockSearchRepo.searchFruits(any()),
-      ).thenAnswer((_) async => const NetworkSuccess(tFruitEntities));
+  test('should call searchFruits on SearchRepo with query and return NetworkSuccess<List<FruitEntity>>', () async {
+    // Arrange
+    when(() => mockSearchRepo.searchFruits(any()))
+        .thenAnswer((_) async => const NetworkSuccess(tFruitEntities));
 
-      // Act
-      final result = await sut(tQuery);
+    // Act
+    final result = await sut(tQuery);
 
-      // Assert
-      expect(result, isA<NetworkSuccess<List<FruitEntity>>>());
-      final successResult = result as NetworkSuccess<List<FruitEntity>>;
-      expect(successResult.data, tFruitEntities);
-      verify(() => mockSearchRepo.searchFruits(tQuery)).called(1);
-      verifyNoMoreInteractions(mockSearchRepo);
-    },
-  );
+    // Assert
+    expect(result, isA<NetworkSuccess<List<FruitEntity>>>());
+    final successResult = result as NetworkSuccess<List<FruitEntity>>;
+    expect(successResult.data, tFruitEntities);
+    verify(() => mockSearchRepo.searchFruits(tQuery)).called(1);
+    verifyNoMoreInteractions(mockSearchRepo);
+  });
 
   test(
     'should return NetworkFailure when SearchRepo fails during searchFruits',
     () async {
       // Arrange
-      when(
-        () => mockSearchRepo.searchFruits(any()),
-      ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+      when(() => mockSearchRepo.searchFruits(any()))
+          .thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
       // Act
       final result = await sut(tQuery);

@@ -8,7 +8,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   OnboardingCubit(this._appPreferencesService) : super(OnboardingInitial());
   final AppPreferencesService _appPreferencesService;
 
-  Future<void> setFirstTime(bool value) async {
+  Future<void> setFirstTime() async {
     await _appPreferencesService.saveFirstTime();
     emit(OnboardingNavigateToHome());
   }

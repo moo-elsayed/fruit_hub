@@ -28,41 +28,35 @@ void main() {
       }
     });
 
-    test(
-      'should emit Locale with language returned by AppPreferencesService initially',
-      () {
-        // Arrange
-        when(() => mockPreferencesService.getLanguage()).thenReturn('ar');
+    test('should emit Locale with language returned by AppPreferencesService initially', () {
+      // Arrange
+      when(() => mockPreferencesService.getLanguage()).thenReturn('ar');
 
-        // Act
-        sut = AppLanguageCubit(
-          preferencesService: mockPreferencesService,
-          notificationService: mockNotificationService,
-        );
+      // Act
+      sut = AppLanguageCubit(
+        preferencesService: mockPreferencesService,
+        notificationService: mockNotificationService,
+      );
 
-        // Assert
-        expect(sut.state, equals(const Locale('ar')));
-        verify(() => mockPreferencesService.getLanguage()).called(1);
-      },
-    );
+      // Assert
+      expect(sut.state, equals(const Locale('ar')));
+      verify(() => mockPreferencesService.getLanguage()).called(1);
+    });
 
-    test(
-      'should emit English Locale initially when AppPreferencesService returns en',
-      () {
-        // Arrange
-        when(() => mockPreferencesService.getLanguage()).thenReturn('en');
+    test('should emit English Locale initially when AppPreferencesService returns en', () {
+      // Arrange
+      when(() => mockPreferencesService.getLanguage()).thenReturn('en');
 
-        // Act
-        sut = AppLanguageCubit(
-          preferencesService: mockPreferencesService,
-          notificationService: mockNotificationService,
-        );
+      // Act
+      sut = AppLanguageCubit(
+        preferencesService: mockPreferencesService,
+        notificationService: mockNotificationService,
+      );
 
-        // Assert
-        expect(sut.state, equals(const Locale('en')));
-        verify(() => mockPreferencesService.getLanguage()).called(1);
-      },
-    );
+      // Assert
+      expect(sut.state, equals(const Locale('en')));
+      verify(() => mockPreferencesService.getLanguage()).called(1);
+    });
 
     group('changeLanguage', () {
       blocTest<AppLanguageCubit, Locale>(

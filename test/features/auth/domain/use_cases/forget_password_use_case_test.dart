@@ -19,31 +19,26 @@ void main() {
     sut = ForgetPasswordUseCase(mockAuthRepo);
   });
 
-  test(
-    'should call forgetPassword on AuthRepo with email and return NetworkSuccess<void>',
-    () async {
-      // Arrange
-      when(
-        () => mockAuthRepo.forgetPassword(tEmail),
-      ).thenAnswer((_) async => const NetworkSuccess<void>());
+  test('should call forgetPassword on AuthRepo with email and return NetworkSuccess<void>', () async {
+    // Arrange
+    when(() => mockAuthRepo.forgetPassword(tEmail))
+        .thenAnswer((_) async => const NetworkSuccess<void>());
 
-      // Act
-      final result = await sut(tEmail);
+    // Act
+    final result = await sut(tEmail);
 
-      // Assert
-      expect(result, isA<NetworkSuccess<void>>());
-      verify(() => mockAuthRepo.forgetPassword(tEmail)).called(1);
-      verifyNoMoreInteractions(mockAuthRepo);
-    },
-  );
+    // Assert
+    expect(result, isA<NetworkSuccess<void>>());
+    verify(() => mockAuthRepo.forgetPassword(tEmail)).called(1);
+    verifyNoMoreInteractions(mockAuthRepo);
+  });
 
   test(
     'should return NetworkFailure when AuthRepo fails to send reset email',
     () async {
       // Arrange
-      when(
-        () => mockAuthRepo.forgetPassword(tEmail),
-      ).thenAnswer((_) async => const NetworkFailure<void>(tServerFailure));
+      when(() => mockAuthRepo.forgetPassword(tEmail))
+          .thenAnswer((_) async => const NetworkFailure<void>(tServerFailure));
 
       // Act
       final result = await sut(tEmail);

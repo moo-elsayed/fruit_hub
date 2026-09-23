@@ -65,9 +65,8 @@ void main() {
       build: () => sut,
       setUp: () {
         // Arrange
-        when(
-          () => mockSearchFruitsUseCase.call(tQuery),
-        ).thenAnswer((_) async => const NetworkSuccess(tFruitEntities));
+        when(() => mockSearchFruitsUseCase.call(tQuery))
+            .thenAnswer((_) async => const NetworkSuccess(tFruitEntities));
       },
       act: (cubit) async {
         // Act
@@ -93,9 +92,8 @@ void main() {
       build: () => sut,
       setUp: () {
         // Arrange
-        when(
-          () => mockSearchFruitsUseCase.call(tQuery),
-        ).thenAnswer((_) async => const NetworkSuccess(null));
+        when(() => mockSearchFruitsUseCase.call(tQuery))
+            .thenAnswer((_) async => const NetworkSuccess(null));
       },
       act: (cubit) async {
         // Act
@@ -103,11 +101,7 @@ void main() {
       },
       expect: () => [
         isA<SearchLoading>(),
-        isA<SearchSuccess>().having(
-          (state) => state.fruits,
-          'fruits',
-          isEmpty,
-        ),
+        isA<SearchSuccess>().having((state) => state.fruits, 'fruits', isEmpty),
       ],
       verify: (_) {
         // Assert
@@ -121,9 +115,8 @@ void main() {
       build: () => sut,
       setUp: () {
         // Arrange
-        when(
-          () => mockSearchFruitsUseCase.call(tQuery),
-        ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+        when(() => mockSearchFruitsUseCase.call(tQuery))
+            .thenAnswer((_) async => const NetworkFailure(tServerFailure));
       },
       act: (cubit) async {
         // Act

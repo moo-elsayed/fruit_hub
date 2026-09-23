@@ -29,20 +29,6 @@ class OrdersViewBody extends StatelessWidget {
           type: ToastificationType.error,
         );
       }
-      if (state is OrderCancelSuccess) {
-        AppToast.show(
-          context: context,
-          title: AppStrings.orderCancelledSuccessfully,
-          type: ToastificationType.success,
-        );
-      }
-      if (state is OrderCancelFailure) {
-        AppToast.show(
-          context: context,
-          title: state.message,
-          type: ToastificationType.error,
-        );
-      }
     },
     builder: (context, state) {
       if (state is OrdersFailure &&

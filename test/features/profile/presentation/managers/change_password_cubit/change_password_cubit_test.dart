@@ -43,16 +43,14 @@ void main() {
         ).thenAnswer((_) async => const NetworkSuccess(null));
       },
       build: () => sut,
-      act:
-          (cubit) => cubit.changePassword(
-            currentPassword: tCurrentPassword,
-            newPassword: tNewPassword,
-          ),
-      expect:
-          () => [
-            const ChangePasswordLoading(),
-            const ChangePasswordSuccess(),
-          ],
+      act: (cubit) => cubit.changePassword(
+        currentPassword: tCurrentPassword,
+        newPassword: tNewPassword,
+      ),
+      expect: () => [
+        const ChangePasswordLoading(),
+        const ChangePasswordSuccess(),
+      ],
       verify: (_) {
         verify(
           () => mockChangePasswordUseCase(
@@ -74,16 +72,14 @@ void main() {
         ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
       },
       build: () => sut,
-      act:
-          (cubit) => cubit.changePassword(
-            currentPassword: tCurrentPassword,
-            newPassword: tNewPassword,
-          ),
-      expect:
-          () => [
-            const ChangePasswordLoading(),
-            const ChangePasswordFailure(tErrorMessage),
-          ],
+      act: (cubit) => cubit.changePassword(
+        currentPassword: tCurrentPassword,
+        newPassword: tNewPassword,
+      ),
+      expect: () => [
+        const ChangePasswordLoading(),
+        const ChangePasswordFailure(tErrorMessage),
+      ],
       verify: (_) {
         verify(
           () => mockChangePasswordUseCase(

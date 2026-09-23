@@ -13,6 +13,7 @@ import 'package:gap/gap.dart';
 import '../managers/notifications_cubit/notifications_cubit.dart';
 import '../managers/notifications_cubit/notifications_state.dart';
 import '../widgets/notifications_list_view.dart';
+import '../widgets/notifications_loading_skeleton.dart';
 
 class NotificationsView extends StatelessWidget {
   const NotificationsView({super.key});
@@ -47,9 +48,7 @@ class NotificationsView extends StatelessWidget {
           ],
         ),
         body: switch (state) {
-          NotificationsLoading() => Center(
-            child: CircularProgressIndicator(color: context.colors.primary),
-          ),
+          NotificationsLoading() => const NotificationsLoadingSkeleton(),
           NotificationsSuccess(:final notifications)
               when notifications.isNotEmpty =>
             NotificationsListView(notifications: notifications),

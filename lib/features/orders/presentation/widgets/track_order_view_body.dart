@@ -28,6 +28,13 @@ class TrackOrderViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       BlocConsumer<TrackOrderCubit, TrackOrderState>(
+        buildWhen: (previous, current) =>
+            current is TrackOrderLoading ||
+            (current is TrackOrderSuccess &&
+                previous is! TrackOrderCancelFailure) ||
+            current is TrackOrderFailure ||
+            current is TrackOrderCancelLoading ||
+            previous is TrackOrderCancelLoading,
         listener: (context, state) {
           if (state is TrackOrderCancelSuccess) {
             AppToast.show(

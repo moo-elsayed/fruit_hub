@@ -28,33 +28,28 @@ void main() {
     sut = GoogleSignInUseCase(mockAuthRepo);
   });
 
-  test(
-    'should call googleSignIn on AuthRepo and return NetworkSuccess<UserEntity>',
-    () async {
-      // Arrange
-      when(
-        () => mockAuthRepo.googleSignIn(),
-      ).thenAnswer((_) async => const NetworkSuccess(tUserEntity));
+  test('should call googleSignIn on AuthRepo and return NetworkSuccess<UserEntity>', () async {
+    // Arrange
+    when(() => mockAuthRepo.googleSignIn())
+        .thenAnswer((_) async => const NetworkSuccess(tUserEntity));
 
-      // Act
-      final result = await sut();
+    // Act
+    final result = await sut();
 
-      // Assert
-      expect(result, isA<NetworkSuccess<UserEntity>>());
-      final successResult = result as NetworkSuccess<UserEntity>;
-      expect(successResult.data, tUserEntity);
-      verify(() => mockAuthRepo.googleSignIn()).called(1);
-      verifyNoMoreInteractions(mockAuthRepo);
-    },
-  );
+    // Assert
+    expect(result, isA<NetworkSuccess<UserEntity>>());
+    final successResult = result as NetworkSuccess<UserEntity>;
+    expect(successResult.data, tUserEntity);
+    verify(() => mockAuthRepo.googleSignIn()).called(1);
+    verifyNoMoreInteractions(mockAuthRepo);
+  });
 
   test(
     'should return NetworkFailure when AuthRepo fails during googleSignIn',
     () async {
       // Arrange
-      when(
-        () => mockAuthRepo.googleSignIn(),
-      ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+      when(() => mockAuthRepo.googleSignIn())
+          .thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
       // Act
       final result = await sut();

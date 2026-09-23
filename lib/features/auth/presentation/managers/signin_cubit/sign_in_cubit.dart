@@ -8,10 +8,8 @@ import 'package:fruit_hub/features/auth/presentation/managers/user_info_cubit/us
 part 'sign_in_state.dart';
 
 class SignInCubit extends Cubit<SignInState> {
-  SignInCubit(
-    this._signInWithEmailAndPasswordUseCase,
-    this._userInfoCubit,
-  ) : super(SignInInitial());
+  SignInCubit(this._signInWithEmailAndPasswordUseCase, this._userInfoCubit)
+    : super(SignInInitial());
 
   final SignInWithEmailAndPasswordUseCase _signInWithEmailAndPasswordUseCase;
   final UserInfoCubit _userInfoCubit;

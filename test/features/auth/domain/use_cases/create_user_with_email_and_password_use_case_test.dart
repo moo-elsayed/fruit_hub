@@ -42,35 +42,30 @@ void main() {
     sut = CreateUserWithEmailAndPasswordUseCase(mockAuthRepo);
   });
 
-  test(
-    'should call createUserWithEmailAndPassword on AuthRepo with correct input and return NetworkSuccess<UserEntity>',
-    () async {
-      // Arrange
-      when(
-        () => mockAuthRepo.createUserWithEmailAndPassword(any()),
-      ).thenAnswer((_) async => const NetworkSuccess(tUserEntity));
+  test('should call createUserWithEmailAndPassword on AuthRepo with correct input and return NetworkSuccess<UserEntity>', () async {
+    // Arrange
+    when(() => mockAuthRepo.createUserWithEmailAndPassword(any()))
+        .thenAnswer((_) async => const NetworkSuccess(tUserEntity));
 
-      // Act
-      final result = await sut(tSignUpInputEntity);
+    // Act
+    final result = await sut(tSignUpInputEntity);
 
-      // Assert
-      expect(result, isA<NetworkSuccess<UserEntity>>());
-      final successResult = result as NetworkSuccess<UserEntity>;
-      expect(successResult.data, tUserEntity);
-      verify(
-        () => mockAuthRepo.createUserWithEmailAndPassword(tSignUpInputEntity),
-      ).called(1);
-      verifyNoMoreInteractions(mockAuthRepo);
-    },
-  );
+    // Assert
+    expect(result, isA<NetworkSuccess<UserEntity>>());
+    final successResult = result as NetworkSuccess<UserEntity>;
+    expect(successResult.data, tUserEntity);
+    verify(
+      () => mockAuthRepo.createUserWithEmailAndPassword(tSignUpInputEntity),
+    ).called(1);
+    verifyNoMoreInteractions(mockAuthRepo);
+  });
 
   test(
     'should return NetworkFailure when AuthRepo fails to create user',
     () async {
       // Arrange
-      when(
-        () => mockAuthRepo.createUserWithEmailAndPassword(any()),
-      ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+      when(() => mockAuthRepo.createUserWithEmailAndPassword(any()))
+          .thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
       // Act
       final result = await sut(tSignUpInputEntity);

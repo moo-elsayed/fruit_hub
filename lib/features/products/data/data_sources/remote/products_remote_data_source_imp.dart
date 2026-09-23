@@ -43,11 +43,11 @@ class ProductsRemoteDataSourceImp implements ProductsRemoteDataSource {
       }
     }
 
-    query = query.limit(limit);
-
     if (lastDoc is DocumentSnapshot) {
       query = query.startAfterDocument(lastDoc);
     }
+
+    query = query.limit(limit);
 
     final querySnapshot = await query.get();
     final fruits = querySnapshot.docs

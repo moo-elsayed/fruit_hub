@@ -114,21 +114,18 @@ void main() {
       expect(result, tUser);
     });
 
-    test(
-      'should fallback to AppPreferencesService.getUser when state is not UserInfoSuccess',
-      () {
-        // Arrange
-        when(() => mockAppPreferencesService.getUser()).thenReturn(tUser);
-        clearInteractions(mockAppPreferencesService);
+    test('should fallback to AppPreferencesService.getUser when state is not UserInfoSuccess', () {
+      // Arrange
+      when(() => mockAppPreferencesService.getUser()).thenReturn(tUser);
+      clearInteractions(mockAppPreferencesService);
 
-        // Act
-        final result = sut.currentUser;
+      // Act
+      final result = sut.currentUser;
 
-        // Assert
-        expect(result, tUser);
-        verify(() => mockAppPreferencesService.getUser()).called(1);
-      },
-    );
+      // Assert
+      expect(result, tUser);
+      verify(() => mockAppPreferencesService.getUser()).called(1);
+    });
   });
 
   group('saveUserLocally', () {

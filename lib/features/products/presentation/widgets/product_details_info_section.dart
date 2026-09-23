@@ -8,7 +8,7 @@ import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/price_per_kilo.dart';
 import 'package:fruit_hub/core/widgets/product_badge.dart';
-import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
+import 'package:fruit_hub/features/products/presentation/managers/product_details_cubit/product_details_cubit.dart';
 import 'package:gap/gap.dart';
 
 class ProductDetailsInfoSection extends StatelessWidget {
@@ -70,7 +70,7 @@ class ProductDetailsInfoSection extends StatelessWidget {
             arguments: fruit,
           );
           if (result is FruitEntity && context.mounted) {
-            context.read<ProductsCubit>().updateProduct(result);
+            context.read<ProductDetailsCubit>().updateProduct(result);
           }
         },
         child: Row(

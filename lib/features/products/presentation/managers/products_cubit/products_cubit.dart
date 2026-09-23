@@ -6,18 +6,14 @@ import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/features/products/domain/entities/paginated_products_entity.dart';
 import 'package:fruit_hub/features/products/domain/entities/products_filter_entity.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
-import 'package:fruit_hub/features/products/domain/use_cases/get_product_details_use_case.dart';
 
 part 'products_state.dart';
 
 class ProductsCubit extends Cubit<ProductsState> {
-  ProductsCubit({
-    required this.getAllProductsUseCase,
-    required this.getProductDetailsUseCase,
-  }) : super(ProductsInitial());
+  ProductsCubit({required this.getAllProductsUseCase})
+    : super(ProductsInitial());
 
   final GetAllProductsUseCase getAllProductsUseCase;
-  final GetProductDetailsUseCase getProductDetailsUseCase;
 
   ProductsFilterEntity currentFilter = const ProductsFilterEntity();
   dynamic _lastDoc;
@@ -44,18 +40,7 @@ class ProductsCubit extends Cubit<ProductsState> {
 
     switch (networkResponse) {
       case NetworkSuccess<PaginatedProductsEntity>():
-        final data = networkResponse.data!;
-        _fruits = List.from(data.fruits);
-        _lastDoc = data.lastDoc;
-        _hasMore = data.hasMore;
-        emit(
-          GetProductsSuccess(
-            fruits: _fruits,
-            hasMore: _hasMore,
-            isLoadingMore: false,
-            filter: currentFilter,
-          ),
-        );
+        _handleSuccess(networkResponse.data!, isFirstPage: true);
       case NetworkFailure<PaginatedProductsEntity>():
         emit(GetProductsFailure(networkResponse.error));
     }
@@ -77,18 +62,7 @@ class ProductsCubit extends Cubit<ProductsState> {
 
     switch (networkResponse) {
       case NetworkSuccess<PaginatedProductsEntity>():
-        final data = networkResponse.data!;
-        _fruits.addAll(data.fruits);
-        _lastDoc = data.lastDoc;
-        _hasMore = data.hasMore;
-        emit(
-          GetProductsSuccess(
-            fruits: _fruits,
-            hasMore: _hasMore,
-            isLoadingMore: false,
-            filter: currentFilter,
-          ),
-        );
+        _handleSuccess(networkResponse.data!);
       case NetworkFailure<PaginatedProductsEntity>():
         emit((state as GetProductsSuccess).copyWith(isLoadingMore: false));
     }
@@ -111,17 +85,6 @@ class ProductsCubit extends Cubit<ProductsState> {
     fetchFirstPage(filter: currentFilter);
   }
 
-  Future<void> getProductDetails(String code) async {
-    emit(GetProductDetailsLoading());
-    final networkResponse = await getProductDetailsUseCase(code);
-    switch (networkResponse) {
-      case NetworkSuccess<FruitEntity>():
-        emit(GetProductDetailsSuccess(networkResponse.data!));
-      case NetworkFailure<FruitEntity>():
-        emit(GetProductDetailsFailure(networkResponse.error));
-    }
-  }
-
   void updateProduct(FruitEntity updatedFruit) {
     final index = _fruits.indexWhere((f) => f.code == updatedFruit.code);
     if (index != -1) {
@@ -132,6 +95,26 @@ class ProductsCubit extends Cubit<ProductsState> {
         );
       }
     }
-    emit(GetProductDetailsSuccess(updatedFruit));
+  }
+
+  void _handleSuccess(
+    PaginatedProductsEntity data, {
+    bool isFirstPage = false,
+  }) {
+    if (isFirstPage) {
+      _fruits = List.from(data.fruits);
+    } else {
+      _fruits.addAll(data.fruits);
+    }
+    _lastDoc = data.lastDoc;
+    _hasMore = data.hasMore;
+    emit(
+      GetProductsSuccess(
+        fruits: List.from(_fruits),
+        hasMore: _hasMore,
+        isLoadingMore: false,
+        filter: currentFilter,
+      ),
+    );
   }
 }

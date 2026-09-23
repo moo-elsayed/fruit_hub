@@ -61,414 +61,349 @@ void main() {
   });
 
   group('createUserWithEmailAndPassword', () {
-    test(
-      'should map SignUpInputEntity to SignUpInputModel, call remote data source, and return NetworkSuccess<UserEntity>',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.createUserWithEmailAndPassword(any()),
-        ).thenAnswer((_) async => NetworkSuccess(tUserModel));
+    test('should map SignUpInputEntity to SignUpInputModel, call remote data source, and return NetworkSuccess<UserEntity>', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.createUserWithEmailAndPassword(any()))
+          .thenAnswer((_) async => NetworkSuccess(tUserModel));
 
-        // Act
-        final result = await sut.createUserWithEmailAndPassword(
-          tSignUpInputEntity,
-        );
+      // Act
+      final result = await sut.createUserWithEmailAndPassword(
+        tSignUpInputEntity,
+      );
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserEntity>>());
-        final successResult = result as NetworkSuccess<UserEntity>;
-        expect(successResult.data, tUserEntity);
+      // Assert
+      expect(result, isA<NetworkSuccess<UserEntity>>());
+      final successResult = result as NetworkSuccess<UserEntity>;
+      expect(successResult.data, tUserEntity);
 
-        final captured =
-            verify(
-                  () => mockAuthRemoteDataSource.createUserWithEmailAndPassword(
-                    captureAny(),
-                  ),
-                ).captured.single
-                as SignUpInputModel;
+      final captured =
+          verify(
+                () => mockAuthRemoteDataSource.createUserWithEmailAndPassword(
+                  captureAny(),
+                ),
+              ).captured.single
+              as SignUpInputModel;
 
-        expect(captured.email, tSignUpInputEntity.email);
-        expect(captured.password, tSignUpInputEntity.password);
-        expect(captured.username, tSignUpInputEntity.username);
-        expect(captured.phone, tSignUpInputEntity.phone);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      expect(captured.email, tSignUpInputEntity.email);
+      expect(captured.password, tSignUpInputEntity.password);
+      expect(captured.username, tSignUpInputEntity.username);
+      expect(captured.phone, tSignUpInputEntity.phone);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
 
-    test(
-      'should return NetworkSuccess with null data when remote data source returns NetworkSuccess with null data',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.createUserWithEmailAndPassword(any()),
-        ).thenAnswer((_) async => const NetworkSuccess<UserModel>(null));
+    test('should return NetworkSuccess with null data when remote data source returns NetworkSuccess with null data', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.createUserWithEmailAndPassword(any()))
+          .thenAnswer((_) async => const NetworkSuccess<UserModel>(null));
 
-        // Act
-        final result = await sut.createUserWithEmailAndPassword(
-          tSignUpInputEntity,
-        );
+      // Act
+      final result = await sut.createUserWithEmailAndPassword(
+        tSignUpInputEntity,
+      );
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserEntity>>());
-        final successResult = result as NetworkSuccess<UserEntity>;
-        expect(successResult.data, isNull);
-        verify(
-          () => mockAuthRemoteDataSource.createUserWithEmailAndPassword(any()),
-        ).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<UserEntity>>());
+      final successResult = result as NetworkSuccess<UserEntity>;
+      expect(successResult.data, isNull);
+      verify(
+        () => mockAuthRemoteDataSource.createUserWithEmailAndPassword(any()),
+      ).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
 
-    test(
-      'should return NetworkFailure when remote data source returns NetworkFailure',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.createUserWithEmailAndPassword(any()),
-        ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+    test('should return NetworkFailure when remote data source returns NetworkFailure', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.createUserWithEmailAndPassword(any()))
+          .thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
-        // Act
-        final result = await sut.createUserWithEmailAndPassword(
-          tSignUpInputEntity,
-        );
+      // Act
+      final result = await sut.createUserWithEmailAndPassword(
+        tSignUpInputEntity,
+      );
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserEntity>>());
-        final failureResult = result as NetworkFailure<UserEntity>;
-        expect(failureResult.failure, tServerFailure);
-        expect(failureResult.error, tServerFailure.error);
-        verify(
-          () => mockAuthRemoteDataSource.createUserWithEmailAndPassword(any()),
-        ).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<UserEntity>>());
+      final failureResult = result as NetworkFailure<UserEntity>;
+      expect(failureResult.failure, tServerFailure);
+      expect(failureResult.error, tServerFailure.error);
+      verify(
+        () => mockAuthRemoteDataSource.createUserWithEmailAndPassword(any()),
+      ).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
   });
 
   group('signInWithEmailAndPassword', () {
-    test(
-      'should forward email and password to remote data source and return NetworkSuccess<UserEntity>',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenAnswer((_) async => NetworkSuccess(tUserModel));
-
-        // Act
-        final result = await sut.signInWithEmailAndPassword(
+    test('should forward email and password to remote data source and return NetworkSuccess<UserEntity>', () async {
+      // Arrange
+      when(
+        () => mockAuthRemoteDataSource.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
-        );
+        ),
+      ).thenAnswer((_) async => NetworkSuccess(tUserModel));
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserEntity>>());
-        final successResult = result as NetworkSuccess<UserEntity>;
-        expect(successResult.data, tUserEntity);
-        verify(
-          () => mockAuthRemoteDataSource.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Act
+      final result = await sut.signInWithEmailAndPassword(
+        email: tEmail,
+        password: tPassword,
+      );
 
-    test(
-      'should return NetworkSuccess with null data when remote data source returns NetworkSuccess with null data',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenAnswer((_) async => const NetworkSuccess<UserModel>(null));
-
-        // Act
-        final result = await sut.signInWithEmailAndPassword(
+      // Assert
+      expect(result, isA<NetworkSuccess<UserEntity>>());
+      final successResult = result as NetworkSuccess<UserEntity>;
+      expect(successResult.data, tUserEntity);
+      verify(
+        () => mockAuthRemoteDataSource.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
-        );
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserEntity>>());
-        final successResult = result as NetworkSuccess<UserEntity>;
-        expect(successResult.data, isNull);
-        verify(
-          () => mockAuthRemoteDataSource.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
-
-    test(
-      'should return NetworkFailure when remote data source returns NetworkFailure',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
-
-        // Act
-        final result = await sut.signInWithEmailAndPassword(
+    test('should return NetworkSuccess with null data when remote data source returns NetworkSuccess with null data', () async {
+      // Arrange
+      when(
+        () => mockAuthRemoteDataSource.signInWithEmailAndPassword(
           email: tEmail,
           password: tPassword,
-        );
+        ),
+      ).thenAnswer((_) async => const NetworkSuccess<UserModel>(null));
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserEntity>>());
-        final failureResult = result as NetworkFailure<UserEntity>;
-        expect(failureResult.failure, tServerFailure);
-        expect(failureResult.error, tServerFailure.error);
-        verify(
-          () => mockAuthRemoteDataSource.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Act
+      final result = await sut.signInWithEmailAndPassword(
+        email: tEmail,
+        password: tPassword,
+      );
+
+      // Assert
+      expect(result, isA<NetworkSuccess<UserEntity>>());
+      final successResult = result as NetworkSuccess<UserEntity>;
+      expect(successResult.data, isNull);
+      verify(
+        () => mockAuthRemoteDataSource.signInWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
+
+    test('should return NetworkFailure when remote data source returns NetworkFailure', () async {
+      // Arrange
+      when(
+        () => mockAuthRemoteDataSource.signInWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+        ),
+      ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+
+      // Act
+      final result = await sut.signInWithEmailAndPassword(
+        email: tEmail,
+        password: tPassword,
+      );
+
+      // Assert
+      expect(result, isA<NetworkFailure<UserEntity>>());
+      final failureResult = result as NetworkFailure<UserEntity>;
+      expect(failureResult.failure, tServerFailure);
+      expect(failureResult.error, tServerFailure.error);
+      verify(
+        () => mockAuthRemoteDataSource.signInWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
   });
 
   group('googleSignIn', () {
-    test(
-      'should call remote data source googleSignIn and return NetworkSuccess<UserEntity>',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.googleSignIn(),
-        ).thenAnswer((_) async => NetworkSuccess(tUserModel));
+    test('should call remote data source googleSignIn and return NetworkSuccess<UserEntity>', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.googleSignIn())
+          .thenAnswer((_) async => NetworkSuccess(tUserModel));
 
-        // Act
-        final result = await sut.googleSignIn();
+      // Act
+      final result = await sut.googleSignIn();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserEntity>>());
-        final successResult = result as NetworkSuccess<UserEntity>;
-        expect(successResult.data, tUserEntity);
-        verify(() => mockAuthRemoteDataSource.googleSignIn()).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<UserEntity>>());
+      final successResult = result as NetworkSuccess<UserEntity>;
+      expect(successResult.data, tUserEntity);
+      verify(() => mockAuthRemoteDataSource.googleSignIn()).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
 
-    test(
-      'should return NetworkSuccess with null data when remote data source returns NetworkSuccess with null data',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.googleSignIn(),
-        ).thenAnswer((_) async => const NetworkSuccess<UserModel>(null));
+    test('should return NetworkSuccess with null data when remote data source returns NetworkSuccess with null data', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.googleSignIn())
+          .thenAnswer((_) async => const NetworkSuccess<UserModel>(null));
 
-        // Act
-        final result = await sut.googleSignIn();
+      // Act
+      final result = await sut.googleSignIn();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserEntity>>());
-        final successResult = result as NetworkSuccess<UserEntity>;
-        expect(successResult.data, isNull);
-        verify(() => mockAuthRemoteDataSource.googleSignIn()).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<UserEntity>>());
+      final successResult = result as NetworkSuccess<UserEntity>;
+      expect(successResult.data, isNull);
+      verify(() => mockAuthRemoteDataSource.googleSignIn()).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
 
-    test(
-      'should return NetworkFailure when remote data source returns NetworkFailure',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.googleSignIn(),
-        ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+    test('should return NetworkFailure when remote data source returns NetworkFailure', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.googleSignIn())
+          .thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
-        // Act
-        final result = await sut.googleSignIn();
+      // Act
+      final result = await sut.googleSignIn();
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserEntity>>());
-        final failureResult = result as NetworkFailure<UserEntity>;
-        expect(failureResult.failure, tServerFailure);
-        expect(failureResult.error, tServerFailure.error);
-        verify(() => mockAuthRemoteDataSource.googleSignIn()).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<UserEntity>>());
+      final failureResult = result as NetworkFailure<UserEntity>;
+      expect(failureResult.failure, tServerFailure);
+      expect(failureResult.error, tServerFailure.error);
+      verify(() => mockAuthRemoteDataSource.googleSignIn()).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
   });
 
   group('facebookSignIn', () {
-    test(
-      'should call remote data source facebookSignIn and return NetworkSuccess<UserEntity>',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.facebookSignIn(),
-        ).thenAnswer((_) async => NetworkSuccess(tUserModel));
+    test('should call remote data source facebookSignIn and return NetworkSuccess<UserEntity>', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.facebookSignIn())
+          .thenAnswer((_) async => NetworkSuccess(tUserModel));
 
-        // Act
-        final result = await sut.facebookSignIn();
+      // Act
+      final result = await sut.facebookSignIn();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserEntity>>());
-        final successResult = result as NetworkSuccess<UserEntity>;
-        expect(successResult.data, tUserEntity);
-        verify(() => mockAuthRemoteDataSource.facebookSignIn()).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<UserEntity>>());
+      final successResult = result as NetworkSuccess<UserEntity>;
+      expect(successResult.data, tUserEntity);
+      verify(() => mockAuthRemoteDataSource.facebookSignIn()).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
 
-    test(
-      'should return NetworkSuccess with null data when remote data source returns NetworkSuccess with null data',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.facebookSignIn(),
-        ).thenAnswer((_) async => const NetworkSuccess<UserModel>(null));
+    test('should return NetworkSuccess with null data when remote data source returns NetworkSuccess with null data', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.facebookSignIn())
+          .thenAnswer((_) async => const NetworkSuccess<UserModel>(null));
 
-        // Act
-        final result = await sut.facebookSignIn();
+      // Act
+      final result = await sut.facebookSignIn();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserEntity>>());
-        final successResult = result as NetworkSuccess<UserEntity>;
-        expect(successResult.data, isNull);
-        verify(() => mockAuthRemoteDataSource.facebookSignIn()).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<UserEntity>>());
+      final successResult = result as NetworkSuccess<UserEntity>;
+      expect(successResult.data, isNull);
+      verify(() => mockAuthRemoteDataSource.facebookSignIn()).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
 
-    test(
-      'should return NetworkFailure when remote data source returns NetworkFailure',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.facebookSignIn(),
-        ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+    test('should return NetworkFailure when remote data source returns NetworkFailure', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.facebookSignIn())
+          .thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
-        // Act
-        final result = await sut.facebookSignIn();
+      // Act
+      final result = await sut.facebookSignIn();
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserEntity>>());
-        final failureResult = result as NetworkFailure<UserEntity>;
-        expect(failureResult.failure, tServerFailure);
-        expect(failureResult.error, tServerFailure.error);
-        verify(() => mockAuthRemoteDataSource.facebookSignIn()).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<UserEntity>>());
+      final failureResult = result as NetworkFailure<UserEntity>;
+      expect(failureResult.failure, tServerFailure);
+      expect(failureResult.error, tServerFailure.error);
+      verify(() => mockAuthRemoteDataSource.facebookSignIn()).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
   });
 
   group('getUserInfo', () {
-    test(
-      'should call remote data source getUserInfo with uid and return NetworkSuccess<UserEntity>',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.getUserInfo(tUid),
-        ).thenAnswer((_) async => NetworkSuccess(tUserModel));
+    test('should call remote data source getUserInfo with uid and return NetworkSuccess<UserEntity>', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.getUserInfo(tUid))
+          .thenAnswer((_) async => NetworkSuccess(tUserModel));
 
-        // Act
-        final result = await sut.getUserInfo(tUid);
+      // Act
+      final result = await sut.getUserInfo(tUid);
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserEntity>>());
-        final successResult = result as NetworkSuccess<UserEntity>;
-        expect(successResult.data, tUserEntity);
-        verify(() => mockAuthRemoteDataSource.getUserInfo(tUid)).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<UserEntity>>());
+      final successResult = result as NetworkSuccess<UserEntity>;
+      expect(successResult.data, tUserEntity);
+      verify(() => mockAuthRemoteDataSource.getUserInfo(tUid)).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
 
-    test(
-      'should return NetworkSuccess with null data when remote data source returns NetworkSuccess with null data',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.getUserInfo(tUid),
-        ).thenAnswer((_) async => const NetworkSuccess<UserModel>(null));
+    test('should return NetworkSuccess with null data when remote data source returns NetworkSuccess with null data', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.getUserInfo(tUid))
+          .thenAnswer((_) async => const NetworkSuccess<UserModel>(null));
 
-        // Act
-        final result = await sut.getUserInfo(tUid);
+      // Act
+      final result = await sut.getUserInfo(tUid);
 
-        // Assert
-        expect(result, isA<NetworkSuccess<UserEntity>>());
-        final successResult = result as NetworkSuccess<UserEntity>;
-        expect(successResult.data, isNull);
-        verify(() => mockAuthRemoteDataSource.getUserInfo(tUid)).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<UserEntity>>());
+      final successResult = result as NetworkSuccess<UserEntity>;
+      expect(successResult.data, isNull);
+      verify(() => mockAuthRemoteDataSource.getUserInfo(tUid)).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
 
-    test(
-      'should return NetworkFailure when remote data source returns NetworkFailure',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.getUserInfo(tUid),
-        ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+    test('should return NetworkFailure when remote data source returns NetworkFailure', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.getUserInfo(tUid))
+          .thenAnswer((_) async => const NetworkFailure(tServerFailure));
 
-        // Act
-        final result = await sut.getUserInfo(tUid);
+      // Act
+      final result = await sut.getUserInfo(tUid);
 
-        // Assert
-        expect(result, isA<NetworkFailure<UserEntity>>());
-        final failureResult = result as NetworkFailure<UserEntity>;
-        expect(failureResult.failure, tServerFailure);
-        expect(failureResult.error, tServerFailure.error);
-        verify(() => mockAuthRemoteDataSource.getUserInfo(tUid)).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<UserEntity>>());
+      final failureResult = result as NetworkFailure<UserEntity>;
+      expect(failureResult.failure, tServerFailure);
+      expect(failureResult.error, tServerFailure.error);
+      verify(() => mockAuthRemoteDataSource.getUserInfo(tUid)).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
   });
 
   group('forgetPassword', () {
-    test(
-      'should call remote data source forgetPassword with email and return NetworkSuccess<void>',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.forgetPassword(tEmail),
-        ).thenAnswer((_) async => const NetworkSuccess<void>());
+    test('should call remote data source forgetPassword with email and return NetworkSuccess<void>', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.forgetPassword(tEmail))
+          .thenAnswer((_) async => const NetworkSuccess<void>());
 
-        // Act
-        final result = await sut.forgetPassword(tEmail);
+      // Act
+      final result = await sut.forgetPassword(tEmail);
 
-        // Assert
-        expect(result, isA<NetworkSuccess<void>>());
-        verify(() => mockAuthRemoteDataSource.forgetPassword(tEmail)).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<void>>());
+      verify(() => mockAuthRemoteDataSource.forgetPassword(tEmail)).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
 
-    test(
-      'should return NetworkFailure when remote data source returns NetworkFailure',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.forgetPassword(tEmail),
-        ).thenAnswer((_) async => const NetworkFailure<void>(tServerFailure));
+    test('should return NetworkFailure when remote data source returns NetworkFailure', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.forgetPassword(tEmail))
+          .thenAnswer((_) async => const NetworkFailure<void>(tServerFailure));
 
-        // Act
-        final result = await sut.forgetPassword(tEmail);
+      // Act
+      final result = await sut.forgetPassword(tEmail);
 
-        // Assert
-        expect(result, isA<NetworkFailure<void>>());
-        final failureResult = result as NetworkFailure<void>;
-        expect(failureResult.failure, tServerFailure);
-        expect(failureResult.error, tServerFailure.error);
-        verify(() => mockAuthRemoteDataSource.forgetPassword(tEmail)).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<void>>());
+      final failureResult = result as NetworkFailure<void>;
+      expect(failureResult.failure, tServerFailure);
+      expect(failureResult.error, tServerFailure.error);
+      verify(() => mockAuthRemoteDataSource.forgetPassword(tEmail)).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
   });
 
   group('signOut', () {
@@ -476,9 +411,8 @@ void main() {
       'should call remote data source signOut and return NetworkSuccess<void>',
       () async {
         // Arrange
-        when(
-          () => mockAuthRemoteDataSource.signOut(),
-        ).thenAnswer((_) async => const NetworkSuccess<void>());
+        when(() => mockAuthRemoteDataSource.signOut())
+            .thenAnswer((_) async => const NetworkSuccess<void>());
 
         // Act
         final result = await sut.signOut();
@@ -490,25 +424,21 @@ void main() {
       },
     );
 
-    test(
-      'should return NetworkFailure when remote data source returns NetworkFailure',
-      () async {
-        // Arrange
-        when(
-          () => mockAuthRemoteDataSource.signOut(),
-        ).thenAnswer((_) async => const NetworkFailure<void>(tServerFailure));
+    test('should return NetworkFailure when remote data source returns NetworkFailure', () async {
+      // Arrange
+      when(() => mockAuthRemoteDataSource.signOut())
+          .thenAnswer((_) async => const NetworkFailure<void>(tServerFailure));
 
-        // Act
-        final result = await sut.signOut();
+      // Act
+      final result = await sut.signOut();
 
-        // Assert
-        expect(result, isA<NetworkFailure<void>>());
-        final failureResult = result as NetworkFailure<void>;
-        expect(failureResult.failure, tServerFailure);
-        expect(failureResult.error, tServerFailure.error);
-        verify(() => mockAuthRemoteDataSource.signOut()).called(1);
-        verifyNoMoreInteractions(mockAuthRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkFailure<void>>());
+      final failureResult = result as NetworkFailure<void>;
+      expect(failureResult.failure, tServerFailure);
+      expect(failureResult.error, tServerFailure.error);
+      verify(() => mockAuthRemoteDataSource.signOut()).called(1);
+      verifyNoMoreInteractions(mockAuthRemoteDataSource);
+    });
   });
 }

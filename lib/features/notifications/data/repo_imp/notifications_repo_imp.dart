@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:fruit_hub/core/network/api_helper.dart';
 import 'package:fruit_hub/core/network/network_response.dart';
 
 import '../../domain/entities/notification_entity.dart';
@@ -10,9 +13,19 @@ class NotificationsRepoImp implements NotificationsRepo {
   final NotificationsRemoteDataSource _remoteDataSource;
 
   @override
-  Stream<List<NotificationEntity>> getNotificationsStream() => _remoteDataSource
-      .getNotificationsStream()
-      .map((models) => models.map((model) => model.toEntity()).toList());
+  Stream<NetworkResponse<List<NotificationEntity>>> getNotificationsStream() =>
+      _remoteDataSource.getNotificationsStream().transform(
+        StreamTransformer.fromHandlers(
+          handleData: (models, sink) => sink.add(
+            NetworkSuccess(models.map((model) => model.toEntity()).toList()),
+          ),
+          handleError: (error, _, sink) => sink.add(
+            NetworkFailure<List<NotificationEntity>>(
+              ApiHelper.failureFromException(error),
+            ),
+          ),
+        ),
+      );
 
   @override
   Future<NetworkResponse<void>> markAsRead(String notificationId) =>

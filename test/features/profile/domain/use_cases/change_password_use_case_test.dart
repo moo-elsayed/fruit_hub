@@ -20,33 +20,30 @@ void main() {
     sut = ChangePasswordUseCase(mockProfileRepo);
   });
 
-  test(
-    'should call changePassword on ProfileRepo with correct currentPassword and newPassword and return NetworkSuccess<void>',
-    () async {
-      // Arrange
-      when(
-        () => mockProfileRepo.changePassword(
-          currentPassword: any(named: 'currentPassword'),
-          newPassword: any(named: 'newPassword'),
-        ),
-      ).thenAnswer((_) async => const NetworkSuccess(null));
+  test('should call changePassword on ProfileRepo with correct currentPassword and newPassword and return NetworkSuccess<void>', () async {
+    // Arrange
+    when(
+      () => mockProfileRepo.changePassword(
+        currentPassword: any(named: 'currentPassword'),
+        newPassword: any(named: 'newPassword'),
+      ),
+    ).thenAnswer((_) async => const NetworkSuccess(null));
 
-      // Act
-      final result = await sut(
+    // Act
+    final result = await sut(
+      currentPassword: tCurrentPassword,
+      newPassword: tNewPassword,
+    );
+
+    // Assert
+    expect(result, isA<NetworkSuccess<void>>());
+    verify(
+      () => mockProfileRepo.changePassword(
         currentPassword: tCurrentPassword,
         newPassword: tNewPassword,
-      );
-
-      // Assert
-      expect(result, isA<NetworkSuccess<void>>());
-      verify(
-        () => mockProfileRepo.changePassword(
-          currentPassword: tCurrentPassword,
-          newPassword: tNewPassword,
-        ),
-      ).called(1);
-    },
-  );
+      ),
+    ).called(1);
+  });
 
   test(
     'should return NetworkFailure when ProfileRepo fails during changePassword',

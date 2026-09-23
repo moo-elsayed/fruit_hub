@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:fruit_hub/core/enums/notification_type.dart';
 
-class NotificationEntity {
+class NotificationEntity extends Equatable {
   const NotificationEntity({
     required this.id,
     required this.title,
@@ -36,4 +37,21 @@ class NotificationEntity {
 
   String localizedBody(bool isArabic) =>
       isArabic ? (bodyAr ?? body) : (bodyEn ?? body);
+
+  @override
+  List<Object?> get props => [
+    id,
+    title,
+    body,
+    type,
+    isRead,
+    titleAr,
+    titleEn,
+    bodyAr,
+    bodyEn,
+    orderId,
+    status,
+    productCode,
+    createdAt,
+  ];
 }

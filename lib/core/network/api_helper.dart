@@ -19,10 +19,14 @@ class ApiHelper {
         error: e,
         stackTrace: stackTrace,
       );
-      if (e is BusinessException) {
-        return NetworkFailure(ServerFailure(error: e.message));
-      }
-      return NetworkFailure(ServerFailure.fromException(e));
+      return NetworkFailure(failureFromException(e));
     }
+  }
+
+  static Failure failureFromException(Object error) {
+    if (error is BusinessException) {
+      return ServerFailure(error: error.message);
+    }
+    return ServerFailure.fromException(error);
   }
 }

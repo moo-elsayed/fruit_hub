@@ -8,7 +8,7 @@ import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_app_bar.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/products/domain/entities/product_details_entity.dart';
-import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
+import 'package:fruit_hub/features/products/presentation/managers/product_details_cubit/product_details_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../widgets/product_details_bottom_bar.dart';
@@ -34,7 +34,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     super.initState();
     final code = widget.fruitCode ?? widget.fruitEntity?.code;
     if (code != null) {
-      context.read<ProductsCubit>().getProductDetails(code);
+      context.read<ProductDetailsCubit>().getProductDetails(code);
     }
   }
 
@@ -52,15 +52,15 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
 
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<ProductsCubit, ProductsState>(
+      BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
         builder: (context, state) {
           FruitEntity? currentFruit = widget.fruitEntity;
 
-          if (state is GetProductDetailsSuccess) {
+          if (state is ProductDetailsSuccess) {
             currentFruit = state.fruit;
           }
 
-          if (state is GetProductDetailsFailure && currentFruit == null) {
+          if (state is ProductDetailsFailure && currentFruit == null) {
             return Scaffold(
               backgroundColor: context.colors.background,
               appBar: CustomAppBar(

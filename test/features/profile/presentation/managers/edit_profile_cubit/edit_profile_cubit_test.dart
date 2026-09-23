@@ -79,15 +79,14 @@ void main() {
     blocTest<EditProfileCubit, EditProfileState>(
       'should emit [EditProfileFailure] when input.uid is empty',
       build: () => sut,
-      act:
-          (cubit) => cubit.updateProfile(
-            const UpdateProfileInputEntity(
-              uid: '',
-              name: 'محمد',
-              phone: '01000000000',
-              image: '',
-            ),
-          ),
+      act: (cubit) => cubit.updateProfile(
+        const UpdateProfileInputEntity(
+          uid: '',
+          name: 'محمد',
+          phone: '01000000000',
+          image: '',
+        ),
+      ),
       expect: () => [EditProfileFailure(AppStrings.userNotFound)],
       verify: (_) {
         verifyZeroInteractions(mockUpdateProfileUseCase);
@@ -98,20 +97,17 @@ void main() {
     blocTest<EditProfileCubit, EditProfileState>(
       'should emit [EditProfileLoading, EditProfileSuccess] and save user locally when update succeeds with non-null data',
       setUp: () {
-        when(
-          () => mockUpdateProfileUseCase(any()),
-        ).thenAnswer((_) async => const NetworkSuccess(tUserEntity));
-        when(
-          () => mockUserInfoCubit.saveUserLocally(any()),
-        ).thenAnswer((_) async {});
+        when(() => mockUpdateProfileUseCase(any()))
+            .thenAnswer((_) async => const NetworkSuccess(tUserEntity));
+        when(() => mockUserInfoCubit.saveUserLocally(any()))
+            .thenAnswer((_) async {});
       },
       build: () => sut,
       act: (cubit) => cubit.updateProfile(tInputEntity),
-      expect:
-          () => [
-            const EditProfileLoading(),
-            const EditProfileSuccess(tUserEntity),
-          ],
+      expect: () => [
+        const EditProfileLoading(),
+        const EditProfileSuccess(tUserEntity),
+      ],
       verify: (_) {
         verify(() => mockUpdateProfileUseCase(tInputEntity)).called(1);
         verify(() => mockUserInfoCubit.saveUserLocally(tUserEntity)).called(1);
@@ -121,17 +117,15 @@ void main() {
     blocTest<EditProfileCubit, EditProfileState>(
       'should emit [EditProfileLoading, EditProfileFailure] with unexpectedError when update succeeds with null data',
       setUp: () {
-        when(
-          () => mockUpdateProfileUseCase(any()),
-        ).thenAnswer((_) async => const NetworkSuccess(null));
+        when(() => mockUpdateProfileUseCase(any()))
+            .thenAnswer((_) async => const NetworkSuccess(null));
       },
       build: () => sut,
       act: (cubit) => cubit.updateProfile(tInputEntity),
-      expect:
-          () => [
-            const EditProfileLoading(),
-            EditProfileFailure(AppStrings.unexpectedError),
-          ],
+      expect: () => [
+        const EditProfileLoading(),
+        EditProfileFailure(AppStrings.unexpectedError),
+      ],
       verify: (_) {
         verify(() => mockUpdateProfileUseCase(tInputEntity)).called(1);
         verifyNever(() => mockUserInfoCubit.saveUserLocally(any()));
@@ -141,17 +135,15 @@ void main() {
     blocTest<EditProfileCubit, EditProfileState>(
       'should emit [EditProfileLoading, EditProfileFailure] with error message when update fails',
       setUp: () {
-        when(
-          () => mockUpdateProfileUseCase(any()),
-        ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+        when(() => mockUpdateProfileUseCase(any()))
+            .thenAnswer((_) async => const NetworkFailure(tServerFailure));
       },
       build: () => sut,
       act: (cubit) => cubit.updateProfile(tInputEntity),
-      expect:
-          () => [
-            const EditProfileLoading(),
-            const EditProfileFailure(tErrorMessage),
-          ],
+      expect: () => [
+        const EditProfileLoading(),
+        const EditProfileFailure(tErrorMessage),
+      ],
       verify: (_) {
         verify(() => mockUpdateProfileUseCase(tInputEntity)).called(1);
         verifyNever(() => mockUserInfoCubit.saveUserLocally(any()));

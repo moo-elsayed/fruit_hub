@@ -70,6 +70,7 @@ import 'package:fruit_hub/features/products/data/data_sources/remote/products_re
 import 'package:fruit_hub/features/products/data/repo_imp/products_repo_imp.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_all_products_use_case.dart';
 import 'package:fruit_hub/features/products/domain/use_cases/get_product_details_use_case.dart';
+import 'package:fruit_hub/features/products/presentation/managers/product_details_cubit/product_details_cubit.dart';
 import 'package:fruit_hub/features/products/presentation/managers/products_cubit/products_cubit.dart';
 import 'package:fruit_hub/features/profile/data/data_sources/remote/profile_remote_data_source.dart';
 import 'package:fruit_hub/features/profile/data/data_sources/remote/profile_remote_data_source_imp.dart';
@@ -201,10 +202,7 @@ void setupServiceLocator() {
   );
 
   getIt.registerFactory<SignOutCubit>(
-    () => SignOutCubit(
-      getIt<SignOutUseCase>(),
-      getIt<UserInfoCubit>(),
-    ),
+    () => SignOutCubit(getIt<SignOutUseCase>(), getIt<UserInfoCubit>()),
   );
 
   /// Home
@@ -218,10 +216,7 @@ void setupServiceLocator() {
   );
 
   getIt.registerFactory<HomeCubit>(
-    () => HomeCubit(
-      getIt<GetBestSellerProductsUseCase>(),
-      getIt<AppPreferencesService>(),
-    ),
+    () => HomeCubit(getIt<GetBestSellerProductsUseCase>()),
   );
 
   /// Products
@@ -239,8 +234,11 @@ void setupServiceLocator() {
   );
 
   getIt.registerFactory<ProductsCubit>(
-    () => ProductsCubit(
-      getAllProductsUseCase: getIt<GetAllProductsUseCase>(),
+    () => ProductsCubit(getAllProductsUseCase: getIt<GetAllProductsUseCase>()),
+  );
+
+  getIt.registerFactory<ProductDetailsCubit>(
+    () => ProductDetailsCubit(
       getProductDetailsUseCase: getIt<GetProductDetailsUseCase>(),
     ),
   );
@@ -438,10 +436,7 @@ void setupServiceLocator() {
   );
 
   getIt.registerFactory<OrdersCubit>(
-    () => OrdersCubit(
-      getIt<StreamUserOrdersUseCase>(),
-      getIt<CancelOrderUseCase>(),
-    ),
+    () => OrdersCubit(getIt<StreamUserOrdersUseCase>()),
   );
 
   getIt.registerFactoryParam<TrackOrderCubit, OrderEntity?, String?>(

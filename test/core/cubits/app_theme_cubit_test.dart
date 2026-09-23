@@ -22,36 +22,29 @@ void main() {
   });
 
   group('AppThemeCubit', () {
-    test(
-      'should emit ThemeMode.light initially when saved theme is light',
-      () {
-        // Arrange
-        when(() => mockAppPreferencesService.getThemeMode())
-            .thenReturn('light');
+    test('should emit ThemeMode.light initially when saved theme is light', () {
+      // Arrange
+      when(() => mockAppPreferencesService.getThemeMode()).thenReturn('light');
 
-        // Act
-        sut = AppThemeCubit(mockAppPreferencesService);
+      // Act
+      sut = AppThemeCubit(mockAppPreferencesService);
 
-        // Assert
-        expect(sut.state, equals(ThemeMode.light));
-        verify(() => mockAppPreferencesService.getThemeMode()).called(1);
-      },
-    );
+      // Assert
+      expect(sut.state, equals(ThemeMode.light));
+      verify(() => mockAppPreferencesService.getThemeMode()).called(1);
+    });
 
-    test(
-      'should emit ThemeMode.dark initially when saved theme is dark',
-      () {
-        // Arrange
-        when(() => mockAppPreferencesService.getThemeMode()).thenReturn('dark');
+    test('should emit ThemeMode.dark initially when saved theme is dark', () {
+      // Arrange
+      when(() => mockAppPreferencesService.getThemeMode()).thenReturn('dark');
 
-        // Act
-        sut = AppThemeCubit(mockAppPreferencesService);
+      // Act
+      sut = AppThemeCubit(mockAppPreferencesService);
 
-        // Assert
-        expect(sut.state, equals(ThemeMode.dark));
-        verify(() => mockAppPreferencesService.getThemeMode()).called(1);
-      },
-    );
+      // Assert
+      expect(sut.state, equals(ThemeMode.dark));
+      verify(() => mockAppPreferencesService.getThemeMode()).called(1);
+    });
 
     test(
       'should emit ThemeMode.system initially when saved theme is system',
@@ -69,21 +62,18 @@ void main() {
       },
     );
 
-    test(
-      'should default to ThemeMode.system initially when saved theme is unrecognized',
-      () {
-        // Arrange
-        when(() => mockAppPreferencesService.getThemeMode())
-            .thenReturn('unknown_theme');
+    test('should default to ThemeMode.system initially when saved theme is unrecognized', () {
+      // Arrange
+      when(() => mockAppPreferencesService.getThemeMode())
+          .thenReturn('unknown_theme');
 
-        // Act
-        sut = AppThemeCubit(mockAppPreferencesService);
+      // Act
+      sut = AppThemeCubit(mockAppPreferencesService);
 
-        // Assert
-        expect(sut.state, equals(ThemeMode.system));
-        verify(() => mockAppPreferencesService.getThemeMode()).called(1);
-      },
-    );
+      // Assert
+      expect(sut.state, equals(ThemeMode.system));
+      verify(() => mockAppPreferencesService.getThemeMode()).called(1);
+    });
 
     blocTest<AppThemeCubit, ThemeMode>(
       'should emit [ThemeMode.light] and persist light when changeTheme(ThemeMode.light) is called',
