@@ -85,9 +85,8 @@ void main() {
       build: () => sut,
       setUp: () {
         // Arrange
-        when(
-          () => mockGetBestSellerProductsUseCase.call(),
-        ).thenAnswer((_) async => const NetworkSuccess([tFruit1, tFruit2]));
+        when(() => mockGetBestSellerProductsUseCase.call())
+            .thenAnswer((_) async => const NetworkSuccess([tFruit1, tFruit2]));
       },
       act: (cubit) async => await cubit.getBestSellerProducts(),
       expect: () => [
@@ -110,9 +109,8 @@ void main() {
       build: () => sut,
       setUp: () {
         // Arrange
-        when(
-          () => mockGetBestSellerProductsUseCase.call(),
-        ).thenAnswer((_) async => const NetworkSuccess(null));
+        when(() => mockGetBestSellerProductsUseCase.call())
+            .thenAnswer((_) async => const NetworkSuccess(null));
       },
       act: (cubit) async => await cubit.getBestSellerProducts(),
       expect: () => [
@@ -135,9 +133,8 @@ void main() {
       build: () => sut,
       setUp: () {
         // Arrange
-        when(
-          () => mockGetBestSellerProductsUseCase.call(),
-        ).thenAnswer((_) async => const NetworkFailure(tServerFailure));
+        when(() => mockGetBestSellerProductsUseCase.call())
+            .thenAnswer((_) async => const NetworkFailure(tServerFailure));
       },
       act: (cubit) async => await cubit.getBestSellerProducts(),
       expect: () => [
@@ -162,9 +159,8 @@ void main() {
       build: () => sut,
       setUp: () async {
         // Arrange
-        when(
-          () => mockGetBestSellerProductsUseCase.call(),
-        ).thenAnswer((_) async => const NetworkSuccess([tFruit1, tFruit2]));
+        when(() => mockGetBestSellerProductsUseCase.call())
+            .thenAnswer((_) async => const NetworkSuccess([tFruit1, tFruit2]));
         await sut.getBestSellerProducts();
       },
       act: (cubit) => cubit.updateProduct(tUpdatedFruit1),
@@ -190,9 +186,8 @@ void main() {
       build: () => sut,
       setUp: () async {
         // Arrange
-        when(
-          () => mockGetBestSellerProductsUseCase.call(),
-        ).thenAnswer((_) async => const NetworkSuccess([tFruit1, tFruit2]));
+        when(() => mockGetBestSellerProductsUseCase.call())
+            .thenAnswer((_) async => const NetworkSuccess([tFruit1, tFruit2]));
         await sut.getBestSellerProducts();
       },
       act: (cubit) =>

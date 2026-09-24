@@ -55,7 +55,7 @@ class _CartState extends State<Cart> {
             Expanded(
               child: Builder(
                 builder: (context) {
-                  if (state is CartLoading && !state.itemRemoved) {
+                  if (state is CartLoading) {
                     return const Skeletonizer(
                       enabled: true,
                       child: CartItemsListView(itemCount: 3),

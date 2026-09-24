@@ -6,7 +6,5 @@ abstract class FavoritesRepo {
 
   Future<NetworkResponse<void>> removeItemFromFavorites(String productId);
 
-  Future<NetworkResponse<List<String>>> getFavoriteIds();
-
-  Future<NetworkResponse<List<FruitEntity>>> getFavorites(List<String> ids);
+  Future<NetworkResponse<List<FruitEntity>>> getFavorites();
 }

@@ -8,6 +8,6 @@ class GetProductsInCartUseCase {
 
   final CartRepo _cartRepo;
 
-  Future<NetworkResponse<List<CartItemEntity>>> call() async =>
-      await _cartRepo.getProductsInCart();
+  Future<NetworkResponse<List<CartItemEntity>>> call()  =>
+       _cartRepo.getProductsInCart();
 }

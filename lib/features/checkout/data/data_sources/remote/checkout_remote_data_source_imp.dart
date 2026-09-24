@@ -12,7 +12,6 @@ import 'package:fruit_hub/core/network/network_response.dart';
 import 'package:fruit_hub/env.dart';
 import 'package:fruit_hub/features/checkout/data/data_sources/remote/checkout_remote_data_source.dart';
 import 'package:fruit_hub/features/checkout/data/models/payment_input_model.dart';
-import 'package:fruit_hub/features/checkout/data/models/payment_output_model.dart';
 
 import '../../models/shipping_config_model.dart';
 
@@ -48,49 +47,50 @@ class CheckoutRemoteDataSourceImp implements CheckoutRemoteDataSource {
   @override
   Future<NetworkResponse<void>> addOrder(OrderModel order) async =>
       ApiHelper.executeSafely(() async {
+        final userId = _auth.currentUser?.uid;
+        if (userId == null) {
+          throw BusinessException(AppStrings.userNotFound);
+        }
         await _firestore
             .collection(BackendEndpoints.ordersCollection)
             .add(order.toJson());
       }, functionName: 'addOrder');
 
   @override
-  Future<NetworkResponse<PaymentOutputModel>> makePayment(
-    PaymentInputModel input,
-  ) async => ApiHelper.executeSafely(() async {
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) {
-      throw BusinessException(AppStrings.userNotFound);
-    }
-    final userDoc = await _firestore
-        .collection(BackendEndpoints.usersCollection)
-        .doc(userId)
-        .get();
-    final map = userDoc.data() ?? {};
-    String? customerId = map[BackendEndpoints.customerIdField];
+  Future<NetworkResponse<void>> makePayment(PaymentInputModel input) async =>
+      ApiHelper.executeSafely(() async {
+        final userId = _auth.currentUser?.uid;
+        if (userId == null) {
+          throw BusinessException(AppStrings.userNotFound);
+        }
+        final userDoc = await _firestore
+            .collection(BackendEndpoints.usersCollection)
+            .doc(userId)
+            .get();
+        final map = userDoc.data() ?? {};
+        String? customerId = map[BackendEndpoints.customerIdField];
 
-    if (customerId == null || customerId.isEmpty) {
-      customerId = await _createCustomer();
-      await _firestore
-          .collection(BackendEndpoints.usersCollection)
-          .doc(userId)
-          .set({
-            BackendEndpoints.customerIdField: customerId,
-          }, SetOptions(merge: true));
-    }
+        if (customerId == null || customerId.isEmpty) {
+          customerId = await _createCustomer();
+          await _firestore
+              .collection(BackendEndpoints.usersCollection)
+              .doc(userId)
+              .set({
+                BackendEndpoints.customerIdField: customerId,
+              }, SetOptions(merge: true));
+        }
 
-    final ephemeralKey = await _createEphemeralKey(customerId: customerId);
-    final paymentIntent = await _createPaymentIntent(input, customerId);
+        final ephemeralKey = await _createEphemeralKey(customerId: customerId);
+        final paymentIntent = await _createPaymentIntent(input, customerId);
 
-    await _initPaymentSheet(
-      paymentIntentClientSecret: paymentIntent['client_secret'],
-      ephemeralKeySecret: ephemeralKey['secret'],
-      customerId: customerId,
-    );
+        await _initPaymentSheet(
+          paymentIntentClientSecret: paymentIntent['client_secret'],
+          ephemeralKeySecret: ephemeralKey['secret'],
+          customerId: customerId,
+        );
 
-    await _displayPaymentSheet();
-
-    return PaymentOutputModel(customerId: customerId);
-  }, functionName: 'makePayment');
+        await _displayPaymentSheet();
+      }, functionName: 'makePayment');
 
   // -----------------------------------------------
   // Stripe Helpers

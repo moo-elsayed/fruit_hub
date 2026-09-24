@@ -22,7 +22,7 @@ class _FavoritesState extends State<Favorites> {
   void initState() {
     super.initState();
     final cubit = context.read<FavoriteCubit>();
-    if (cubit.favoriteFruits.isEmpty && cubit.favoriteIds.isEmpty) {
+    if (cubit.favoriteFruits.isEmpty) {
       cubit.getFavorites();
     }
   }

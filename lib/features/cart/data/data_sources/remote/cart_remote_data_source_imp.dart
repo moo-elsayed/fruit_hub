@@ -35,9 +35,7 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
     final userData = userDoc.data() ?? {};
     final cartItems = _getCartItemsHelper(userData);
     final int index = cartItems.indexWhere(
-      (element) =>
-          element['fruitCode'] == productId ||
-          element['productId'] == productId,
+      (element) => element['fruitCode'] == productId,
     );
     if (index != -1) {
       cartItems[index]['quantity'] =
@@ -63,11 +61,7 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
             .get();
         final userData = userDoc.data() ?? {};
         final cartItems = _getCartItemsHelper(userData);
-        cartItems.removeWhere(
-          (element) =>
-              element['fruitCode'] == productId ||
-              element['productId'] == productId,
-        );
+        cartItems.removeWhere((element) => element['fruitCode'] == productId);
         await _firestore.collection(_usersCollection).doc(userId).set({
           BackendEndpoints.cartItemsField: cartItems,
         }, SetOptions(merge: true));
@@ -91,7 +85,7 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
         }
 
         final productIds = cartItems
-            .map((e) => (e['fruitCode'] ?? e['productId']) as String)
+            .map((e) => (e['fruitCode']) as String)
             .toList();
 
         final querySnapshot = await _firestore
@@ -103,9 +97,7 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
         for (final doc in querySnapshot.docs) {
           final fruitModel = FruitModel.fromJson(doc.data());
           final cartItemMap = cartItems.firstWhere(
-            (element) =>
-                element['fruitCode'] == fruitModel.code ||
-                element['productId'] == fruitModel.code,
+            (element) => element['fruitCode'] == fruitModel.code,
             orElse: () => {'quantity': 1},
           );
           result.add(
@@ -134,9 +126,7 @@ class CartRemoteDataSourceImp implements CartRemoteDataSource {
     final userData = userDoc.data() ?? {};
     final cartItems = _getCartItemsHelper(userData);
     final int index = cartItems.indexWhere(
-      (element) =>
-          element['fruitCode'] == productId ||
-          element['productId'] == productId,
+      (element) => element['fruitCode'] == productId,
     );
     if (index != -1) {
       cartItems[index]['quantity'] = newQuantity;

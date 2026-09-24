@@ -8,6 +8,6 @@ class GetFavoritesUseCase {
 
   final FavoritesRepo _favoritesRepo;
 
-  Future<NetworkResponse<List<FruitEntity>>> call(List<String> ids) async =>
-      await _favoritesRepo.getFavorites(ids);
+  Future<NetworkResponse<List<FruitEntity>>> call() async =>
+      await _favoritesRepo.getFavorites();
 }

@@ -22,8 +22,9 @@ class CartCubit extends Cubit<CartState> {
     this._getProductsInCart,
     this._updateItemQuantityUseCase,
     this._clearCartUseCase,
-    this._fetchShippingConfigUseCase,
-  ) : super(CartInitial());
+    this._fetchShippingConfigUseCase, {
+    this.debounceDuration = const Duration(milliseconds: 500),
+  }) : super(CartInitial());
 
   final AddItemToCartUseCase _addItemToCartUseCase;
   final RemoveItemFromCartUseCase _removeItemFromCartUseCase;
@@ -31,6 +32,7 @@ class CartCubit extends Cubit<CartState> {
   final UpdateItemQuantityUseCase _updateItemQuantityUseCase;
   final ClearCartUseCase _clearCartUseCase;
   final FetchShippingConfigUseCase _fetchShippingConfigUseCase;
+  final Duration debounceDuration;
 
   List<CartItemEntity> _productsInCart = [];
   ShippingConfigEntity? shippingConfig;
@@ -47,7 +49,8 @@ class CartCubit extends Cubit<CartState> {
     return index != -1 ? _productsInCart[index] : null;
   }
 
-  List<CartItemEntity> get productsInCart => _productsInCart;
+  List<CartItemEntity> get productsInCart =>
+      List.unmodifiable(_productsInCart);
 
   Future<void> addItemToCart(FruitEntity fruit, {int quantity = 1}) async {
     final productId = fruit.code;
@@ -185,7 +188,7 @@ class CartCubit extends Cubit<CartState> {
     // 2. Debounce server sync
     _debounceTimers[productId]?.cancel();
     _debounceTimers[productId] = Timer(
-      const Duration(milliseconds: 500),
+      debounceDuration,
       () async {
         _debounceTimers.remove(productId);
 

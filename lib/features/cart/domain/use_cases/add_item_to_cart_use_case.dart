@@ -9,5 +9,5 @@ class AddItemToCartUseCase {
   Future<NetworkResponse<void>> call(
     String productId, {
     int quantity = 1,
-  }) async => _cartRepo.addItemToCart(productId, quantity: quantity);
+  }) => _cartRepo.addItemToCart(productId, quantity: quantity);
 }

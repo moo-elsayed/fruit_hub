@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/entities/cart_item_entity.dart';
 import 'package:fruit_hub/core/entities/order_entity.dart';
@@ -30,11 +30,12 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   final FetchShippingConfigUseCase _fetchShippingConfigUseCase;
   final AddOrderUseCase _addOrderUseCase;
   final MakePaymentUseCase _makePaymentUseCase;
-  late List<CartItemEntity> products;
+
+  List<CartItemEntity> products = const [];
   AddressEntity? address;
   PaymentOptionEntity paymentOption = const PaymentOptionEntity();
-  bool saveAddress = true;
   ShippingConfigEntity shippingConfig = const ShippingConfigEntity();
+  bool saveAddress = true;
   late final int orderId = _generateOrderId();
 
   OrderEntity get orderEntity => OrderEntity.fromCheckout(
@@ -62,11 +63,11 @@ class CheckoutCubit extends Cubit<CheckoutState> {
       amount: subtotal + paymentOption.shippingCost,
       currency: 'usd',
     );
-    final result = await _makePaymentUseCase.call(paymentInputEntity);
+    final result = await _makePaymentUseCase(paymentInputEntity);
     switch (result) {
-      case NetworkSuccess():
+      case NetworkSuccess<void>():
         await addOrder();
-      case NetworkFailure():
+      case NetworkFailure<void>():
         emit(MakePaymentFailure(result.error));
     }
   }
@@ -121,10 +122,10 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
   // -----------------------------------------------
 
-  void _saveAddressToLocalStorage(AddressEntity address) {
-    final AddressModel addressModel = AddressModel.fromEntity(address);
-    _appPreferencesService.saveAddress(addressModel.toJson());
-  }
+  void _saveAddressToLocalStorage(AddressEntity address) =>
+      _appPreferencesService.saveAddress(
+        AddressModel.fromEntity(address).toJson(),
+      );
 
   int _generateOrderId() {
     int id = DateTime.now().microsecondsSinceEpoch % 1000000;

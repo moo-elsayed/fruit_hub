@@ -48,7 +48,7 @@ class FavoritesRemoteDataSourceImp implements FavoritesRemoteDataSource {
   }, functionName: 'removeItemFromFavorites');
 
   @override
-  Future<NetworkResponse<List<String>>> getFavoriteIds() async =>
+  Future<NetworkResponse<List<FruitModel>>> getFavorites() async =>
       ApiHelper.executeSafely(() async {
         final userId = _auth.currentUser?.uid;
         if (userId == null) {
@@ -60,27 +60,22 @@ class FavoritesRemoteDataSourceImp implements FavoritesRemoteDataSource {
             .doc(userId)
             .get();
         final userData = docSnapshot.data() ?? {};
-        if (userData.containsKey(BackendEndpoints.favoriteIdsField)) {
-          return List<String>.from(userData[BackendEndpoints.favoriteIdsField]);
+        final favoriteIds =
+            userData.containsKey(BackendEndpoints.favoriteIdsField)
+            ? List<String>.from(userData[BackendEndpoints.favoriteIdsField])
+            : <String>[];
+
+        if (favoriteIds.isEmpty) {
+          return <FruitModel>[];
         }
-        return <String>[];
-      }, functionName: 'getFavoriteIds');
 
-  @override
-  Future<NetworkResponse<List<FruitModel>>> getFavorites(
-    List<String> ids,
-  ) async => ApiHelper.executeSafely(() async {
-    if (ids.isEmpty) {
-      return <FruitModel>[];
-    }
+        final querySnapshot = await _firestore
+            .collection(_productsCollection)
+            .where(FieldPath.documentId, whereIn: favoriteIds)
+            .get();
 
-    final querySnapshot = await _firestore
-        .collection(_productsCollection)
-        .where(FieldPath.documentId, whereIn: ids)
-        .get();
-
-    return querySnapshot.docs
-        .map((doc) => FruitModel.fromJson(doc.data()))
-        .toList();
-  }, functionName: 'getFavorites');
+        return querySnapshot.docs
+            .map((doc) => FruitModel.fromJson(doc.data()))
+            .toList();
+      }, functionName: 'getFavorites');
 }

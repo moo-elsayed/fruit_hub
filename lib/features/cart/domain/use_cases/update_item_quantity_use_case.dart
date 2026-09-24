@@ -9,7 +9,7 @@ class UpdateItemQuantityUseCase {
   Future<NetworkResponse<void>> call({
     required String productId,
     required int newQuantity,
-  }) async => _cartRepo.updateItemQuantity(
+  }) => _cartRepo.updateItemQuantity(
     productId: productId,
     newQuantity: newQuantity,
   );

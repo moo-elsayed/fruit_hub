@@ -5,12 +5,7 @@ sealed class CartState {}
 
 final class CartInitial extends CartState {}
 
-final class CartLoading extends CartState {
-  CartLoading({this.itemRemoved = false, this.newItemAdded = false});
-
-  final bool itemRemoved;
-  final bool newItemAdded;
-}
+final class CartLoading extends CartState {}
 
 final class CartSuccess extends CartState {
   CartSuccess({

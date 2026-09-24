@@ -40,7 +40,6 @@ import 'package:fruit_hub/features/checkout/presentation/managers/checkout_cubit
 import 'package:fruit_hub/features/favorites/data/data_sources/remote/favorites_remote_data_source_imp.dart';
 import 'package:fruit_hub/features/favorites/data/repo_imp/favorites_repo_imp.dart';
 import 'package:fruit_hub/features/favorites/domain/use_cases/add_item_to_favorites_use_case.dart';
-import 'package:fruit_hub/features/favorites/domain/use_cases/get_favorite_ids_use_case.dart';
 import 'package:fruit_hub/features/favorites/domain/use_cases/get_favorites_use_case.dart';
 import 'package:fruit_hub/features/favorites/domain/use_cases/remove_item_from_favorites_use_case.dart';
 import 'package:fruit_hub/features/favorites/presentation/managers/favorite_cubit/favorite_cubit.dart';
@@ -304,10 +303,6 @@ void setupServiceLocator() {
     () => GetFavoritesUseCase(getIt<FavoritesRepoImp>()),
   );
 
-  getIt.registerLazySingleton<GetFavoriteIdsUseCase>(
-    () => GetFavoriteIdsUseCase(getIt<FavoritesRepoImp>()),
-  );
-
   getIt.registerLazySingleton<AddItemToFavoritesUseCase>(
     () => AddItemToFavoritesUseCase(getIt<FavoritesRepoImp>()),
   );
@@ -320,7 +315,6 @@ void setupServiceLocator() {
     () => FavoriteCubit(
       getIt<AddItemToFavoritesUseCase>(),
       getIt<RemoveItemFromFavoritesUseCase>(),
-      getIt<GetFavoriteIdsUseCase>(),
       getIt<GetFavoritesUseCase>(),
     ),
   );

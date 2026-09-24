@@ -5,14 +5,6 @@ sealed class FavoriteState {}
 
 final class FavoriteInitial extends FavoriteState {}
 
-final class GetFavoriteIdsSuccess extends FavoriteState {}
-
-final class GetFavoriteIdsFailure extends FavoriteState {
-  GetFavoriteIdsFailure(this.errorMessage);
-
-  final String errorMessage;
-}
-
 final class GetFavoritesLoading extends FavoriteState {}
 
 final class GetFavoritesSuccess extends FavoriteState {
@@ -28,9 +20,8 @@ final class GetFavoritesFailure extends FavoriteState {
 }
 
 final class ToggleFavoriteSuccess extends FavoriteState {
-  ToggleFavoriteSuccess(this.favoriteIds, [this.favorites = const []]);
+  ToggleFavoriteSuccess(this.favorites);
 
-  final Set<String> favoriteIds;
   final List<FruitEntity> favorites;
 }
 

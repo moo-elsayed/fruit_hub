@@ -17,8 +17,6 @@ final class AddOrderFailure extends CheckoutState {
 
 final class MakePaymentLoading extends CheckoutState {}
 
-final class MakePaymentSuccess extends CheckoutState {}
-
 final class MakePaymentFailure extends CheckoutState {
   MakePaymentFailure(this.errorMessage);
 

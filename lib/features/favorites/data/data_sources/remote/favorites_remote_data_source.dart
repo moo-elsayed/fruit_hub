@@ -6,7 +6,5 @@ abstract class FavoritesRemoteDataSource {
 
   Future<NetworkResponse<void>> removeItemFromFavorites(String productId);
 
-  Future<NetworkResponse<List<String>>> getFavoriteIds();
-
-  Future<NetworkResponse<List<FruitModel>>> getFavorites(List<String> ids);
+  Future<NetworkResponse<List<FruitModel>>> getFavorites();
 }

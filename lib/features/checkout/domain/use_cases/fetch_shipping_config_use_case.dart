@@ -8,6 +8,6 @@ class FetchShippingConfigUseCase {
 
   final CheckoutRepo _checkoutRepo;
 
-  Future<NetworkResponse<ShippingConfigEntity>> call() async =>
+  Future<NetworkResponse<ShippingConfigEntity>> call() =>
       _checkoutRepo.fetchShippingConfig();
 }

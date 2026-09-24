@@ -7,6 +7,6 @@ class RemoveItemFromCartUseCase {
 
   final CartRepo _cartRepo;
 
-  Future<NetworkResponse<void>> call(String productId) async =>
+  Future<NetworkResponse<void>> call(String productId) =>
       _cartRepo.removeItemFromCart(productId);
 }

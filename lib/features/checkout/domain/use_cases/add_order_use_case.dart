@@ -7,6 +7,6 @@ class AddOrderUseCase {
 
   final CheckoutRepo _checkoutRepo;
 
-  Future<NetworkResponse<void>> call(OrderEntity order) async =>
+  Future<NetworkResponse<void>> call(OrderEntity order) =>
       _checkoutRepo.addOrder(order);
 }
