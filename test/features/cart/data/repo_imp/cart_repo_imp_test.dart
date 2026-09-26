@@ -37,10 +37,7 @@ void main() {
       () async {
         // Arrange
         when(
-          () => mockCartRemoteDataSource.addItemToCart(
-            tProductId,
-            quantity: 3,
-          ),
+          () => mockCartRemoteDataSource.addItemToCart(tProductId, quantity: 3),
         ).thenAnswer((_) async => const NetworkSuccess(null));
 
         // Act
@@ -49,10 +46,7 @@ void main() {
         // Assert
         expect(result, isA<NetworkSuccess<void>>());
         verify(
-          () => mockCartRemoteDataSource.addItemToCart(
-            tProductId,
-            quantity: 3,
-          ),
+          () => mockCartRemoteDataSource.addItemToCart(tProductId, quantity: 3),
         ).called(1);
         verifyNoMoreInteractions(mockCartRemoteDataSource);
       },
@@ -63,10 +57,7 @@ void main() {
       () async {
         // Arrange
         when(
-          () => mockCartRemoteDataSource.addItemToCart(
-            tProductId,
-            quantity: 1,
-          ),
+          () => mockCartRemoteDataSource.addItemToCart(tProductId, quantity: 1),
         ).thenAnswer((_) async => const NetworkSuccess(null));
 
         // Act
@@ -75,10 +66,7 @@ void main() {
         // Assert
         expect(result, isA<NetworkSuccess<void>>());
         verify(
-          () => mockCartRemoteDataSource.addItemToCart(
-            tProductId,
-            quantity: 1,
-          ),
+          () => mockCartRemoteDataSource.addItemToCart(tProductId, quantity: 1),
         ).called(1);
         verifyNoMoreInteractions(mockCartRemoteDataSource);
       },
@@ -89,10 +77,7 @@ void main() {
       () async {
         // Arrange
         when(
-          () => mockCartRemoteDataSource.addItemToCart(
-            tProductId,
-            quantity: 1,
-          ),
+          () => mockCartRemoteDataSource.addItemToCart(tProductId, quantity: 1),
         ).thenAnswer((_) async => const NetworkFailure(tFailure));
 
         // Act
@@ -103,10 +88,7 @@ void main() {
         final failure = (result as NetworkFailure<void>).failure;
         expect(failure.error, tFailure.error);
         verify(
-          () => mockCartRemoteDataSource.addItemToCart(
-            tProductId,
-            quantity: 1,
-          ),
+          () => mockCartRemoteDataSource.addItemToCart(tProductId, quantity: 1),
         ).called(1);
         verifyNoMoreInteractions(mockCartRemoteDataSource);
       },
@@ -118,18 +100,16 @@ void main() {
       'should return NetworkSuccess when remote data source succeeds',
       () async {
         // Arrange
-        when(
-          () => mockCartRemoteDataSource.removeItemFromCart(tProductId),
-        ).thenAnswer((_) async => const NetworkSuccess(null));
+        when(() => mockCartRemoteDataSource.removeItemFromCart(tProductId))
+            .thenAnswer((_) async => const NetworkSuccess(null));
 
         // Act
         final result = await sut.removeItemFromCart(tProductId);
 
         // Assert
         expect(result, isA<NetworkSuccess<void>>());
-        verify(
-          () => mockCartRemoteDataSource.removeItemFromCart(tProductId),
-        ).called(1);
+        verify(() => mockCartRemoteDataSource.removeItemFromCart(tProductId))
+            .called(1);
         verifyNoMoreInteractions(mockCartRemoteDataSource);
       },
     );
@@ -138,9 +118,8 @@ void main() {
       'should return NetworkFailure when remote data source fails',
       () async {
         // Arrange
-        when(
-          () => mockCartRemoteDataSource.removeItemFromCart(tProductId),
-        ).thenAnswer((_) async => const NetworkFailure(tFailure));
+        when(() => mockCartRemoteDataSource.removeItemFromCart(tProductId))
+            .thenAnswer((_) async => const NetworkFailure(tFailure));
 
         // Act
         final result = await sut.removeItemFromCart(tProductId);
@@ -149,43 +128,37 @@ void main() {
         expect(result, isA<NetworkFailure<void>>());
         final failure = (result as NetworkFailure<void>).failure;
         expect(failure.error, tFailure.error);
-        verify(
-          () => mockCartRemoteDataSource.removeItemFromCart(tProductId),
-        ).called(1);
+        verify(() => mockCartRemoteDataSource.removeItemFromCart(tProductId))
+            .called(1);
         verifyNoMoreInteractions(mockCartRemoteDataSource);
       },
     );
   });
 
   group('getProductsInCart', () {
-    test(
-      'should return NetworkSuccess with list of CartItemEntity when remote data source succeeds',
-      () async {
-        // Arrange
-        when(
-          () => mockCartRemoteDataSource.getProductsInCart(),
-        ).thenAnswer((_) async => const NetworkSuccess([tCartItem]));
+    test('should return NetworkSuccess with list of CartItemEntity when remote data source succeeds', () async {
+      // Arrange
+      when(() => mockCartRemoteDataSource.getProductsInCart())
+          .thenAnswer((_) async => const NetworkSuccess([tCartItem]));
 
-        // Act
-        final result = await sut.getProductsInCart();
+      // Act
+      final result = await sut.getProductsInCart();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<List<CartItemEntity>>>());
-        final items = (result as NetworkSuccess<List<CartItemEntity>>).data;
-        expect(items, hasLength(1));
-        expect(items!.first, equals(tCartItem));
-        verify(() => mockCartRemoteDataSource.getProductsInCart()).called(1);
-        verifyNoMoreInteractions(mockCartRemoteDataSource);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<List<CartItemEntity>>>());
+      final items = (result as NetworkSuccess<List<CartItemEntity>>).data;
+      expect(items, hasLength(1));
+      expect(items!.first, equals(tCartItem));
+      verify(() => mockCartRemoteDataSource.getProductsInCart()).called(1);
+      verifyNoMoreInteractions(mockCartRemoteDataSource);
+    });
 
     test(
       'should return NetworkFailure when remote data source fails',
       () async {
         // Arrange
-        when(
-          () => mockCartRemoteDataSource.getProductsInCart(),
-        ).thenAnswer((_) async => const NetworkFailure(tFailure));
+        when(() => mockCartRemoteDataSource.getProductsInCart())
+            .thenAnswer((_) async => const NetworkFailure(tFailure));
 
         // Act
         final result = await sut.getProductsInCart();
@@ -268,9 +241,8 @@ void main() {
       'should return NetworkSuccess when remote data source succeeds',
       () async {
         // Arrange
-        when(
-          () => mockCartRemoteDataSource.clearCart(),
-        ).thenAnswer((_) async => const NetworkSuccess(null));
+        when(() => mockCartRemoteDataSource.clearCart())
+            .thenAnswer((_) async => const NetworkSuccess(null));
 
         // Act
         final result = await sut.clearCart();
@@ -286,9 +258,8 @@ void main() {
       'should return NetworkFailure when remote data source fails',
       () async {
         // Arrange
-        when(
-          () => mockCartRemoteDataSource.clearCart(),
-        ).thenAnswer((_) async => const NetworkFailure(tFailure));
+        when(() => mockCartRemoteDataSource.clearCart())
+            .thenAnswer((_) async => const NetworkFailure(tFailure));
 
         // Act
         final result = await sut.clearCart();

@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
-import 'package:fruit_hub/core/widgets/custom_empty_state_widget.dart';
 import 'package:fruit_hub/core/widgets/main_screen_header.dart';
 import 'package:fruit_hub/features/cart/presentation/managers/cart_cubit/cart_cubit.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/cart_checkout_bottom_bar.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/cart_header_badge.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/cart_items_list_view.dart';
+import 'package:fruit_hub/features/cart/presentation/widgets/empty_cart_view.dart';
 import 'package:fruit_hub/features/cart/presentation/widgets/free_shipping_progress_bar.dart';
 import 'package:gap/gap.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -53,71 +53,40 @@ class _CartState extends State<Cart> {
             ),
             Gap(12.h),
             Expanded(
-              child: Builder(
-                builder: (context) {
-                  if (state is CartLoading) {
-                    return const Skeletonizer(
-                      enabled: true,
-                      child: CartItemsListView(itemCount: 3),
-                    );
-                  }
-
-                  if (items.isEmpty) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 85.h),
-                      child: CustomEmptyStateWidget(
-                        customIcon: Container(
-                          width: 100.w,
-                          height: 100.h,
-                          decoration: BoxDecoration(
-                            color: context.colors.primary.withValues(
-                              alpha: 0.1,
-                            ),
-                            shape: BoxShape.circle,
+              child: switch (state) {
+                CartLoading() => const Skeletonizer(
+                  enabled: true,
+                  child: CartItemsListView(itemCount: 3),
+                ),
+                _ when items.isEmpty => const EmptyCartView(),
+                _ => Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    Column(
+                      children: [
+                        if (shippingConfig?.freeShippingThreshold != null &&
+                            shippingConfig!.freeShippingThreshold! > 0) ...[
+                          FreeShippingProgressBar(
+                            shippingConfig: shippingConfig,
+                            totalPrice: totalPrice,
                           ),
-                          child: Center(
-                            child: Icon(
-                              Icons.shopping_cart_outlined,
-                              size: 48.r,
-                              color: context.colors.primary,
-                            ),
-                          ),
-                        ),
-                        title: AppStrings.shoppingCart,
-                        text: AppStrings.emptyCartSubtitle,
-                      ),
-                    );
-                  }
-
-                  return Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      Column(
-                        children: [
-                          if (shippingConfig?.freeShippingThreshold != null &&
-                              shippingConfig!.freeShippingThreshold! > 0) ...[
-                            FreeShippingProgressBar(
-                              shippingConfig: shippingConfig,
-                              totalPrice: totalPrice,
-                            ),
-                            Gap(12.h),
-                          ],
-                          Expanded(child: CartItemsListView(cartItems: items)),
+                          Gap(12.h),
                         ],
+                        Expanded(child: CartItemsListView(cartItems: items)),
+                      ],
+                    ),
+                    Positioned(
+                      bottom: 85.h,
+                      left: 0,
+                      right: 0,
+                      child: CartCheckoutBottomBar(
+                        cartItems: items,
+                        totalPrice: totalPrice,
                       ),
-                      Positioned(
-                        bottom: 85.h,
-                        left: 0,
-                        right: 0,
-                        child: CartCheckoutBottomBar(
-                          cartItems: items,
-                          totalPrice: totalPrice,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
+                    ),
+                  ],
+                ),
+              },
             ),
           ],
         );

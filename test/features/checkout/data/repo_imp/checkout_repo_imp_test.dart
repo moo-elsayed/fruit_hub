@@ -126,7 +126,8 @@ void main() {
         (firstResult as NetworkSuccess<ShippingConfigEntity>).data,
         (secondResult as NetworkSuccess<ShippingConfigEntity>).data,
       );
-      verify(() => mockCheckoutRemoteDataSource.fetchShippingConfig()).called(1);
+      verify(() => mockCheckoutRemoteDataSource.fetchShippingConfig())
+          .called(1);
       verifyNoMoreInteractions(mockCheckoutRemoteDataSource);
     });
 

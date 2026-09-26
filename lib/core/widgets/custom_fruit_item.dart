@@ -131,8 +131,8 @@ class CustomFruitItem extends StatelessWidget {
           BlocBuilder<FavoriteCubit, FavoriteState>(
             buildWhen: (previous, current) => current is ToggleFavoriteSuccess,
             builder: (context, state) => PositionedDirectional(
-              end: 6.w,
-              top: 6.h,
+              end: 8.w,
+              top: 8.h,
               child: CustomFavouriteIcon(
                 onChanged: () => myFavoriteCubit.toggleFavorite(fruitEntity),
                 isFavourite: myFavoriteCubit.isFavorite(fruitEntity.code),

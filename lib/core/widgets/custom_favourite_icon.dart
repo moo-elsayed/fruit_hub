@@ -1,18 +1,22 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
-import 'package:fruit_hub/core/theming/app_palette.dart';
 
 class CustomFavouriteIcon extends StatefulWidget {
   const CustomFavouriteIcon({
     super.key,
     required this.isFavourite,
     required this.onChanged,
+    this.size,
+    this.iconSize,
+    this.backgroundColor,
   });
 
   final bool isFavourite;
-  final Function() onChanged;
+  final VoidCallback onChanged;
+  final double? size;
+  final double? iconSize;
+  final Color? backgroundColor;
 
   @override
   State<CustomFavouriteIcon> createState() => _CustomFavouriteIconState();
@@ -30,43 +34,59 @@ class _CustomFavouriteIconState extends State<CustomFavouriteIcon> {
   }
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    height: 30.h,
-    width: 30.w,
-    child: IconButton(
-      style: IconButton.styleFrom(
-        padding: EdgeInsets.zero,
-        visualDensity: VisualDensity.compact,
-        iconSize: 20.r,
-      ),
-      splashColor: AppPalette.transparent,
-      highlightColor: AppPalette.transparent,
-      splashRadius: 24,
-      onPressed: () {
+  Widget build(BuildContext context) {
+    final double buttonSize = widget.size ?? 24.r;
+    final double iconDimension =
+        widget.iconSize ?? (buttonSize * 0.55).roundToDouble();
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
         setState(() => _isFavourite = !_isFavourite);
         widget.onChanged();
       },
-      icon: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 200),
-        transitionBuilder: (child, anim) => ScaleTransition(
-          scale: Tween<double>(
-            begin: 0.7,
-            end: 1.0,
-          ).animate(CurvedAnimation(parent: anim, curve: Curves.easeOutBack)),
-          child: FadeTransition(opacity: anim, child: child),
+      child: Container(
+        width: buttonSize,
+        height: buttonSize,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color:
+              widget.backgroundColor ??
+              context.colors.surface.withValues(alpha: 0.9),
+          border: Border.all(color: context.colors.border, width: 1.w),
+          boxShadow: [
+            BoxShadow(
+              color: context.colors.mainText.withValues(alpha: 0.04),
+              blurRadius: 6.r,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-        child: _isFavourite
-            ? Icon(
-                CupertinoIcons.heart_fill,
-                key: const ValueKey('filled'),
-                color: context.colors.error,
-              )
-            : Icon(
-                CupertinoIcons.heart,
-                key: const ValueKey('outlined'),
-                color: context.colors.mainText,
-              ),
+        alignment: Alignment.center,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          transitionBuilder: (child, anim) => ScaleTransition(
+            scale: Tween<double>(
+              begin: 0.7,
+              end: 1.0,
+            ).animate(CurvedAnimation(parent: anim, curve: Curves.easeOutBack)),
+            child: FadeTransition(opacity: anim, child: child),
+          ),
+          child: _isFavourite
+              ? Icon(
+                  CupertinoIcons.heart_fill,
+                  key: const ValueKey('filled'),
+                  color: context.colors.error,
+                  size: iconDimension,
+                )
+              : Icon(
+                  CupertinoIcons.heart,
+                  key: const ValueKey('outlined'),
+                  color: context.colors.mainText,
+                  size: iconDimension,
+                ),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

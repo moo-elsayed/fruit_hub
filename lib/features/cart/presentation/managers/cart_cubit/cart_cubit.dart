@@ -49,8 +49,7 @@ class CartCubit extends Cubit<CartState> {
     return index != -1 ? _productsInCart[index] : null;
   }
 
-  List<CartItemEntity> get productsInCart =>
-      List.unmodifiable(_productsInCart);
+  List<CartItemEntity> get productsInCart => List.unmodifiable(_productsInCart);
 
   Future<void> addItemToCart(FruitEntity fruit, {int quantity = 1}) async {
     final productId = fruit.code;
@@ -187,34 +186,31 @@ class CartCubit extends Cubit<CartState> {
 
     // 2. Debounce server sync
     _debounceTimers[productId]?.cancel();
-    _debounceTimers[productId] = Timer(
-      debounceDuration,
-      () async {
-        _debounceTimers.remove(productId);
+    _debounceTimers[productId] = Timer(debounceDuration, () async {
+      _debounceTimers.remove(productId);
 
-        final itemIndex = _productsInCart.indexWhere(
-          (e) => e.fruitEntity.code == productId,
-        );
-        if (itemIndex == -1) return;
-        final targetQuantity = _productsInCart[itemIndex].quantity;
+      final itemIndex = _productsInCart.indexWhere(
+        (e) => e.fruitEntity.code == productId,
+      );
+      if (itemIndex == -1) return;
+      final targetQuantity = _productsInCart[itemIndex].quantity;
 
-        final result = await _updateItemQuantityUseCase.call(
-          productId: productId,
-          newQuantity: targetQuantity,
-        );
+      final result = await _updateItemQuantityUseCase.call(
+        productId: productId,
+        newQuantity: targetQuantity,
+      );
 
-        switch (result) {
-          case NetworkSuccess<void>():
-            _serverSyncedQuantities.remove(productId);
-          case NetworkFailure<void>():
-            final fallbackQuantity =
-                _serverSyncedQuantities.remove(productId) ?? currentQuantity;
-            _updateLocalListQuantity(productId, fallbackQuantity);
-            _emitCartSuccess();
-            emit(CartFailure(result.error));
-        }
-      },
-    );
+      switch (result) {
+        case NetworkSuccess<void>():
+          _serverSyncedQuantities.remove(productId);
+        case NetworkFailure<void>():
+          final fallbackQuantity =
+              _serverSyncedQuantities.remove(productId) ?? currentQuantity;
+          _updateLocalListQuantity(productId, fallbackQuantity);
+          _emitCartSuccess();
+          emit(CartFailure(result.error));
+      }
+    });
   }
 
   // -----------------------------------------------

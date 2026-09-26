@@ -30,33 +30,28 @@ void main() {
   });
 
   group('GetProductsInCartUseCase', () {
-    test(
-      'should return NetworkSuccess with list of CartItemEntity when cart repo succeeds',
-      () async {
-        // Arrange
-        when(
-          () => mockCartRepo.getProductsInCart(),
-        ).thenAnswer((_) async => const NetworkSuccess([tCartItem]));
+    test('should return NetworkSuccess with list of CartItemEntity when cart repo succeeds', () async {
+      // Arrange
+      when(() => mockCartRepo.getProductsInCart())
+          .thenAnswer((_) async => const NetworkSuccess([tCartItem]));
 
-        // Act
-        final result = await sut();
+      // Act
+      final result = await sut();
 
-        // Assert
-        expect(result, isA<NetworkSuccess<List<CartItemEntity>>>());
-        final data = (result as NetworkSuccess<List<CartItemEntity>>).data;
-        expect(data, equals([tCartItem]));
-        verify(() => mockCartRepo.getProductsInCart()).called(1);
-        verifyNoMoreInteractions(mockCartRepo);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<List<CartItemEntity>>>());
+      final data = (result as NetworkSuccess<List<CartItemEntity>>).data;
+      expect(data, equals([tCartItem]));
+      verify(() => mockCartRepo.getProductsInCart()).called(1);
+      verifyNoMoreInteractions(mockCartRepo);
+    });
 
     test(
       'should return NetworkFailure with same failure when cart repo fails',
       () async {
         // Arrange
-        when(
-          () => mockCartRepo.getProductsInCart(),
-        ).thenAnswer((_) async => const NetworkFailure(tFailure));
+        when(() => mockCartRepo.getProductsInCart())
+            .thenAnswer((_) async => const NetworkFailure(tFailure));
 
         // Act
         final result = await sut();

@@ -21,34 +21,31 @@ void main() {
   });
 
   group('UpdateItemQuantityUseCase', () {
-    test(
-      'should return NetworkSuccess when cart repo succeeds',
-      () async {
-        // Arrange
-        when(
-          () => mockCartRepo.updateItemQuantity(
-            productId: tProductId,
-            newQuantity: tNewQuantity,
-          ),
-        ).thenAnswer((_) async => const NetworkSuccess(null));
-
-        // Act
-        final result = await sut(
+    test('should return NetworkSuccess when cart repo succeeds', () async {
+      // Arrange
+      when(
+        () => mockCartRepo.updateItemQuantity(
           productId: tProductId,
           newQuantity: tNewQuantity,
-        );
+        ),
+      ).thenAnswer((_) async => const NetworkSuccess(null));
 
-        // Assert
-        expect(result, isA<NetworkSuccess<void>>());
-        verify(
-          () => mockCartRepo.updateItemQuantity(
-            productId: tProductId,
-            newQuantity: tNewQuantity,
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(mockCartRepo);
-      },
-    );
+      // Act
+      final result = await sut(
+        productId: tProductId,
+        newQuantity: tNewQuantity,
+      );
+
+      // Assert
+      expect(result, isA<NetworkSuccess<void>>());
+      verify(
+        () => mockCartRepo.updateItemQuantity(
+          productId: tProductId,
+          newQuantity: tNewQuantity,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(mockCartRepo);
+    });
 
     test(
       'should return NetworkFailure with same failure when cart repo fails',

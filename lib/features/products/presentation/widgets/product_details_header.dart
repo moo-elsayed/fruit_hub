@@ -49,31 +49,10 @@ class ProductDetailsHeader extends StatelessWidget {
                   BlocBuilder<FavoriteCubit, FavoriteState>(
                     buildWhen: (previous, current) =>
                         current is ToggleFavoriteSuccess,
-                    builder: (context, state) => Container(
-                      width: 40.r,
-                      height: 40.r,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: context.colors.surface,
-                        border: Border.all(
-                          color: context.colors.border,
-                          width: 1.w,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: context.colors.mainText.withValues(
-                              alpha: 0.04,
-                            ),
-                            blurRadius: 8.r,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      alignment: Alignment.center,
-                      child: CustomFavouriteIcon(
-                        onChanged: () => favoriteCubit.toggleFavorite(fruit),
-                        isFavourite: favoriteCubit.isFavorite(fruit.code),
-                      ),
+                    builder: (context, state) => CustomFavouriteIcon(
+                      size: 40.r,
+                      onChanged: () => favoriteCubit.toggleFavorite(fruit),
+                      isFavourite: favoriteCubit.isFavorite(fruit.code),
                     ),
                   ),
                 ],

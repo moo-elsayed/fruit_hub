@@ -20,31 +20,26 @@ void main() {
   });
 
   group('RemoveItemFromCartUseCase', () {
-    test(
-      'should return NetworkSuccess when cart repo succeeds',
-      () async {
-        // Arrange
-        when(
-          () => mockCartRepo.removeItemFromCart(tProductId),
-        ).thenAnswer((_) async => const NetworkSuccess(null));
+    test('should return NetworkSuccess when cart repo succeeds', () async {
+      // Arrange
+      when(() => mockCartRepo.removeItemFromCart(tProductId))
+          .thenAnswer((_) async => const NetworkSuccess(null));
 
-        // Act
-        final result = await sut(tProductId);
+      // Act
+      final result = await sut(tProductId);
 
-        // Assert
-        expect(result, isA<NetworkSuccess<void>>());
-        verify(() => mockCartRepo.removeItemFromCart(tProductId)).called(1);
-        verifyNoMoreInteractions(mockCartRepo);
-      },
-    );
+      // Assert
+      expect(result, isA<NetworkSuccess<void>>());
+      verify(() => mockCartRepo.removeItemFromCart(tProductId)).called(1);
+      verifyNoMoreInteractions(mockCartRepo);
+    });
 
     test(
       'should return NetworkFailure with same failure when cart repo fails',
       () async {
         // Arrange
-        when(
-          () => mockCartRepo.removeItemFromCart(tProductId),
-        ).thenAnswer((_) async => const NetworkFailure(tFailure));
+        when(() => mockCartRepo.removeItemFromCart(tProductId))
+            .thenAnswer((_) async => const NetworkFailure(tFailure));
 
         // Act
         final result = await sut(tProductId);

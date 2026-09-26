@@ -102,8 +102,9 @@ void main() {
     blocTest<CartCubit, CartState>(
       'should emit [CartLoading, CartSuccess] and populate items when remote call succeeds',
       build: () {
-        when(() => mockGetProductsInCartUseCase())
-            .thenAnswer((_) async => const NetworkSuccess([tCartItem1, tCartItem2]));
+        when(() => mockGetProductsInCartUseCase()).thenAnswer(
+          (_) async => const NetworkSuccess([tCartItem1, tCartItem2]),
+        );
         return sut;
       },
       act: (cubit) => cubit.getProductsInCart(),
@@ -162,7 +163,10 @@ void main() {
       setUp: () {
         // Populate internal list via addItemToCart
         when(
-          () => mockAddItemToCartUseCase.call(any(), quantity: any(named: 'quantity')),
+          () => mockAddItemToCartUseCase.call(
+            any(),
+            quantity: any(named: 'quantity'),
+          ),
         ).thenAnswer((_) async => const NetworkSuccess(null));
       },
       act: (cubit) async {
@@ -181,7 +185,10 @@ void main() {
       build: () => sut,
       setUp: () {
         when(
-          () => mockAddItemToCartUseCase.call(any(), quantity: any(named: 'quantity')),
+          () => mockAddItemToCartUseCase.call(
+            any(),
+            quantity: any(named: 'quantity'),
+          ),
         ).thenAnswer((_) async => const NetworkSuccess(null));
       },
       act: (cubit) async {
@@ -190,11 +197,15 @@ void main() {
       },
       skip: 1, // Skip the first addItemToCart emissions
       expect: () => [
-        isA<CartSuccess>()
-            .having((s) => s.itemAlreadyExists, 'itemAlreadyExists', true),
+        isA<CartSuccess>().having(
+          (s) => s.itemAlreadyExists,
+          'itemAlreadyExists',
+          true,
+        ),
       ],
       verify: (_) {
-        verify(() => mockAddItemToCartUseCase.call(tFruit1.code, quantity: 1)).called(1);
+        verify(() => mockAddItemToCartUseCase.call(tFruit1.code, quantity: 1))
+            .called(1);
       },
     );
 
@@ -202,7 +213,10 @@ void main() {
       'should optimistically add item and emit CartSuccess with newItemAdded: true when use case succeeds',
       build: () {
         when(
-          () => mockAddItemToCartUseCase.call(any(), quantity: any(named: 'quantity')),
+          () => mockAddItemToCartUseCase.call(
+            any(),
+            quantity: any(named: 'quantity'),
+          ),
         ).thenAnswer((_) async => const NetworkSuccess(null));
         return sut;
       },
@@ -217,9 +231,8 @@ void main() {
       verify: (_) {
         expect(sut.isInCart(tFruit1.code), isTrue);
         expect(sut.getCartItem(tFruit1.code)?.quantity, 2);
-        verify(
-          () => mockAddItemToCartUseCase.call(tFruit1.code, quantity: 2),
-        ).called(1);
+        verify(() => mockAddItemToCartUseCase.call(tFruit1.code, quantity: 2))
+            .called(1);
       },
     );
 
@@ -227,7 +240,10 @@ void main() {
       'should revert optimistic addition and emit CartFailure when use case fails',
       build: () {
         when(
-          () => mockAddItemToCartUseCase.call(any(), quantity: any(named: 'quantity')),
+          () => mockAddItemToCartUseCase.call(
+            any(),
+            quantity: any(named: 'quantity'),
+          ),
         ).thenAnswer((_) async => const NetworkFailure(tFailure));
         return sut;
       },
@@ -263,11 +279,13 @@ void main() {
       'should optimistically remove item and emit CartSuccess with itemRemoved: true when use case succeeds',
       build: () {
         when(
-          () => mockAddItemToCartUseCase.call(any(), quantity: any(named: 'quantity')),
+          () => mockAddItemToCartUseCase.call(
+            any(),
+            quantity: any(named: 'quantity'),
+          ),
         ).thenAnswer((_) async => const NetworkSuccess(null));
-        when(
-          () => mockRemoveItemFromCartUseCase.call(any()),
-        ).thenAnswer((_) async => const NetworkSuccess(null));
+        when(() => mockRemoveItemFromCartUseCase.call(any()))
+            .thenAnswer((_) async => const NetworkSuccess(null));
         return sut;
       },
       act: (cubit) async {
@@ -282,7 +300,8 @@ void main() {
       ],
       verify: (_) {
         expect(sut.isInCart(tFruit1.code), isFalse);
-        verify(() => mockRemoveItemFromCartUseCase.call(tFruit1.code)).called(1);
+        verify(() => mockRemoveItemFromCartUseCase.call(tFruit1.code))
+            .called(1);
       },
     );
 
@@ -290,11 +309,13 @@ void main() {
       'should revert optimistic removal and emit CartFailure when use case fails',
       build: () {
         when(
-          () => mockAddItemToCartUseCase.call(any(), quantity: any(named: 'quantity')),
+          () => mockAddItemToCartUseCase.call(
+            any(),
+            quantity: any(named: 'quantity'),
+          ),
         ).thenAnswer((_) async => const NetworkSuccess(null));
-        when(
-          () => mockRemoveItemFromCartUseCase.call(any()),
-        ).thenAnswer((_) async => const NetworkFailure(tFailure));
+        when(() => mockRemoveItemFromCartUseCase.call(any()))
+            .thenAnswer((_) async => const NetworkFailure(tFailure));
         return sut;
       },
       act: (cubit) async {
@@ -327,7 +348,10 @@ void main() {
       },
       setUp: () {
         when(
-          () => mockAddItemToCartUseCase.call(any(), quantity: any(named: 'quantity')),
+          () => mockAddItemToCartUseCase.call(
+            any(),
+            quantity: any(named: 'quantity'),
+          ),
         ).thenAnswer((_) async => const NetworkSuccess(null));
       },
       act: (cubit) async {
@@ -369,7 +393,10 @@ void main() {
       'should increment quantity optimistically and sync with server via debounce',
       build: () {
         when(
-          () => mockAddItemToCartUseCase.call(any(), quantity: any(named: 'quantity')),
+          () => mockAddItemToCartUseCase.call(
+            any(),
+            quantity: any(named: 'quantity'),
+          ),
         ).thenAnswer((_) async => const NetworkSuccess(null));
         when(
           () => mockUpdateItemQuantityUseCase.call(
@@ -408,7 +435,10 @@ void main() {
       'should decrement quantity optimistically and sync with server',
       build: () {
         when(
-          () => mockAddItemToCartUseCase.call(any(), quantity: any(named: 'quantity')),
+          () => mockAddItemToCartUseCase.call(
+            any(),
+            quantity: any(named: 'quantity'),
+          ),
         ).thenAnswer((_) async => const NetworkSuccess(null));
         when(
           () => mockUpdateItemQuantityUseCase.call(
@@ -446,11 +476,13 @@ void main() {
       'should call removeItemFromCart when decrementing quantity to 0',
       build: () {
         when(
-          () => mockAddItemToCartUseCase.call(any(), quantity: any(named: 'quantity')),
+          () => mockAddItemToCartUseCase.call(
+            any(),
+            quantity: any(named: 'quantity'),
+          ),
         ).thenAnswer((_) async => const NetworkSuccess(null));
-        when(
-          () => mockRemoveItemFromCartUseCase.call(any()),
-        ).thenAnswer((_) async => const NetworkSuccess(null));
+        when(() => mockRemoveItemFromCartUseCase.call(any()))
+            .thenAnswer((_) async => const NetworkSuccess(null));
         return sut;
       },
       act: (cubit) async {
@@ -463,7 +495,8 @@ void main() {
       ],
       verify: (_) {
         expect(sut.isInCart(tFruit1.code), isFalse);
-        verify(() => mockRemoveItemFromCartUseCase.call(tFruit1.code)).called(1);
+        verify(() => mockRemoveItemFromCartUseCase.call(tFruit1.code))
+            .called(1);
         verifyNever(
           () => mockUpdateItemQuantityUseCase.call(
             productId: any(named: 'productId'),
@@ -477,7 +510,10 @@ void main() {
       'should revert to baseline quantity and emit CartFailure when server sync fails',
       build: () {
         when(
-          () => mockAddItemToCartUseCase.call(any(), quantity: any(named: 'quantity')),
+          () => mockAddItemToCartUseCase.call(
+            any(),
+            quantity: any(named: 'quantity'),
+          ),
         ).thenAnswer((_) async => const NetworkSuccess(null));
         when(
           () => mockUpdateItemQuantityUseCase.call(
