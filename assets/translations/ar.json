@@ -304,5 +304,9 @@
   "new_password_cannot_be_empty": "كلمة المرور الجديدة لا يمكن أن تكون فارغة",
   "choose_image_source": "اختر مصدر الصورة",
   "camera": "الكاميرا",
-  "gallery": "المعرض"
+  "gallery": "المعرض",
+  "remove_photo": "حذف الصورة",
+  "photo_updated_tap_save_to_apply": "تم اختيار الصورة، اضغط على حفظ التعديلات لتطبيقها",
+  "photo_removed_tap_save_to_apply": "تم حذف الصورة، اضغط على حفظ التعديلات لتطبيق التغيير",
+  "no_changes_made": "لم يتم إجراء أي تعديلات"
 }

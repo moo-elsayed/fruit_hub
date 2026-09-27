@@ -368,4 +368,10 @@ abstract class AppStrings {
   static String get chooseImageSource => 'choose_image_source'.tr();
   static String get camera => 'camera'.tr();
   static String get gallery => 'gallery'.tr();
+  static String get removePhoto => 'remove_photo'.tr();
+  static String get photoUpdatedTapSaveToApply =>
+      'photo_updated_tap_save_to_apply'.tr();
+  static String get photoRemovedTapSaveToApply =>
+      'photo_removed_tap_save_to_apply'.tr();
+  static String get noChangesMade => 'no_changes_made'.tr();
 }

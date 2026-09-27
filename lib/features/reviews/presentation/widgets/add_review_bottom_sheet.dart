@@ -55,14 +55,19 @@ class _AddReviewBottomSheetState extends State<AddReviewBottomSheet> {
 
   void _submit() {
     final cachedUser = context.read<UserInfoCubit>().currentUser;
-    final firebaseUser = FirebaseAuth.instance.currentUser;
+    User? firebaseUser;
+    try {
+      firebaseUser = FirebaseAuth.instance.currentUser;
+    } catch (_) {}
 
     final userName = cachedUser?.name.trim().isNotEmpty == true
         ? cachedUser!.name.trim()
         : (firebaseUser?.displayName?.trim().isNotEmpty == true
               ? firebaseUser!.displayName!.trim()
               : (firebaseUser?.email ?? 'User'));
-    final userImage = firebaseUser?.photoURL;
+    final userImage = cachedUser?.image.trim().isNotEmpty == true
+        ? cachedUser!.image.trim()
+        : firebaseUser?.photoURL;
     final userId = firebaseUser?.uid ?? cachedUser?.uid ?? '';
     final productCode = context.read<ReviewsCubit>().fruit.code;
 
@@ -114,41 +119,43 @@ class _AddReviewBottomSheetState extends State<AddReviewBottomSheet> {
           builder: (context, state) {
             final isLoading = state is AddReviewLoading;
 
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const CustomBottomSheetHandle(),
-                Gap(12.h),
-                Text(
-                  AppStrings.writeReview,
-                  style: AppTextStyles.font18Bold.copyWith(
-                    color: context.colors.mainText,
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const CustomBottomSheetHandle(),
+                  Gap(12.h),
+                  Text(
+                    AppStrings.writeReview,
+                    style: AppTextStyles.font18Bold.copyWith(
+                      color: context.colors.mainText,
+                    ),
                   ),
-                ),
-                Gap(16.h),
-                AddReviewRatingSection(ratingNotifier: _ratingNotifier),
-                Gap(20.h),
-                TextFormFieldHelper(
-                  controller: _commentController,
-                  hint: AppStrings.writeYourReviewHere,
-                  maxLines: 4,
-                  minLines: 3,
-                  keyboardType: TextInputType.multiline,
-                  action: TextInputAction.newline,
-                  fillColor: context.colors.background,
-                ),
-                Gap(24.h),
-                // Submit Button
-                CustomMaterialButton(
-                  maxWidth: true,
-                  isLoading: isLoading,
-                  onPressed: _submit,
-                  text: AppStrings.submitReview,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                Gap(8.h),
-              ],
+                  Gap(16.h),
+                  AddReviewRatingSection(ratingNotifier: _ratingNotifier),
+                  Gap(16.h),
+                  TextFormFieldHelper(
+                    controller: _commentController,
+                    hint: AppStrings.writeYourReviewHere,
+                    maxLines: 4,
+                    minLines: 3,
+                    keyboardType: TextInputType.multiline,
+                    action: TextInputAction.newline,
+                    fillColor: context.colors.background,
+                  ),
+                  Gap(24.h),
+                  // Submit Button
+                  CustomMaterialButton(
+                    maxWidth: true,
+                    isLoading: isLoading,
+                    onPressed: _submit,
+                    text: AppStrings.submitReview,
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  Gap(8.h),
+                ],
+              ),
             );
           },
         ),

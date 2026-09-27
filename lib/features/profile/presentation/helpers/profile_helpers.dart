@@ -7,7 +7,7 @@ import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/utils/custom_bottom_sheet_selection_item.dart';
 import 'package:fruit_hub/core/widgets/custom_bottom_sheet.dart';
-import 'package:fruit_hub/features/profile/presentation/widgets/profile_card.dart';
+import 'package:fruit_hub/features/profile/presentation/items/profile_card_item.dart';
 
 // --------------- Language ---------------
 

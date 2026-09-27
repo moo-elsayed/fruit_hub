@@ -39,6 +39,7 @@ class RatingSummaryCard extends StatelessWidget {
     ),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
+      spacing: 16.w,
       children: [
         // Average Rating & Stars Column
         Column(
@@ -75,13 +76,11 @@ class RatingSummaryCard extends StatelessWidget {
             ),
           ],
         ),
-        Gap(20.w),
         Container(
           width: 1.w,
-          height: 90.h,
+          height: 85.h,
           color: context.colors.border.withValues(alpha: 0.8),
         ),
-        Gap(16.w),
         // Breakdown Bars
         Expanded(
           child: Column(

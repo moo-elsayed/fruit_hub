@@ -22,7 +22,12 @@ class ReviewCard extends StatelessWidget {
   String _formatDate(BuildContext context, String dateStr) {
     final parsed = DateTime.tryParse(dateStr);
     if (parsed == null) return dateStr;
-    return DateFormat.yMMMMd(context.locale.languageCode).format(parsed);
+    try {
+      final locale = Localizations.maybeLocaleOf(context)?.languageCode ?? 'en';
+      return DateFormat.yMMMMd(locale).format(parsed);
+    } catch (_) {
+      return '${parsed.year}-${parsed.month.toString().padLeft(2, '0')}-${parsed.day.toString().padLeft(2, '0')}';
+    }
   }
 
   @override
@@ -92,17 +97,18 @@ class ReviewCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Row(
+                  Wrap(
+                    spacing: 8.w,
+                    runSpacing: 4.h,
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      if (review.date.isNotEmpty) ...[
+                      if (review.date.isNotEmpty)
                         Text(
                           _formatDate(context, review.date),
                           style: AppTextStyles.font12Regular.copyWith(
                             color: context.colors.subText,
                           ),
                         ),
-                        Gap(8.w),
-                      ],
                       // Verified Buyer Badge
                       Row(
                         spacing: 3.w,

@@ -304,5 +304,9 @@
   "new_password_cannot_be_empty": "New password cannot be empty",
   "choose_image_source": "Choose Image Source",
   "camera": "Camera",
-  "gallery": "Gallery"
+  "gallery": "Gallery",
+  "remove_photo": "Remove Photo",
+  "photo_updated_tap_save_to_apply": "Photo selected, tap Save Changes to apply",
+  "photo_removed_tap_save_to_apply": "Photo removed, tap Save Changes to apply",
+  "no_changes_made": "No changes were made"
 }

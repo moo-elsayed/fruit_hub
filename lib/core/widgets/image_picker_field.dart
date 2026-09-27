@@ -68,6 +68,9 @@ class ImagePickerField extends StatelessWidget {
     required BuildContext context,
     required TextEditingController controller,
     FormFieldState<String>? state,
+    bool showRemoveOption = false,
+    VoidCallback? onRemove,
+    VoidCallback? onImagePicked,
   }) => CustomBottomSheet.show(
     context: context,
     title: AppStrings.chooseImageSource,
@@ -75,23 +78,43 @@ class ImagePickerField extends StatelessWidget {
       CustomBottomSheetSelectionItem(
         title: AppStrings.camera,
         icon: Icons.camera_alt_rounded,
-        onTap: () => pickImage(
-          context: context,
-          controller: controller,
-          source: ImageSource.camera,
-          state: state,
-        ),
+        onTap: () async {
+          await pickImage(
+            context: context,
+            controller: controller,
+            source: ImageSource.camera,
+            state: state,
+          );
+          if (controller.text.isNotEmpty) {
+            onImagePicked?.call();
+          }
+        },
       ),
       CustomBottomSheetSelectionItem(
         title: AppStrings.gallery,
         icon: Icons.photo_library_rounded,
-        onTap: () => pickImage(
-          context: context,
-          controller: controller,
-          source: ImageSource.gallery,
-          state: state,
-        ),
+        onTap: () async {
+          await pickImage(
+            context: context,
+            controller: controller,
+            source: ImageSource.gallery,
+            state: state,
+          );
+          if (controller.text.isNotEmpty) {
+            onImagePicked?.call();
+          }
+        },
       ),
+      if (showRemoveOption)
+        CustomBottomSheetSelectionItem(
+          title: AppStrings.removePhoto,
+          icon: Icons.delete_outline_rounded,
+          onTap: () {
+            controller.clear();
+            state?.didChange('');
+            onRemove?.call();
+          },
+        ),
     ],
   );
 

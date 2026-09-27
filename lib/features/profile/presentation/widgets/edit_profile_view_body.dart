@@ -4,11 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/helpers/validator.dart';
+import 'package:fruit_hub/core/widgets/app_toasts.dart';
 import 'package:fruit_hub/core/widgets/custom_keyboard_unfocus.dart';
-import 'package:fruit_hub/core/widgets/image_picker_field.dart';
 import 'package:fruit_hub/core/widgets/text_form_field_helper.dart';
 import 'package:fruit_hub/features/auth/domain/entities/user_entity.dart';
 import 'package:gap/gap.dart';
+import 'package:toastification/toastification.dart';
 
 import '../../domain/entities/update_profile_input_entity.dart';
 import '../managers/edit_profile_cubit/edit_profile_cubit.dart';
@@ -55,12 +56,30 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
   void _onSave() {
     if (_formKey.currentState?.validate() == true) {
       final user = context.read<EditProfileCubit>().currentUser;
+      final name = _nameController.text.trim();
+      final phone = _phoneController.text.trim();
+      final image = _imageController.text.trim();
+
+      final hasChanged =
+          name != (user?.name ?? '').trim() ||
+          phone != (user?.phone ?? '').trim() ||
+          image != (user?.image ?? '').trim();
+
+      if (!hasChanged) {
+        AppToast.show(
+          context: context,
+          title: AppStrings.noChangesMade,
+          type: ToastificationType.info,
+        );
+        return;
+      }
+
       context.read<EditProfileCubit>().updateProfile(
         UpdateProfileInputEntity(
           uid: user?.uid ?? '',
-          name: _nameController.text.trim(),
-          phone: _phoneController.text.trim(),
-          image: _imageController.text.trim(),
+          name: name,
+          phone: phone,
+          image: image,
         ),
       );
     }
@@ -82,17 +101,6 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
               child: Column(
                 children: [
                   EditProfileHeaderCard(imageController: _imageController),
-                  Gap(24.h),
-                  EditProfileSectionHeader(
-                    title: AppStrings.profilePicture,
-                    icon: Icons.photo_camera_outlined,
-                  ),
-                  Gap(10.h),
-                  ImagePickerField(
-                    controller: _imageController,
-                    label: AppStrings.profilePicture,
-                    icon: Icons.person_outline_rounded,
-                  ),
                   Gap(20.h),
                   EditProfileSectionHeader(
                     title: AppStrings.basicInfo,
@@ -101,6 +109,7 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
                   Gap(10.h),
                   EditProfileCardContainer(
                     child: Column(
+                      spacing: 14.h,
                       children: [
                         TextFormFieldHelper(
                           controller: _nameController,
@@ -112,7 +121,6 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
                           ),
                           onValidate: Validator.validateName,
                         ),
-                        Gap(14.h),
                         TextFormFieldHelper(
                           controller: _emailController,
                           labelText: AppStrings.email,
@@ -134,7 +142,6 @@ class _EditProfileViewBodyState extends State<EditProfileViewBody> {
                             ),
                           ),
                         ),
-                        Gap(14.h),
                         TextFormFieldHelper(
                           controller: _phoneController,
                           labelText: AppStrings.phoneNumber,

@@ -1112,3 +1112,194 @@ exports.backfillAnalytics = onRequest(
     }
   }
 );
+
+// ── User Profile Sync: Update embedded reviews in products ───────────────────
+/**
+ * Automatically syncs the user's updated name and profile image to all reviews
+ * they have previously submitted across all products.
+ */
+exports.onUserProfileUpdated = onDocumentUpdated(
+  "users/{userId}",
+  async (event) => {
+    const beforeData = event.data?.before?.data() || {};
+    const afterData = event.data?.after?.data() || {};
+    const userId = event.params.userId;
+
+    const oldName = (beforeData.name || "").trim();
+    const newName = (afterData.name || "").trim();
+    const oldImage = (beforeData.image || "").trim();
+    const newImage = (afterData.image || "").trim();
+
+    const targetName = newName || oldName;
+    const targetImage = newImage;
+
+    const nameChanged = oldName !== newName && newName.length > 0;
+    const imageChanged = oldImage !== newImage;
+
+    // Only proceed if a profile field actually changed
+    if (!nameChanged && !imageChanged) {
+      return;
+    }
+
+    logger.info(
+      `User ${userId} profile updated (nameChanged: ${nameChanged}, imageChanged: ${imageChanged}). Target name: "${targetName}", target image: "${targetImage}". Syncing reviews across products...`
+    );
+
+    try {
+      const productsSnapshot = await db.collection("products").get();
+      if (productsSnapshot.empty) {
+        logger.info("No products found to sync reviews.");
+        return;
+      }
+
+      let updatedProductsCount = 0;
+      let batch = db.batch();
+      let batchOperations = 0;
+      const MAX_BATCH_OPS = 450;
+
+      for (const productDoc of productsSnapshot.docs) {
+        const productData = productDoc.data() || {};
+        const reviews = productData.reviews;
+
+        if (!Array.isArray(reviews) || reviews.length === 0) continue;
+
+        let hasModifications = false;
+        const updatedReviews = reviews.map((review) => {
+          const matches =
+            (review.userId && review.userId === userId) ||
+            (review.uId && review.uId === userId);
+
+          if (matches) {
+            const currentReviewName = (review.name || "").trim();
+            const currentReviewImage = (review.image || "").trim();
+
+            const nameNeedsUpdate = targetName && currentReviewName !== targetName;
+            const imageNeedsUpdate = currentReviewImage !== targetImage;
+
+            if (nameNeedsUpdate || imageNeedsUpdate) {
+              hasModifications = true;
+              return {
+                ...review,
+                ...(targetName ? { name: targetName } : {}),
+                image: targetImage,
+              };
+            }
+          }
+          return review;
+        });
+
+        if (hasModifications) {
+          batch.update(productDoc.ref, { reviews: updatedReviews });
+          batchOperations++;
+          updatedProductsCount++;
+
+          if (batchOperations >= MAX_BATCH_OPS) {
+            await batch.commit();
+            batch = db.batch();
+            batchOperations = 0;
+          }
+        }
+      }
+
+      if (batchOperations > 0) {
+        await batch.commit();
+      }
+
+      logger.info(
+        `Successfully synced profile updates for user ${userId} across ${updatedProductsCount} products.`
+      );
+    } catch (error) {
+      logger.error(`Error syncing reviews for user ${userId}:`, error);
+    }
+  }
+);
+
+/**
+ * Admin HTTP trigger to backfill and sync all product reviews with the current
+ * names and images from the `users` collection.
+ */
+exports.syncAllReviewsWithProfiles = onRequest(async (req, res) => {
+  try {
+    logger.info("Starting manual sync of all reviews with user profiles...");
+
+    // 1. Fetch all users to create a lookup map
+    const usersSnapshot = await db.collection("users").get();
+    const usersMap = new Map();
+    for (const userDoc of usersSnapshot.docs) {
+      const data = userDoc.data() || {};
+      usersMap.set(userDoc.id, {
+        name: (data.name || "").trim(),
+        image: (data.image || "").trim(),
+      });
+    }
+
+    // 2. Scan all products
+    const productsSnapshot = await db.collection("products").get();
+    let updatedProductsCount = 0;
+    let updatedReviewsCount = 0;
+    let batch = db.batch();
+    let batchOperations = 0;
+    const MAX_BATCH_OPS = 450;
+
+    for (const productDoc of productsSnapshot.docs) {
+      const productData = productDoc.data() || {};
+      const reviews = productData.reviews;
+      if (!Array.isArray(reviews) || reviews.length === 0) continue;
+
+      let docModified = false;
+      const updatedReviews = reviews.map((review) => {
+        const uId = review.userId || review.uId;
+        if (!uId || !usersMap.has(uId)) return review;
+
+        const profile = usersMap.get(uId);
+        const currentName = (review.name || "").trim();
+        const currentImage = (review.image || "").trim();
+
+        const nameDiff = profile.name && currentName !== profile.name;
+        const imageDiff = currentImage !== profile.image;
+
+        if (nameDiff || imageDiff) {
+          docModified = true;
+          updatedReviewsCount++;
+          return {
+            ...review,
+            ...(profile.name ? { name: profile.name } : {}),
+            image: profile.image,
+          };
+        }
+        return review;
+      });
+
+      if (docModified) {
+        batch.update(productDoc.ref, { reviews: updatedReviews });
+        batchOperations++;
+        updatedProductsCount++;
+
+        if (batchOperations >= MAX_BATCH_OPS) {
+          await batch.commit();
+          batch = db.batch();
+          batchOperations = 0;
+        }
+      }
+    }
+
+    if (batchOperations > 0) {
+      await batch.commit();
+    }
+
+    logger.info(
+      `Manual sync completed: updated ${updatedReviewsCount} reviews across ${updatedProductsCount} products.`
+    );
+
+    res.json({
+      success: true,
+      updatedProductsCount,
+      updatedReviewsCount,
+    });
+  } catch (error) {
+    logger.error("Failed to sync reviews with profiles:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
