@@ -12,14 +12,17 @@ class ProductDetailsGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
     mainAxisSize: MainAxisSize.min,
-    spacing: 12.w,
+    spacing: 10.w,
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      for (int i = 0; i < productDetails.length; i++) ...[
-        Expanded(
-          child: ProductDetailItem(productDetail: productDetails[i], index: i),
-        ),
-      ],
-    ],
+    children: productDetails
+        .map(
+          (e) => Expanded(
+            child: ProductDetailItem(
+              productDetail: e,
+              index: productDetails.indexOf(e),
+            ),
+          ),
+        )
+        .toList(),
   );
 }

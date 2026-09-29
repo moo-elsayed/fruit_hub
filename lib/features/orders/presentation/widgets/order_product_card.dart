@@ -6,7 +6,6 @@ import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_network_image.dart';
 import 'package:fruit_hub/core/widgets/custom_price_text.dart';
-import 'package:gap/gap.dart';
 
 class OrderProductCard extends StatelessWidget {
   const OrderProductCard({super.key, required this.product});
@@ -22,6 +21,7 @@ class OrderProductCard extends StatelessWidget {
       border: Border.all(color: context.colors.border, width: 0.8),
     ),
     child: Row(
+      spacing: 10.w,
       children: [
         Container(
           width: 44.r,
@@ -35,10 +35,10 @@ class OrderProductCard extends StatelessWidget {
             child: CustomNetworkImage(image: product.imagePath, fit: .cover),
           ),
         ),
-        Gap(10.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 2.h,
             children: [
               Text(
                 product.name,
@@ -49,7 +49,6 @@ class OrderProductCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               if (product.code.isNotEmpty) ...[
-                Gap(2.h),
                 Text(
                   '${AppStrings.codeLabel}${product.code}',
                   style: AppTextStyles.font11Medium.copyWith(
@@ -60,14 +59,13 @@ class OrderProductCard extends StatelessWidget {
             ],
           ),
         ),
-        Gap(8.w),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
+          spacing: 2.h,
           children: [
             CustomPriceText(price: product.totalPrice),
-            Gap(2.h),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
               decoration: BoxDecoration(
                 color: context.colors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(4.r),

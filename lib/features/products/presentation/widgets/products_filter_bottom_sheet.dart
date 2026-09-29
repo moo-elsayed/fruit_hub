@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/enums/product_sort_type.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_bottom_sheet_handle.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
@@ -14,6 +15,19 @@ import 'package:gap/gap.dart';
 
 class ProductsFilterBottomSheet extends StatefulWidget {
   const ProductsFilterBottomSheet({super.key});
+
+  static Future<void> show(
+    BuildContext context, {
+    ProductsCubit? productsCubit,
+  }) => showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: AppPalette.transparent,
+    builder: (_) => BlocProvider.value(
+      value: productsCubit ?? context.read<ProductsCubit>(),
+      child: const ProductsFilterBottomSheet(),
+    ),
+  );
 
   @override
   State<ProductsFilterBottomSheet> createState() =>
@@ -91,23 +105,27 @@ class _ProductsFilterBottomSheetState extends State<ProductsFilterBottomSheet> {
             ],
           ),
           Gap(16.h),
-          ValueListenableBuilder<ProductSortType>(
-            valueListenable: _selectedSortNotifier,
-            builder: (context, selectedSort, _) => Column(
-              mainAxisSize: MainAxisSize.min,
-              children: List.generate(
-                sortOptions.length,
-                (index) => Padding(
-                  padding: EdgeInsets.only(
-                    bottom: index == sortOptions.length - 1 ? 0 : 10.h,
-                  ),
-                  child: SortOptionItem(
-                    onTap: () => _selectedSortNotifier.value =
-                        selectedSort == sortOptions[index]
-                        ? ProductSortType.none
-                        : sortOptions[index],
-                    isSelected: selectedSort == sortOptions[index],
-                    title: sortOptions[index].title,
+          Flexible(
+            child: SingleChildScrollView(
+              child: ValueListenableBuilder<ProductSortType>(
+                valueListenable: _selectedSortNotifier,
+                builder: (context, selectedSort, _) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(
+                    sortOptions.length,
+                    (index) => Padding(
+                      padding: EdgeInsets.only(
+                        bottom: index == sortOptions.length - 1 ? 0 : 10.h,
+                      ),
+                      child: SortOptionItem(
+                        onTap: () => _selectedSortNotifier.value =
+                            selectedSort == sortOptions[index]
+                            ? ProductSortType.none
+                            : sortOptions[index],
+                        isSelected: selectedSort == sortOptions[index],
+                        title: sortOptions[index].title,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -128,7 +146,9 @@ class _ProductsFilterBottomSheetState extends State<ProductsFilterBottomSheet> {
             },
             text: AppStrings.apply,
             maxWidth: true,
-            textStyle: AppTextStyles.font16Bold.copyWith(color: Colors.white),
+            textStyle: AppTextStyles.font16Bold.copyWith(
+              color: AppPalette.white,
+            ),
           ),
         ],
       ),

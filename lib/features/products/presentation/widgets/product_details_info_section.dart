@@ -19,6 +19,7 @@ class ProductDetailsInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
+    spacing: 8.h,
     children: [
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +62,6 @@ class ProductDetailsInfoSection extends StatelessWidget {
           PricePerKilo(price: fruit.price),
         ],
       ),
-      Gap(8.h),
       InkWell(
         borderRadius: BorderRadius.circular(8.r),
         onTap: () async {
@@ -100,7 +100,6 @@ class ProductDetailsInfoSection extends StatelessWidget {
           ],
         ),
       ),
-      Gap(8.h),
       Text(
         fruit.description,
         maxLines: 2,

@@ -4,7 +4,6 @@ import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_price_text.dart';
-import 'package:gap/gap.dart';
 
 class OrderFinancialSummary extends StatelessWidget {
   const OrderFinancialSummary({
@@ -27,12 +26,12 @@ class OrderFinancialSummary extends StatelessWidget {
       border: Border.all(color: context.colors.border, width: 0.8),
     ),
     child: Column(
+      spacing: 6.h,
       children: [
         _RowItem(
           title: AppStrings.subtotal,
           trailing: CustomPriceText(price: subtotal),
         ),
-        Gap(6.h),
         _RowItem(
           title: AppStrings.delivery,
           trailing: shippingCost > 0
@@ -44,10 +43,7 @@ class OrderFinancialSummary extends StatelessWidget {
                   ),
                 ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.h),
-          child: Divider(color: context.colors.border, height: 1),
-        ),
+        Divider(color: context.colors.border, height: 0),
         _RowItem(
           title: AppStrings.grandTotal,
           trailing: CustomPriceText(price: totalPrice, isLarge: true),

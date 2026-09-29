@@ -19,17 +19,6 @@ class OrderCardHeader extends StatelessWidget {
   final String date;
   final OrderStatus status;
 
-  static String _formatDate(String rawDate) {
-    if (rawDate.isEmpty) return '';
-    try {
-      final parsed = DateTime.tryParse(rawDate);
-      if (parsed != null) {
-        return '${parsed.day.toString().padLeft(2, '0')}/${parsed.month.toString().padLeft(2, '0')}/${parsed.year}';
-      }
-    } catch (_) {}
-    return rawDate.length > 10 ? rawDate.substring(0, 10) : rawDate;
-  }
-
   @override
   Widget build(BuildContext context) => Row(
     spacing: 12.w,
@@ -56,12 +45,15 @@ class OrderCardHeader extends StatelessWidget {
           children: [
             Text(
               '${AppStrings.orderNumber} #$orderId',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: AppTextStyles.font14Bold.copyWith(
                 color: context.colors.mainText,
               ),
             ),
             if (date.isNotEmpty)
               Row(
+                mainAxisSize: MainAxisSize.min,
                 spacing: 4.w,
                 children: [
                   Icon(
@@ -69,10 +61,14 @@ class OrderCardHeader extends StatelessWidget {
                     size: 13.sp,
                     color: context.colors.subText,
                   ),
-                  Text(
-                    _formatDate(date),
-                    style: AppTextStyles.font12Regular.copyWith(
-                      color: context.colors.subText,
+                  Flexible(
+                    child: Text(
+                      date.toFormattedDate(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.font12Regular.copyWith(
+                        color: context.colors.subText,
+                      ),
                     ),
                   ),
                 ],

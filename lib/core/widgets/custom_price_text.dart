@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
@@ -25,22 +25,38 @@ class CustomPriceText extends StatelessWidget {
     final effectivePriceStyle =
         priceStyle ??
         (isLarge
-            ? AppTextStyles.font18Bold.copyWith(color: effectiveColor)
-            : AppTextStyles.font16Bold.copyWith(color: effectiveColor));
+            ? AppTextStyles.font18Bold.copyWith(
+                color: effectiveColor,
+                height: 1.1,
+              )
+            : AppTextStyles.font16Bold.copyWith(
+                color: effectiveColor,
+                height: 1.1,
+              ));
     final effectiveCurrencyStyle =
         currencyStyle ??
         (isLarge
-            ? AppTextStyles.font13SemiBold.copyWith(color: effectiveColor)
-            : AppTextStyles.font12SemiBold.copyWith(color: effectiveColor));
+            ? AppTextStyles.font13SemiBold.copyWith(
+                color: effectiveColor,
+                height: 1.1,
+              )
+            : AppTextStyles.font12SemiBold.copyWith(
+                color: effectiveColor,
+                height: 1.1,
+              ));
 
-    return RichText(
-      text: TextSpan(
+    return Text.rich(
+      TextSpan(
         children: [
-          TextSpan(text: '${price.formattedPrice}', style: effectivePriceStyle),
-          const TextSpan(text: ' '),
+          TextSpan(
+            text: '${price.formattedPrice} ',
+            style: effectivePriceStyle,
+          ),
           TextSpan(text: AppStrings.pounds, style: effectiveCurrencyStyle),
         ],
       ),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

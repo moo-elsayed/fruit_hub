@@ -55,6 +55,7 @@ class ProductDetailsBottomBar extends StatelessWidget {
           top: false,
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            spacing: 14.h,
             children: [
               if (isInCart)
                 Row(
@@ -129,7 +130,6 @@ class ProductDetailsBottomBar extends StatelessWidget {
                     ],
                   ),
                 ),
-              Gap(14.h),
               CustomMaterialButton(
                 onPressed: isInCart
                     ? () {

@@ -10,12 +10,15 @@ Widget createWidgetForTesting({
   RouteFactory? onGenerateRoute,
   Map<String, WidgetBuilder>? routes,
 }) => ScreenUtilInit(
+  key: ValueKey('$themeMode-${locale?.languageCode}'),
   designSize: const Size(375, 812),
   minTextAdapt: true,
   splitScreenMode: true,
   builder: (context, _) => MaterialApp(
     debugShowCheckedModeBanner: false,
-    theme: AppTheme.lightTheme,
+    theme: themeMode == ThemeMode.dark
+        ? AppTheme.darkTheme
+        : AppTheme.lightTheme,
     darkTheme: AppTheme.darkTheme,
     themeMode: themeMode,
     locale: locale,

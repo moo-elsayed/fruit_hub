@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/order_entity.dart';
+import 'package:fruit_hub/core/enums/order_status.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
-import 'package:gap/gap.dart';
 
 import 'order_card_header.dart';
 import 'order_customer_details.dart';
@@ -64,6 +64,9 @@ class _CustomOrderItemState extends State<CustomOrderItem>
   @override
   Widget build(BuildContext context) {
     final order = widget.orderEntity;
+    final isLiveOrder =
+        order.status != OrderStatus.delivered &&
+        order.status != OrderStatus.cancelled;
 
     return Container(
       padding: EdgeInsets.all(14.r),
@@ -87,9 +90,7 @@ class _CustomOrderItemState extends State<CustomOrderItem>
             date: order.date,
             status: order.status,
           ),
-          Gap(12.h),
-          Divider(color: context.colors.border, height: 1),
-          Gap(12.h),
+          Divider(color: context.colors.border, height: 24.h, thickness: 1.h),
           ValueListenableBuilder<bool>(
             valueListenable: _isExpandedNotifier,
             builder: (context, isExpanded, _) => OrderSummaryBar(
@@ -105,32 +106,36 @@ class _CustomOrderItemState extends State<CustomOrderItem>
             child: FadeTransition(
               opacity: _expandAnimation,
               child: Column(
+                spacing: 12.h,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Gap(6.h),
-                  Divider(color: context.colors.border, height: 1),
-                  Gap(12.h),
+                  Divider(
+                    color: context.colors.border,
+                    height: 18.h,
+                    thickness: 1.h,
+                  ),
                   OrderCustomerDetails(address: order.shippingAddress),
-                  Gap(12.h),
                   OrderProductsList(products: order.orderItems),
-                  Gap(12.h),
                   OrderFinancialSummary(
                     subtotal: order.subtotal,
                     shippingCost: order.paymentOption.shippingCost,
                     totalPrice: order.totalPrice,
                   ),
-                  Gap(14.h),
                   CustomMaterialButton(
                     onPressed: () => context.pushNamed(
                       Routes.trackOrderView,
                       arguments: order,
                     ),
-                    text: AppStrings.trackOrder,
+                    text: isLiveOrder
+                        ? AppStrings.trackOrder
+                        : AppStrings.orderDetails,
                     textStyle: AppTextStyles.font13SemiBold.copyWith(
                       color: AppPalette.white,
                     ),
                     icon: Icon(
-                      Icons.navigation_outlined,
+                      isLiveOrder
+                          ? Icons.navigation_outlined
+                          : Icons.receipt_long_outlined,
                       size: 16.sp,
                       color: AppPalette.white,
                     ),

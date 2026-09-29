@@ -24,16 +24,7 @@ class ProductsFilterButton extends StatelessWidget {
           final bool isSortActive = cubit.currentFilter.hasActiveSort;
 
           return GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (_) => BlocProvider.value(
-                  value: context.read<ProductsCubit>(),
-                  child: const ProductsFilterBottomSheet(),
-                ),
-              );
-            },
+            onTap: () => ProductsFilterBottomSheet.show(context),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 7.h),

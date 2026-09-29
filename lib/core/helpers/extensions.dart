@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:fruit_hub/core/theming/colors_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:toastification/toastification.dart';
 
 import 'app_strings.dart';
@@ -76,4 +77,41 @@ extension ThemeModeExtension on ThemeMode {
 
 extension NumExtension on num {
   num get formattedPrice => toInt() == this ? toInt() : this;
+}
+
+extension DateTimeExtension on DateTime {
+  String toLocalizedDate(BuildContext context) {
+    try {
+      final locale = Localizations.maybeLocaleOf(context)?.languageCode ?? 'en';
+      return DateFormat.yMMMMd(locale).format(this);
+    } catch (_) {
+      return toFormattedDate();
+    }
+  }
+
+  String toFormattedDate({String pattern = 'dd/MM/yyyy'}) {
+    try {
+      return DateFormat(pattern).format(this);
+    } catch (_) {
+      return '${day.toString().padLeft(2, '0')}/${month.toString().padLeft(2, '0')}/$year';
+    }
+  }
+}
+
+extension StringDateExtension on String {
+  DateTime? get toDateTime => DateTime.tryParse(this);
+
+  String toLocalizedDate(BuildContext context) {
+    if (isEmpty) return '';
+    final parsed = toDateTime;
+    if (parsed == null) return this;
+    return parsed.toLocalizedDate(context);
+  }
+
+  String toFormattedDate({String pattern = 'dd/MM/yyyy'}) {
+    if (isEmpty) return '';
+    final parsed = toDateTime;
+    if (parsed == null) return length > 10 ? substring(0, 10) : this;
+    return parsed.toFormattedDate(pattern: pattern);
+  }
 }

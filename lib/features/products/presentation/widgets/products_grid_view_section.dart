@@ -79,6 +79,7 @@ class _ProductsGridViewSectionState extends State<ProductsGridViewSection> {
           onRefresh: () => context.read<ProductsCubit>().refresh(),
           color: context.colors.primary,
           child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
             controller: _scrollController,
             slivers: [
               SliverPadding(

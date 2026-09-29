@@ -29,7 +29,7 @@ class OrderSummaryBar extends StatelessWidget {
       Row(
         mainAxisAlignment: .spaceBetween,
         children: [
-          CustomPriceText(price: totalPrice, isLarge: true),
+          Flexible(child: CustomPriceText(price: totalPrice, isLarge: true)),
           OrderPaymentTypeChip(paymentType: paymentType),
         ],
       ),

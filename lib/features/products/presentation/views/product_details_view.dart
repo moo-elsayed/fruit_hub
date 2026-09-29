@@ -102,7 +102,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   children: [
                     ProductDetailsHeader(fruit: displayFruit),
                     Expanded(
-                      child: Padding(
+                      child: SingleChildScrollView(
                         padding: EdgeInsets.symmetric(
                           horizontal: 20.w,
                           vertical: 12.h,

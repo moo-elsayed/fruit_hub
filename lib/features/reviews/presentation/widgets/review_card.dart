@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/entities/review_entity.dart';
@@ -17,17 +16,6 @@ class ReviewCard extends StatelessWidget {
     final trimmed = name.trim();
     if (trimmed.isEmpty) return 'U';
     return trimmed.characters.first.toUpperCase();
-  }
-
-  String _formatDate(BuildContext context, String dateStr) {
-    final parsed = DateTime.tryParse(dateStr);
-    if (parsed == null) return dateStr;
-    try {
-      final locale = Localizations.maybeLocaleOf(context)?.languageCode ?? 'en';
-      return DateFormat.yMMMMd(locale).format(parsed);
-    } catch (_) {
-      return '${parsed.year}-${parsed.month.toString().padLeft(2, '0')}-${parsed.day.toString().padLeft(2, '0')}';
-    }
   }
 
   @override
@@ -104,7 +92,7 @@ class ReviewCard extends StatelessWidget {
                     children: [
                       if (review.date.isNotEmpty)
                         Text(
-                          _formatDate(context, review.date),
+                          review.date.toLocalizedDate(context),
                           style: AppTextStyles.font12Regular.copyWith(
                             color: context.colors.subText,
                           ),

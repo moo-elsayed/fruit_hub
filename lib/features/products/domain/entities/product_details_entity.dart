@@ -4,7 +4,7 @@ import '../../../../core/helpers/app_assets.dart';
 import '../../../../core/helpers/app_strings.dart';
 
 class ProductDetailsEntity {
-  ProductDetailsEntity({
+  const ProductDetailsEntity({
     required this.title,
     required this.subtitle,
     required this.trailingAsset,

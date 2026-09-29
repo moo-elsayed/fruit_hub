@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +11,6 @@ import 'package:fruit_hub/core/widgets/app_toasts.dart';
 import 'package:fruit_hub/core/widgets/custom_confirmation_dialog.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:fruit_hub/core/widgets/order_timeline_preview.dart';
-import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
 
 import '../managers/track_order_cubit/track_order_cubit.dart';
@@ -21,6 +19,7 @@ import 'order_card_header.dart';
 import 'order_customer_details.dart';
 import 'order_financial_summary.dart';
 import 'order_products_list.dart';
+import 'track_order_loading_skeleton.dart';
 
 class TrackOrderViewBody extends StatelessWidget {
   const TrackOrderViewBody({super.key});
@@ -54,7 +53,7 @@ class TrackOrderViewBody extends StatelessWidget {
         builder: (context, state) {
           if (state is TrackOrderLoading &&
               context.read<TrackOrderCubit>().currentOrder == null) {
-            return const Center(child: CupertinoActivityIndicator());
+            return const TrackOrderLoadingSkeleton();
           }
 
           if (state is TrackOrderFailure &&
@@ -86,6 +85,7 @@ class TrackOrderViewBody extends StatelessWidget {
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
             child: Column(
+              spacing: 16.h,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FadeInDown(
@@ -96,12 +96,11 @@ class TrackOrderViewBody extends StatelessWidget {
                     status: order.status,
                   ),
                 ),
-                Gap(16.h),
                 if (isCancelled)
                   FadeIn(
                     duration: const Duration(milliseconds: 300),
                     child: Container(
-                      padding: EdgeInsets.all(14.r),
+                      padding: EdgeInsets.all(12.r),
                       decoration: BoxDecoration(
                         color: AppPalette.error.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12.r),
@@ -110,13 +109,13 @@ class TrackOrderViewBody extends StatelessWidget {
                         ),
                       ),
                       child: Row(
+                        spacing: 8.w,
                         children: [
                           Icon(
                             Icons.cancel_outlined,
                             color: AppPalette.error,
                             size: 24.sp,
                           ),
-                          Gap(12.w),
                           Expanded(
                             child: Text(
                               AppStrings.orderCancelled,
@@ -136,19 +135,16 @@ class TrackOrderViewBody extends StatelessWidget {
                       currentStep: order.status.stepIndex,
                     ),
                   ),
-                Gap(20.h),
                 FadeInUp(
                   duration: const Duration(milliseconds: 400),
                   delay: const Duration(milliseconds: 100),
                   child: OrderCustomerDetails(address: order.shippingAddress),
                 ),
-                Gap(16.h),
                 FadeInUp(
                   duration: const Duration(milliseconds: 400),
                   delay: const Duration(milliseconds: 200),
                   child: OrderProductsList(products: order.orderItems),
                 ),
-                Gap(16.h),
                 FadeInUp(
                   duration: const Duration(milliseconds: 400),
                   delay: const Duration(milliseconds: 300),
@@ -158,8 +154,7 @@ class TrackOrderViewBody extends StatelessWidget {
                     totalPrice: order.totalPrice,
                   ),
                 ),
-                if (order.canCancel) ...[
-                  Gap(24.h),
+                if (order.canCancel)
                   FadeInUp(
                     duration: const Duration(milliseconds: 400),
                     delay: const Duration(milliseconds: 350),
@@ -188,8 +183,6 @@ class TrackOrderViewBody extends StatelessWidget {
                       isLoading: state is TrackOrderCancelLoading,
                     ),
                   ),
-                ],
-                Gap(16.h),
               ],
             ),
           );
