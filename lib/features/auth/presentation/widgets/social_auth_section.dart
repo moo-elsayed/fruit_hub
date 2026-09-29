@@ -6,22 +6,22 @@ import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/app_toasts.dart';
-import 'package:gap/gap.dart';
+import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:toastification/toastification.dart';
 
 import '../managers/social_sign_in_cubit/social_sign_in_cubit.dart';
 import 'or_divider.dart';
-import 'social_login_button.dart';
 
 class SocialAuthSection extends StatelessWidget {
   const SocialAuthSection({super.key});
 
   @override
   Widget build(BuildContext context) => Column(
+    spacing: 16.h,
     children: [
       const OrDivider(),
-      Gap(16.h),
       BlocConsumer<SocialSignInCubit, SocialSignInState>(
         listener: (context, state) {
           if (state is GoogleSuccess) {
@@ -44,14 +44,20 @@ class SocialAuthSection extends StatelessWidget {
             current is GoogleSuccess ||
             current is GoogleFailure ||
             current is GoogleLoading,
-        builder: (context, state) => SocialLoginButton(
+        builder: (context, state) => CustomMaterialButton(
           onPressed: () => context.read<SocialSignInCubit>().googleSignIn(),
+          maxWidth: true,
+          backgroundColor: context.colors.surface,
+          side: BorderSide(color: context.colors.border),
           isLoading: state is GoogleLoading,
+          loadingIndicatorColor: context.colors.primary,
           text: AppStrings.signInWithGoogle,
-          socialIcon: SvgPicture.asset(AppAssets.iconsGoogleIcon),
+          textStyle: AppTextStyles.font16SemiBold.copyWith(
+            color: context.colors.mainText,
+          ),
+          icon: SvgPicture.asset(AppAssets.iconsGoogleIcon),
         ),
       ),
-      Gap(16.h),
       BlocConsumer<SocialSignInCubit, SocialSignInState>(
         listener: (context, state) {
           if (state is FacebookSuccess) {
@@ -74,11 +80,18 @@ class SocialAuthSection extends StatelessWidget {
             current is FacebookSuccess ||
             current is FacebookFailure ||
             current is FacebookLoading,
-        builder: (context, state) => SocialLoginButton(
+        builder: (context, state) => CustomMaterialButton(
           onPressed: () => context.read<SocialSignInCubit>().facebookSignIn(),
+          maxWidth: true,
+          backgroundColor: context.colors.surface,
+          side: BorderSide(color: context.colors.border),
           isLoading: state is FacebookLoading,
+          loadingIndicatorColor: context.colors.primary,
           text: AppStrings.signInWithFacebook,
-          socialIcon: SvgPicture.asset(AppAssets.iconsFacebookIcon),
+          textStyle: AppTextStyles.font16SemiBold.copyWith(
+            color: context.colors.mainText,
+          ),
+          icon: SvgPicture.asset(AppAssets.iconsFacebookIcon),
         ),
       ),
     ],

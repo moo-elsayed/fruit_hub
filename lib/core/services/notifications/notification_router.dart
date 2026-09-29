@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fruit_hub/core/enums/notification_type.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 
+import 'package:fruit_hub/features/main/presentation/managers/main_tab_notifier.dart';
+
 class NotificationRouter {
   NotificationRouter._();
 
@@ -79,7 +81,15 @@ class NotificationRouter {
 
     // 3. Cart reminders
     if (type == NotificationType.cart) {
-      _navigateTo(Routes.mainView, arguments: 2);
+      MainTabNotifier.switchToTab(2);
+      final state = navigatorKey.currentState;
+      if (state != null) {
+        if (state.canPop()) {
+          state.popUntil((route) => route.isFirst);
+        } else {
+          state.pushReplacementNamed(Routes.mainView, arguments: 2);
+        }
+      }
       return;
     }
 

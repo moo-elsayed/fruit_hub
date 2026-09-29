@@ -1,11 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/enums/notification_type.dart';
-import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
+import 'package:fruit_hub/features/main/presentation/managers/main_tab_notifier.dart';
 
 import '../../domain/entities/notification_entity.dart';
 
@@ -31,7 +30,12 @@ class NotificationItemWidget extends StatelessWidget {
           );
         }
       case NotificationType.cart:
-        context.pushNamed(Routes.mainView, arguments: 2);
+        MainTabNotifier.switchToTab(2);
+        if (context.canPop()) {
+          context.popUntil((route) => route.isFirst);
+        } else {
+          context.pushReplacementNamed(Routes.mainView, arguments: 2);
+        }
       case NotificationType.review:
         if (notification.productCode != null &&
             notification.productCode!.isNotEmpty) {
@@ -42,27 +46,6 @@ class NotificationItemWidget extends StatelessWidget {
         }
       case NotificationType.general:
         break;
-    }
-  }
-
-  String _formatTimestamp(BuildContext context, DateTime? dateTime) {
-    if (dateTime == null) return '';
-    final now = DateTime.now();
-    final difference = now.difference(dateTime);
-
-    if (difference.inMinutes < 1) {
-      return AppStrings.justNow;
-    } else if (difference.inHours < 1) {
-      return AppStrings.minutesAgo(difference.inMinutes);
-    } else if (difference.inDays < 1) {
-      return AppStrings.hoursAgo(difference.inHours);
-    } else if (difference.inDays < 7) {
-      return AppStrings.daysAgo(difference.inDays);
-    } else {
-      return DateFormat(
-        'dd/MM/yyyy',
-        context.locale.languageCode,
-      ).format(dateTime);
     }
   }
 
@@ -142,7 +125,7 @@ class NotificationItemWidget extends StatelessWidget {
                 ),
                 if (notification.createdAt != null)
                   Text(
-                    _formatTimestamp(context, notification.createdAt),
+                    notification.createdAt!.toTimeAgo(context),
                     style: AppTextStyles.font12Regular.copyWith(
                       color: context.colors.subText.withValues(alpha: 0.7),
                     ),

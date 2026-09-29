@@ -17,8 +17,8 @@ class AuthRedirectText extends StatelessWidget {
   final void Function()? onTap;
 
   @override
-  Widget build(BuildContext context) => RichText(
-    text: TextSpan(
+  Widget build(BuildContext context) => Text.rich(
+    TextSpan(
       children: [
         TextSpan(
           text: question,

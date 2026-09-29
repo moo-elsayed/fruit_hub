@@ -17,8 +17,8 @@ import 'package:fruit_hub/core/widgets/custom_material_button.dart';
 import 'package:fruit_hub/core/widgets/text_form_field_helper.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/signin_cubit/sign_in_cubit.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/social_sign_in_cubit/social_sign_in_cubit.dart';
+import 'package:fruit_hub/features/auth/presentation/widgets/auth_header_section.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/auth_redirect_text.dart';
-import 'package:fruit_hub/features/auth/presentation/widgets/forget_password.dart';
 import 'package:fruit_hub/features/auth/presentation/widgets/social_auth_section.dart';
 import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
@@ -97,53 +97,10 @@ class _LoginViewState extends State<LoginView> {
                 Gap(16.h),
                 FadeInDown(
                   duration: const Duration(milliseconds: 500),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 72.r,
-                        height: 72.r,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: context.colors.surface,
-                          border: Border.all(
-                            color: context.colors.primary.withValues(
-                              alpha: 0.3,
-                            ),
-                            width: 2.w,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: context.colors.primary.withValues(
-                                alpha: 0.1,
-                              ),
-                              blurRadius: 16.r,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: ClipOval(
-                          child: Image.asset(
-                            AppAssets.imagesAppLogo,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Gap(16.h),
-                      Text(
-                        AppStrings.welcome,
-                        style: AppTextStyles.font24Bold.copyWith(
-                          color: context.colors.mainText,
-                        ),
-                      ),
-                      Gap(6.h),
-                      Text(
-                        AppStrings.appTagline,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.font14Regular.copyWith(
-                          color: context.colors.subText,
-                        ),
-                      ),
-                    ],
+                  child: AuthHeaderSection(
+                    imagePath: AppAssets.imagesAppLogo,
+                    title: AppStrings.welcome,
+                    subtitle: AppStrings.appTagline,
                   ),
                 ),
                 Gap(32.h),
@@ -168,10 +125,19 @@ class _LoginViewState extends State<LoginView> {
                         action: TextInputAction.done,
                       ),
                       Gap(16.h),
-                      ForgetPassword(
-                        onTap: () async => await _navigate(
-                          context: context,
-                          routeName: Routes.forgetPasswordView,
+                      Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: GestureDetector(
+                          onTap: () async => await _navigate(
+                            context: context,
+                            routeName: Routes.forgetPasswordView,
+                          ),
+                          child: Text(
+                            AppStrings.forgotPassword,
+                            style: AppTextStyles.font13SemiBold.copyWith(
+                              color: context.colors.primary,
+                            ),
+                          ),
                         ),
                       ),
                       Gap(28.h),

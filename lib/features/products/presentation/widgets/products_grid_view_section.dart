@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
+import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_empty_state_widget.dart';
 import 'package:fruit_hub/core/widgets/custom_fruit_item.dart';
 import 'package:fruit_hub/core/widgets/fruits_grid_view.dart';
@@ -122,7 +123,9 @@ class _ProductsGridViewSectionState extends State<ProductsGridViewSection> {
         return Center(
           child: Text(
             AppStrings.tryAgainLater,
-            style: TextStyle(color: context.colors.subText),
+            style: AppTextStyles.font14Regular.copyWith(
+              color: context.colors.subText,
+            ),
           ),
         );
       }

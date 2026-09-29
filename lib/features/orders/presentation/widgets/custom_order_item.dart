@@ -139,7 +139,6 @@ class _CustomOrderItemState extends State<CustomOrderItem>
                       size: 16.sp,
                       color: AppPalette.white,
                     ),
-                    isTrailingIcon: false,
                     borderRadius: BorderRadius.circular(10.r),
                     padding: EdgeInsets.symmetric(vertical: 11.h),
                     maxWidth: true,

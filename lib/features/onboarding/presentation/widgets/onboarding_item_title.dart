@@ -15,9 +15,8 @@ class OnboardingItemTitle extends StatelessWidget {
 
     if (title.endsWith('FruitHUB')) {
       final prefix = title.substring(0, title.length - 8);
-      return RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
+      return Text.rich(
+        TextSpan(
           children: [
             TextSpan(text: prefix, style: baseStyle),
             TextSpan(
@@ -34,6 +33,7 @@ class OnboardingItemTitle extends StatelessWidget {
             ),
           ],
         ),
+        textAlign: TextAlign.center,
       );
     }
 

@@ -5,6 +5,7 @@ import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/fruits_grid_view.dart';
 import 'package:fruit_hub/core/widgets/search_text_field.dart';
 import 'package:fruit_hub/features/home/presentation/managers/home_cubit/home_cubit.dart';
@@ -63,14 +64,18 @@ class _HomeState extends State<Home> {
               return Center(
                 child: Text(
                   state.error,
-                  style: TextStyle(color: context.colors.subText),
+                  style: AppTextStyles.font14Regular.copyWith(
+                    color: context.colors.subText,
+                  ),
                 ),
               );
             } else {
               return Center(
                 child: Text(
                   AppStrings.tryAgainLater,
-                  style: TextStyle(color: context.colors.subText),
+                  style: AppTextStyles.font14Regular.copyWith(
+                    color: context.colors.subText,
+                  ),
                 ),
               );
             }

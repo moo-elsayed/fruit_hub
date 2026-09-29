@@ -25,6 +25,11 @@ extension Navigation on BuildContext {
   ).pushNamedAndRemoveUntil(routeName, predicate, arguments: arguments);
 
   void pop<T extends Object?>([T? result]) => Navigator.of(this).pop(result);
+
+  void popUntil(RoutePredicate predicate) =>
+      Navigator.of(this).popUntil(predicate);
+
+  bool canPop() => Navigator.of(this).canPop();
 }
 
 extension AppToastColorExtension on ToastificationType {
@@ -96,6 +101,27 @@ extension DateTimeExtension on DateTime {
       return '${day.toString().padLeft(2, '0')}/${month.toString().padLeft(2, '0')}/$year';
     }
   }
+
+  String toTimeAgo(BuildContext context) {
+    final difference = DateTime.now().difference(this);
+
+    if (difference.inMinutes < 1) {
+      return AppStrings.justNow;
+    } else if (difference.inHours < 1) {
+      return AppStrings.minutesAgo(difference.inMinutes);
+    } else if (difference.inDays < 1) {
+      return AppStrings.hoursAgo(difference.inHours);
+    } else if (difference.inDays < 7) {
+      return AppStrings.daysAgo(difference.inDays);
+    } else {
+      return toFormattedDate(pattern: 'dd/MM/yyyy');
+    }
+  }
+}
+
+extension NullableDateTimeExtension on DateTime? {
+  String toTimeAgo(BuildContext context) =>
+      this == null ? '' : this!.toTimeAgo(context);
 }
 
 extension StringDateExtension on String {

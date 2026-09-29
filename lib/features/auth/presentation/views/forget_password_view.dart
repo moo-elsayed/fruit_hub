@@ -19,6 +19,7 @@ import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
 
 import '../args/login_args.dart';
+import '../widgets/auth_header_section.dart';
 
 class ForgetPasswordView extends StatefulWidget {
   const ForgetPasswordView({super.key});
@@ -64,43 +65,10 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 Gap(16.h),
                 FadeInDown(
                   duration: const Duration(milliseconds: 500),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 72.r,
-                        height: 72.r,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: context.colors.primary.withValues(alpha: 0.1),
-                          border: Border.all(
-                            color: context.colors.primary.withValues(
-                              alpha: 0.3,
-                            ),
-                            width: 2.w,
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.lock_reset_rounded,
-                          size: 34.sp,
-                          color: context.colors.primary,
-                        ),
-                      ),
-                      Gap(16.h),
-                      Text(
-                        AppStrings.passwordReset,
-                        style: AppTextStyles.font24Bold.copyWith(
-                          color: context.colors.mainText,
-                        ),
-                      ),
-                      Gap(8.h),
-                      Text(
-                        AppStrings.sendEmailResetLink,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.font14Regular.copyWith(
-                          color: context.colors.subText,
-                        ),
-                      ),
-                    ],
+                  child: AuthHeaderSection(
+                    icon: Icons.lock_reset_rounded,
+                    title: AppStrings.passwordReset,
+                    subtitle: AppStrings.sendEmailResetLink,
                   ),
                 ),
                 Gap(32.h),
@@ -150,7 +118,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                             if (_formKey.currentState!.validate()) {
                               context
                                   .read<ForgetPasswordCubit>()
-                                  .forgetPassword(_emailController.text);
+                                  .forgetPassword(_emailController.text.trim());
                             }
                           },
                           maxWidth: true,

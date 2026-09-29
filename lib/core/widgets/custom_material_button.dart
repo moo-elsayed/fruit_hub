@@ -14,7 +14,7 @@ class CustomMaterialButton extends StatelessWidget {
     this.textStyle,
     this.maxWidth = false,
     this.isLoading = false,
-    this.isTrailingIcon = true,
+    this.isTrailingIcon = false,
     this.padding,
     this.backgroundColor,
     this.side,
@@ -58,8 +58,8 @@ class CustomMaterialButton extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             spacing: 8.w,
             children: isTrailingIcon
-                ? [textWidget, icon!]
-                : [icon!, textWidget],
+                ? [Flexible(child: textWidget), icon!]
+                : [icon!, Flexible(child: textWidget)],
           )
         : textWidget;
 

@@ -7,6 +7,7 @@ import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_action_button.dart';
 import 'package:fruit_hub/core/widgets/custom_favourite_icon.dart';
@@ -51,11 +52,11 @@ class CustomFruitItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(16.r),
               color: context.colors.surface,
               border: Border.all(color: context.colors.border, width: 1),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 8,
-                  offset: Offset(0, 2),
+                  color: context.colors.mainText.withValues(alpha: 0.05),
+                  blurRadius: 8.r,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
@@ -71,7 +72,7 @@ class CustomFruitItem extends StatelessWidget {
                         image: fruitEntity.imagePath,
                         width: double.infinity,
                         height: double.infinity,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -90,14 +91,16 @@ class CustomFruitItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(child: PricePerKilo(price: fruitEntity.price)),
+                      Gap(6.w),
                       CustomActionButton(
+                        radius: 14.r,
                         onTap: () => context.read<CartCubit>().addItemToCart(
                           fruitEntity,
                         ),
                         child: SvgPicture.asset(
                           AppAssets.iconsPlus,
-                          width: 14.w,
-                          height: 14.h,
+                          width: 12.r,
+                          height: 12.r,
                         ),
                       ),
                     ],
@@ -122,7 +125,7 @@ class CustomFruitItem extends StatelessWidget {
                 if (fruitEntity.isFeatured)
                   ProductBadge(
                     icon: Icons.star_rounded,
-                    color: Colors.amber,
+                    color: AppPalette.starYellow,
                     tooltip: AppStrings.featured,
                   ),
               ],

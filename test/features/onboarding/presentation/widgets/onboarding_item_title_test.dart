@@ -25,7 +25,7 @@ void main() {
     );
 
     testWidgets(
-      'should render RichText with colored Fruit and HUB spans when title ends with FruitHUB',
+      'should render Text.rich with colored Fruit and HUB spans when title ends with FruitHUB',
       (WidgetTester tester) async {
         // Arrange
         late BuildContext capturedContext;
@@ -44,11 +44,11 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert
-        final richTextFinder = find.byType(RichText);
-        expect(richTextFinder, findsOneWidget);
+        final textFinder = find.byType(Text);
+        expect(textFinder, findsOneWidget);
 
-        final richText = tester.widget<RichText>(richTextFinder);
-        final rootSpan = richText.text as TextSpan;
+        final textWidget = tester.widget<Text>(textFinder);
+        final rootSpan = textWidget.textSpan as TextSpan;
         expect(rootSpan.children?.length, equals(3));
 
         final prefixSpan = rootSpan.children![0] as TextSpan;

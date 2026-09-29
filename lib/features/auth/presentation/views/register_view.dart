@@ -20,6 +20,7 @@ import 'package:toastification/toastification.dart';
 import '../../domain/entities/sign_up_input_entity.dart';
 import '../args/login_args.dart';
 import '../managers/signup_cubit/sign_up_cubit.dart';
+import '../widgets/auth_header_section.dart';
 import '../widgets/auth_redirect_text.dart';
 
 class RegisterView extends StatefulWidget {
@@ -75,43 +76,10 @@ class _RegisterViewState extends State<RegisterView> {
                 Gap(16.h),
                 FadeInDown(
                   duration: const Duration(milliseconds: 500),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 72.r,
-                        height: 72.r,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: context.colors.primary.withValues(alpha: 0.1),
-                          border: Border.all(
-                            color: context.colors.primary.withValues(
-                              alpha: 0.3,
-                            ),
-                            width: 2.w,
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.person_add_rounded,
-                          size: 34.sp,
-                          color: context.colors.primary,
-                        ),
-                      ),
-                      Gap(16.h),
-                      Text(
-                        AppStrings.newAccount,
-                        style: AppTextStyles.font24Bold.copyWith(
-                          color: context.colors.mainText,
-                        ),
-                      ),
-                      Gap(6.h),
-                      Text(
-                        AppStrings.appTagline,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.font14Regular.copyWith(
-                          color: context.colors.subText,
-                        ),
-                      ),
-                    ],
+                  child: AuthHeaderSection(
+                    icon: Icons.person_add_rounded,
+                    title: AppStrings.newAccount,
+                    subtitle: AppStrings.appTagline,
                   ),
                 ),
                 Gap(32.h),

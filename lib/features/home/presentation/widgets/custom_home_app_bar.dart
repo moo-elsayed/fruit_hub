@@ -10,7 +10,6 @@ import 'package:fruit_hub/features/auth/presentation/managers/user_info_cubit/us
 import 'package:fruit_hub/features/notifications/presentation/managers/notifications_cubit/notifications_cubit.dart';
 import 'package:fruit_hub/features/notifications/presentation/managers/notifications_cubit/notifications_state.dart';
 import 'package:fruit_hub/features/profile/presentation/widgets/user_avatar_widget.dart';
-import 'package:gap/gap.dart';
 
 class CustomHomeAppBar extends StatelessWidget {
   const CustomHomeAppBar({super.key});
@@ -24,12 +23,13 @@ class CustomHomeAppBar extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
+        spacing: 11.w,
         children: [
           UserAvatarWidget(imagePath: user?.image, size: 44),
-          Gap(11.w),
           Expanded(
             child: Column(
               mainAxisSize: MainAxisSize.min,
+              spacing: 2.h,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -38,7 +38,6 @@ class CustomHomeAppBar extends StatelessWidget {
                     color: context.colors.subText,
                   ),
                 ),
-                Gap(2.h),
                 Text(
                   userName,
                   style: AppTextStyles.font16SemiBold.copyWith(

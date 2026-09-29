@@ -31,10 +31,24 @@ class _MainViewState extends State<MainView> {
   @override
   void initState() {
     super.initState();
-    MainTabNotifier.currentTab.value = widget.initialIndex;
+    if (MainTabNotifier.currentTab.value != widget.initialIndex) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          MainTabNotifier.switchToTab(widget.initialIndex);
+        }
+      });
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       NotificationRouter.markAppAsReady();
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant MainView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialIndex != oldWidget.initialIndex) {
+      MainTabNotifier.switchToTab(widget.initialIndex);
+    }
   }
 
   final List<Widget> _screens = [
