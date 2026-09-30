@@ -64,8 +64,6 @@ class CustomBottomSheet extends StatelessWidget {
         children: [
           // Drag Handle
           const CustomBottomSheetHandle(),
-          Gap(12.h),
-
           // Title
           Text(
             title,

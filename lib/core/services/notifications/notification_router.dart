@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fruit_hub/core/enums/notification_type.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
-
 import 'package:fruit_hub/features/main/presentation/managers/main_tab_notifier.dart';
 
 class NotificationRouter {

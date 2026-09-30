@@ -18,32 +18,29 @@ class CheckoutPageView extends StatelessWidget {
   final PageController pageController;
   final AddressArgs addressArgs;
 
+  List<Widget> get _pages => [
+    AddressBody(addressArgs: addressArgs),
+    const PaymentBody(),
+    OrderReviewBody(
+      onEditStep: (pageIndex) => pageController.animateToPage(
+        pageIndex,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      ),
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) => Expanded(
-    child: PageView(
+    child: PageView.builder(
       physics: const NeverScrollableScrollPhysics(),
       controller: pageController,
       onPageChanged: onPageChanged,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: AddressBody(addressArgs: addressArgs),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: const PaymentBody(),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: OrderReviewBody(
-            onEditStep: (pageIndex) => pageController.animateToPage(
-              pageIndex,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-            ),
-          ),
-        ),
-      ],
+      itemCount: _pages.length,
+      itemBuilder: (context, index) => Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: _pages[index],
+      ),
     ),
   );
 }

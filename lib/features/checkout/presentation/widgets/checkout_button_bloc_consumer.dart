@@ -88,15 +88,16 @@ class CheckoutButtonBlocConsumer extends StatelessWidget {
               return;
             }
             if (currentIndex == 2) {
-              if (cubit.paymentOption.type == PaymentMethodType.paypal) {
-                _executePaypalPayment(
-                  context: context,
-                  orderEntity: cubit.orderEntity,
-                );
-              } else if (cubit.paymentOption.type == PaymentMethodType.card) {
-                cubit.makePayment();
-              } else {
-                cubit.addOrder();
+              switch (cubit.paymentOption.type) {
+                case PaymentMethodType.paypal:
+                  _executePaypalPayment(
+                    context: context,
+                    orderEntity: cubit.orderEntity,
+                  );
+                case PaymentMethodType.card:
+                  cubit.makePayment();
+                case _:
+                  cubit.addOrder();
               }
             }
           },

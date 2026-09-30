@@ -55,9 +55,7 @@ class _SaveAddressState extends State<SaveAddress> {
         mainAxisSize: MainAxisSize.min,
         spacing: 8.w,
         children: [
-          IgnorePointer(
-            child: CustomCheckBox(onChanged: (_) {}, value: isSaved),
-          ),
+          CustomCheckBox(value: isSaved),
           Text(
             AppStrings.saveAddress,
             style: AppTextStyles.font13SemiBold.copyWith(

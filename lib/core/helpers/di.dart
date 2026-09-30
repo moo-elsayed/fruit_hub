@@ -3,6 +3,7 @@ import 'package:fruit_hub/core/cubits/app_theme_cubit.dart';
 import 'package:fruit_hub/core/entities/fruit_entity.dart';
 import 'package:fruit_hub/core/entities/order_entity.dart';
 import 'package:fruit_hub/core/helpers/image_compressor.dart';
+import 'package:fruit_hub/core/services/deep_link/deep_link_service.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service.dart';
 import 'package:fruit_hub/core/services/local_storage/app_preferences_service_imp.dart';
 import 'package:fruit_hub/core/services/location/location_service.dart';
@@ -112,6 +113,9 @@ void setupServiceLocator() {
     () =>
         NotificationService(preferencesService: getIt<AppPreferencesService>()),
   );
+
+  /// Deep Link Service
+  getIt.registerLazySingleton<DeepLinkService>(() => DeepLinkService());
 
   /// Image Compressor
   getIt.registerLazySingleton<ImageCompressor>(() => const ImageCompressor());

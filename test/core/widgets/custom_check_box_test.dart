@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fruit_hub/core/widgets/custom_check_box.dart';
@@ -12,9 +11,7 @@ void main() {
     ) async {
       // Arrange & Act
       await tester.pumpWidget(
-        createWidgetForTesting(
-          child: CustomCheckBox(value: false, onChanged: (_) {}),
-        ),
+        createWidgetForTesting(child: const CustomCheckBox(value: false)),
       );
       await tester.pumpAndSettle();
 
@@ -27,9 +24,7 @@ void main() {
     ) async {
       // Arrange & Act
       await tester.pumpWidget(
-        createWidgetForTesting(
-          child: CustomCheckBox(value: true, onChanged: (_) {}),
-        ),
+        createWidgetForTesting(child: const CustomCheckBox(value: true)),
       );
       await tester.pumpAndSettle();
 
@@ -37,41 +32,24 @@ void main() {
       expect(find.byType(SvgPicture), findsOneWidget);
     });
 
-    testWidgets('should toggle value and trigger onChanged when tapped', (
+    testWidgets('should update appearance when value changes', (
       WidgetTester tester,
     ) async {
       // Arrange
-      bool currentValue = false;
-
       await tester.pumpWidget(
-        createWidgetForTesting(
-          child: StatefulBuilder(
-            builder: (context, setState) => CustomCheckBox(
-              value: currentValue,
-              onChanged: (val) {
-                setState(() => currentValue = val);
-              },
-            ),
-          ),
-        ),
+        createWidgetForTesting(child: const CustomCheckBox(value: false)),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(SvgPicture), findsNothing);
+
+      // Act - pump with value = true
+      await tester.pumpWidget(
+        createWidgetForTesting(child: const CustomCheckBox(value: true)),
       );
       await tester.pumpAndSettle();
 
-      // Act
-      await tester.tap(find.byType(CustomCheckBox));
-      await tester.pumpAndSettle();
-
       // Assert
-      expect(currentValue, isTrue);
       expect(find.byType(SvgPicture), findsOneWidget);
-
-      // Act again - uncheck
-      await tester.tap(find.byType(CustomCheckBox));
-      await tester.pumpAndSettle();
-
-      // Assert
-      expect(currentValue, isFalse);
-      expect(find.byType(SvgPicture), findsNothing);
     });
   });
 }

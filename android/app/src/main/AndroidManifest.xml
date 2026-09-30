@@ -44,6 +44,32 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- Deep Linking Intent Filter (Custom Scheme: fruithub://...) -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="fruithub" />
+            </intent-filter>
+
+            <!-- App Links (HTTP / HTTPS: https://fruithub-84bf2.web.app/... & https://fruithub.com/...) -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="fruithub-84bf2.web.app" />
+                <data android:host="fruithub-84bf2.firebaseapp.com" />
+                <data android:host="fruithub.com" />
+                <data android:host="www.fruithub.com" />
+            </intent-filter>
+
+            <!-- Prevent Flutter default router from overriding animated splash on cold start -->
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="false" />
         </activity>
 
         <activity

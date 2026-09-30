@@ -26,7 +26,6 @@ class CustomEmptyStateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Center(
     child: SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -9,6 +9,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:fruit_hub/core/helpers/di.dart';
 import 'package:fruit_hub/core/helpers/simple_bloc_observer.dart';
 import 'package:fruit_hub/core/routing/app_router.dart';
+import 'package:fruit_hub/core/services/deep_link/deep_link_service.dart';
 import 'package:fruit_hub/core/services/notifications/notification_service.dart';
 import 'package:fruit_hub/env.dart';
 import 'package:fruit_hub/fruit_hub.dart';
@@ -33,6 +34,7 @@ void main() async {
   setupServiceLocator();
   await getIt.allReady();
   await getIt<NotificationService>().init();
+  await getIt<DeepLinkService>().init();
 
   runApp(
     EasyLocalization(

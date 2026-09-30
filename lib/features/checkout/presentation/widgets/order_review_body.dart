@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
-import 'package:fruit_hub/core/helpers/extensions.dart';
-import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/features/checkout/presentation/managers/checkout_cubit/checkout_cubit.dart';
-import 'package:fruit_hub/features/checkout/presentation/widgets/address_review_content.dart';
-import 'package:fruit_hub/features/checkout/presentation/widgets/order_review_item.dart';
+import 'package:fruit_hub/features/checkout/presentation/widgets/address_review_card.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/order_summary.dart';
-import 'package:fruit_hub/features/checkout/presentation/widgets/payment_method_icon.dart';
-import 'package:gap/gap.dart';
+import 'package:fruit_hub/features/checkout/presentation/widgets/payment_review_card.dart';
+import 'package:fruit_hub/features/checkout/presentation/widgets/section_title.dart';
 
 class OrderReviewBody extends StatelessWidget {
   const OrderReviewBody({super.key, this.onEditStep});
@@ -26,46 +21,44 @@ class OrderReviewBody extends StatelessWidget {
     final subtotal = cubit.subtotal;
 
     return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.only(bottom: 16.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 16.h,
         children: [
-          Text(
-            AppStrings.orderSummary,
-            style: AppTextStyles.font16Bold.copyWith(
-              color: context.colors.mainText,
-            ),
-          ),
-          Gap(8.h),
-          OrderSummary(
-            shippingCost: paymentOption.shippingCost,
-            subtotal: subtotal,
-          ),
-          Gap(16.h),
-          OrderReviewItem(
-            title: AppStrings.paymentMethod,
-            value: paymentOption.title,
-            icon: PaymentMethodIcon(type: paymentOption.type),
-            onEditTap: () => onEditStep?.call(1),
-          ),
-          Gap(16.h),
-          OrderReviewItem(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            title: AppStrings.deliveryAddress,
-            content: address != null
-                ? AddressReviewContent(address: address)
-                : null,
-            value: address == null ? '' : null,
-            icon: SvgPicture.asset(
-              AppAssets.iconsLocation,
-              colorFilter: ColorFilter.mode(
-                context.colors.primary,
-                BlendMode.srcIn,
+            spacing: 8.h,
+            children: [
+              SectionTitle(title: AppStrings.orderSummary),
+              OrderSummary(
+                shippingCost: paymentOption.shippingCost,
+                subtotal: subtotal,
               ),
-            ),
-            onEditTap: () => onEditStep?.call(0),
+            ],
           ),
-          Gap(16.h),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 8.h,
+            children: [
+              SectionTitle(
+                title: AppStrings.paymentMethod,
+                onActionTap: () => onEditStep?.call(1),
+              ),
+              PaymentReviewCard(paymentOption: paymentOption),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 8.h,
+            children: [
+              SectionTitle(
+                title: AppStrings.deliveryAddress,
+                onActionTap: () => onEditStep?.call(0),
+              ),
+              AddressReviewCard(address: address),
+            ],
+          ),
         ],
       ),
     );

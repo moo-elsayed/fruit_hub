@@ -8,7 +8,6 @@ import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/app_toasts.dart';
 import 'package:fruit_hub/core/widgets/custom_price_text.dart';
-import 'package:gap/gap.dart';
 import 'package:toastification/toastification.dart';
 
 import 'receipt_info_row.dart';
@@ -42,6 +41,7 @@ class OrderReceiptCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 12.h,
         children: [
           // Order ID & Copy Action
           Row(
@@ -49,27 +49,18 @@ class OrderReceiptCard extends StatelessWidget {
             children: [
               Row(
                 mainAxisSize: MainAxisSize.min,
+                spacing: 4.w,
                 children: [
                   Text(
-                    '${AppStrings.orderNumber}: ',
+                    '${AppStrings.orderNumber}:',
                     style: AppTextStyles.font14Regular.copyWith(
                       color: context.colors.subText,
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 8.w,
-                      vertical: 3.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: context.colors.primary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                    child: Text(
-                      '#${orderEntity.orderId}',
-                      style: AppTextStyles.font14Bold.copyWith(
-                        color: context.colors.primary,
-                      ),
+                  Text(
+                    '#${orderEntity.orderId}',
+                    style: AppTextStyles.font14Bold.copyWith(
+                      color: context.colors.primary,
                     ),
                   ),
                 ],
@@ -77,37 +68,33 @@ class OrderReceiptCard extends StatelessWidget {
               InkWell(
                 borderRadius: BorderRadius.circular(8.r),
                 onTap: () => _copyOrderId(context),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.copy_rounded,
-                        size: 16.sp,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 4.w,
+                  children: [
+                    Icon(
+                      Icons.copy_rounded,
+                      size: 16.sp,
+                      color: context.colors.primary,
+                    ),
+                    Text(
+                      AppStrings.copy,
+                      style: AppTextStyles.font12Medium.copyWith(
                         color: context.colors.primary,
                       ),
-                      Gap(4.w),
-                      Text(
-                        AppStrings.copy,
-                        style: AppTextStyles.font12Medium.copyWith(
-                          color: context.colors.primary,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          Divider(height: 24.h, color: context.colors.border),
+          Divider(color: context.colors.border, height: 0),
           // Payment Method
           ReceiptInfoRow(
             icon: Icons.payment_rounded,
             label: AppStrings.paymentMethod,
             value: orderEntity.paymentOption.title,
           ),
-          Gap(12.h),
           // Delivery Address
           ReceiptInfoRow(
             icon: Icons.location_on_outlined,
@@ -115,14 +102,7 @@ class OrderReceiptCard extends StatelessWidget {
             value:
                 '${orderEntity.address.city}, ${orderEntity.address.streetName}',
           ),
-          Gap(12.h),
-          // Estimated Delivery
-          ReceiptInfoRow(
-            icon: Icons.access_time_rounded,
-            label: AppStrings.estimatedDelivery,
-            value: AppStrings.deliveryWithinHours,
-          ),
-          Divider(height: 24.h, color: context.colors.border),
+          Divider(color: context.colors.border, height: 0),
           // Total Amount
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

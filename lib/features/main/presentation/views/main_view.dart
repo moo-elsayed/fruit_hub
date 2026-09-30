@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/di.dart';
+import 'package:fruit_hub/core/services/deep_link/deep_link_service.dart';
 import 'package:fruit_hub/core/services/notifications/notification_router.dart';
 import 'package:fruit_hub/core/widgets/app_toasts.dart';
 import 'package:fruit_hub/features/auth/presentation/managers/signout_cubit/sign_out_cubit.dart';
@@ -40,6 +41,7 @@ class _MainViewState extends State<MainView> {
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       NotificationRouter.markAppAsReady();
+      DeepLinkService.markAppAsReady();
     });
   }
 

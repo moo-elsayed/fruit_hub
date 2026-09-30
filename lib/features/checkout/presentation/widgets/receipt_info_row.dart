@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
-import 'package:gap/gap.dart';
 
 class ReceiptInfoRow extends StatelessWidget {
   const ReceiptInfoRow({
@@ -19,16 +18,15 @@ class ReceiptInfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Row(
     crossAxisAlignment: CrossAxisAlignment.start,
+    spacing: 8.w,
     children: [
       Icon(icon, size: 18.sp, color: context.colors.primary),
-      Gap(8.w),
       Text(
         label,
         style: AppTextStyles.font13Regular.copyWith(
           color: context.colors.subText,
         ),
       ),
-      Gap(16.w),
       Expanded(
         child: Text(
           value,

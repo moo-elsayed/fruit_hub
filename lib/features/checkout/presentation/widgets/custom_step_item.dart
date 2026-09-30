@@ -6,7 +6,6 @@ import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
-import 'package:gap/gap.dart';
 
 class CustomStepItem extends StatelessWidget {
   const CustomStepItem({
@@ -22,6 +21,7 @@ class CustomStepItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
+    spacing: 4.w,
     mainAxisSize: MainAxisSize.min,
     children: [
       AnimatedSwitcher(
@@ -38,7 +38,6 @@ class CustomStepItem extends StatelessWidget {
           StepItemState.upcoming => _StepUpcomingBadge(stepNumber: stepNumber),
         },
       ),
-      Gap(4.w),
       AnimatedDefaultTextStyle(
         duration: const Duration(milliseconds: 300),
         style: switch (state) {

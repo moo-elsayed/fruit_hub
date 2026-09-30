@@ -18,11 +18,12 @@ class PaymentBody extends StatefulWidget {
 class _PaymentBodyState extends State<PaymentBody> {
   late final List<PaymentOptionEntity> _paymentOptions;
   late final ValueNotifier<int> _selectedPaymentOptionNotifier;
+  late final CheckoutCubit cubit;
 
   @override
   void initState() {
     super.initState();
-    final cubit = context.read<CheckoutCubit>();
+    cubit = context.read<CheckoutCubit>();
     _paymentOptions = getPaymentOptions(cubit.shippingConfig, cubit.subtotal);
     final index = _paymentOptions.indexWhere(
       (element) => element.type == cubit.paymentOption.type,
@@ -39,37 +40,33 @@ class _PaymentBodyState extends State<PaymentBody> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final cubit = context.read<CheckoutCubit>();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppStrings.chooseThePaymentMethodThatSuitsYouBest,
-          style: AppTextStyles.font13Bold.copyWith(
-            color: context.colors.mainText,
-          ),
+  Widget build(BuildContext context) => Column(
+    spacing: 12.h,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        AppStrings.chooseThePaymentMethodThatSuitsYouBest,
+        style: AppTextStyles.font16Bold.copyWith(
+          color: context.colors.mainText,
         ),
-        ValueListenableBuilder<int>(
-          valueListenable: _selectedPaymentOptionNotifier,
-          builder: (context, selectedIndex, _) => Column(
-            children: List.generate(
-              _paymentOptions.length,
-              (index) => Padding(
-                padding: EdgeInsets.only(top: 12.h),
-                child: PaymentOption(
-                  paymentOptionEntity: _paymentOptions[index],
-                  onTap: (paymentOptionEntity) {
-                    _selectedPaymentOptionNotifier.value = index;
-                    cubit.setPaymentOption(paymentOptionEntity);
-                  },
-                  isSelected: selectedIndex == index,
-                ),
-              ),
+      ),
+      ValueListenableBuilder<int>(
+        valueListenable: _selectedPaymentOptionNotifier,
+        builder: (context, selectedIndex, _) => Column(
+          spacing: 10.h,
+          children: List.generate(
+            _paymentOptions.length,
+            (index) => PaymentOption(
+              paymentOptionEntity: _paymentOptions[index],
+              onTap: (paymentOptionEntity) {
+                _selectedPaymentOptionNotifier.value = index;
+                cubit.setPaymentOption(paymentOptionEntity);
+              },
+              isSelected: selectedIndex == index,
             ),
           ),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }

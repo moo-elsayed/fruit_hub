@@ -125,7 +125,6 @@ class _AddReviewBottomSheetState extends State<AddReviewBottomSheet> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const CustomBottomSheetHandle(),
-                  Gap(12.h),
                   Text(
                     AppStrings.writeReview,
                     style: AppTextStyles.font18Bold.copyWith(

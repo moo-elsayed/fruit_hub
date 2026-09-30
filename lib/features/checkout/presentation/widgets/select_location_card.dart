@@ -7,7 +7,6 @@ import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/selected_location_entity.dart';
 import 'package:fruit_hub/features/checkout/presentation/args/address_args.dart';
 import 'package:fruit_hub/features/checkout/presentation/args/location_picker_args.dart';
-import 'package:gap/gap.dart';
 
 class SelectLocationCard extends StatefulWidget {
   const SelectLocationCard({super.key, required this.addressArgs});
@@ -63,6 +62,7 @@ class _SelectLocationCardState extends State<SelectLocationCard> {
           ),
         ),
         child: Row(
+          spacing: 12.w,
           children: [
             Container(
               padding: EdgeInsets.all(10.r),
@@ -76,10 +76,10 @@ class _SelectLocationCardState extends State<SelectLocationCard> {
                 size: 22.sp,
               ),
             ),
-            Gap(12.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 2.h,
                 children: [
                   Text(
                     _hasLocation
@@ -89,7 +89,6 @@ class _SelectLocationCardState extends State<SelectLocationCard> {
                       color: context.colors.mainText,
                     ),
                   ),
-                  Gap(2.h),
                   Text(
                     _hasLocation
                         ? widget.addressArgs.cityController.text

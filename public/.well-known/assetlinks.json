@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.fruithub.app",
+      "sha256_cert_fingerprints": [
+        "D0:C1:3A:65:7D:28:5F:8A:C0:1E:5F:4F:14:E9:0C:FB:6C:BB:04:4B:A6:6B:8B:21:07:FE:8D:C4:BD:B6:18:8E",
+        "12:3F:56:38:F2:40:2B:66:77:81:DA:C0:62:66:7C:82:A9:14:79:74:48:24:71:34:95:01:AA:1F:C3:0D:C6:9A"
+      ]
+    }
+  }
+]

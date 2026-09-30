@@ -96,7 +96,6 @@ class _ChangePasswordBottomSheetState extends State<ChangePasswordBottomSheet> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const CustomBottomSheetHandle(),
-                    Gap(12.h),
                     Text(
                       AppStrings.changePassword,
                       style: AppTextStyles.font18Bold.copyWith(

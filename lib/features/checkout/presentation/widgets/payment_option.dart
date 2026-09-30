@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/features/checkout/domain/entities/payment_option_entity.dart';
-import 'package:gap/gap.dart';
 
 import '../../../../core/theming/app_text_styles.dart';
 
@@ -40,6 +39,7 @@ class PaymentOption extends StatelessWidget {
         ),
       ),
       child: Row(
+        spacing: 10.w,
         children: [
           Container(
             height: 20.h,
@@ -63,7 +63,6 @@ class PaymentOption extends StatelessWidget {
                   )
                 : null,
           ),
-          Gap(10.w),
           Text(
             paymentOptionEntity.title,
             style: AppTextStyles.font13SemiBold.copyWith(

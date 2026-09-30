@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
-import 'package:gap/gap.dart';
 
 import '../../../../core/theming/app_text_styles.dart';
 
@@ -13,6 +12,7 @@ class OrderSuccessTopWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
     mainAxisAlignment: MainAxisAlignment.center,
+    spacing: 12.h,
     children: [
       ZoomIn(
         duration: const Duration(milliseconds: 600),
@@ -22,10 +22,10 @@ class OrderSuccessTopWidget extends StatelessWidget {
           size: 60.sp,
         ),
       ),
-      Gap(12.h),
       FadeInDown(
         duration: const Duration(milliseconds: 500),
         child: Column(
+          spacing: 8.h,
           children: [
             Text(
               AppStrings.orderPlacedSuccessfully,
@@ -34,7 +34,6 @@ class OrderSuccessTopWidget extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            Gap(8.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Text(

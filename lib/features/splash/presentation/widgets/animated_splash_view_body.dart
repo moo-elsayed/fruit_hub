@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/routing/routes.dart';
+import 'package:fruit_hub/core/services/deep_link/deep_link_service.dart';
+import 'package:fruit_hub/core/services/notifications/notification_router.dart';
 
 import '../../../../core/helpers/app_assets.dart';
 import '../managers/splash_cubit/splash_cubit.dart';
@@ -32,6 +34,8 @@ class _AnimatedSplashViewBodyState extends State<AnimatedSplashViewBody> {
         switch (state.navigation) {
           case SplashNavigation.home:
             context.pushReplacementNamed(Routes.mainView);
+            DeepLinkService.markAppAsReady();
+            NotificationRouter.markAppAsReady();
           case SplashNavigation.login:
             context.pushReplacementNamed(Routes.loginView);
           case SplashNavigation.onboarding:

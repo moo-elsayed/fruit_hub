@@ -8,7 +8,6 @@ import 'package:fruit_hub/features/checkout/presentation/args/address_args.dart'
 import 'package:fruit_hub/features/checkout/presentation/managers/checkout_cubit/checkout_cubit.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/save_address.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/select_location_card.dart';
-import 'package:gap/gap.dart';
 
 import '../../../../core/helpers/validator.dart';
 import '../../../../core/widgets/text_form_field_helper.dart';
@@ -57,10 +56,9 @@ class _AddressBodyState extends State<AddressBody> {
           key: widget.addressArgs.formKey,
           child: Column(
             crossAxisAlignment: .start,
+            spacing: 16.h,
             children: [
-              Gap(2.h),
               SelectLocationCard(addressArgs: widget.addressArgs),
-              Gap(16.h),
               TextFormFieldHelper(
                 controller: widget.addressArgs.nameController,
                 labelText: AppStrings.fullName,
@@ -68,7 +66,6 @@ class _AddressBodyState extends State<AddressBody> {
                 onValidate: Validator.validateName,
                 action: TextInputAction.next,
               ),
-              Gap(16.h),
               TextFormFieldHelper(
                 controller: widget.addressArgs.emailController,
                 labelText: AppStrings.email,
@@ -76,7 +73,6 @@ class _AddressBodyState extends State<AddressBody> {
                 onValidate: Validator.validateEmail,
                 action: TextInputAction.next,
               ),
-              Gap(16.h),
               TextFormFieldHelper(
                 controller: widget.addressArgs.phoneController,
                 labelText: AppStrings.phoneNumber,
@@ -84,7 +80,6 @@ class _AddressBodyState extends State<AddressBody> {
                 onValidate: Validator.validatePhoneNumber,
                 action: TextInputAction.next,
               ),
-              Gap(16.h),
               TextFormFieldHelper(
                 controller: widget.addressArgs.cityController,
                 labelText: AppStrings.city,
@@ -92,7 +87,6 @@ class _AddressBodyState extends State<AddressBody> {
                 onValidate: Validator.validateCity,
                 action: TextInputAction.next,
               ),
-              Gap(16.h),
               TextFormFieldHelper(
                 controller: widget.addressArgs.streetNameController,
                 labelText: AppStrings.streetName,
@@ -100,7 +94,6 @@ class _AddressBodyState extends State<AddressBody> {
                 onValidate: Validator.validateStreetName,
                 action: TextInputAction.next,
               ),
-              Gap(16.h),
               TextFormFieldHelper(
                 controller: widget.addressArgs.buildingController,
                 labelText: AppStrings.buildingNumber,
@@ -108,7 +101,6 @@ class _AddressBodyState extends State<AddressBody> {
                 onValidate: Validator.validateBuildingNumber,
                 action: TextInputAction.next,
               ),
-              Gap(16.h),
               Row(
                 spacing: 8.w,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,13 +125,11 @@ class _AddressBodyState extends State<AddressBody> {
                   ),
                 ],
               ),
-              Gap(16.h),
               SaveAddress(
                 value: context.read<CheckoutCubit>().saveAddress,
                 onChanged: (value) =>
                     context.read<CheckoutCubit>().setSaveAddress(value),
               ),
-              Gap(16.h),
             ],
           ),
         ),

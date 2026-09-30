@@ -6,6 +6,7 @@ import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_network_image.dart';
 import 'package:fruit_hub/core/widgets/custom_price_text.dart';
+import 'package:fruit_hub/core/widgets/quantity_badge.dart';
 
 class OrderProductCard extends StatelessWidget {
   const OrderProductCard({super.key, required this.product});
@@ -64,19 +65,7 @@ class OrderProductCard extends StatelessWidget {
           spacing: 2.h,
           children: [
             CustomPriceText(price: product.totalPrice),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-              decoration: BoxDecoration(
-                color: context.colors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(4.r),
-              ),
-              child: Text(
-                'x${product.quantity}',
-                style: AppTextStyles.font10Bold.copyWith(
-                  color: context.colors.primary,
-                ),
-              ),
-            ),
+            QuantityBadge(quantity: product.quantity),
           ],
         ),
       ],

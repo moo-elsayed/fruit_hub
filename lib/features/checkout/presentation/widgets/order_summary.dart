@@ -5,7 +5,6 @@ import 'package:fruit_hub/core/helpers/extensions.dart';
 import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/features/checkout/presentation/widgets/order_summary_row.dart';
-import 'package:gap/gap.dart';
 
 class OrderSummary extends StatelessWidget {
   const OrderSummary({
@@ -30,12 +29,12 @@ class OrderSummary extends StatelessWidget {
       border: Border.all(color: context.colors.border),
     ),
     child: Column(
+      spacing: 8.h,
       children: [
         OrderSummaryRow(
           title: AppStrings.subtotal,
           value: '${subtotal.formattedPrice} ${AppStrings.pounds}',
         ),
-        Gap(8.h),
         OrderSummaryRow(
           title: AppStrings.shipping,
           value: shippingCost == 0
@@ -43,7 +42,7 @@ class OrderSummary extends StatelessWidget {
               : '${shippingCost.formattedPrice} ${AppStrings.pounds}',
           freeShipping: shippingCost == 0,
         ),
-        Divider(color: context.colors.border, thickness: 0.5, height: 30.h),
+        Divider(color: context.colors.border, thickness: 0.5, height: 0),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

@@ -46,9 +46,9 @@ class LocationPickerBottomSheet extends StatelessWidget {
         top: false,
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          spacing: 12.w,
           children: [
             const CustomBottomSheetHandle(),
-            Gap(12.h),
             Row(
               children: [
                 Container(
@@ -63,10 +63,10 @@ class LocationPickerBottomSheet extends StatelessWidget {
                     size: 24.sp,
                   ),
                 ),
-                Gap(12.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 2.h,
                     children: [
                       Text(
                         AppStrings.selectedLocation,
@@ -74,9 +74,9 @@ class LocationPickerBottomSheet extends StatelessWidget {
                           color: context.colors.subText,
                         ),
                       ),
-                      Gap(2.h),
                       if (isLoading)
                         Row(
+                          spacing: 8.w,
                           children: [
                             SizedBox(
                               width: 14.r,
@@ -86,7 +86,6 @@ class LocationPickerBottomSheet extends StatelessWidget {
                                 radius: 7.r,
                               ),
                             ),
-                            Gap(8.w),
                             Text(
                               AppStrings.locating,
                               style: AppTextStyles.font14Bold.copyWith(
