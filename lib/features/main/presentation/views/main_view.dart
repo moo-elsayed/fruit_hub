@@ -20,9 +20,9 @@ import 'package:fruit_hub/features/profile/presentation/views/profile.dart';
 import 'package:toastification/toastification.dart';
 
 class MainView extends StatefulWidget {
-  const MainView({super.key, this.initialIndex = 0});
+  const MainView({super.key, this.initialIndex});
 
-  final int initialIndex;
+  final int? initialIndex;
 
   @override
   State<MainView> createState() => _MainViewState();
@@ -32,10 +32,11 @@ class _MainViewState extends State<MainView> {
   @override
   void initState() {
     super.initState();
-    if (MainTabNotifier.currentTab.value != widget.initialIndex) {
+    if (widget.initialIndex != null &&
+        MainTabNotifier.currentTab.value != widget.initialIndex) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
-          MainTabNotifier.switchToTab(widget.initialIndex);
+          MainTabNotifier.switchToTab(widget.initialIndex!);
         }
       });
     }
@@ -48,8 +49,9 @@ class _MainViewState extends State<MainView> {
   @override
   void didUpdateWidget(covariant MainView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.initialIndex != oldWidget.initialIndex) {
-      MainTabNotifier.switchToTab(widget.initialIndex);
+    if (widget.initialIndex != null &&
+        widget.initialIndex != oldWidget.initialIndex) {
+      MainTabNotifier.switchToTab(widget.initialIndex!);
     }
   }
 

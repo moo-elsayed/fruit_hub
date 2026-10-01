@@ -12,7 +12,9 @@ class NotificationRouter {
       GlobalKey<NavigatorState>();
 
   static bool isAppReady = false;
-  static dynamic _pendingPayload;
+
+  @visibleForTesting
+  static dynamic pendingPayload;
 
   static void markAppAsReady() {
     isAppReady = true;
@@ -20,9 +22,9 @@ class NotificationRouter {
   }
 
   static void checkAndHandlePendingNotification() {
-    if (_pendingPayload != null && isAppReady) {
-      final payload = _pendingPayload;
-      _pendingPayload = null;
+    if (pendingPayload != null && isAppReady) {
+      final payload = pendingPayload;
+      pendingPayload = null;
       handleNotificationNavigation(payload);
     }
   }
@@ -34,7 +36,7 @@ class NotificationRouter {
       debugPrint(
         'App layout not ready yet. Storing pending notification payload: $payload',
       );
-      _pendingPayload = payload;
+      pendingPayload = payload;
       return;
     }
 

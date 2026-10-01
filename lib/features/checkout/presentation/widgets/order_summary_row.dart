@@ -18,10 +18,12 @@ class OrderSummaryRow extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Text(
-        title,
-        style: AppTextStyles.font13SemiBold.copyWith(
-          color: context.colors.subText,
+      Expanded(
+        child: Text(
+          title,
+          style: AppTextStyles.font13SemiBold.copyWith(
+            color: context.colors.subText,
+          ),
         ),
       ),
       Text(

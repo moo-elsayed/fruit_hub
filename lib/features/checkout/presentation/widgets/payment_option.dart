@@ -63,13 +63,14 @@ class PaymentOption extends StatelessWidget {
                   )
                 : null,
           ),
-          Text(
-            paymentOptionEntity.title,
-            style: AppTextStyles.font13SemiBold.copyWith(
-              color: context.colors.mainText,
+          Expanded(
+            child: Text(
+              paymentOptionEntity.title,
+              style: AppTextStyles.font13SemiBold.copyWith(
+                color: context.colors.mainText,
+              ),
             ),
           ),
-          const Spacer(),
           Text(
             getTrailingText(paymentOptionEntity.shippingCost),
             style: AppTextStyles.font13Bold.copyWith(

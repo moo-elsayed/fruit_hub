@@ -19,10 +19,12 @@ class SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Text(
-        title,
-        style: AppTextStyles.font16Bold.copyWith(
-          color: context.colors.mainText,
+      Expanded(
+        child: Text(
+          title,
+          style: AppTextStyles.font16Bold.copyWith(
+            color: context.colors.mainText,
+          ),
         ),
       ),
       if (onActionTap != null)

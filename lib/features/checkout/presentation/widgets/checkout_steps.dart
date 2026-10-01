@@ -19,7 +19,7 @@ class CheckoutSteps extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.symmetric(horizontal: 20.w),
+    padding: EdgeInsets.symmetric(horizontal: 16.w),
     child: Row(
       children: List.generate(steps.length * 2 - 1, (index) {
         if (index.isOdd) {
@@ -29,7 +29,7 @@ class CheckoutSteps extends StatelessWidget {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               height: 1.5.h,
-              margin: EdgeInsets.symmetric(horizontal: 6.w),
+              margin: EdgeInsets.symmetric(horizontal: 4.w),
               decoration: BoxDecoration(
                 color: isLineCompleted
                     ? context.colors.primary

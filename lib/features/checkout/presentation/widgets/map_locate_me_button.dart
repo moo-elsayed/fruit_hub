@@ -9,7 +9,7 @@ class MapLocateMeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Positioned(
-    bottom: 180.h,
+    bottom: 170.h,
     right: 20.w,
     child: Material(
       color: Colors.transparent,

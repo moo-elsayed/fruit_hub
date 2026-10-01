@@ -23,10 +23,12 @@ class AddressReviewContent extends StatelessWidget {
           Row(
             children: [
               if (address.name.trim().isNotEmpty)
-                Text(
-                  address.name,
-                  style: AppTextStyles.font13Bold.copyWith(
-                    color: context.colors.mainText,
+                Flexible(
+                  child: Text(
+                    address.name,
+                    style: AppTextStyles.font13Bold.copyWith(
+                      color: context.colors.mainText,
+                    ),
                   ),
                 ),
               if (address.name.trim().isNotEmpty &&

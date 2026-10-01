@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fruit_hub/core/helpers/app_assets.dart';
 import 'package:fruit_hub/core/helpers/app_strings.dart';
 import 'package:fruit_hub/core/helpers/extensions.dart';
 
 import '../../../../core/theming/app_text_styles.dart';
-import '../../../../core/widgets/custom_check_box.dart';
 
 class SaveAddress extends StatefulWidget {
   const SaveAddress({super.key, required this.onChanged, this.value = true});
@@ -55,7 +56,33 @@ class _SaveAddressState extends State<SaveAddress> {
         mainAxisSize: MainAxisSize.min,
         spacing: 8.w,
         children: [
-          CustomCheckBox(value: isSaved),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeInOut,
+            width: 24.w,
+            height: 24.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(
+                color: !isSaved
+                    ? context.colors.border
+                    : context.colors.primary,
+                width: 1.5,
+              ),
+              color: isSaved ? context.colors.primary : context.colors.surface,
+            ),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: isSaved
+                  ? SvgPicture.asset(
+                      AppAssets.iconsCheck,
+                      key: const ValueKey('check'),
+                      width: 16.w,
+                      height: 16.h,
+                    )
+                  : const SizedBox.shrink(key: ValueKey('empty')),
+            ),
+          ),
           Text(
             AppStrings.saveAddress,
             style: AppTextStyles.font13SemiBold.copyWith(

@@ -109,22 +109,22 @@ class DeepLinkService {
 
     // 3. Tab switching
     if (host == 'cart') {
-      MainTabNotifier.switchToTab(2);
+      _switchToTab(2);
       return;
     }
 
     if (host == 'favorites') {
-      MainTabNotifier.switchToTab(1);
+      _switchToTab(1);
       return;
     }
 
     if (host == 'profile') {
-      MainTabNotifier.switchToTab(3);
+      _switchToTab(3);
       return;
     }
 
     if (host == 'home') {
-      MainTabNotifier.switchToTab(0);
+      _switchToTab(0);
       return;
     }
 
@@ -132,6 +132,14 @@ class DeepLinkService {
     if (host == 'search') {
       _navigateTo(Routes.searchView);
       return;
+    }
+  }
+
+  static void _switchToTab(int index) {
+    MainTabNotifier.switchToTab(index);
+    final state = NotificationRouter.navigatorKey.currentState;
+    if (state != null && state.canPop()) {
+      state.popUntil((route) => route.isFirst);
     }
   }
 

@@ -7,7 +7,6 @@ import 'package:fruit_hub/core/theming/app_palette.dart';
 import 'package:fruit_hub/core/theming/app_text_styles.dart';
 import 'package:fruit_hub/core/widgets/custom_bottom_sheet_handle.dart';
 import 'package:fruit_hub/core/widgets/custom_material_button.dart';
-import 'package:gap/gap.dart';
 
 class LocationPickerBottomSheet extends StatelessWidget {
   const LocationPickerBottomSheet({
@@ -48,8 +47,9 @@ class LocationPickerBottomSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           spacing: 12.w,
           children: [
-            const CustomBottomSheetHandle(),
+            const CustomBottomSheetHandle(bottomGap: 0),
             Row(
+              spacing: 12.w,
               children: [
                 Container(
                   padding: EdgeInsets.all(10.r),
@@ -110,7 +110,6 @@ class LocationPickerBottomSheet extends StatelessWidget {
                 ),
               ],
             ),
-            Gap(18.h),
             CustomMaterialButton(
               onPressed: onConfirm,
               isLoading: isLoading,

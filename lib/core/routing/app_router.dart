@@ -83,7 +83,7 @@ class AppRouter {
       case Routes.forgetPasswordView:
         return _route(const ForgetPasswordView());
       case Routes.mainView:
-        final initialIndex = settings.arguments as int? ?? 0;
+        final initialIndex = settings.arguments as int?;
         return _route(
           MultiBlocProvider(
             providers: [
